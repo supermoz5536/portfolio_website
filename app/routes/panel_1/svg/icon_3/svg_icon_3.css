@@ -1,0 +1,18 @@
+.svg-icon-3 {
+  display: flex;
+  animation: svg-icon-3 ease 2s infinite alternate;
+}
+
+@keyframes svg-icon-3 {
+  0% {
+    r: 15%;
+    fill: skyblue;
+    stroke: pink;
+  }
+
+  100% {
+    r: 40%;
+    fill: lime;
+    stroke: orange;
+  }
+}

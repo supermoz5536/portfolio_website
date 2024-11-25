@@ -1,0 +1,18 @@
+.svg-icon-4 {
+  display: flex;
+  animation: svg-icon-4 ease 2s infinite alternate;
+}
+
+@keyframes svg-icon-4 {
+  0% {
+    r: 15%;
+    fill: lime;
+    stroke: orange;
+  }
+
+  100% {
+    r: 40%;
+    fill: skyblue;
+    stroke: pink;
+  }
+}

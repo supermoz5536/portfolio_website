@@ -2,11 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+* html ページ全体の外枠部分
+* body 中身の内容部分
+* 両方にスタイルを適用
+*/
 html,
 body {
+  /**
+  * @apply は、「Tailwind CSS のクラスを通常の CSS の中で使うよ！」という宣言
+  * Tailwind のユーティリティクラスを
+  * 直接 CSS の中に適用できます。
+  */
   @apply bg-white dark:bg-gray-950;
 
+  /**
+  * @media は、「特定の条件を満たすときに、このCSSを適用するよ！」 という宣言
+  * 画面サイズやユーザー設定に応じてスタイルを変えることができます。
+  * ================================================================
+  * tailwind の適用範囲はCSSの適用範囲に過ぎないので
+  * その範囲外のシステム要素（スクロールバー等）を
+  * @media を使って、ブラウザやOSに働きかけることで
+  * 一貫性を保って変更の適用ができます。
+  */
   @media (prefers-color-scheme: dark) {
+    /* ダークモードを選択してる場合 */
     color-scheme: dark;
   }
 }
