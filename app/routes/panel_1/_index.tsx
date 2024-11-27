@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { ContentBlock } from "./component/ContentBlock";
-import { setupAnimation } from "./gsap_setup";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap/dist/gsap";
 
 export default function Panel1() {
   // const box1: any = useRef();
@@ -8,7 +9,43 @@ export default function Panel1() {
   // divタグにcontainerのrefを設定
   const container: any = useRef();
 
-  setupAnimation({ container: container });
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+      tl.to(".myapp-icon-1", {
+        x: 32,
+        duration: 2.5,
+        height: 16,
+        width: 16,
+        borderRadius: 8,
+        rotate: 360,
+      }); // <-- automatically reverted
+
+      tl.to(".myapp-icon-1", {
+        x: 0,
+        duration: 5,
+        height: 36,
+        width: 36,
+        borderRadius: 0,
+        rotate: -360,
+        ease: "power3",
+      });
+    },
+    { scope: container },
+  );
+
+  useGSAP(
+    () => {
+      gsap.to(".myapp-icon-2", {
+        delay: 0,
+        duration: 2.5,
+        rotate: -360,
+        repeat: -1,
+        repeatDelay: 4,
+      });
+    },
+    { scope: container },
+  );
 
   return (
     <div
@@ -49,23 +86,23 @@ export default function Panel1() {
               />
               {/* Content 2 */}
               <ContentBlock
-                title="Title Cotent-2"
-                subtitle="Subtitle Content-2"
+                title="Title Cotent-3"
+                subtitle="Subtitle Content-3"
                 body="body"
-                number={2}
+                number={3}
               />
             </div>
           </div>
 
           {/* Content Container B */}
           <div>
-            <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-80 xl:mt-[7vh] xl:mr-16 w-96">
+            <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-72 xl:mt-[7vh] xl:mr-16 w-96">
               {/* Content 3 */}
               <ContentBlock
-                title="Title Cotent-3"
-                subtitle="Subtitle Content-3"
+                title="Title Cotent-2"
+                subtitle="Subtitle Content-2"
                 body="body"
-                number={3}
+                number={2}
               />
 
               {/* Content 4 */}

@@ -1,16 +1,23 @@
+import "./popup.css";
 import React, { memo, useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import MatterJsContentBlock1 from "./matter";
+import MatterJs1 from "../matter_js/Matter_js_1";
+import { useLoaderData } from "@remix-run/react";
+import { PopupLayer1 } from "../popup_layer/popup_layer_1";
+import { PopupLayer2 } from "../popup_layer/popup_layer_2";
+import { PopupLayer3 } from "../popup_layer/popup_layer_3";
+import { PopupLayer4 } from "../popup_layer/popup_layer_4";
 
-type Props = {
+type PopUpComponentProps = {
   viewFlag: boolean;
   setViewFlag: React.Dispatch<React.SetStateAction<boolean>>;
+  number: number;
 };
 
 // memo を使う理由は「不要な再レンダリング」を防ぐこと
 // propsの変更がない限り、再レンダリングは行われない仕様になります。
-export const PopUpComponent = memo((props: Props) => {
-  const { viewFlag, setViewFlag } = props;
+export const PopUpComponent = memo((props: PopUpComponentProps) => {
+  const { viewFlag, setViewFlag, number } = props;
 
   let initWidth = 0;
 
@@ -85,6 +92,17 @@ export const PopUpComponent = memo((props: Props) => {
     };
   }, [viewFlag]);
 
+  /// ポップアップを閉じた際に
+  /// 動画再生を停止するコールバック
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const videoElements = document.querySelectorAll("video");
+      if (videoElements && viewFlag == false) {
+        for (const videoElement of videoElements) videoElement.pause();
+      }
+    }
+  }, [viewFlag]);
+
   // 枠外クリック用関数
   const onClickBackground = () => {
     setViewFlag(false);
@@ -123,31 +141,20 @@ export const PopUpComponent = memo((props: Props) => {
           >
             <div className="absolute z-20">
               {/* 下層の Matter.js */}
-              <MatterJsContentBlock1
+              <MatterJs1
+                viewFlag={viewFlag}
                 height={typeof window != "undefined" ? aspects.height : 100}
                 width={typeof window != "undefined" ? aspects.width : 100}
               />
             </div>
+
             {/* 上層の4つのコンテナー */}
-            <div className="absolute z-30 flex flex-row h-full w-full">
-              {/* 1列目 */}
-              <div className="flex flex-col h-ful w-1/2 ">
-                {/* ConentBlock1 (左上) */}
-                <div className="h-1/2 w-full bg-white"></div>
-
-                {/* ConentBlock2 (左下) */}
-                <div className="h-1/2 w-full bg-transparent"></div>
-              </div>
-              {/* 2列目 */}
-              <div className="flex flex-col h-ful w-1/2">
-                {/* ConentBlock3 (右上) */}
-                <div className="h-1/2 w-full bg-transparent"></div>
-
-                {/* ConentBlock4 (右下) */}
-                <div className="h-1/2 w-full bg-white"></div>
-              </div>
-            </div>
+            {number == 1 && <PopupLayer1 viewFlag={viewFlag} number={number} />}
+            {number == 2 && <PopupLayer2 viewFlag={viewFlag} number={number} />}
+            {number == 3 && <PopupLayer3 viewFlag={viewFlag} number={number} />}
+            {number == 4 && <PopupLayer4 viewFlag={viewFlag} number={number} />}
           </div>
+
           {/* クローズボタン */}
           <div className="absolute -right-10 -top-10 h-10 w-10 hover:cursor-pointer">
             <IoMdCloseCircleOutline className="h-full w-full text-white" />

@@ -1,8 +1,8 @@
 import { tv } from "tailwind-variants";
 import { SVGIcon3 } from "../svg/icon_3/SVGIcon3";
 import { SVGIcon4 } from "../svg/icon_4/SVGIcon4";
-import { useState } from "react";
-import { PopUpComponent } from "./Popup";
+import { useEffect, useState } from "react";
+import { PopUpComponent } from "./popup/Popup";
 
 type ContentBlockProps = {
   title: string;
@@ -32,6 +32,7 @@ export const ContentBlock = ({
   number,
 }: ContentBlockProps) => {
   const [popupFlag, setPopupFlag] = useState<boolean>(false);
+
   return (
     <>
       {/* Content format */}
@@ -66,7 +67,11 @@ export const ContentBlock = ({
           <div className="ml-2 flex-1 border-gray-500 border-b"></div>
         </div>
       </div>
-      <PopUpComponent viewFlag={popupFlag} setViewFlag={setPopupFlag} />
+      <PopUpComponent
+        viewFlag={popupFlag}
+        setViewFlag={setPopupFlag}
+        number={number}
+      />
     </>
   );
 };
