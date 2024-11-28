@@ -105,13 +105,21 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
 
   // 枠外クリック用関数
   const onClickBackground = () => {
-    setViewFlag(false);
+    // setViewFlag(false);
   };
 
   // 枠内クリック
   // 親コンポーネントのclose関数へのイベント伝搬を防ぐ
   // stopPropagation(): 親要素へのイベントの伝搬を停止するJSの標準メソッド
-  const onClickCard = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onClickCard = (event: any) => {
+    // const isBypassClickevent =
+    //   event.target instanceof HTMLDivElement && event.target.dataset.bypass;
+    // console.log(event.target.dataset.bypass);
+    // if (isBypassClickevent) {
+    //   console.log("クリックをバイパスしました");
+    //   return;
+    // }
+    // console.log("クリックを阻止しました");
     event.stopPropagation();
   };
 
@@ -137,7 +145,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
           {/* ウインドウのボディ */}
           <div
             className="flex justify-center items-center h-full w-full bg-white shadow-2xl"
-            onClick={(event) => onClickCard(event)}
+            // onClick={(event) => onClickCard(event)}
           >
             <div className="absolute z-20">
               {/* 下層の Matter.js */}
@@ -145,7 +153,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
                 viewFlag={viewFlag}
                 height={typeof window != "undefined" ? aspects.height : 100}
                 width={typeof window != "undefined" ? aspects.width : 100}
-              />
+              ></MatterJs1>
             </div>
 
             {/* 上層の4つのコンテナー */}
@@ -156,7 +164,10 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
           </div>
 
           {/* クローズボタン */}
-          <div className="absolute -right-10 -top-10 h-10 w-10 hover:cursor-pointer">
+          <div
+            className="absolute -right-10 -top-10 h-10 w-10 hover:cursor-pointer"
+            onClick={() => setViewFlag(false)}
+          >
             <IoMdCloseCircleOutline className="h-full w-full text-white" />
           </div>
         </div>

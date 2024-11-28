@@ -8,12 +8,33 @@ type MatterProps = {
 };
 
 const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
-  const canvasRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLDivElement | null>(null); // div 要素
+
+  // Matter.js 参照
   const engineRef = useRef<Matter.Engine | null>(null);
   const renderRef = useRef<Matter.Render | null>(null);
+  const runnerRef = useRef<Matter.Runner | null>(null);
+
+  // マウスの位置。移動するたびに更新されます。
+  const posX = useRef<number | null>(null);
+  const posY = useRef<number | null>(null);
+
+  // マウス間隔トリガーを保持するために使用されます。
+  const mouseIntervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      console.log("MatterJs1: Click detected", event);
+    };
+
+    window.addEventListener("click", handleClick);
+  }, []);
 
   useEffect(() => {
     const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
+    var group = Matter.Body.nextGroup(true);
+
+    window.addEventListener("mousemove", updateMousePosition); //マウス リスナーを追加します。
 
     /**
      * Initial Set up
@@ -35,6 +56,13 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       renderRef.current = null; // 手動でnullにして参照を切断
     }
 
+    if (runnerRef.current) {
+      // Matter.js内部で使用されているリソースや状態を
+      // 適切にリセットするためのメソッドです。
+      Matter.Runner.stop(runnerRef.current);
+      runnerRef.current = null; // 手動でnullにして参照を切断
+    }
+
     // 新しいエンジンの作成
     const engine = Engine.create();
     engineRef.current = engine;
@@ -47,10 +75,14 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         width: width,
         height: height,
         wireframes: false,
-        background: "black",
+        background: "white",
       },
     });
     renderRef.current = render;
+
+    // 新しいランナーの作成
+    const runner = Runner.create(); //映写機(フレームの描画)のハンドルを作成(create)
+    runnerRef.current = runner;
 
     /**
      * Objects
@@ -58,23 +90,23 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
     const elementArray = [];
 
-    for (let i = 0; i < 10; i++) {
-      const boxL = Bodies.rectangle(
+    for (let i = 0; i < 5; i++) {
+      const cubeL = Bodies.rectangle(
         (width * 3) / 4,
-        height * -0.1 + i * 15,
+        height * -0.2 + i * 15,
         30,
         30,
       );
-      const boxR = Bodies.rectangle(
-        (width * 3) / 4 + 15,
-        height * -0.1 + i * 15,
-        30,
-        30,
-      );
-      elementArray.push(boxL, boxR);
-    }
 
-    var group = Matter.Body.nextGroup(true);
+      const cubeR = Bodies.rectangle(
+        (width * 3) / 4 + 15,
+        height * -0.2 + i * 15,
+        30,
+        30,
+      );
+
+      elementArray.push(cubeL, cubeR);
+    }
 
     const bridge = Matter.Composites.stack(
       (width * 2) / 4,
@@ -99,12 +131,46 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
     // 各チェーンの生成
     Matter.Composites.chain(bridge, 0.3, 0, -0.3, 0, {
+      stiffness: 0.5,
+      length: 2,
       render: {
         visible: true,
         strokeStyle: "#000000", // 生成時に赤色に設定
         lineWidth: 2, // 太さを設定
       },
     });
+
+    const wallA = Bodies.rectangle(
+      (width * 3) / 4 - 40,
+      height * 0.1,
+      10,
+      300,
+      {
+        angle: -Math.PI * 0.015,
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const wallB = Bodies.rectangle(
+      (width * 3) / 4 + 42,
+      height * 0.1,
+      10,
+      300,
+      {
+        angle: Math.PI * 0.015,
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
 
     const floorA = Bodies.rectangle(width * 0.1, height * 0.8, 300, 10, {
       angle: Math.PI / 3,
@@ -165,33 +231,59 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     );
 
+    const mouse = Matter.Mouse.create(renderRef.current.canvas);
+
+    renderRef.current.mouse = mouse;
+
+    const mouseConstraint = Matter.MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: { visible: false },
+      },
+    });
+
+    Matter.Events.on(mouseConstraint, "mousemove", (event) => {
+      console.log("Mouse moving at:", event.mouse.position);
+    });
+
     // ワールドにオブジェクトを追加
     Composite.add(engine.world, [
       ...elementArray,
       bridge,
+      wallA,
+      wallB,
       floorA,
       floorB,
       groundA,
+      mouseConstraint,
       Constraint.create({
-        pointA: { x: (width * 3) / 4 - 100, y: height / 4 },
+        bodyA: wallA,
+        pointA: { x: 0, y: wallA.bounds.max.y - wallA.position.y },
         bodyB: bridge.bodies[0],
-        pointB: { x: -25, y: 0 },
-        length: 2,
-        stiffness: 0.5,
+        pointB: { x: 0, y: 0 },
+        length: 5,
+        stiffness: 0.05,
+        render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
       Constraint.create({
-        pointA: { x: (width * 3) / 4 + 300, y: height / 4 },
+        bodyA: wallB,
+        pointA: { x: 0, y: wallB.bounds.max.y - wallB.position.y },
         bodyB: bridge.bodies[bridge.bodies.length - 1],
-        pointB: { x: 25, y: 0 },
-        length: 2,
-        stiffness: 0.5,
+        pointB: { x: 0, y: 0 },
+        length: 5,
+        stiffness: 0.05,
+        render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
       groundB,
       groundC,
     ]);
 
+    const compositeGroup1 = Composite.create();
+    Composite.add(compositeGroup1, [...elementArray, bridge, wallA, wallB]);
+    Composite.translate(compositeGroup1, { x: -1000, y: 300 });
+
     Render.run(render); // レンダラー（映写機）を起動
-    const runner = Runner.create(); //映写機(フレームの描画)のハンドルを作成(create)
     Runner.run(runner, engine); //映写機(フレームの描画)のハンドルを回す(run)
 
     // クリーンアップ処理
@@ -203,14 +295,47 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       render.canvas.remove();
       // Matter.jsの内部オブジェクトでReactの管理外なので
       // 手動で参照への接続を切断する必要がある
-      Matter.Render.stop(render);
-      Matter.Engine.clear(engine);
+      if (engineRef.current) Matter.Engine.clear(engineRef.current);
+      if (renderRef.current) Matter.Render.stop(renderRef.current);
+      if (runnerRef.current) Matter.Runner.stop(runnerRef.current);
       engineRef.current = null; // 参照の接続を切断
       renderRef.current = null;
+      runnerRef.current = null;
     };
   }, [viewFlag, height, width]); // サイズが変更されるたびに再初期化
 
-  return <div ref={canvasRef}></div>;
+  // マウスの位置を参照に更新するだけです。
+  const updateMousePosition = (event: MouseEvent) => {
+    if (!canvasRef.current) return;
+    posX.current = event.clientX - canvasRef.current.getBoundingClientRect().x;
+    posY.current = event.clientY - canvasRef.current.getBoundingClientRect().y;
+  };
+
+  const isPressed = useRef(false);
+
+  const handleDown = () => {
+    isPressed.current = true;
+    console.log("handleDown: ", isPressed.current);
+  };
+
+  const handleUp = () => {
+    isPressed.current = false;
+    console.log("handleUp: ", isPressed.current);
+  };
+
+  const handleAddCircle = () => {
+    console.log("handleAddCircle: ", isPressed.current);
+  };
+
+  return (
+    <div
+      onMouseDown={handleDown}
+      onMouseUp={handleUp}
+      onMouseMove={handleAddCircle}
+    >
+      <div ref={canvasRef}></div>;
+    </div>
+  );
 };
 
 export default MatterJs1;
