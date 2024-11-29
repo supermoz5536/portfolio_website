@@ -15,26 +15,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
 
-  // マウスの位置。移動するたびに更新されます。
-  const posX = useRef<number | null>(null);
-  const posY = useRef<number | null>(null);
-
-  // マウス間隔トリガーを保持するために使用されます。
-  const mouseIntervalRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      console.log("MatterJs1: Click detected", event);
-    };
-
-    window.addEventListener("click", handleClick);
-  }, []);
-
   useEffect(() => {
     const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
     var group = Matter.Body.nextGroup(true);
-
-    window.addEventListener("mousemove", updateMousePosition); //マウス リスナーを追加します。
 
     /**
      * Initial Set up
@@ -48,6 +31,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       Matter.Engine.clear(engineRef.current);
       engineRef.current = null; // 手動でnullにして参照を切断
     }
+
     if (renderRef.current) {
       // Matter.js内部で使用されているリソースや状態を
       // 適切にリセットするためのメソッドです。
@@ -75,7 +59,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         width: width,
         height: height,
         wireframes: false,
-        background: "white",
+        background: "black",
       },
     });
     renderRef.current = render;
@@ -304,38 +288,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     };
   }, [viewFlag, height, width]); // サイズが変更されるたびに再初期化
 
-  // マウスの位置を参照に更新するだけです。
-  const updateMousePosition = (event: MouseEvent) => {
-    if (!canvasRef.current) return;
-    posX.current = event.clientX - canvasRef.current.getBoundingClientRect().x;
-    posY.current = event.clientY - canvasRef.current.getBoundingClientRect().y;
-  };
-
-  const isPressed = useRef(false);
-
-  const handleDown = () => {
-    isPressed.current = true;
-    console.log("handleDown: ", isPressed.current);
-  };
-
-  const handleUp = () => {
-    isPressed.current = false;
-    console.log("handleUp: ", isPressed.current);
-  };
-
-  const handleAddCircle = () => {
-    console.log("handleAddCircle: ", isPressed.current);
-  };
-
-  return (
-    <div
-      onMouseDown={handleDown}
-      onMouseUp={handleUp}
-      onMouseMove={handleAddCircle}
-    >
-      <div ref={canvasRef}></div>;
-    </div>
-  );
+  return <div ref={canvasRef}></div>;
 };
 
 export default MatterJs1;
