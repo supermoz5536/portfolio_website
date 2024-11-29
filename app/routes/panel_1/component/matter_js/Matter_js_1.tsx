@@ -59,7 +59,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         width: width,
         height: height,
         wireframes: false,
-        background: "black",
+        background: "white",
       },
     });
     renderRef.current = render;
@@ -202,7 +202,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
     const groundC = Bodies.rectangle(
       (width * 3) / 4 - width / 12,
-      height / 2 + 5,
+      height / 2 + 7,
       width / 2 + width / 6,
       10,
       {
@@ -265,7 +265,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
     const compositeGroup1 = Composite.create();
     Composite.add(compositeGroup1, [...elementArray, bridge, wallA, wallB]);
-    Composite.translate(compositeGroup1, { x: -1000, y: 300 });
+    Composite.translate(compositeGroup1, { x: 100, y: -100 });
 
     Render.run(render); // レンダラー（映写機）を起動
     Runner.run(runner, engine); //映写機(フレームの描画)のハンドルを回す(run)
