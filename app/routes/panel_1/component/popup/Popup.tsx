@@ -105,21 +105,13 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
 
   // 枠外クリック用関数
   const onClickBackground = () => {
-    // setViewFlag(false);
+    setViewFlag(false);
   };
 
   // 枠内クリック
   // 親コンポーネントのclose関数へのイベント伝搬を防ぐ
   // stopPropagation(): 親要素へのイベントの伝搬を停止するJSの標準メソッド
   const onClickCard = (event: any) => {
-    // const isBypassClickevent =
-    //   event.target instanceof HTMLDivElement && event.target.dataset.bypass;
-    // console.log(event.target.dataset.bypass);
-    // if (isBypassClickevent) {
-    //   console.log("クリックをバイパスしました");
-    //   return;
-    // }
-    // console.log("クリックを阻止しました");
     event.stopPropagation();
   };
 
@@ -145,7 +137,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
           {/* ウインドウのボディ */}
           <div
             className="flex justify-center items-center h-full w-full bg-white shadow-2xl"
-            // onClick={(event) => onClickCard(event)}
+            onClick={(event) => onClickCard(event)}
           >
             <div className="absolute z-20">
               {/* 下層の Matter.js */}
