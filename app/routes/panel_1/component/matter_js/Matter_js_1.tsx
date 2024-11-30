@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Matter, { Constraint } from "matter-js";
 
 type MatterProps = {
@@ -8,6 +8,9 @@ type MatterProps = {
 };
 
 const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
+  const [velocityValue, setVelocityValue] = useState<number>(0);
+
   const canvasRef = useRef<HTMLDivElement | null>(null); // div 要素
 
   // Matter.js 参照
@@ -15,13 +18,15 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
 
-  useEffect(() => {
-    const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
-    var group = Matter.Body.nextGroup(true);
+  const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
 
-    /**
-     * Initial Set up
-     */
+  /**
+   * Initial Set Up
+   */
+  useEffect(() => {
+    console.log("Initial Set Up");
+
+    var group = Matter.Body.nextGroup(true);
 
     // heightとwidthの変更をキャッチするたびに
     // 古いレンダラーやエンジンを完全に破棄
@@ -71,7 +76,6 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Objects
      */
-
     const elementArray = [];
 
     for (let i = 0; i < 5; i++) {
@@ -80,22 +84,47 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         height * -0.2 + i * 15,
         30,
         30,
+        {
+          density: 0.0001,
+          frictionAir: 0,
+          restitution: 0.2,
+        },
       );
 
-      const cubeR = Bodies.rectangle(
+      const cubeC = Bodies.rectangle(
         (width * 3) / 4 + 15,
         height * -0.2 + i * 15,
         30,
         30,
+        {
+          density: 0.0001,
+          frictionAir: 0,
+          restitution: 0.2,
+        },
       );
 
-      elementArray.push(cubeL, cubeR);
+      const cubeR = Bodies.rectangle(
+        (width * 3) / 4 + 30,
+        height * -0.2 + i * 15,
+        30,
+        30,
+        {
+          density: 0.0001,
+          frictionAir: 0,
+          restitution: 0.2,
+        },
+      );
+
+      elementArray.push(cubeL, cubeC, cubeR);
     }
 
+    /**
+     * Bridge
+     */
     const bridge = Matter.Composites.stack(
       (width * 2) / 4,
       height * 0.1,
-      14, // 縦列の数
+      8, // 縦列の数
       1, // 横列の数
       10, // 縦列の余白
       0, // 横列の余白
@@ -107,30 +136,100 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           density: 0.005,
           frictionAir: 0.05,
           render: {
-            fillStyle: "#888888",
+            fillStyle: "#cccccc",
           },
         });
       },
     );
 
-    // 各チェーンの生成
     Matter.Composites.chain(bridge, 0.3, 0, -0.3, 0, {
       stiffness: 0.5,
       length: 2,
       render: {
         visible: true,
-        strokeStyle: "#000000", // 生成時に赤色に設定
+        strokeStyle: "#000000",
         lineWidth: 2, // 太さを設定
       },
     });
 
+    /**
+     * Striker
+     */
+    const shaft = Bodies.circle((width * 3) / 4, height / 4, 10, {
+      isStatic: false,
+      render: {
+        fillStyle: "white",
+        strokeStyle: "#9B3109",
+        lineWidth: 4,
+      },
+    });
+
+    const pole = Bodies.rectangle(
+      shaft.position.x,
+      shaft.position.y + 10 + 4 + 70,
+      5,
+      140,
+      {
+        isStatic: false,
+        collisionFilter: {
+          category: 0x0001, // 固有のカテゴリを割り当てる
+          mask: 0x0000, // どのカテゴリとも衝突しないようにする
+        },
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+          visible: false,
+        },
+      },
+    );
+
+    const hammer = Bodies.circle(
+      pole.position.x,
+      pole.position.y + (pole.bounds.max.y - pole.position.y),
+      15,
+      {
+        restitution: 0,
+        isStatic: false,
+        inertia: Infinity,
+        frictionAir: 0,
+        friction: 0, // 摩擦ゼロ
+        frictionStatic: 0, // 静止摩擦ゼロ
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const striker = Matter.Body.create({
+      parts: [shaft, pole, hammer],
+      isStatic: false,
+      id: 0,
+    });
+
+    Matter.Body.setCentre(
+      striker,
+      { x: shaft.position.x, y: shaft.position.y },
+      false,
+    );
+
+    Matter.Body.setPosition(striker, {
+      x: (width * 3) / 4 + 100,
+      y: height / 4 + 25,
+    });
+
+    /**
+     * Wall
+     */
     const wallA = Bodies.rectangle(
-      (width * 3) / 4 - 40,
+      (width * 3) / 4 - 60,
       height * 0.1,
       10,
       300,
       {
-        angle: -Math.PI * 0.015,
+        angle: -Math.PI * 0.01,
         isStatic: true,
         render: {
           fillStyle: "white",
@@ -141,12 +240,12 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     const wallB = Bodies.rectangle(
-      (width * 3) / 4 + 42,
+      (width * 3) / 4 + 72,
       height * 0.1,
       10,
       300,
       {
-        angle: Math.PI * 0.015,
+        angle: Math.PI * 0.01,
         isStatic: true,
         render: {
           fillStyle: "white",
@@ -156,6 +255,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     );
 
+    /**
+     * Floor
+     */
     const floorA = Bodies.rectangle(width * 0.1, height * 0.8, 300, 10, {
       angle: Math.PI / 3,
       isStatic: true,
@@ -176,6 +278,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     });
 
+    /**
+     * Ground
+     */
     const groundA = Bodies.rectangle(width / 12, height - 20, width / 6, 40, {
       isStatic: true,
       render: {
@@ -215,6 +320,16 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     );
 
+    /**
+     * Group
+     */
+    const compositeGroup1 = Composite.create();
+    Composite.add(compositeGroup1, [...elementArray, bridge, wallA, wallB]);
+    Composite.translate(compositeGroup1, { x: 100, y: -170 });
+
+    /**
+     * Mouse
+     */
     const mouse = Matter.Mouse.create(renderRef.current.canvas);
 
     renderRef.current.mouse = mouse;
@@ -227,26 +342,48 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     });
 
-    Matter.Events.on(mouseConstraint, "mousemove", (event) => {
-      console.log("Mouse moving at:", event.mouse.position);
+    /**
+     * Listner
+     */
+    Matter.Events.on(mouseConstraint, "mousedown", (event) => {
+      if (event.source.body) {
+        /* strikerの場合 */
+        if (event.source.body.id == 0) {
+          setIsSwitchOn((prev) => !prev);
+        }
+      }
     });
 
-    // ワールドにオブジェクトを追加
-    Composite.add(engine.world, [
+    /**
+     * Add World
+     */
+    Composite.add(engineRef.current.world, [
       ...elementArray,
       bridge,
+      striker,
       wallA,
       wallB,
       floorA,
       floorB,
       groundA,
+      groundB,
+      groundC,
       mouseConstraint,
+      Constraint.create({
+        pointA: { x: shaft.position.x, y: shaft.position.y },
+        bodyB: striker,
+        /* setCenterで設定した Striker の重心が初期座標 */
+        pointB: { x: 0, y: 0 },
+        length: 0,
+        stiffness: 0,
+        render: { strokeStyle: "white", lineWidth: 2 },
+      }),
       Constraint.create({
         bodyA: wallA,
         pointA: { x: 0, y: wallA.bounds.max.y - wallA.position.y },
         bodyB: bridge.bodies[0],
         pointB: { x: 0, y: 0 },
-        length: 5,
+        length: 40,
         stiffness: 0.05,
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
@@ -255,22 +392,29 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         pointA: { x: 0, y: wallB.bounds.max.y - wallB.position.y },
         bodyB: bridge.bodies[bridge.bodies.length - 1],
         pointB: { x: 0, y: 0 },
-        length: 5,
+        length: 40,
         stiffness: 0.05,
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
-      groundB,
-      groundC,
+      Constraint.create({
+        pointA: { x: (width * 3) / 4 + 100, y: height * 0.14 },
+        bodyB: bridge.bodies[4],
+        pointB: { x: 0, y: 0 },
+        length: 0,
+        stiffness: 0.01,
+        render: { strokeStyle: "white", lineWidth: 1 },
+      }),
     ]);
 
-    const compositeGroup1 = Composite.create();
-    Composite.add(compositeGroup1, [...elementArray, bridge, wallA, wallB]);
-    Composite.translate(compositeGroup1, { x: 100, y: -100 });
+    /**
+     * Boot up
+     */
+    Render.run(renderRef.current); // レンダラー（映写機）を起動
+    Runner.run(runnerRef.current, engineRef.current); //映写機(フレームの描画)のハンドルを回す(run)
 
-    Render.run(render); // レンダラー（映写機）を起動
-    Runner.run(runner, engine); //映写機(フレームの描画)のハンドルを回す(run)
-
-    // クリーンアップ処理
+    /**
+     * Clean up
+     */
     return () => {
       // remove(): 不要になったDOM要素をブラウザから削除してリソース開放
       // ReactがDOMの状態を管理しているのでコンポーネントが破棄されると、
@@ -287,6 +431,109 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       runnerRef.current = null;
     };
   }, [viewFlag, height, width]); // サイズが変更されるたびに再初期化
+
+  /**
+   * Striker Trigger Handler
+   */
+  useEffect(() => {
+    if (isSwitchOn) {
+      setVelocityValue(-0.15);
+    } else {
+      setVelocityValue(0);
+    }
+
+    if (engineRef.current && engineRef.current.world.bodies.length > 0) {
+      const strikerFetched = engineRef.current.world.bodies.find(
+        (body) => body.id === 0,
+      );
+      if (strikerFetched) {
+        /* 一定の回転速度に更新し続けるリスナー */
+        Matter.Events.on(engineRef.current, "beforeUpdate", callback);
+      }
+    }
+
+    return () => {
+      if (engineRef.current) {
+        Matter.Events.off(engineRef.current, "beforeUpdate", callback);
+      }
+    };
+  }, [isSwitchOn]);
+
+  /*  Callback reference for regislation and dispose */
+  const callback = useCallback(
+    (e: any) => {
+      if (engineRef.current && engineRef.current.world.bodies.length > 0) {
+        const strikerFetched = engineRef.current.world.bodies.find(
+          (body) => body.id === 0,
+        );
+        if (strikerFetched) {
+          Matter.Body.setAngularVelocity(strikerFetched, velocityValue);
+        }
+      }
+    },
+    [isSwitchOn],
+  );
+
+  /**
+   * Generate Cube Handler
+   */
+  useEffect(() => {
+    if (isSwitchOn) {
+      console.log("Generate Cube Handler");
+      const elementArray = [];
+
+      for (let i = 0; i < 20; i++) {
+        const cubeL = Bodies.rectangle(
+          (width * 3) / 4,
+          height * -0.2 + i * 15,
+          30,
+          30,
+
+          {
+            density: 0.0001,
+            frictionAir: 0,
+            restitution: 0.2,
+          },
+        );
+
+        // const cubeC = Bodies.rectangle(
+        //   (width * 3) / 4 + 15,
+        //   height * -0.2 + i * 15,
+        //   30,
+        //   30,
+        //   {
+        //     density: 0.0001,
+        //     frictionAir: 0,
+        //     restitution: 0.2,
+        //   },
+        // );
+
+        // const cubeR = Bodies.rectangle(
+        //   (width * 3) / 4 + 30,
+        //   height * -0.2 + i * 15,
+        //   30,
+        //   30,
+        //   {
+        //     density: 0.0001,
+        //     frictionAir: 0,
+        //     restitution: 0.2,
+        //   },
+        // );
+
+        elementArray.push(cubeL);
+        // elementArray.push(cubeL, cubeC, cubeR);
+        if (engineRef.current) {
+          Composite.add(engineRef.current.world, [...elementArray]);
+        }
+      }
+    }
+    return () => {
+      // if (renderRef.current) Matter.Render.stop(renderRef.current);
+      // if (runnerRef.current) Matter.Runner.stop(runnerRef.current);
+      // renderRef.current = null;
+      // runnerRef.current = null;
+    };
+  }, [isSwitchOn]);
 
   return <div ref={canvasRef}></div>;
 };

@@ -1,12 +1,12 @@
 import "./popup.css";
 import React, { memo, useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import MatterJs1 from "../matter_js/Matter_js_1";
 import { useLoaderData } from "@remix-run/react";
 import { PopupLayer1 } from "../popup_layer/popup_layer_1";
 import { PopupLayer2 } from "../popup_layer/popup_layer_2";
 import { PopupLayer3 } from "../popup_layer/popup_layer_3";
 import { PopupLayer4 } from "../popup_layer/popup_layer_4";
+import MatterJs1 from "../matter_js/Matter_js_1";
 
 type PopUpComponentProps = {
   viewFlag: boolean;
