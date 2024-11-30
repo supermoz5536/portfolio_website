@@ -8,7 +8,8 @@ type MatterProps = {
 };
 
 const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
-  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
+  const [isStrikerOn, setIsSwitchOn] = useState<boolean>(true);
+  const [isGenerateOn, setIsGenerateOn] = useState<boolean>(false);
   const [velocityValue, setVelocityValue] = useState<number>(0);
 
   const canvasRef = useRef<HTMLDivElement | null>(null); // div 要素
@@ -350,6 +351,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         /* strikerの場合 */
         if (event.source.body.id == 0) {
           setIsSwitchOn((prev) => !prev);
+          setIsGenerateOn((prev) => !prev);
         }
       }
     });
@@ -436,28 +438,16 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
    * Striker Trigger Handler
    */
   useEffect(() => {
-    if (isSwitchOn) {
-      setVelocityValue(-0.15);
-    } else {
-      setVelocityValue(0);
-    }
-
-    if (engineRef.current && engineRef.current.world.bodies.length > 0) {
-      const strikerFetched = engineRef.current.world.bodies.find(
-        (body) => body.id === 0,
-      );
-      if (strikerFetched) {
-        /* 一定の回転速度に更新し続けるリスナー */
-        Matter.Events.on(engineRef.current, "beforeUpdate", callback);
-      }
-    }
+    /* 一定の回転速度に更新し続けるリスナー */
+    setVelocityValue(isStrikerOn ? -0.15 : 0);
+    Matter.Events.on(engineRef.current, "beforeUpdate", callback);
 
     return () => {
       if (engineRef.current) {
         Matter.Events.off(engineRef.current, "beforeUpdate", callback);
       }
     };
-  }, [isSwitchOn]);
+  }, [viewFlag, isStrikerOn]);
 
   /*  Callback reference for regislation and dispose */
   const callback = useCallback(
@@ -467,73 +457,40 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           (body) => body.id === 0,
         );
         if (strikerFetched) {
+          console.log("callback triggered");
           Matter.Body.setAngularVelocity(strikerFetched, velocityValue);
         }
       }
     },
-    [isSwitchOn],
+    [isStrikerOn],
   );
 
   /**
    * Generate Cube Handler
    */
   useEffect(() => {
-    if (isSwitchOn) {
-      console.log("Generate Cube Handler");
-      const elementArray = [];
-
-      for (let i = 0; i < 20; i++) {
-        const cubeL = Bodies.rectangle(
-          (width * 3) / 4,
-          height * -0.2 + i * 15,
-          30,
-          30,
-
-          {
+    if (isGenerateOn) {
+      const cubes = Matter.Composites.stack(
+        (width * 3) / 4,
+        height * -0.2 + 0 * 15,
+        10,
+        2,
+        0,
+        0,
+        (x: any, y: any) => {
+          return Bodies.rectangle(x, y, 30, 30, {
             density: 0.0001,
             frictionAir: 0,
             restitution: 0.2,
-          },
-        );
+          });
+        },
+      );
 
-        // const cubeC = Bodies.rectangle(
-        //   (width * 3) / 4 + 15,
-        //   height * -0.2 + i * 15,
-        //   30,
-        //   30,
-        //   {
-        //     density: 0.0001,
-        //     frictionAir: 0,
-        //     restitution: 0.2,
-        //   },
-        // );
-
-        // const cubeR = Bodies.rectangle(
-        //   (width * 3) / 4 + 30,
-        //   height * -0.2 + i * 15,
-        //   30,
-        //   30,
-        //   {
-        //     density: 0.0001,
-        //     frictionAir: 0,
-        //     restitution: 0.2,
-        //   },
-        // );
-
-        elementArray.push(cubeL);
-        // elementArray.push(cubeL, cubeC, cubeR);
-        if (engineRef.current) {
-          Composite.add(engineRef.current.world, [...elementArray]);
-        }
+      if (engineRef.current) {
+        Composite.add(engineRef.current.world, [cubes]);
       }
     }
-    return () => {
-      // if (renderRef.current) Matter.Render.stop(renderRef.current);
-      // if (runnerRef.current) Matter.Runner.stop(runnerRef.current);
-      // renderRef.current = null;
-      // runnerRef.current = null;
-    };
-  }, [isSwitchOn]);
+  }, [isGenerateOn]);
 
   return <div ref={canvasRef}></div>;
 };
