@@ -217,8 +217,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     Matter.Body.setPosition(striker, {
-      x: (width * 3) / 4 + 100,
-      y: height / 4 + 25,
+      x: (width * 3) / 4 + 5,
+      y: height * 0.1 + 305,
     });
 
     /**
@@ -325,8 +325,14 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
      * Group
      */
     const compositeGroup1 = Composite.create();
-    Composite.add(compositeGroup1, [...elementArray, bridge, wallA, wallB]);
-    Composite.translate(compositeGroup1, { x: 100, y: -170 });
+    Composite.add(compositeGroup1, [
+      ...elementArray,
+      bridge,
+      striker,
+      wallA,
+      wallB,
+    ]);
+    Composite.translate(compositeGroup1, { x: 0, y: -120 });
 
     /**
      * Mouse
@@ -399,7 +405,10 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
       Constraint.create({
-        pointA: { x: (width * 3) / 4 + 100, y: height * 0.14 },
+        pointA: {
+          x: (width * 3) / 4,
+          y: bridge.bodies[4].position.y + 100,
+        },
         bodyB: bridge.bodies[4],
         pointB: { x: 0, y: 0 },
         length: 0,
@@ -469,28 +478,33 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
    * Generate Cube Handler
    */
   useEffect(() => {
-    if (isGenerateOn) {
-      const cubes = Matter.Composites.stack(
-        (width * 3) / 4,
-        height * -0.2 + 0 * 15,
-        10,
-        2,
-        0,
-        0,
-        (x: any, y: any) => {
-          return Bodies.rectangle(x, y, 30, 30, {
-            density: 0.0001,
-            frictionAir: 0,
-            restitution: 0.2,
-          });
-        },
-      );
+    const intervalId = setInterval(() => {
+      if (isGenerateOn) {
+        const cubes = Matter.Composites.stack(
+          (width * 3) / 4 - 5,
+          height * -0.2,
+          3,
+          3,
+          0,
+          0,
+          (x: any, y: any) => {
+            return Bodies.rectangle(x, y, 30, 30, {
+              density: 0.0001,
+              frictionAir: 0,
+              restitution: 0.2,
+            });
+          },
+        );
 
-      if (engineRef.current) {
-        Composite.add(engineRef.current.world, [cubes]);
+        if (engineRef.current) {
+          Composite.add(engineRef.current.world, [cubes]);
+        }
       }
-    }
-  }, [isGenerateOn]);
+    }, 1750);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isGenerateOn, width, height]);
 
   return <div ref={canvasRef}></div>;
 };
