@@ -224,7 +224,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Wall
      */
-    const wallA = Bodies.rectangle(
+    const tubeA = Bodies.rectangle(
       (width * 3) / 4 - 60,
       height * 0.1,
       10,
@@ -240,7 +240,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     );
 
-    const wallB = Bodies.rectangle(
+    const tubeB = Bodies.rectangle(
       (width * 3) / 4 + 72,
       height * 0.1,
       10,
@@ -329,8 +329,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       ...elementArray,
       bridge,
       striker,
-      wallA,
-      wallB,
+      tubeA,
+      tubeB,
     ]);
     Composite.translate(compositeGroup1, { x: 0, y: -120 });
 
@@ -369,8 +369,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       ...elementArray,
       bridge,
       striker,
-      wallA,
-      wallB,
+      tubeA,
+      tubeB,
       floorA,
       floorB,
       groundA,
@@ -387,8 +387,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         render: { strokeStyle: "white", lineWidth: 2 },
       }),
       Constraint.create({
-        bodyA: wallA,
-        pointA: { x: 0, y: wallA.bounds.max.y - wallA.position.y },
+        bodyA: tubeA,
+        pointA: { x: 0, y: tubeA.bounds.max.y - tubeA.position.y },
         bodyB: bridge.bodies[0],
         pointB: { x: 0, y: 0 },
         length: 40,
@@ -396,8 +396,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
       Constraint.create({
-        bodyA: wallB,
-        pointA: { x: 0, y: wallB.bounds.max.y - wallB.position.y },
+        bodyA: tubeB,
+        pointA: { x: 0, y: tubeB.bounds.max.y - tubeB.position.y },
         bodyB: bridge.bodies[bridge.bodies.length - 1],
         pointB: { x: 0, y: 0 },
         length: 40,
