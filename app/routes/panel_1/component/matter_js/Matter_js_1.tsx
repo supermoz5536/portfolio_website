@@ -92,7 +92,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         },
       );
 
-      const cubeC = Bodies.rectangle(
+      const cubeM = Bodies.rectangle(
         (width * 3) / 4 + 15,
         height * -0.2 + i * 15,
         30,
@@ -116,7 +116,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         },
       );
 
-      elementArray.push(cubeL, cubeC, cubeR);
+      elementArray.push(cubeL, cubeM, cubeR);
     }
 
     /**
@@ -222,7 +222,20 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     });
 
     /**
-     * Wall
+     * Flipper
+     */
+
+    const flipperTrigger = Bodies.circle(width / 12, height - 20, 10, {
+      isStatic: true,
+      render: {
+        fillStyle: "white",
+        strokeStyle: "#9B3109",
+        lineWidth: 4,
+      },
+    });
+
+    /**
+     * Tube
      */
     const tubeA = Bodies.rectangle(
       (width * 3) / 4 - 60,
@@ -257,27 +270,104 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     /**
-     * Floor
+     * Wall
      */
-    const floorA = Bodies.rectangle(width * 0.1, height * 0.8, 300, 10, {
-      angle: Math.PI / 3,
+
+    const wallL = Bodies.rectangle(-15, height / 2, height, 30, {
+      angle: Math.PI / 2,
       isStatic: true,
+      restitution: 1,
       render: {
-        fillStyle: "white",
-        strokeStyle: "#cccccc",
-        lineWidth: 4,
+        fillStyle: "transparent",
       },
     });
 
-    const floorB = Bodies.rectangle(width * 0.275, height * 0.625, 200, 10, {
-      angle: -Math.PI / 3,
+    const wallM1 = Bodies.rectangle(
+      width / 2 - width * 0.05,
+      height / 2 - height / 10,
+      height / 5,
+      width * 0.1,
+      {
+        angle: Math.PI / 2,
+        isStatic: true,
+        render: {
+          fillStyle: "transparent",
+        },
+      },
+    );
+
+    const wallM2 = Bodies.rectangle(
+      width / 2 + 5,
+      (height * 3) / 4 + 5,
+      height / 2,
+      10,
+      {
+        angle: Math.PI / 2,
+        isStatic: true,
+        render: {
+          fillStyle: "transparent",
+        },
+      },
+    );
+
+    const wallR = Bodies.rectangle(width + 15, height / 2, height, 30, {
+      angle: Math.PI / 2,
       isStatic: true,
       render: {
-        fillStyle: "white",
-        strokeStyle: "#cccccc",
-        lineWidth: 4,
+        fillStyle: "transparent",
       },
     });
+
+    const wallBottom = Bodies.rectangle(
+      (width * 4) / 12 + 5,
+      height,
+      height * 0.6,
+      10,
+      {
+        angle: Math.PI / 2,
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    /**
+     * Floor
+     */
+    const floorA = Bodies.rectangle(
+      width * 0.1,
+      height - (height * width * 0.00025) / 2 - 30,
+      height * width * 0.00025,
+      10,
+      {
+        angle: Math.PI / 3,
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const floorB = Bodies.rectangle(
+      width * 0.3,
+      height * 0.525,
+      height * width * 0.0003,
+      10,
+      {
+        angle: -Math.PI / 4,
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
 
     /**
      * Ground
@@ -314,8 +404,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       {
         isStatic: true,
         render: {
-          fillStyle: "white",
-          strokeStyle: "white",
+          fillStyle: "transparent",
+          strokeStyle: "transparent",
           lineWidth: 4,
         },
       },
@@ -371,11 +461,17 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       striker,
       tubeA,
       tubeB,
+      wallL,
+      wallM1,
+      wallM2,
+      wallR,
+      wallBottom,
       floorA,
       floorB,
       groundA,
       groundB,
       groundC,
+      flipperTrigger,
       mouseConstraint,
       Constraint.create({
         pointA: { x: shaft.position.x, y: shaft.position.y },

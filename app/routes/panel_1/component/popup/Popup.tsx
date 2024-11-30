@@ -149,7 +149,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
             </div>
 
             {/* 上層の4つのコンテナー */}
-            {/* {number == 1 && <PopupLayer1 viewFlag={viewFlag} number={number} />} */}
+            {number == 1 && <PopupLayer1 viewFlag={viewFlag} number={number} />}
             {number == 2 && <PopupLayer2 viewFlag={viewFlag} number={number} />}
             {number == 3 && <PopupLayer3 viewFlag={viewFlag} number={number} />}
             {number == 4 && <PopupLayer4 viewFlag={viewFlag} number={number} />}
