@@ -511,7 +511,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Listner
      */
-    Matter.Events.on(mouseConstraint, "mousedown", (event) => {
+
+    /* Dispose用のリスナーコールバック参照 */
+    const mousedownCallback = (event: any) => {
       if (event.source.body) {
         /* strikerの場合 */
         if (event.source.body.id == 0) {
@@ -524,9 +526,11 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           Matter.Body.setAngularVelocity(flipper, -0.4);
         }
       }
-    });
+    };
 
-    Matter.Events.on(engineRef.current, "afterUpdate", () => {
+    Matter.Events.on(mouseConstraint, "mousedown", mousedownCallback);
+
+    const afterUpdateCallback = (event: any) => {
       const minAngle = -Math.PI / 3;
       const maxAngle = Math.PI / 9;
 
@@ -539,7 +543,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         Matter.Body.setAngle(flipper, maxAngle);
         Matter.Body.setAngularVelocity(flipper, 0);
       }
-    });
+    };
+
+    Matter.Events.on(engineRef.current, "afterUpdate", afterUpdateCallback);
 
     /**
      * Add World
@@ -625,6 +631,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
      * Clean up
      */
     return () => {
+      Matter.Events.off(mouseConstraint, "mousedown", mousedownCallback);
+      Matter.Events.off(engineRef.current, "afterUpdate", afterUpdateCallback);
+
       // remove(): 不要になったDOM要素をブラウザから削除してリソース開放
       // ReactがDOMの状態を管理しているのでコンポーネントが破棄されると、
       // Reactが自動でcanvasRefの値を更新する
