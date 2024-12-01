@@ -8,5 +8,31 @@
 }
 
 .popup-layer-1-scroll-a::-webkit-scrollbar-track {
-  background: #ffb3ad; /* 背景色 */
+  background: #cccccc; /* 背景色 */
+}
+
+.fade-custom-video {
+  animation: fade-custom-video;
+}
+
+@keyframes fade-custom-video {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-custom-bg-img {
+  animation: fade-custom-bg-img;
+}
+
+@keyframes fade-custom-bg-img {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.035;
+  }
 }

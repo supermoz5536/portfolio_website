@@ -1,4 +1,3 @@
-import "./popup.css";
 import React, { memo, useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { useLoaderData } from "@remix-run/react";

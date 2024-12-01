@@ -44,7 +44,9 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
                     backgroundSize: "cover", // 背景画像をカバー
                     backgroundPosition: "center", // 背景画像を中央配置
                     backgroundRepeat: "no-repeat", // 背景画像の繰り返しを無効化
-                    opacity: 0.025,
+                    animation: viewFlag
+                      ? "fade-custom-bg-img 4.5s cubic-bezier(.65, -0.06, .23, 1.12) forwards"
+                      : "",
                   }}
                 ></div>
                 {/* 内枠 */}
@@ -118,7 +120,9 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
                     backgroundSize: "cover", // 背景画像をカバー
                     backgroundPosition: "center", // 背景画像を中央配置
                     backgroundRepeat: "no-repeat", // 背景画像の繰り返しを無効化
-                    opacity: 0.025,
+                    animation: viewFlag
+                      ? "fade-custom-bg-img 4.5s cubic-bezier(.65, -0.06, .23, 1.12) forwards"
+                      : "",
                   }}
                 ></div>
                 {/* 内枠 */}
