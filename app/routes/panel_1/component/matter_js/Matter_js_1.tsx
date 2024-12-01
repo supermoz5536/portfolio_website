@@ -156,20 +156,25 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Striker
      */
-    const strikerShaft = Bodies.circle((width * 3) / 4, height / 4, 10, {
-      isStatic: false,
-      render: {
-        fillStyle: "white",
-        strokeStyle: "#9B3109",
-        lineWidth: 4,
+    const strikerShaft = Bodies.circle(
+      (width * 3) / 4,
+      height * 0.3,
+      width * height * 0.0000125,
+      {
+        isStatic: false,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#9B3109",
+          lineWidth: 4,
+        },
       },
-    });
+    );
 
     const pole = Bodies.rectangle(
       strikerShaft.position.x,
-      strikerShaft.position.y + 10 + 4 + 70,
+      height * 0.39,
       5,
-      140,
+      height * 0.155,
       {
         isStatic: false,
         collisionFilter: {
@@ -216,19 +221,19 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       false,
     );
 
-    Matter.Body.setPosition(striker, {
-      x: (width * 3) / 4 + 5,
-      y: height * 0.1 + 305,
-    });
+    // Matter.Body.setPosition(striker, {
+    //   x: (width * 3) / 4 + 5,
+    //   y: height * 0.1 + 185,
+    // });
 
     /**
      * Tube
      */
     const tubeA = Bodies.rectangle(
       (width * 3) / 4 - 60,
-      height * 0.1,
-      10,
-      300,
+      0,
+      width * 0.01,
+      height * 0.24,
       {
         angle: -Math.PI * 0.01,
         isStatic: true,
@@ -242,9 +247,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
     const tubeB = Bodies.rectangle(
       (width * 3) / 4 + 72,
-      height * 0.1,
-      10,
-      300,
+      0,
+      width * 0.01,
+      height * 0.24,
       {
         angle: Math.PI * 0.01,
         isStatic: true,
@@ -270,10 +275,10 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     });
 
     const wallM1 = Bodies.rectangle(
-      width / 2 - width * 0.05,
+      width / 2 - width * 0.06,
       height / 2 - height / 10,
       height / 5,
-      width * 0.1,
+      width * 0.12,
       {
         angle: Math.PI / 2,
         isStatic: true,
@@ -435,7 +440,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         isStatic: false,
         friction: 0,
         frictionStatic: 0,
-        restitution: 1,
+        restitution: 1000000000000000,
         render: {
           fillStyle: "white",
           strokeStyle: "#cccccc",
@@ -483,15 +488,15 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Group
      */
-    const compositeGroup1 = Composite.create();
-    Composite.add(compositeGroup1, [
-      ...elementArray,
-      bridge,
-      striker,
-      tubeA,
-      tubeB,
-    ]);
-    Composite.translate(compositeGroup1, { x: 0, y: -120 });
+    // const compositeGroup1 = Composite.create();
+    // Composite.add(compositeGroup1, [
+    //   ...elementArray,
+    //   bridge,
+    //   striker,
+    //   tubeA,
+    //   tubeB,
+    // ]);
+    // Composite.translate(compositeGroup1, { x: 0, y: -120 });
 
     /**
      * Mouse
@@ -523,7 +528,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
         /* flipperTriggerの場合 */
         if (event.source.body.id == 2) {
-          Matter.Body.setAngularVelocity(flipper, -0.4);
+          Matter.Body.setAngularVelocity(flipper, -0.3);
         }
       }
     };

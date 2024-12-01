@@ -1,3 +1,4 @@
+import "./Popup_layer.css";
 import { useLoaderData } from "@remix-run/react";
 
 type PopupLayerProps = {
@@ -29,10 +30,27 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
       </div>
 
       {/* ConentBlock2 (右下) */}
-      <div className="absolute top-1/2 left-1/2 z-30 flex justify-center items-center h-1/2 w-1/2 bg-gray-200 ">
+      <div
+        className="absolute top-1/2 left-1/2 z-30 flex justify-center items-center h-1/2 w-1/2 overflow-y-auto bg-blue-400 popup-layer-1-scroll-a"
+        // style={{
+        //   backgroundColor: "#ddfbfd",
+        // }}
+      >
+        {/* 背景画像 */}
+        <div
+          className="absolute top-0 left-0 h-full w-full"
+          style={{
+            backgroundImage: `url(
+            "asset/image/project01.png")`,
+            backgroundSize: "cover", // 背景画像をカバー
+            backgroundPosition: "center", // 背景画像を中央配置
+            backgroundRepeat: "no-repeat", // 背景画像の繰り返しを無効化
+            opacity: 0.025,
+          }}
+        ></div>
         {/* 内枠 */}
         <div
-          className="flex flex-col justify-between h-[90%] w-[90%]"
+          className="flex flex-col justify-between mt-10 mb-10 h-[90%] w-[90%]"
           style={{
             animation: viewFlag
               ? "fade-custom-video 4.5s cubic-bezier(.65, -0.06, .23, 1.12) forwards"
@@ -41,27 +59,30 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
         >
           {/* 説明 */}
           <div>
-            <div>
+            <div className="text-gray-50 text-xl font-normal">
               現在は専業のSEOライター・ディレクターとして、独立しております。また、YouTube台本ライターとしても活動しています。金融・就職・マーケティングをメインのジャンルとして活動中です。
             </div>
             <br />
-            <div>
+            <div className="text-gray-50 text-xl font-normal">
               営業・マーケティング・採用支援会社と業務委託契約。
               ライターとして、メディア運営やSEOライティング、セールスライティングを担当しています。
             </div>
             <br />
-            <>
+            <div className="text-gray-50 text-xl font-normal">
               大学4年生のときからメディア事業を開始し、アフィリエイトなどをおこなっていました。
               現在もSEOライターやディレクターとして活動しています。
-            </>
+            </div>
             <br />
-            <div>
+            <div className="text-gray-50 text-xl font-normal">
               大学4年から個人事業主として活動し、2019年から本格的に就職活動に関するメディア運営を開始しました。
             </div>
           </div>
 
           {/* 使用技術 */}
-          <div>使用技術: Flutter Web, Firebase, Youtube</div>
+          <div className="text-gray-50 text-xl font-normal mt-10">
+            使用技術： <br />
+            Flutter Web, Firebase, Youtube
+          </div>
         </div>
       </div>
     </>

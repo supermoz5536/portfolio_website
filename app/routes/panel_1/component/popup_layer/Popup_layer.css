@@ -1,0 +1,12 @@
+.popup-layer-1-scroll-a::-webkit-scrollbar {
+  width: 8px; /* 横幅 */
+}
+
+.popup-layer-1-scroll-a::-webkit-scrollbar-thumb {
+  background: #717171; /* ハンドルの色 */
+  border-radius: 20px; /* 角を丸める */
+}
+
+.popup-layer-1-scroll-a::-webkit-scrollbar-track {
+  background: #ffb3ad; /* 背景色 */
+}
