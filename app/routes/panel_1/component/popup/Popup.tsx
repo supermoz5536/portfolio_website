@@ -139,14 +139,20 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
             className="flex justify-center items-center h-full w-full bg-white shadow-2xl"
             onClick={(event) => onClickCard(event)}
           >
-            <div className="absolute z-20">
-              {/* 下層の Matter.js */}
-              <MatterJs1
-                viewFlag={viewFlag}
-                height={typeof window != "undefined" ? aspects.height : 100}
-                width={typeof window != "undefined" ? aspects.width : 100}
-              />
-            </div>
+            {typeof window != "undefined"
+              ? window.innerWidth > 768 && (
+                  <div className="absolute z-20">
+                    {/* 下層の Matter.js */}
+                    <MatterJs1
+                      viewFlag={viewFlag}
+                      height={
+                        typeof window != "undefined" ? aspects.height : 100
+                      }
+                      width={typeof window != "undefined" ? aspects.width : 100}
+                    />
+                  </div>
+                )
+              : null}
 
             {/* 上層の4つのコンテナー */}
             {number == 1 && <PopupLayer1 viewFlag={viewFlag} number={number} />}
