@@ -40,7 +40,7 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
                   className="absolute top-0 left-0 h-full w-full"
                   style={{
                     backgroundImage: `url(
-                  "asset/image/project01.png")`,
+                  "asset/image/project0${number}.png")`,
                     backgroundSize: "cover", // 背景画像をカバー
                     backgroundPosition: "center", // 背景画像を中央配置
                     backgroundRepeat: "no-repeat", // 背景画像の繰り返しを無効化
@@ -116,7 +116,7 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
                   className="absolute top-0 left-0 h-full w-full"
                   style={{
                     backgroundImage: `url(
-                  "asset/image/project01.png")`,
+                  "asset/image/project0${number}.png")`,
                     backgroundSize: "cover", // 背景画像をカバー
                     backgroundPosition: "center", // 背景画像を中央配置
                     backgroundRepeat: "no-repeat", // 背景画像の繰り返しを無効化

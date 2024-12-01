@@ -86,10 +86,10 @@ export default function Panel1() {
               />
               {/* Content 2 */}
               <ContentBlock
-                title="Title Cotent-3"
-                subtitle="Subtitle Content-3"
+                title="Title Cotent-2"
+                subtitle="Subtitle Content-2"
                 body="body"
-                number={3}
+                number={2}
               />
             </div>
           </div>
@@ -99,10 +99,10 @@ export default function Panel1() {
             <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-72 xl:mt-[7vh] xl:mr-16 w-96">
               {/* Content 3 */}
               <ContentBlock
-                title="Title Cotent-2"
-                subtitle="Subtitle Content-2"
+                title="Title Cotent-3"
+                subtitle="Subtitle Content-3"
                 body="body"
-                number={2}
+                number={3}
               />
 
               {/* Content 4 */}
