@@ -10,7 +10,7 @@ type MatterProps = {
 const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
   const [isStrikerOn, setIsSwitchOn] = useState<boolean>(true);
   const [isGenerateOn, setIsGenerateOn] = useState<boolean>(false);
-  const [velocityValue, setVelocityValue] = useState<number>(0);
+  const [strikerVelocityValue, setStrikerVelocityValue] = useState<number>(0);
 
   const canvasRef = useRef<HTMLDivElement | null>(null); // div 要素
 
@@ -156,7 +156,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Striker
      */
-    const shaft = Bodies.circle((width * 3) / 4, height / 4, 10, {
+    const strikerShaft = Bodies.circle((width * 3) / 4, height / 4, 10, {
       isStatic: false,
       render: {
         fillStyle: "white",
@@ -166,8 +166,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     });
 
     const pole = Bodies.rectangle(
-      shaft.position.x,
-      shaft.position.y + 10 + 4 + 70,
+      strikerShaft.position.x,
+      strikerShaft.position.y + 10 + 4 + 70,
       5,
       140,
       {
@@ -205,33 +205,20 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     const striker = Matter.Body.create({
-      parts: [shaft, pole, hammer],
+      parts: [strikerShaft, pole, hammer],
       isStatic: false,
       id: 0,
     });
 
     Matter.Body.setCentre(
       striker,
-      { x: shaft.position.x, y: shaft.position.y },
+      { x: strikerShaft.position.x, y: strikerShaft.position.y },
       false,
     );
 
     Matter.Body.setPosition(striker, {
       x: (width * 3) / 4 + 5,
       y: height * 0.1 + 305,
-    });
-
-    /**
-     * Flipper
-     */
-
-    const flipperTrigger = Bodies.circle(width / 12, height - 20, 10, {
-      isStatic: true,
-      render: {
-        fillStyle: "white",
-        strokeStyle: "#9B3109",
-        lineWidth: 4,
-      },
     });
 
     /**
@@ -338,7 +325,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
      * Floor
      */
     const floorA = Bodies.rectangle(
-      width * 0.1,
+      height * width * 0.000125 * Math.sin(Math.PI / 3),
       height - (height * width * 0.00025) / 2 - 30,
       height * width * 0.00025,
       10,
@@ -372,20 +359,26 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Ground
      */
-    const groundA = Bodies.rectangle(width / 12, height - 20, width / 6, 40, {
-      isStatic: true,
-      render: {
-        fillStyle: "white",
-        strokeStyle: "#cccccc",
-        lineWidth: 4,
+    const groundA = Bodies.rectangle(
+      width / 12,
+      height - (height * 0.075) / 2,
+      width / 6,
+      height * 0.075,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
       },
-    });
+    );
 
     const groundB = Bodies.rectangle(
       width / 12 + (width / 6) * 2,
-      height - 20,
+      height - (height * 0.075) / 2,
       width / 6,
-      40,
+      height * 0.075,
       {
         isStatic: true,
         render: {
@@ -406,6 +399,112 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         render: {
           fillStyle: "transparent",
           strokeStyle: "transparent",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    /* フリッパーの支え */
+    const groundD = Bodies.rectangle(
+      (width * 2) / 12 + width / 24,
+      height + (height * 0.15) / 2,
+      width / 12,
+      height * 0.15,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: "transparent",
+        },
+      },
+    );
+
+    /**
+     * Flipper
+     */
+    const flipperShaftLinkedWithGround = Bodies.circle(
+      groundA.bounds.max.x - width * 0.035,
+      groundA.position.y,
+      width * height * 0.00001,
+      {
+        isStatic: false,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const flipperShaftLinkedWithPaddle = Bodies.circle(
+      groundA.bounds.max.x - width * 0.035,
+      groundA.position.y,
+      width * height * 0.00001,
+      {
+        isStatic: false,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const flipperPaddle = Matter.Bodies.fromVertices(
+      groundA.bounds.max.x,
+      groundA.position.y,
+      [
+        [
+          { x: 0, y: 0 },
+          { x: -0.1 * width, y: 0.00001 * width * height },
+          { x: -0.1 * width, y: -0.00001 * width * height },
+        ],
+      ],
+      {
+        isStatic: false,
+        friction: 0,
+        frictionStatic: 0,
+        restitution: 0.9,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#cccccc",
+          lineWidth: 4,
+        },
+      },
+    );
+
+    const flipper = Matter.Body.create({
+      parts: [
+        flipperPaddle,
+        flipperShaftLinkedWithGround,
+        flipperShaftLinkedWithPaddle,
+      ],
+      isStatic: false,
+    });
+
+    Matter.Body.setCentre(
+      flipper,
+      {
+        x: flipperShaftLinkedWithGround.position.x,
+        y: flipperShaftLinkedWithGround.position.y,
+      },
+      false,
+    );
+
+    Matter.Body.setPosition(flipper, {
+      x: groundA.bounds.max.x * 0.9,
+      y: groundA.position.y,
+    });
+
+    const flipperTrigger = Bodies.circle(
+      groundA.position.x,
+      groundA.position.y,
+      width * height * 0.0000125,
+      {
+        isStatic: true,
+        id: 2,
+        render: {
+          fillStyle: "white",
+          strokeStyle: "#9B3109",
           lineWidth: 4,
         },
       },
@@ -449,7 +548,27 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           setIsSwitchOn((prev) => !prev);
           setIsGenerateOn((prev) => !prev);
         }
+
+        /* flipperTriggerの場合 */
+        if (event.source.body.id == 2) {
+          Matter.Body.setAngularVelocity(flipper, -0.2);
+        }
       }
+    });
+
+    Matter.Events.on(engineRef.current, "afterUpdate", () => {
+      const minAngle = -Math.PI / 3;
+      const maxAngle = Math.PI / 3;
+
+      if (flipper.angle < minAngle) {
+        Matter.Body.setAngle(flipper, minAngle);
+        Matter.Body.setAngularVelocity(flipper, 0.00001);
+      }
+
+      // if (flipper.angle > maxAngle) {
+      //   Matter.Body.setAngle(flipper, maxAngle);
+      //   Matter.Body.setAngularVelocity(flipper, 0);
+      // }
     });
 
     /**
@@ -471,16 +590,30 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       groundA,
       groundB,
       groundC,
+      // groundD,
+      flipper,
       flipperTrigger,
       mouseConstraint,
       Constraint.create({
-        pointA: { x: shaft.position.x, y: shaft.position.y },
+        pointA: { x: strikerShaft.position.x, y: strikerShaft.position.y },
         bodyB: striker,
-        /* setCenterで設定した Striker の重心が初期座標 */
+        /* setCenterで設定した strikerShaft の重心が初期座標 */
         pointB: { x: 0, y: 0 },
         length: 0,
         stiffness: 0,
         render: { strokeStyle: "white", lineWidth: 2 },
+      }),
+      Constraint.create({
+        pointA: {
+          x: flipperShaftLinkedWithGround.position.x,
+          y: flipperShaftLinkedWithGround.position.y,
+        },
+        bodyB: flipper,
+        /* setCenterで設定した flipperShaft の重心が初期座標 */
+        pointB: { x: 0, y: 0 },
+        length: 0,
+        stiffness: 1,
+        render: { strokeStyle: "white", lineWidth: 2, visible: false },
       }),
       Constraint.create({
         bodyA: tubeA,
@@ -509,7 +642,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         pointB: { x: 0, y: 0 },
         length: 0,
         stiffness: 0.01,
-        render: { strokeStyle: "white", lineWidth: 1 },
+        render: { strokeStyle: "white", lineWidth: 1, visible: false },
       }),
     ]);
 
@@ -544,7 +677,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
    */
   useEffect(() => {
     /* 一定の回転速度に更新し続けるリスナー */
-    setVelocityValue(isStrikerOn ? -0.15 : 0);
+    setStrikerVelocityValue(isStrikerOn ? -0.15 : 0);
     Matter.Events.on(engineRef.current, "beforeUpdate", callback);
 
     return () => {
@@ -563,7 +696,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         );
         if (strikerFetched) {
           console.log("callback triggered");
-          Matter.Body.setAngularVelocity(strikerFetched, velocityValue);
+          Matter.Body.setAngularVelocity(strikerFetched, strikerVelocityValue);
         }
       }
     },
