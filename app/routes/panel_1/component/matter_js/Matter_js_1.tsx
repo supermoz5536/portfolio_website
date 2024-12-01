@@ -19,6 +19,13 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
 
+  // width * heightの値の変化を
+  // 対数で正規化したキューブの動的サイズ
+  const logWidth = Math.log(width); // 幅の対数
+  const logHeight = Math.log(height); // 高さの対数
+  const logAverage = (logWidth + logHeight) / 2; // 対数の平均
+  const cubeSize = Math.exp(logAverage) * 0.035; // 元のスケールに戻してスケール係数をかける
+
   const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
 
   /**
@@ -83,8 +90,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       const cubeL = Bodies.rectangle(
         (width * 3) / 4,
         height * -0.2 + i * 15,
-        30,
-        30,
+        cubeSize,
+        cubeSize,
         {
           density: 0.0001,
           frictionAir: 0,
@@ -95,8 +102,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       const cubeM = Bodies.rectangle(
         (width * 3) / 4 + 15,
         height * -0.2 + i * 15,
-        30,
-        30,
+        cubeSize,
+        cubeSize,
         {
           density: 0.0001,
           frictionAir: 0,
@@ -107,8 +114,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       const cubeR = Bodies.rectangle(
         (width * 3) / 4 + 30,
         height * -0.2 + i * 15,
-        30,
-        30,
+        cubeSize,
+        cubeSize,
         {
           density: 0.0001,
           frictionAir: 0,
@@ -275,10 +282,10 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     });
 
     const wallM1 = Bodies.rectangle(
-      width / 2 - width * 0.06,
-      height / 2 - height / 10,
-      height / 5,
-      width * 0.12,
+      width / 2 - width * 0.09,
+      height / 2 - height / 18,
+      height / 9,
+      width * 0.18,
       {
         angle: Math.PI / 2,
         isStatic: true,
@@ -333,7 +340,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       height * width * 0.000125 * Math.sin(Math.PI / 3),
       height - (height * width * 0.00025) / 2 - 30,
       height * width * 0.00025,
-      10,
+      height * width * 0.00001,
       {
         angle: Math.PI / 3,
         isStatic: true,
@@ -348,8 +355,8 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     const floorB = Bodies.rectangle(
       width * 0.3,
       height * 0.525,
-      height * width * 0.0003,
-      10,
+      height * width * 0.00025,
+      height * width * 0.00001,
       {
         angle: -Math.PI / 4,
         isStatic: true,
@@ -452,6 +459,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     const flipper = Matter.Body.create({
       parts: [flipperPaddle, flipperShaft],
       isStatic: false,
+      id: 2,
     });
 
     Matter.Body.setCentre(
@@ -695,16 +703,23 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         const cubes = Matter.Composites.stack(
           (width * 3) / 4 - 5,
           height * -0.2,
-          3,
-          3,
-          0,
-          0,
+          3, // 横方向のキューブの数
+          3, // 縦方向のキューブの数
+          0, // 横の余白
+          0, // 縦の余白
           (x: any, y: any) => {
-            return Bodies.rectangle(x, y, 30, 30, {
-              density: 0.0001,
-              frictionAir: 0,
-              restitution: 0.2,
-            });
+            return Bodies.rectangle(
+              x,
+              y,
+              cubeSize, // 対数変換後のサイズ
+              cubeSize, // 対数変換後のサイズ
+              {
+                density: 0.0001,
+                frictionAir: 0,
+                friction: 0.05,
+                restitution: 0.2,
+              },
+            );
           },
         );
 
