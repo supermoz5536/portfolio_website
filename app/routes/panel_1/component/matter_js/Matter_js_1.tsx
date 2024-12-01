@@ -404,38 +404,10 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       },
     );
 
-    /* フリッパーの支え */
-    const groundD = Bodies.rectangle(
-      (width * 2) / 12 + width / 24,
-      height + (height * 0.15) / 2,
-      width / 12,
-      height * 0.15,
-      {
-        isStatic: true,
-        render: {
-          fillStyle: "transparent",
-        },
-      },
-    );
-
     /**
      * Flipper
      */
-    const flipperShaftLinkedWithGround = Bodies.circle(
-      groundA.bounds.max.x - width * 0.035,
-      groundA.position.y,
-      width * height * 0.00001,
-      {
-        isStatic: false,
-        render: {
-          fillStyle: "white",
-          strokeStyle: "#cccccc",
-          lineWidth: 4,
-        },
-      },
-    );
-
-    const flipperShaftLinkedWithPaddle = Bodies.circle(
+    const flipperShaft = Bodies.circle(
       groundA.bounds.max.x - width * 0.035,
       groundA.position.y,
       width * height * 0.00001,
@@ -450,20 +422,20 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     const flipperPaddle = Matter.Bodies.fromVertices(
-      groundA.bounds.max.x,
+      groundA.bounds.max.x - width * 0.01,
       groundA.position.y,
       [
         [
           { x: 0, y: 0 },
-          { x: -0.1 * width, y: 0.00001 * width * height },
-          { x: -0.1 * width, y: -0.00001 * width * height },
+          { x: -0.08 * width, y: 0.00001 * width * height },
+          { x: -0.08 * width, y: -0.00001 * width * height },
         ],
       ],
       {
         isStatic: false,
         friction: 0,
         frictionStatic: 0,
-        restitution: 0.9,
+        restitution: 1,
         render: {
           fillStyle: "white",
           strokeStyle: "#cccccc",
@@ -473,27 +445,25 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     );
 
     const flipper = Matter.Body.create({
-      parts: [
-        flipperPaddle,
-        flipperShaftLinkedWithGround,
-        flipperShaftLinkedWithPaddle,
-      ],
+      parts: [flipperPaddle, flipperShaft],
       isStatic: false,
     });
 
     Matter.Body.setCentre(
       flipper,
       {
-        x: flipperShaftLinkedWithGround.position.x,
-        y: flipperShaftLinkedWithGround.position.y,
+        x: flipperShaft.position.x,
+        y: flipperShaft.position.y,
       },
       false,
     );
 
     Matter.Body.setPosition(flipper, {
-      x: groundA.bounds.max.x * 0.9,
-      y: groundA.position.y,
+      x: groundA.bounds.max.x * 1.075,
+      y: groundA.position.y * 0.98,
     });
+
+    Matter.Body.setAngularVelocity(flipper, 0.1);
 
     const flipperTrigger = Bodies.circle(
       groundA.position.x,
@@ -551,24 +521,24 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
 
         /* flipperTriggerの場合 */
         if (event.source.body.id == 2) {
-          Matter.Body.setAngularVelocity(flipper, -0.2);
+          Matter.Body.setAngularVelocity(flipper, -0.4);
         }
       }
     });
 
     Matter.Events.on(engineRef.current, "afterUpdate", () => {
       const minAngle = -Math.PI / 3;
-      const maxAngle = Math.PI / 3;
+      const maxAngle = Math.PI / 9;
 
       if (flipper.angle < minAngle) {
         Matter.Body.setAngle(flipper, minAngle);
-        Matter.Body.setAngularVelocity(flipper, 0.00001);
+        Matter.Body.setAngularVelocity(flipper, 0.1);
       }
 
-      // if (flipper.angle > maxAngle) {
-      //   Matter.Body.setAngle(flipper, maxAngle);
-      //   Matter.Body.setAngularVelocity(flipper, 0);
-      // }
+      if (flipper.angle > maxAngle) {
+        Matter.Body.setAngle(flipper, maxAngle);
+        Matter.Body.setAngularVelocity(flipper, 0);
+      }
     });
 
     /**
@@ -590,7 +560,6 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       groundA,
       groundB,
       groundC,
-      // groundD,
       flipper,
       flipperTrigger,
       mouseConstraint,
@@ -605,15 +574,15 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
       }),
       Constraint.create({
         pointA: {
-          x: flipperShaftLinkedWithGround.position.x,
-          y: flipperShaftLinkedWithGround.position.y,
+          x: flipperShaft.position.x,
+          y: flipperShaft.position.y,
         },
         bodyB: flipper,
         /* setCenterで設定した flipperShaft の重心が初期座標 */
         pointB: { x: 0, y: 0 },
         length: 0,
-        stiffness: 1,
-        render: { strokeStyle: "white", lineWidth: 2, visible: false },
+        stiffness: 0.1,
+        render: { strokeStyle: "#cccccc", lineWidth: 2, visible: true },
       }),
       Constraint.create({
         bodyA: tubeA,
