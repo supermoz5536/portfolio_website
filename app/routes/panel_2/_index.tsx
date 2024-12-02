@@ -1,57 +1,12 @@
 import { useRef } from "react";
-// import { ContentBlock } from "../panel_1/component/ContentBlock";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
+import GraphHorizontalBar from "./Graph_horizontal_bar";
+import GraphRadar from "./Graph_radar";
 
 export default function Panel2() {
-  // const box1: any = useRef();
-  // スコープを設定したい場合は
-  // divタグにcontainerのrefを設定
-  const container: any = useRef();
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-      tl.to(".myapp-icon-1", {
-        x: 32,
-        duration: 2.5,
-        height: 16,
-        width: 16,
-        borderRadius: 8,
-        rotate: 360,
-      }); // <-- automatically reverted
-
-      tl.to(".myapp-icon-1", {
-        x: 0,
-        duration: 5,
-        height: 36,
-        width: 36,
-        borderRadius: 0,
-        rotate: -360,
-        ease: "power3",
-      });
-    },
-    { scope: container },
-  );
-
-  useGSAP(
-    () => {
-      gsap.to(".myapp-icon-2", {
-        delay: 0,
-        duration: 2.5,
-        rotate: -360,
-        repeat: -1,
-        repeatDelay: 4,
-      });
-    },
-    { scope: container },
-  );
-
   return (
-    <div
-      ref={container}
-      className="text-black bg-white min-h-[100vh]  h-auto w-full "
-    >
+    <div className="text-black bg-white min-h-[100vh]  h-auto w-full ">
       {/* Responsible Width-Max-Break */}
       <div className="xl:flex flex-row justify-between xl-3:justify-center">
         {/* Header */}
@@ -77,7 +32,9 @@ export default function Panel2() {
             </div>
             {/* Content Container A */}
             <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
-              <div className="w-full h-[400px] bg-green-300"></div>
+              <div className="w-full h-[400px] bg-green-300">
+                <GraphHorizontalBar />
+              </div>
             </div>
           </div>
 
@@ -92,7 +49,9 @@ export default function Panel2() {
             {/* Content Container B */}
             <div>
               <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
-                <div className="w-full h-[400px] bg-blue-300"></div>
+                <div className="w-full h-[400px] bg-blue-300">
+                  <GraphRadar />
+                </div>
               </div>
             </div>
           </div>
