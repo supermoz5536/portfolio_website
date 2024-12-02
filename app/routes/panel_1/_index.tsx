@@ -94,24 +94,33 @@ export default function Panel1() {
             </div>
           </div>
 
-          {/* Content Container B */}
+          {/* Header Header Place Holde0r & Content Container B */}
           <div>
-            <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-72 xl:mt-[7vh] xl:mr-16 w-96">
-              {/* Content 3 */}
-              <ContentBlock
-                title="Title Cotent-3"
-                subtitle="Subtitle Content-3"
-                body="body"
-                number={3}
-              />
+            {/* Header Place Holder */}
+            <div className="text-4xl xl:text-white my-sm:hidden my-md:text-5xl my-md:block mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
+              <br />
+              <br />
+              <br />
+            </div>
+            {/* Content Container B */}
+            <div>
+              <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
+                {/* Content 3 */}
+                <ContentBlock
+                  title="Title Cotent-3"
+                  subtitle="Subtitle Content-3"
+                  body="body"
+                  number={3}
+                />
 
-              {/* Content 4 */}
-              <ContentBlock
-                title="Title Cotent-4"
-                subtitle="Subtitle Content-4"
-                body="body"
-                number={4}
-              />
+                {/* Content 4 */}
+                <ContentBlock
+                  title="Title Cotent-4"
+                  subtitle="Subtitle Content-4"
+                  body="body"
+                  number={4}
+                />
+              </div>
             </div>
           </div>
         </div>
