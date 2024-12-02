@@ -24,7 +24,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
   const logWidth = Math.log(width); // 幅の対数
   const logHeight = Math.log(height); // 高さの対数
   const logAverage = (logWidth + logHeight) / 2; // 対数の平均
-  const deltaLogSize = Math.exp(logAverage) * 0.03; // 元のスケールに戻してスケール係数をかける
+  const deltaScreenSize = Math.exp(logAverage) * 0.03; // 元のスケールに戻してスケール係数をかける
 
   const { Engine, Render, Runner, Bodies, Composite, Constraint } = Matter;
 
@@ -84,47 +84,28 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     /**
      * Objects
      */
-    const elementArray = [];
-
-    for (let i = 0; i < 5; i++) {
-      const cubeL = Bodies.rectangle(
-        (width * 3) / 4,
-        height * -0.2 + i * 15,
-        deltaLogSize,
-        deltaLogSize,
-        {
-          density: 0.0001,
-          frictionAir: 0,
-          restitution: 0.2,
-        },
-      );
-
-      const cubeM = Bodies.rectangle(
-        (width * 3) / 4 + 15,
-        height * -0.2 + i * 15,
-        deltaLogSize,
-        deltaLogSize,
-        {
-          density: 0.0001,
-          frictionAir: 0,
-          restitution: 0.2,
-        },
-      );
-
-      const cubeR = Bodies.rectangle(
-        (width * 3) / 4 + 30,
-        height * -0.2 + i * 15,
-        deltaLogSize,
-        deltaLogSize,
-        {
-          density: 0.0001,
-          frictionAir: 0,
-          restitution: 0.2,
-        },
-      );
-
-      elementArray.push(cubeL, cubeM, cubeR);
-    }
+    const elementArray = Matter.Composites.stack(
+      width * 0.7,
+      height * -0.2,
+      3, // 横方向のキューブの数
+      3, // 縦方向のキューブの数
+      0, // 横の余白
+      0, // 縦の余白
+      (x: any, y: any) => {
+        return Bodies.rectangle(
+          x,
+          y,
+          deltaScreenSize, // 対数変換後のサイズ
+          deltaScreenSize, // 対数変換後のサイズ
+          {
+            density: 0.00015,
+            frictionAir: 0,
+            friction: 0.025,
+            restitution: 0.2,
+          },
+        );
+      },
+    );
 
     /**
      * Bridge
@@ -166,7 +147,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     const strikerShaft = Bodies.circle(
       (width * 3) / 4,
       height * 0.3,
-      deltaLogSize * 0.45,
+      deltaScreenSize * 0.45,
       {
         isStatic: false,
         render: {
@@ -200,7 +181,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     const hammer = Bodies.circle(
       pole.position.x,
       pole.position.y + (pole.bounds.max.y - pole.position.y),
-      deltaLogSize * 0.45,
+      deltaScreenSize * 0.45,
       {
         restitution: 0,
         isStatic: false,
@@ -337,9 +318,9 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
      * Floor
      */
     const floorA = Bodies.rectangle(
-      height * width * 0.000125 * Math.sin(Math.PI / 3),
-      height - (height * width * 0.00025) / 2 - 30,
-      height * width * 0.00025,
+      width * 0.16,
+      height * 0.95,
+      height * width * deltaScreenSize * 0.00001,
       height * width * 0.00001,
       {
         angle: Math.PI / 3,
@@ -351,6 +332,10 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         },
       },
     );
+    Matter.Body.setPosition(floorA, {
+      x: floorA.position.x - (floorA.bounds.max.x - floorA.position.x),
+      y: floorA.position.y - (floorA.bounds.max.y - floorA.position.y),
+    });
 
     const floorB = Bodies.rectangle(
       width * 0.3,
@@ -481,7 +466,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
     const flipperTrigger = Bodies.circle(
       groundA.position.x,
       groundA.position.y,
-      deltaLogSize * 0.45,
+      deltaScreenSize * 0.45,
       {
         isStatic: true,
         id: 2,
@@ -551,7 +536,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
      * Add World
      */
     Composite.add(engineRef.current.world, [
-      ...elementArray,
+      elementArray,
       bridge,
       striker,
       tubeA,
@@ -595,7 +580,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         pointA: { x: 0, y: tubeA.bounds.max.y - tubeA.position.y },
         bodyB: bridge.bodies[0],
         pointB: { x: 0, y: 0 },
-        length: deltaLogSize * 1.4,
+        length: deltaScreenSize * 1.4,
         stiffness: 0.05,
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
@@ -604,7 +589,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
         pointA: { x: 0, y: tubeB.bounds.max.y - tubeB.position.y },
         bodyB: bridge.bodies[bridge.bodies.length - 1],
         pointB: { x: 0, y: 0 },
-        length: deltaLogSize * 1.4,
+        length: deltaScreenSize * 1.4,
         stiffness: 0.05,
         render: { strokeStyle: "#cccccc", lineWidth: 2 },
       }),
@@ -698,12 +683,12 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
             return Bodies.rectangle(
               x,
               y,
-              deltaLogSize, // 対数変換後のサイズ
-              deltaLogSize, // 対数変換後のサイズ
+              deltaScreenSize, // 対数変換後のサイズ
+              deltaScreenSize, // 対数変換後のサイズ
               {
-                density: 0.0003,
+                density: 0.00015,
                 frictionAir: 0,
-                friction: 0.05,
+                friction: 0.025,
                 restitution: 0.2,
               },
             );
@@ -714,7 +699,7 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           Composite.add(engineRef.current.world, [cubes]);
         }
       }
-    }, 2500);
+    }, 2000);
     return () => {
       clearInterval(intervalId);
     };
