@@ -97,7 +97,7 @@ export default function Panel1() {
           {/* Header Header Place Holde0r & Content Container B */}
           <div>
             {/* Header Place Holder */}
-            <div className="text-4xl xl:text-white my-sm:hidden my-md:text-5xl my-md:block mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
+            <div className="text-4xl xl:text-white hidden my-md:text-5xl my-md:block mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
               <br />
               <br />
               <br />

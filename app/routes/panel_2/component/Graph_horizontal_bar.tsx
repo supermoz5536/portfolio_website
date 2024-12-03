@@ -12,56 +12,49 @@ import {
 
 const data = [
   {
+    skill: "React.js",
+    pv: 3750,
+  },
+  {
+    skill: "Remix",
+    pv: 1250,
+  },
+  {
     skill: "Flutter",
-    pv: 2400,
+    pv: 3750,
   },
   {
-    date: "2000-02",
-    pv: 1398,
-  },
-  {
-    date: "2000-03",
-    pv: 9800,
-  },
-  {
-    date: "2000-04",
-
-    pv: 3908,
-  },
-  {
-    date: "2000-05",
-    pv: 4800,
-  },
-  {
-    date: "2000-06",
-    pv: 3800,
-  },
-  {
-    date: "2000-07",
-    pv: 4300,
-  },
-  {
-    date: "2000-08",
-
-    pv: 2400,
-  },
-  {
-    date: "2000-09",
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    date: "2000-10",
-    pv: 9800,
-  },
-  {
-    date: "2000-11",
-    pv: 3908,
-  },
-  {
-    date: "2000-13",
-    pv: 9800,
+    skill: "Firebase",
+    pv: 5833,
     amt: 2181,
+  },
+  {
+    skill: "Electron",
+    pv: 1666,
+  },
+  {
+    skill: "Blender",
+    pv: 833,
+  },
+  {
+    skill: "3D Creative Coding",
+    pv: 1250,
+  },
+  {
+    skill: "2D Creative Coding",
+    pv: 833,
+  },
+  {
+    skill: "TypeScript",
+    pv: 3333,
+  },
+  {
+    skill: "HTML/CSS",
+    pv: 3333,
+  },
+  {
+    skill: "Git/Github",
+    pv: 5833,
   },
 ];
 
@@ -93,9 +86,6 @@ const renderQuarterTick = (tickProps: { x: any; y: any; payload: any }) => {
   return <></>; // 空の要素を返す
 };
 export default class Example extends PureComponent {
-  static demoUrl =
-    "https://codesandbox.io/p/sandbox/bar-chart-with-double-xaxis-zly7wl";
-
   render() {
     return (
       <ResponsiveContainer
@@ -107,22 +97,26 @@ export default class Example extends PureComponent {
       >
         <BarChart
           layout="vertical"
-          width={500}
-          height={300}
           data={data}
           margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
+            left: 90,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" />
+          <XAxis
+            domain={[0, 10000]} // 最小値と最大値を設定
+            type="number"
+            tickCount={3}
+            tickFormatter={(value, index) => {
+              const inputData = index == 0 ? "" : `~${index}年`;
+              return inputData;
+            }}
+          />
           <YAxis
             interval={0} // すべてのメモリを表示
             type="category"
             dataKey="skill"
+            tickLine={false}
             tick={(props) => {
               const { x, y, payload } = props; // 各メモリラベルの位置情報と値を取得
               return (
@@ -131,7 +125,8 @@ export default class Example extends PureComponent {
                   <text
                     x={x} // メモリのデフォルト位置
                     y={y + 5} // オフセット調整 (+5で中央揃え)
-                    fill="black"
+                    fontSize={15}
+                    fill="#808080"
                     textAnchor="end"
                   >
                     {payload.value} {/* デフォルトのラベル */}
@@ -143,15 +138,16 @@ export default class Example extends PureComponent {
                     fill="red"
                     textAnchor="end"
                   >
-                    {"Custom"} {/* 描きたい文字 */}
+                    {/* {"Custom"}  */}
+                    {/* 描きたい文字 */}
                   </text>
                 </>
               );
             }}
           />
           <Tooltip />
-          <Legend />
-          <Bar dataKey="pv" fill="#8884d8" />
+          {/* <Legend /> */}
+          <Bar dataKey="pv" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.4} />
         </BarChart>
       </ResponsiveContainer>
     );
