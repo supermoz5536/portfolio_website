@@ -3,7 +3,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import GraphHorizontalBar from "./component/Graph_horizontal_bar";
 import GraphRadar from "./component/Graph_radar";
-import GraphGantt from "./component/graph_gantt/Graph_gantt";
+import GraphGantt from "./component/Graph_gantt";
+import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
 
 export default function Panel2() {
   return (

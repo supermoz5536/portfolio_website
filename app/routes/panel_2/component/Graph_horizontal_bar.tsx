@@ -1,3 +1,4 @@
+import { useLoaderData } from "@remix-run/react";
 import React, { PureComponent } from "react";
 import {
   BarChart,
@@ -10,52 +11,57 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// const { barChartDocData }: any = useLoaderData();
+
+const md = 1;
+const max = 2;
+
 const data = [
   {
     skill: "React.js",
-    pv: 3750,
+    pv: 12,
   },
-  {
-    skill: "Remix",
-    pv: 1250,
-  },
-  {
-    skill: "Flutter",
-    pv: 3750,
-  },
-  {
-    skill: "Firebase",
-    pv: 5833,
-    amt: 2181,
-  },
-  {
-    skill: "Electron",
-    pv: 1666,
-  },
-  {
-    skill: "Blender",
-    pv: 833,
-  },
-  {
-    skill: "3D Creative Coding",
-    pv: 1250,
-  },
-  {
-    skill: "2D Creative Coding",
-    pv: 833,
-  },
-  {
-    skill: "TypeScript",
-    pv: 3333,
-  },
-  {
-    skill: "HTML/CSS",
-    pv: 3333,
-  },
-  {
-    skill: "Git/Github",
-    pv: 5833,
-  },
+  // {
+  //   skill: "Remix",
+  //   pv: 1250,
+  // },
+  // {
+  //   skill: "Flutter",
+  //   pv: 3750,
+  // },
+  // {
+  //   skill: "Firebase",
+  //   pv: 5833,
+  //   amt: 2181,
+  // },
+  // {
+  //   skill: "Electron",
+  //   pv: 1666,
+  // },
+  // {
+  //   skill: "Blender",
+  //   pv: 833,
+  // },
+  // {
+  //   skill: "3D Creative Coding",
+  //   pv: 1250,
+  // },
+  // {
+  //   skill: "2D Creative Coding",
+  //   pv: 833,
+  // },
+  // {
+  //   skill: "TypeScript",
+  //   pv: 3333,
+  // },
+  // {
+  //   skill: "HTML/CSS",
+  //   pv: 3333,
+  // },
+  // {
+  //   skill: "Git/Github",
+  //   pv: 5833,
+  // },
 ];
 
 const monthTickFormatter = (tick: string | number | Date) => {
@@ -104,12 +110,17 @@ export default class Example extends PureComponent {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            domain={[0, 10000]} // 最小値と最大値を設定
+            domain={[0, 24]} // 最小値と最大値を設定
+            ticks={[0, 12, 24]} // 明示的に表示したい値を指定
             type="number"
-            tickCount={3}
-            tickFormatter={(value, index) => {
-              const inputData = index == 0 ? "" : `~${index}年`;
-              return inputData;
+            // tickFormatter={(value, index) => {
+            //   const inputData = index == 0 ? "" : `~${index}年`;
+            //   return inputData;
+            // }}
+            tickFormatter={(value) => {
+              if (value === 12) return `~${md}年`;
+              if (value === 24) return `~${max}年`;
+              return value;
             }}
           />
           <YAxis

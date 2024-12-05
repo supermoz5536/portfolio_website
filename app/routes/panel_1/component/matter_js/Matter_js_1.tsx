@@ -32,8 +32,6 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
    * Initial Set Up
    */
   useEffect(() => {
-    console.log("Initial Set Up");
-
     var group = Matter.Body.nextGroup(true);
 
     // heightとwidthの変更をキャッチするたびに

@@ -1,9 +1,9 @@
 import { getStorage, getDownloadURL } from "firebase-admin/storage";
-import { admin } from "../../firebase/setup_server";
+import { initializedAdmin } from "../../firebase/setup_server";
 
 export const fetchVideoDownloadURL = async () => {
   let downloadUrlArray: any = [];
-  const bucket = admin
+  const bucket = initializedAdmin
     .storage()
     .bucket("portfolio-website-4645b.firebasestorage.app");
   const directoryPath = "system/video/content_block/";
@@ -22,7 +22,7 @@ export const fetchVideoDownloadURL = async () => {
   // 名前順に配列を整列
   // 要素名が 1.mp4 ~ 4.4m までの単純な数値のみ使用してるので
   // localeCompareのアルファベット順で処理可能
-  files.sort((a, b) => a.name.localeCompare(b.name));
+  files.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
   try {
     for (const file of files) {

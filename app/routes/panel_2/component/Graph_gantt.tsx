@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@mui/material";
-import "./graph_gantt.css";
 import { tv } from "tailwind-variants";
+import { useLoaderData } from "@remix-run/react";
 
-type InputData = {
-  projectId: number;
-  projectStartYear: number;
-  projectStartMonth: number;
-  projectStartMonthPeriod: number;
-  projectEndYear: number;
-  projectEndMonth: number;
-  projectEndMonthPeriod: number;
+type ProjectData = {
+  id: number;
+  startYear: number;
+  startMonth: number;
+  startMonthPeriod: number;
+  endYear: number;
+  endMonth: number;
+  endMonthPeriod: number;
   targetStartRow: number;
-  projectTitle: string;
-  projectSubtitle: string;
-  projectDescription: string;
+  title: string;
+  subtitle: string;
+  description: string;
   techStacks: string[];
 };
 
@@ -58,6 +58,7 @@ const bgColorStyles = tv({
 });
 
 export default function GraphGantt() {
+  const { ganttDocDatas }: any = useLoaderData();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // チャート初期値
@@ -71,49 +72,66 @@ export default function GraphGantt() {
     rowCellsNumber * colCellsNumber,
   );
 
-  // 入力値（テスト）
-  const projectStartYear = 2024;
-  const projectStartMonth = 1;
-  const projectStartMonthPeriod = 1;
-  const projectEndYear = 2024;
-  const projectEndMonth = 2;
-  const projectEndMonthPeriod = 1;
-  const targetStartRow = 3;
-  const projectTitle = "ChatBus";
-  const projectSubtitle = "Random Chat App";
-  const projectDescription =
-    "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。";
+  const projectDatas: ProjectData[] = ganttDocDatas.map((docData: any) => {
+    return {
+      id: docData.id,
+      startYear: docData.start_year,
+      startMonth: docData.start_month,
+      startMonthPeriod: docData.start_monthPeriod,
+      endYear: docData.end_year,
+      endMonth: docData.end_month,
+      endMonthPeriod: docData.end_monthPeriod,
+      targetStartRow: docData.target_start_row,
+      title: docData.title,
+      subtitle: docData.subtitle,
+      description: docData.description,
+      techStacks: docData.tech_stacks,
+    };
+  });
 
-  let inputDatas: InputData[] = [
-    {
-      projectId: 1,
-      projectStartYear: projectStartYear,
-      projectStartMonth: projectStartMonth,
-      projectStartMonthPeriod: projectStartMonthPeriod,
-      projectEndYear: projectEndYear,
-      projectEndMonth: projectEndMonth,
-      projectEndMonthPeriod: projectEndMonthPeriod,
-      targetStartRow: targetStartRow,
-      projectTitle: projectTitle,
-      projectSubtitle: projectSubtitle,
-      projectDescription: projectDescription,
-      techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
-    },
-    {
-      projectId: 2,
-      projectStartYear: projectStartYear,
-      projectStartMonth: projectStartMonth + 2,
-      projectStartMonthPeriod: projectStartMonthPeriod,
-      projectEndYear: projectEndYear,
-      projectEndMonth: projectEndMonth + 2,
-      projectEndMonthPeriod: projectEndMonthPeriod,
-      targetStartRow: targetStartRow + 1,
-      projectTitle: projectTitle,
-      projectSubtitle: projectSubtitle,
-      projectDescription: projectDescription,
-      techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
-    },
-  ];
+  // // 入力値（テスト）
+  // const projectStartYear = 2024;
+  // const projectStartMonth = 1;
+  // const projectStartMonthPeriod = 1;
+  // const projectEndYear = 2024;
+  // const projectEndMonth = 2;
+  // const projectEndMonthPeriod = 1;
+  // const targetStartRow = 3;
+  // const projectTitle = "ChatBus";
+  // const projectSubtitle = "Random Chat App";
+  // const projectDescription =
+  //   "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。";
+
+  // let projectDatas: ProjectData[] = [
+  //   {
+  //     id: 1,
+  //     startYear: projectStartYear,
+  //     startMonth: projectStartMonth,
+  //     startMonthPeriod: projectStartMonthPeriod,
+  //     endYear: projectEndYear,
+  //     endMonth: projectEndMonth,
+  //     endMonthPeriod: projectEndMonthPeriod,
+  //     targetStartRow: targetStartRow,
+  //     title: projectTitle,
+  //     subtitle: projectSubtitle,
+  //     description: projectDescription,
+  //     techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  //   },
+  //   {
+  //     id: 2,
+  //     startYear: projectStartYear,
+  //     startMonth: projectStartMonth + 2,
+  //     startMonthPeriod: projectStartMonthPeriod,
+  //     endYear: projectEndYear,
+  //     endMonth: projectEndMonth + 2,
+  //     endMonthPeriod: projectEndMonthPeriod,
+  //     targetStartRow: targetStartRow + 1,
+  //     title: projectTitle,
+  //     subtitle: projectSubtitle,
+  //     description: projectDescription,
+  //     techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  //   },
+  // ];
 
   /// 初期化処理
   useEffect(() => {
@@ -124,7 +142,7 @@ export default function GraphGantt() {
     // }
 
     // totalCellsNumbers から占有領域分のセル数を除算
-    const colExtraCellsNumberAccum: number = inputDatas.reduce(
+    const colExtraCellsNumberAccum: number = projectDatas.reduce(
       (accum, currentValue, index, array) => {
         const colStartCell = convertFromInputValueToMapValue(
           array[index],
@@ -180,27 +198,25 @@ export default function GraphGantt() {
 
   /// DBから取得したデータを
   /// gridColumsでマッピングするために変換
-  const convertFromInputValueToMapValue = (inputData: InputData) => {
+  const convertFromInputValueToMapValue = (projectData: ProjectData) => {
     let colStartCell;
     let colEndCell;
 
-    if (inputData.projectStartYear < 2024) {
+    if (projectData.startYear < 2024) {
       colStartCell =
-        (inputData.projectStartMonth - 11) * 5 +
-        inputData.projectStartMonthPeriod;
-      colEndCell =
-        (inputData.projectEndMonth - 11) * 5 + inputData.projectEndMonthPeriod;
+        (projectData.startMonth - 11) * 5 + projectData.startMonthPeriod;
+      colEndCell = (projectData.endMonth - 11) * 5 + projectData.endMonthPeriod;
     } else {
       colStartCell =
         10 +
-        (inputData.projectStartYear - 2024) * 5 +
-        (inputData.projectStartMonth - 1) * 5 +
-        inputData.projectStartMonthPeriod;
+        (projectData.startYear - 2024) * 5 +
+        (projectData.startMonth - 1) * 5 +
+        projectData.startMonthPeriod;
       colEndCell =
         10 +
-        (inputData.projectEndYear - 2024) * 5 +
-        (inputData.projectEndMonth - 1) * 5 +
-        inputData.projectEndMonthPeriod;
+        (projectData.endYear - 2024) * 5 +
+        (projectData.endMonth - 1) * 5 +
+        projectData.endMonthPeriod;
     }
 
     return { colStartCell: colStartCell, colEndCell: colEndCell };
@@ -245,19 +261,19 @@ export default function GraphGantt() {
         ))}
 
         {/* Cells Content */}
-        {inputDatas.map((inputData) => {
+        {projectDatas.map((projectData) => {
           return (
             <Tooltip
               title={
                 <>
                   <div className="font-bold">Overview :</div>
-                  <div>{inputData.projectDescription}</div>
+                  <div>{projectData.description}</div>
                   <br />
                   <div className="font-bold">Tech Stack :</div>
-                  {inputData.techStacks.map((teckStack, index) => (
+                  {projectData.techStacks.map((teckStack, index) => (
                     <span>
                       {teckStack}
-                      {index == inputData.techStacks.length - 1 ? "" : ", "}
+                      {index == projectData.techStacks.length - 1 ? "" : ", "}
                     </span>
                   ))}
                 </>
@@ -291,34 +307,26 @@ export default function GraphGantt() {
                 // セルの親コンポーネント
                 className={`${borderColorStyles({
                   number:
-                    inputData.projectId % 8 == 0
+                    projectData.id % 8 == 0
                       ? 8
-                      : ((inputData.projectId % 8) as
-                          | 1
-                          | 2
-                          | 3
-                          | 4
-                          | 5
-                          | 6
-                          | 7
-                          | 8),
+                      : ((projectData.id % 8) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8),
                 })}`}
                 style={{
                   gridColumnStart:
-                    convertFromInputValueToMapValue(inputData).colStartCell,
+                    convertFromInputValueToMapValue(projectData).colStartCell,
                   gridColumnEnd:
-                    convertFromInputValueToMapValue(inputData).colEndCell,
-                  gridRowStart: inputData.targetStartRow,
-                  gridRowEnd: inputData.targetStartRow + 1,
+                    convertFromInputValueToMapValue(projectData).colEndCell,
+                  gridRowStart: projectData.targetStartRow,
+                  gridRowEnd: projectData.targetStartRow + 1,
                 }}
               >
                 {/* 背景色用 */}
                 <div
                   className={`${bgColorStyles({
                     number:
-                      inputData.projectId % 8 == 0
+                      projectData.id % 8 == 0
                         ? 8
-                        : ((inputData.projectId % 8) as
+                        : ((projectData.id % 8) as
                             | 1
                             | 2
                             | 3
@@ -332,11 +340,11 @@ export default function GraphGantt() {
 
                 {/* テキスト用 */}
                 <div className="absolute top-0 left-1 text-gray-600 font-[425] ml-2 text-lg">
-                  {inputData.projectTitle}
+                  {projectData.title}
                 </div>
 
                 <div className="absolute top-[60%] left-1 text-gray-600 ml-2 mt-[-3px] text-[13.5px]">
-                  {inputData.projectSubtitle}
+                  {projectData.subtitle}
                 </div>
               </div>
             </Tooltip>

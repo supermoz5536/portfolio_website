@@ -28,4 +28,4 @@ if (admin.apps.length === 0) {
   });
 }
 
-export { admin };
+export { admin as initializedAdmin };
