@@ -1,5 +1,5 @@
 import { getStorage, getDownloadURL } from "firebase-admin/storage";
-import { admin } from "../firebase/setup_server";
+import { admin } from "../../firebase/setup_server";
 
 export const fetchVideoDownloadURL = async () => {
   let downloadUrlArray: any = [];

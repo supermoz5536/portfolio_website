@@ -4,7 +4,7 @@ import Scene2 from "./scene_2/_index";
 import Scene3 from "./scene_3/_index";
 import Panel1 from "./panel_1/_index";
 import Panel2 from "./panel_2/_index";
-import { fetchVideoDownloadURL } from "~/model/firestorage_server_model";
+import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
 
 export const meta: MetaFunction = () => {
   return [
