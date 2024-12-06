@@ -293,7 +293,7 @@ export default function Level({
 
   return (
     <>
-      <BlockStart position={[0, 0, 0]} />
+      {/* <BlockStart position={[0, 0, 0]} /> */}
 
       {blocks.map((Block, index) => (
         <Block key={index} position={[0, 0, (index + 1) * -4]} />

@@ -1,3 +1,9 @@
+import { Button } from "@mui/material";
+
 export default function Scene1() {
-  return <div className="bg-red-700 h-[800px] w-full">scene1</div>;
+  return (
+    <>
+      <div className="bg-red-700 h-[800px] w-full">scene1</div>
+    </>
+  );
 }

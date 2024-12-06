@@ -4,15 +4,47 @@ import { subscribeWithSelector } from "zustand/middleware";
 export default create(
   subscribeWithSelector((set) => {
     return {
-      //   /**
-      //    * Flag
-      //    */
-      //   isOpenPopup: false,
-      //   togglePopup: () => {
-      //     set((state: any) => {
-      //       return { isOpenPopup: !state.isOpenPopup };
-      //     });
-      //   },
+      blocksCount: 10,
+      blocksSeed: 0,
+
+      /**
+       * Time
+       */
+      startTime: 0,
+      elapseTime: 0,
+      endTime: 0,
+
+      /**
+       * Fhases
+       */
+      phase: "ready",
+
+      start: () => {
+        set((state: any) => {
+          if (state.phase == "ready") {
+            return { phase: "playing", startTime: Date.now() };
+          }
+          return {};
+        });
+      },
+
+      restart: () => {
+        set((state: any) => {
+          if (state.phase == "playing" || state.phase == "ended") {
+            return { phase: "ready", blocksSeed: Math.random() };
+          }
+          return {};
+        });
+      },
+
+      end: () => {
+        set((state: any) => {
+          if (state.phase == "playing") {
+            return { phase: "ended", endTime: Date.now() };
+          }
+          return {};
+        });
+      },
     };
   }),
 );

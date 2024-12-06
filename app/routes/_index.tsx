@@ -40,7 +40,7 @@ export const loader = async () => {
 export default function Index() {
   return (
     <div className="flex flex-col items-center justify-start">
-      <Scene1 />
+      {/* <Scene1 /> */}
       <Panel1 />
       <Scene2 />
       <Panel2 />
