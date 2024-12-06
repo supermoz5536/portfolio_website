@@ -57,7 +57,7 @@ const bgColorStyles = tv({
   },
 });
 
-export default function GraphGantt() {
+export default function GanttChart() {
   const { ganttDocDatas }: any = useLoaderData();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -88,50 +88,6 @@ export default function GraphGantt() {
       techStacks: docData.tech_stacks,
     };
   });
-
-  // // 入力値（テスト）
-  // const projectStartYear = 2024;
-  // const projectStartMonth = 1;
-  // const projectStartMonthPeriod = 1;
-  // const projectEndYear = 2024;
-  // const projectEndMonth = 2;
-  // const projectEndMonthPeriod = 1;
-  // const targetStartRow = 3;
-  // const projectTitle = "ChatBus";
-  // const projectSubtitle = "Random Chat App";
-  // const projectDescription =
-  //   "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。";
-
-  // let projectDatas: ProjectData[] = [
-  //   {
-  //     id: 1,
-  //     startYear: projectStartYear,
-  //     startMonth: projectStartMonth,
-  //     startMonthPeriod: projectStartMonthPeriod,
-  //     endYear: projectEndYear,
-  //     endMonth: projectEndMonth,
-  //     endMonthPeriod: projectEndMonthPeriod,
-  //     targetStartRow: targetStartRow,
-  //     title: projectTitle,
-  //     subtitle: projectSubtitle,
-  //     description: projectDescription,
-  //     techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
-  //   },
-  //   {
-  //     id: 2,
-  //     startYear: projectStartYear,
-  //     startMonth: projectStartMonth + 2,
-  //     startMonthPeriod: projectStartMonthPeriod,
-  //     endYear: projectEndYear,
-  //     endMonth: projectEndMonth + 2,
-  //     endMonthPeriod: projectEndMonthPeriod,
-  //     targetStartRow: targetStartRow + 1,
-  //     title: projectTitle,
-  //     subtitle: projectSubtitle,
-  //     description: projectDescription,
-  //     techStacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
-  //   },
-  // ];
 
   /// 初期化処理
   useEffect(() => {
@@ -205,7 +161,11 @@ export default function GraphGantt() {
     if (projectData.startYear < 2024) {
       colStartCell =
         (projectData.startMonth - 11) * 5 + projectData.startMonthPeriod;
-      colEndCell = (projectData.endMonth - 11) * 5 + projectData.endMonthPeriod;
+      colEndCell =
+        10 +
+        (projectData.endYear - 2024) * 5 +
+        (projectData.endMonth - 1) * 5 +
+        projectData.endMonthPeriod;
     } else {
       colStartCell =
         10 +

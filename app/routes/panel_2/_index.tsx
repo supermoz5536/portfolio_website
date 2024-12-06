@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
-import GraphHorizontalBar from "./component/Graph_horizontal_bar";
-import GraphRadar from "./component/Graph_radar";
-import GraphGantt from "./component/Graph_gantt";
+import GraphHorizontalBar from "./component/Bar_chart";
+import GraphRadar from "./component/Radar_chart";
 import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
+import { BarChartWrapper } from "./component/Bar_chart_wrapper";
+import GanttChart from "./component/Gantt_chart_";
 
 export default function Panel2() {
   return (
@@ -35,7 +36,7 @@ export default function Panel2() {
             {/* Content Container A */}
             <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
               <div className="w-full h-[400px]">
-                <GraphHorizontalBar />
+                <BarChartWrapper />
               </div>
             </div>
           </div>
@@ -63,7 +64,7 @@ export default function Panel2() {
       {/* Gunt Chart */}
       <div className="flex justify-center items-start mt-[5vh] w-full h-[50vh]">
         <div className=" h-[90%] w-[90%]">
-          <GraphGantt />
+          <GanttChart />
         </div>
       </div>
     </div>

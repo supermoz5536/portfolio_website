@@ -7,8 +7,9 @@ import Panel2 from "./panel_2/_index";
 import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
 import {
   setGanttForDev,
-  getGanttDocDatas,
-  getBarChatDocData,
+  fetchGanttDocDatas,
+  fetchBarChartDocData,
+  setBarChartDocDataForDev,
 } from "~/model/firestore/firestore_server_model";
 
 export const meta: MetaFunction = () => {
@@ -21,10 +22,11 @@ export const meta: MetaFunction = () => {
 export const loader = async () => {
   // Gantt Chart
   await setGanttForDev();
-  const ganttDocDatas = await getGanttDocDatas();
+  const ganttDocDatas = await fetchGanttDocDatas();
 
   // Bar Chart
-  const barChartDocData = await getBarChatDocData();
+  await setBarChartDocDataForDev();
+  const barChartDocData = await fetchBarChartDocData();
 
   const response = await fetchVideoDownloadURL();
   const data = await response.json();
