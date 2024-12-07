@@ -25,7 +25,7 @@ export const loader = async () => {
   const ganttDocDatas = await fetchGanttDocDatas();
 
   // Bar Chart
-  // await setBarChartDocDataForDev();
+  await setBarChartDocDataForDev();
   const barChartDocData = await fetchBarChartDocData();
 
   const response = await fetchVideoDownloadURL();

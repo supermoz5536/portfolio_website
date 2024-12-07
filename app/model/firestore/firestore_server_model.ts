@@ -22,9 +22,10 @@ export const setBarChartDocDataForDev = async () => {
     TypeScript: 7,
     HTML_CSS: 7,
     Git_GitHub: 14,
-    Cording_2D: 3,
-    Cording_3D: 3,
-    max: 2,
+    Creative_2D: 3,
+    Creative_3D: 3,
+    maxYear: 2,
+    maxValue: 24,
   });
 };
 
@@ -74,7 +75,7 @@ export const setGanttForDev = async () => {
     end_year: 2024,
     end_month: 6,
     end_monthPeriod: 1,
-    target_start_row: 4,
+    target_start_row: 5,
     title: "TraceSpeaker",
     subtitle: "YouTube Simultaneous Interpretation",
     description:
@@ -85,14 +86,78 @@ export const setGanttForDev = async () => {
   await projRef.doc("project_3").set({
     id: 3,
     start_year: 2024,
-    start_month: 5,
+    start_month: 4,
+    start_monthPeriod: 5,
+    end_year: 2024,
+    end_month: 5,
+    end_monthPeriod: 4,
+    target_start_row: 6,
+    title: "Scraping Tool",
+    subtitle: "For TraceSpeaker",
+    description:
+      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
+    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  });
+
+  await projRef.doc("project_4").set({
+    id: 4,
+    start_year: 2024,
+    start_month: 6,
     start_monthPeriod: 1,
     end_year: 2024,
-    end_month: 6,
+    end_month: 10,
+    end_monthPeriod: 1,
+    target_start_row: 3,
+    title: "Inventory Z",
+    subtitle: "Scraping Amazon to Collect Inventory Data",
+    description:
+      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
+    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  });
+
+  await projRef.doc("project_5").set({
+    id: 5,
+    start_year: 2024,
+    start_month: 8,
+    start_monthPeriod: 1,
+    end_year: 2024,
+    end_month: 11,
+    end_monthPeriod: 1,
+    target_start_row: 7,
+    title: "Outlier in Remote Work",
+    subtitle: "Training AI Systems and LLMs in English writing",
+    description:
+      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
+    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  });
+
+  await projRef.doc("project_6").set({
+    id: 6,
+    start_year: 2024,
+    start_month: 10,
+    start_monthPeriod: 1,
+    end_year: 2024,
+    end_month: 11,
     end_monthPeriod: 1,
     target_start_row: 5,
-    title: "ChatBus2",
-    subtitle: "Random Chat App",
+    title: "Outsourced Business",
+    subtitle: "For Mobile Development",
+    description:
+      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
+    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  });
+
+  await projRef.doc("project_7").set({
+    id: 7,
+    start_year: 2024,
+    start_month: 11,
+    start_monthPeriod: 1,
+    end_year: 2024,
+    end_month: 12,
+    end_monthPeriod: 3,
+    target_start_row: 3,
+    title: "Developing This Website",
+    subtitle: "Designed to Showcase Portfolios",
     description:
       "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
     tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],

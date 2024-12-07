@@ -299,11 +299,11 @@ export default function GanttChart() {
                 ></div>
 
                 {/* テキスト用 */}
-                <div className="absolute top-0 left-1 text-gray-600 font-[425] ml-2 text-lg">
+                <div className="absolute top-[5%] left-[5px] text-gray-600 font-[450] ml-2 text-[0.975rem]">
                   {projectData.title}
                 </div>
 
-                <div className="absolute top-[60%] left-1 text-gray-600 ml-2 mt-[-3px] text-[13.5px]">
+                <div className="absolute top-[62.5%] left-[7px] text-gray-500 ml-2 mt-[-3px] text-[12px]">
                   {projectData.subtitle}
                 </div>
               </div>

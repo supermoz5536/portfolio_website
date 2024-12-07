@@ -23,13 +23,13 @@ export default class Example extends PureComponent<ExampleProps> {
     // イテレートに barChartDocData["各キー"]でvalueを取得
     const keys = Object.keys(barChartDocData);
     const techDatas = keys.reduce((acc, key) => {
-      if (key == "max") return acc;
+      if (key == "maxYear" || key == "maxValue") return acc;
 
-      const value = barChartDocData[key];
+      const period = barChartDocData[key];
 
       acc.push({
         tech: key,
-        period: value,
+        period: period,
       });
 
       return acc;
@@ -83,8 +83,8 @@ export default class Example extends PureComponent<ExampleProps> {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            domain={[0, 24]} // 最小値と最大値を設定
-            ticks={[0, 12, 24]} // 明示的に表示したい値を指定
+            domain={[0, barChartDocData.maxValue]} // 最小値と最大値を設定
+            ticks={[0, barChartDocData.maxValue / 2, barChartDocData.maxValue]} // 明示的に表示したい値を指定
             tick={(props) => {
               const { x, y, payload } = props; // 各メモリラベルの位置情報を取得
               const value = payload.value; // メモリの値
@@ -92,25 +92,21 @@ export default class Example extends PureComponent<ExampleProps> {
               return (
                 <text
                   x={x} // X座標
-                  y={y + 15} // Y座標を調整（10px 下げる）
+                  y={y + 10} // Y座標を調整（10px 下げる）
                   fontSize={13} // フォントサイズ
                   fill="gray" // 必要に応じて色を変更
                   textAnchor="middle" // 中央揃え
                 >
-                  {value === 12
+                  {value === barChartDocData.maxValue / 2
                     ? ""
-                    : value === 24
-                    ? `${barChartDocData.max} yr`
+                    : value === barChartDocData.maxValue
+                    ? `${barChartDocData.maxYear} yr`
                     : value}
                   {/* ラベルの条件 */}
                 </text>
               );
             }}
             type="number"
-            tickFormatter={(value) => {
-              if (value === 24) return `${barChartDocData.max}yr`;
-              return value;
-            }}
           />
           <YAxis
             interval={0} // すべてのメモリを表示
