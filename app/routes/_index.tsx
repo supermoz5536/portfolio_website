@@ -30,11 +30,23 @@ export const loader = async () => {
 
   const response = await fetchVideoDownloadURL();
   const data = await response.json();
-  return Response.json({
-    downloadUrlArray: data.downloadUrlArray,
-    ganttDocDatas: ganttDocDatas,
-    barChartDocData: barChartDocData,
-  });
+  // return json({
+  //   downloadUrlArray: data.downloadUrlArray,
+  //   ganttDocDatas: ganttDocDatas,
+  //   barChartDocData: barChartDocData,
+  // });
+  return new Response(
+    JSON.stringify({
+      downloadUrlArray: data.downloadUrlArray,
+      ganttDocDatas: ganttDocDatas,
+      barChartDocData: barChartDocData,
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    },
+  );
 };
 
 export default function Index() {

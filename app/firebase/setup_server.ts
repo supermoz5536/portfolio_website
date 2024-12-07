@@ -21,11 +21,16 @@ const cert = {
 /// サーバーサイドではコードが複数回実行される可能性があるからです。
 /// Admin SDKでは複数のアプリを初期化することが可能です。
 /// 初期化されていない場合、length === 0 になります。
+
+let initializedAdmin: any;
+
 if (admin.apps.length === 0) {
-  admin.initializeApp({
+  initializedAdmin = admin.initializeApp({
     credential: admin.credential.cert(cert),
     storageBucket: "portfolio-website-4645b.firebasestorage.app",
   });
+} else {
+  initializedAdmin = admin.app();
 }
 
-export { admin as initializedAdmin };
+export { initializedAdmin };
