@@ -121,7 +121,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
           /**
            * overflow-hidden: 非表示のサイズ0(h-0 w-0)の時に内容を表示させない
            */
-          "flex fixed z-10 items-center justify-center overflow-hidden bg-gray-500/50 transition-all duration-300" +
+          "flex fixed z-50 items-center justify-center overflow-hidden bg-black/65 transition-all duration-300" +
           (viewFlag
             ? // 画面全体にアニメーションが広がる
               " top-0 left-0 h-screen w-screen "
@@ -139,7 +139,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
             onClick={(event) => onClickCard(event)}
           >
             {typeof window != "undefined"
-              ? window.innerWidth > 768 && (
+              ? window.innerWidth > 500 && (
                   <div className="absolute z-20">
                     {/* 下層の Matter.js */}
                     <MatterJs1

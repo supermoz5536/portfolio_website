@@ -37,7 +37,7 @@ export const fetchGanttDocDatas = async () => {
     .collection("project");
 
   const docsSnapshot = await projectCollectionRef.get();
-  const docDatas = docsSnapshot.docs.map((doc) => doc.data());
+  const docDatas = docsSnapshot.docs.map((doc: any) => doc.data());
 
   return docDatas;
 };

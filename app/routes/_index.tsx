@@ -21,20 +21,16 @@ export const meta: MetaFunction = () => {
 
 export const loader = async () => {
   // Gantt Chart
-  await setGanttForDev();
+  // await setGanttForDev();
   const ganttDocDatas = await fetchGanttDocDatas();
 
   // Bar Chart
-  await setBarChartDocDataForDev();
+  // await setBarChartDocDataForDev();
   const barChartDocData = await fetchBarChartDocData();
 
   const response = await fetchVideoDownloadURL();
   const data = await response.json();
-  // return json({
-  //   downloadUrlArray: data.downloadUrlArray,
-  //   ganttDocDatas: ganttDocDatas,
-  //   barChartDocData: barChartDocData,
-  // });
+
   return new Response(
     JSON.stringify({
       downloadUrlArray: data.downloadUrlArray,
