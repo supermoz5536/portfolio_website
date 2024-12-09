@@ -30,3 +30,12 @@ body {
     color-scheme: dark;
   }
 }
+
+/**
+ * 全要素リセットスタイル
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

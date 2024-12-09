@@ -19,18 +19,23 @@ type AnimateInProps = {
  * </AnimateIn>
  */
 export const AnimateIn = ({ children }: AnimateInProps) => {
-  const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p"];
-
-  const { ref, inView } = useInView({
-    rootMargin: "-300px",
-    triggerOnce: true,
-  });
+  const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"];
 
   /**
-   *  React.Children: childrenがReaqctElement[]型かをチェック
+   * React.ReactNode:
+   * 非常に包括的な型で、文字列、数字、配列、null、undefined なども含まれます。
+   *
+   * React.Children:
+   * childrenがReaqctElement[]型かをチェック
    * 子要素が単一の場合でも、配列の場合でも、falsyの場合でも同じ方法で処理できる
    */
   const processChildren = (children: React.ReactNode): any => {
+    const { ref, inView } = useInView({
+      rootMargin: "0% 0% -30% 0%",
+      triggerOnce: true,
+      threshold: 0,
+    });
+
     console.log("2");
     const resultProcessedChildren = React.Children.map(children, (child) => {
       console.log("3");
@@ -40,30 +45,37 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         const id = child.props.id;
         const tagName = typeof child.type == "string" ? child.type : null;
         let animateClassName = null;
+        let className = null;
 
         /* 文字列系のタグの場合 */
         if (tagName && textTags.includes(tagName))
           animateClassName = "animate-scale-in-ver-bottom";
         /* imgタグの場合 */
-        if (tagName == "img") animateClassName = "";
+        if (tagName == "img") animateClassName = "animate-scale-in-ver-bottom";
         /* 横ラインの場合 */
-        if (id == "line") animateClassName = "";
+        if (id == "line") animateClassName = "animate-scale-in-ver-bottom";
         /* 丸アイコンの場合 */
-        if (id == "circle") animateClassName = "";
+        if (id == "circle") animateClassName = "animate-scale-in-ver-bottom";
         /* チャートの場合 */
-        if (id == "chart") animateClassName = "";
+        if (id == "chart") animateClassName = "animate-scale-in-ver-bottom";
 
         console.log("5");
-        const className = [
-          child.props.className,
-          inView ? animateClassName : "text-blue-400",
-        ]
-          .filter((el) => el)
-          .join(" ");
+
+        /* アニメーションする要素のみに動的なCSSクラスを設定 */
+        if (animateClassName != null) {
+          className = [
+            child.props.className,
+            inView ? animateClassName : "opacity-0",
+          ]
+            .filter((el) => el)
+            .join(" ");
+        } else {
+          className = child.props.className;
+        }
 
         console.log("6");
 
-        const processedChildren = React.isValidElement(child.props.children)
+        const processedChildren = child.props.children
           ? React.Children.map(child.props.children, (nestedChild) =>
               processChildren(nestedChild),
             )
