@@ -30,7 +30,7 @@ export default function Panel2() {
             </div>
             {/* Content Container A */}
             <div className="mt-10 ml-0 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
-              <div className="w-full h-[400px]">
+              <div id="chart" className="w-full h-[400px]">
                 <BarChartWrapper />
               </div>
             </div>
