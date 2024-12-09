@@ -25,7 +25,7 @@ export const loader = async () => {
   const ganttDocDatas = await fetchGanttDocDatas();
 
   // Bar Chart
-  await setBarChartDocDataForDev();
+  // await setBarChartDocDataForDev();
   const barChartDocData = await fetchBarChartDocData();
 
   const response = await fetchVideoDownloadURL();
@@ -47,8 +47,8 @@ export const loader = async () => {
 
 export default function Index() {
   return (
-    <div className="flex flex-col items-center justify-start">
-      {/* <Scene1 /> */}
+    <div className="relative flex flex-col items-center justify-start">
+      <Scene1 />
       <Panel1 />
       <Scene2 />
       <Panel2 />
