@@ -149,8 +149,11 @@ export const AnimateInSection = ({ children }: AnimateInProps) => {
           const processedResult = React.cloneElement(
             child as React.ReactElement,
             {
-              ...child.props,
+              ref: animateClassName != null ? ref : null,
+              className: className,
               style: animateClassName != null ? style : null,
+              children: processedNestedChildren,
+              id: "done",
             },
           );
           console.log("7 className:", className);

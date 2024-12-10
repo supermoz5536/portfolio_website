@@ -86,7 +86,7 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         // childrenが存在するなら
         // に変更する
         // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-        const processedChildren = child.props.children
+        const processedNestedChildren = child.props.children
           ? React.Children.map(child.props.children, (nestedChild) =>
               processChildren(nestedChild),
             )
@@ -97,11 +97,11 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
           {
             ref: animateClassName != null ? ref : null,
             className: className,
-            children: processedChildren,
+            children: processedNestedChildren,
           },
         );
         console.log("7 className:", className);
-        console.log("7 processedChildren:", processedChildren);
+        console.log("7 processedChildren:", processedNestedChildren);
         console.log("7 processedResult:", processedResult);
 
         return processedResult;
