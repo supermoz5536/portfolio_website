@@ -11,7 +11,6 @@ import {
   fetchBarChartDocData,
   setBarChartDocDataForDev,
 } from "~/model/firestore/firestore_server_model";
-import { AnimateIn } from "~/util/animation";
 
 export const meta: MetaFunction = () => {
   return [
