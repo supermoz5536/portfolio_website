@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { AnimateIn } from "~/components/animation";
+import { AnimateIn } from "~/util/animation";
 
 export default function Scene1() {
   return (

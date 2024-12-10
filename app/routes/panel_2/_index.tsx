@@ -1,7 +1,7 @@
 import { BarChartWrapper } from "./component/Bar_chart_wrapper";
 import GraphRadar from "./component/Radar_chart";
 import GanttChart from "./component/Gantt_chart_";
-import { AnimateIn } from "~/components/animation";
+import { AnimateIn } from "../../components/animate_in";
 
 export default function Panel2() {
   return (
@@ -28,7 +28,10 @@ export default function Panel2() {
                   <span className="block">Be</span>
                   <span className="block">Super</span>
                   <span className="block">Creative</span>
-                  <span className="block h-[0.5rem] w-[15rem] mt-3 bg-black" />
+                  <span
+                    id="line"
+                    className="block h-[0.5rem] w-[15rem] mt-3 bg-black"
+                  />
                 </div>
 
                 {/* Content Container A */}

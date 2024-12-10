@@ -13,10 +13,13 @@ type AnimateInProps = {
 
 /**
  * @example
- *
- * <AnimateIn>
- *   <div> アニメーションする要素 </div>
- * </AnimateIn>
+ * return (
+ *  <>
+ *    <AnimateIn>
+ *       その他の全てのコンポーネント
+ *    </AnimateIn>
+ *  <>
+ * )
  */
 export const AnimateIn = ({ children }: AnimateInProps) => {
   const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"];
@@ -53,11 +56,13 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         /* imgタグの場合 */
         if (tagName == "img") animateClassName = "animate-scale-in-ver-bottom";
         /* 横ラインの場合 */
-        if (id == "line") animateClassName = "animate-scale-in-ver-bottom";
+        if (id == "line") animateClassName = "animate-scale-in-hor-left";
         /* 丸アイコンの場合 */
         if (id == "circle") animateClassName = "animate-scale-in-ver-bottom";
         /* チャートの場合 */
         if (id == "chart") animateClassName = "animate-scale-in-ver-bottom";
+        /* テストの場合 */
+        if (id == "test") animateClassName = "animate-fade-in-bottom";
 
         console.log("5");
 
@@ -75,6 +80,12 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
 
         console.log("6");
 
+        // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+        // useInView一括版のコンポーネントでなく
+        // かつ
+        // childrenが存在するなら
+        // に変更する
+        // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
         const processedChildren = child.props.children
           ? React.Children.map(child.props.children, (nestedChild) =>
               processChildren(nestedChild),

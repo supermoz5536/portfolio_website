@@ -4,7 +4,6 @@ import { animista } from "./app/const/animasta";
 
 export default {
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
-  // safelist: ["rgba-opacity-0"],
   theme: {
     extend: {
       fontFamily: {
@@ -20,9 +19,6 @@ export default {
         ],
         archivo: ["Archivo Black", "sans-serif"],
       },
-      // colors: {
-      //   "rgba-opacity-0": "rgba(255, 255, 255, 100)", // 完全に透明
-      // },
     },
     animation: animista.animation,
     keyframes: animista.keyframes,
