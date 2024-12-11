@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 type AnimateInProps = {
@@ -24,6 +24,7 @@ type AnimateInProps = {
 export const AnimateInBlock = ({ children }: AnimateInProps) => {
   const [triggered, setTriggered] = useState<boolean>(false);
   const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"];
+  let firstRefFlag = false;
   let delay = 0;
 
   const { ref, inView } = useInView({
@@ -31,6 +32,12 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
     triggerOnce: true,
     threshold: 0,
   });
+
+  useEffect(() => {
+    if (inView) {
+      setTriggered(true);
+    }
+  }, [inView]);
 
   /**
    * React.ReactNode:
@@ -79,7 +86,7 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
           if (animateClassName != null) {
             className = [
               child.props.className,
-              inView ? animateClassName : "opacity-0",
+              triggered ? animateClassName : "opacity-0",
             ]
               .filter((el) => el)
               .join(" ");
@@ -109,12 +116,16 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
             child as React.ReactElement,
             {
               ...child.props,
-              ref: animateClassName != null ? ref : null,
+              ref:
+                animateClassName != null && firstRefFlag == false ? ref : null,
               className: className,
               children: processedNestedChildren,
               style: animateClassName != null ? style : child.props.style,
             },
           );
+
+          firstRefFlag = true;
+
           console.log("7 className:", className);
           console.log("7 processedChildren:", processedNestedChildren);
           console.log("7 processedResult:", processedResult);
