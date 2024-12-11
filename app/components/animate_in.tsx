@@ -51,6 +51,7 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         let animateClassName = null;
         let className = null;
 
+        /* コンポーネントが<AnimateIn>の場合は、同じ要素を返してスキップ */
         if (id == "skip") return child;
 
         /* 文字列系のタグの場合 */
@@ -63,7 +64,9 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         /* 丸アイコンの場合 */
         if (id == "circle") animateClassName = "animate-scale-in-ver-bottom";
         /* チャートの場合 */
-        if (id == "chart") animateClassName = "animate-scale-in-ver-bottom";
+        if (id == "chart-l") animateClassName = "animate-slide-in-tl";
+        if (id == "chart-r") animateClassName = "animate-fade-in-bottom";
+        if (id == "chart-b") animateClassName = "animate-bounce-in-top";
         /* テストの場合 */
         if (id == "test") animateClassName = "animate-fade-in-bottom";
 
