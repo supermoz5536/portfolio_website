@@ -40,7 +40,7 @@ export default function Panel2() {
                   </div>
                 </AnimateInBlock>
                 {/* Content Container A */}
-                <div className="mt-10 ml-0 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
+                <div className="mt-10 -ml-10 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
                   <div id="chart-l" className="w-full h-[400px]">
                     <BarChartWrapper />
                   </div>
@@ -58,7 +58,7 @@ export default function Panel2() {
                 </div>
                 {/* Content Container B */}
                 <div>
-                  <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
+                  <div className="mt-10 ml-0 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
                     <div id="chart-r" className="w-full h-[400px]">
                       <GraphRadar />
                     </div>

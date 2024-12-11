@@ -91,8 +91,8 @@ export default class Example extends PureComponent<ExampleProps> {
 
               return (
                 <text
-                  x={x} // X座標
-                  y={y + 10} // Y座標を調整（10px 下げる）
+                  x={x - 5} // X座標を調整
+                  y={y + 12.5} // Y座標を調整
                   fontSize={13} // フォントサイズ
                   fill="gray" // 必要に応じて色を変更
                   textAnchor="middle" // 中央揃え
@@ -121,7 +121,7 @@ export default class Example extends PureComponent<ExampleProps> {
                   <text
                     x={x} // メモリのデフォルト位置
                     y={y + 5} // オフセット調整 (+5で中央揃え)
-                    fontSize={15}
+                    fontSize={14.5}
                     fill="#808080"
                     textAnchor="end"
                   >

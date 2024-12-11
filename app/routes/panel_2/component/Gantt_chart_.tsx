@@ -209,13 +209,13 @@ export default function GanttChart() {
         {CellsFormatter().map((cell, index) => (
           <div className={cell.className} style={cell.style}>
             {index < headerCellsNumber && (
-              <div>{`${
+              <div>{`~ ${
                 index == 0 || index == 1
                   ? systemStartYear
                   : systemStartYear + 1 + Math.floor((index - 2) / 12)
-              } 年 ${
+              } / ${
                 (startMonth + index) % 12 == 0 ? 12 : (startMonth + index) % 12
-              } 月`}</div>
+              }"  "`}</div>
             )}
           </div>
         ))}

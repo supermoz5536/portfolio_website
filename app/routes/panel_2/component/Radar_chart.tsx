@@ -51,7 +51,7 @@ export default class Example extends PureComponent {
           }}
         >
           <PolarGrid />
-          <PolarAngleAxis dataKey="subject" tickSize={22.5} fontSize={16} />
+          <PolarAngleAxis dataKey="subject" tickSize={22.5} fontSize={14.5} />
           <PolarRadiusAxis angle={30} domain={[0, 100]} />
           <Radar
             name="Mike"
