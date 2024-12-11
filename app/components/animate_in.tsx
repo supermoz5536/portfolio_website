@@ -58,7 +58,7 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         if (tagName && textTags.includes(tagName))
           animateClassName = "animate-scale-in-ver-bottom";
         /* imgタグの場合 */
-        if (tagName == "img") animateClassName = "animate-scale-in-ver-bottom";
+        if (tagName == "img") animateClassName = "animate-fade-in-bottom";
         /* 横ラインの場合 */
         if (id == "line") animateClassName = "animate-scale-in-hor-left";
         /* 丸アイコンの場合 */

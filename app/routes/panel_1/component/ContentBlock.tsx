@@ -74,7 +74,10 @@ export const ContentBlock = ({
           {/* Divider */}
           <div className="flex items-center mt-10 mb-20">
             <span className="text-xs">PROJECT 0{number} //</span>
-            <div className="ml-2 flex-1 border-gray-500 border-b"></div>
+            <span
+              id="line"
+              className="ml-2 flex-1 border-gray-500 border-b"
+            ></span>
           </div>
         </AnimateInBlock>
       </div>
