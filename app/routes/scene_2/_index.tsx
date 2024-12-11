@@ -66,7 +66,7 @@ export default function Scene2() {
                 }
                 onClick={() => handleButton()}
               >
-                <p id="button-text" className="p-3">
+                <p id="fade-in-bottom" className="p-3">
                   Get Started!
                 </p>
               </Button>

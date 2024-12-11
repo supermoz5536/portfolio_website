@@ -1,5 +1,8 @@
+import { AnimateIn } from "~/components/animate_in";
 import "./Popup_layer.css";
 import { useLoaderData } from "@remix-run/react";
+import { AnimateInPopupAbove } from "~/components/animate_in_popup_above";
+import { MdScreenRotation } from "react-icons/md";
 
 type PopupLayerProps = {
   viewFlag: boolean;
@@ -59,29 +62,54 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                   }}
                 >
                   {/* 説明 */}
-                  <div>
-                    <div className="text-gray-50 text-xl font-normal">
-                      昔々あるところに、小さな山里がありました。その村には、心優しいおばあさんと、一匹の白い狐が住んでいました。おばあさんは狐を家族のように可愛がり、狐もおばあさんを守るように寄り添っていました。
+                  <AnimateInPopupAbove>
+                    <div>
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        昔々あるところに、小さな山里がありました。その村には、心優しいおばあさんと、一匹の白い狐が住んでいました。おばあさんは狐を家族のように可愛がり、狐もおばあさんを守るように寄り添っていました。
+                      </p>
+                      <br />
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        ある日、村に大きな嵐が襲い、川が氾濫して橋が壊れてしまいました。村人たちは困り果てましたが、狐が不思議な力で橋を修復しました。その光景に村人たちは感謝し、狐を守り神として祀ることにしました。
+                      </p>
+                      <br />
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        その後も、狐は村の平和を見守り続けました。しかし、ある満月の夜、狐はおばあさんに別れを告げ、静かに森の奥へ帰っていきました。村人たちはその後も狐への感謝を忘れず、祭りを開きました。
+                      </p>
+                      <br />
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        そして今でも、その村では満月の夜に白い狐の姿が見えると言い伝えられています。それは、おばあさんと村を愛した狐の魂が村を守っているからだと信じられているのです。
+                        <br />
+                        <br />
+                        TraceSpeaker: <br />
+                        <a
+                          className="cursor-pointer hover:text-gray-300 transform duration-200"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://trace-speaker-app-ja.apple-pepper.net"
+                        >
+                          https://trace-speaker-app-ja.apple-pepper.net
+                        </a>
+                        <br />
+                        <br />
+                        Tech Stack: <br />
+                        Flutter Web, Firebase, Python
+                        <br />
+                        <br />
+                      </p>
                     </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      ある日、村に大きな嵐が襲い、川が氾濫して橋が壊れてしまいました。村人たちは困り果てましたが、狐が不思議な力で橋を修復しました。その光景に村人たちは感謝し、狐を守り神として祀ることにしました。
-                    </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      その後も、狐は村の平和を見守り続けました。しかし、ある満月の夜、狐はおばあさんに別れを告げ、静かに森の奥へ帰っていきました。村人たちはその後も狐への感謝を忘れず、祭りを開きました。
-                    </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      そして今でも、その村では満月の夜に白い狐の姿が見えると言い伝えられています。それは、おばあさんと村を愛した狐の魂が村を守っているからだと信じられているのです。
-                    </div>
-                  </div>
-
-                  {/* 使用技術 */}
-                  <div className="text-gray-50 text-xl font-normal mt-10">
-                    使用技術： <br />
-                    Flutter Web, Firebase, Youtube
-                  </div>
+                  </AnimateInPopupAbove>
                 </div>
               </div>
             </>
@@ -92,7 +120,7 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
         ? window.innerWidth < 768 && (
             <>
               {/* モバイルの場合 */}
-              <div className="absolute top-1/2 left-0 z-30 h-1/2 w-full bg-gray-200">
+              <div className="absolute top-0 left-0 z-30 h-1/3 w-full bg-gray-200">
                 {/* ConentBlock1 (下) */}
                 <video
                   controls
@@ -108,7 +136,7 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                 </video>
               </div>
               {/* ConentBlock2 (上) */}
-              <div className="absolute top-0 left-0 z-30 flex justify-center items-center h-1/2 w-full overflow-y-auto bg-blue-400 popup-layer-1-scroll-a">
+              <div className="absolute top-1/3 left-0 z-30 flex justify-center items-center h-2/3 w-full overflow-y-auto bg-blue-400 popup-layer-1-scroll-a">
                 {/* 背景画像 */}
                 <div
                   className="absolute top-0 left-0 h-full w-full"
@@ -133,31 +161,57 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                   }}
                 >
                   {/* 説明 */}
-                  <div>
-                    <div className="text-gray-50 text-xl font-normal">
-                      現在は専業のSEOライター・ディレクターとして、独立しております。また、YouTube台本ライターとしても活動しています。金融・就職・マーケティングをメインのジャンルとして活動中です。
+                  <AnimateIn>
+                    <div
+                      id="fade-in-bottom"
+                      className="inline-flex justify-center items-center  text-gray-50 text-1xl font-normal"
+                    >
+                      -&nbsp;Try landscape mode!&nbsp;-&nbsp;
+                      <MdScreenRotation className="h-[20px] w-[20px]" />
                     </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      営業・マーケティング・採用支援会社と業務委託契約。
-                      ライターとして、メディア運営やSEOライティング、セールスライティングを担当しています。
+                    <p>
+                      <br />
+                    </p>
+                    <div>
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        昔々あるところに、小さな山里がありました。その村には、心優しいおばあさんと、一匹の白い狐が住んでいました。おばあさんは狐を家族のように可愛がり、狐もおばあさんを守るように寄り添っていました。
+                      </p>
+                      <br />
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        ある日、村に大きな嵐が襲い、川が氾濫して橋が壊れてしまいました。村人たちは困り果てましたが、狐が不思議な力で橋を修復しました。その光景に村人たちは感謝し、狐を守り神として祀ることにしました。
+                      </p>
+                      <br />
+                      <p
+                        id="fade-in-bottom"
+                        className="text-gray-50 text-xl font-normal"
+                      >
+                        そして今でも、その村では満月の夜に白い狐の姿が見えると言い伝えられています。それは、おばあさんと村を愛した狐の魂が村を守っているからだと信じられているのです。
+                        <br />
+                        <br />
+                        TraceSpeaker: <br />
+                        <a
+                          className="cursor-pointer hover:text-gray-300 transform duration-200"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://trace-speaker-app-ja.apple-pepper.net"
+                        >
+                          https://trace-speaker-app-ja.apple-pepper.net
+                        </a>
+                        <br />
+                        <br />
+                        Tech Stack: <br />
+                        Flutter Web, Firebase, Python
+                        <br />
+                        <br />
+                      </p>
                     </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      大学4年生のときからメディア事業を開始し、アフィリエイトなどをおこなっていました。
-                      現在もSEOライターやディレクターとして活動しています。
-                    </div>
-                    <br />
-                    <div className="text-gray-50 text-xl font-normal">
-                      大学4年から個人事業主として活動し、2019年から本格的に就職活動に関するメディア運営を開始しました。
-                    </div>
-                  </div>
-
-                  {/* 使用技術 */}
-                  <div className="text-gray-50 text-xl font-normal mt-10">
-                    使用技術： <br />
-                    Flutter Web, Firebase, Youtube
-                  </div>
+                  </AnimateIn>
                 </div>
               </div>
             </>

@@ -80,8 +80,9 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
           if (id == "svg") animateClassName = "animate-scale-in-center";
           /* buttonの場合 */
           if (id == "button") animateClassName = "animate-scale-in-hor-center";
-          /* buttonの文字の場合 */
-          if (id == "button-text") animateClassName = "animate-fade-in-bottom";
+          /* 下からのフェードインの場合 */
+          if (id == "fade-in-bottom")
+            animateClassName = "animate-fade-in-bottom";
 
           console.log("5");
 

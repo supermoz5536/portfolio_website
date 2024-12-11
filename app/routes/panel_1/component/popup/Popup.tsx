@@ -162,7 +162,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
 
           {/* クローズボタン */}
           <div
-            className="absolute -right-10 -top-10 h-10 w-10 hover:cursor-pointer"
+            className="absolute h-10 w-10 hover:cursor-pointer -top-[6.5%] -right-[0%] "
             onClick={() => setViewFlag(false)}
           >
             <IoMdCloseCircleOutline className="h-full w-full text-white" />

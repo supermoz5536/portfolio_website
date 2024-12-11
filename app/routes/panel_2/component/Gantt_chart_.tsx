@@ -215,7 +215,7 @@ export default function GanttChart() {
                   : systemStartYear + 1 + Math.floor((index - 2) / 12)
               } / ${
                 (startMonth + index) % 12 == 0 ? 12 : (startMonth + index) % 12
-              }"  "`}</div>
+              }`}</div>
             )}
           </div>
         ))}

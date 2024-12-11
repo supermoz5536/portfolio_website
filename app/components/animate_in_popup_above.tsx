@@ -21,7 +21,7 @@ type AnimateInProps = {
  *  <>
  * )
  */
-export const AnimateIn = ({ children }: AnimateInProps) => {
+export const AnimateInPopupAbove = ({ children }: AnimateInProps) => {
   const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"];
 
   /**
@@ -34,7 +34,7 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
    */
   const processChildren = (children: React.ReactNode): any => {
     const { ref, inView } = useInView({
-      rootMargin: "0% 0% -30% 0%",
+      rootMargin: "0% 0% -70% 0%",
       triggerOnce: true,
       threshold: 0,
     });

@@ -76,7 +76,7 @@ export const ContentBlock = ({
             <span className="text-xs">PROJECT 0{number} //</span>
             <span
               id="line"
-              className="ml-2 flex-1 border-gray-500 border-b"
+              className="w-[225px] border-gray-500 border-b"
             ></span>
           </div>
         </AnimateInBlock>
