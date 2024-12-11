@@ -64,11 +64,15 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         /* 丸アイコンの場合 */
         if (id == "circle") animateClassName = "animate-scale-in-ver-bottom";
         /* チャートの場合 */
-        if (id == "chart-l") animateClassName = "animate-slide-in-tl";
-        if (id == "chart-r") animateClassName = "animate-fade-in-bottom";
+        if (id == "chart-l") animateClassName = "animate-rotate-in-2-tl-ccw";
+        if (id == "chart-r") animateClassName = "animate-rotate-in-2-fwd-ccw";
         if (id == "chart-b") animateClassName = "animate-bounce-in-top";
         /* svgアイコンの場合 */
         if (id == "svg") animateClassName = "animate-scale-in-center";
+        /* buttonの場合 */
+        if (id == "button") animateClassName = "animate-scale-in-hor-center";
+        /* buttonの文字の場合 */
+        if (id == "button-text") animateClassName = "animate-fade-in-bottom";
 
         console.log("5");
 

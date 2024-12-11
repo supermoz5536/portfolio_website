@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { ContentBlock } from "./component/ContentBlock";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
+import { AnimateInBlock } from "~/components/animate_in_block";
 
 export default function Panel1() {
   // const box1: any = useRef();
@@ -56,26 +57,34 @@ export default function Panel1() {
         {/* Responsible Width-Max-Break */}
         <div className="xl:flex flex-row justify-between xl-3:justify-center">
           {/* Header */}
-          <div className="hidden xl:block text-4xl my-sm:text-5xl xl-2:text-6xl mt-[7vh] ml-16 mr-6 font-archivo">
-            Be <br />
-            Super <br />
-            <div className="underline underline-offset-[20px] decoration-[6px]">
-              Creative
+          <AnimateInBlock>
+            <div className="hidden xl:block text-4xl my-sm:text-5xl xl-2:text-6xl mt-[7vh] ml-16 mr-6 font-archivo">
+              <span className="block">Be</span>
+              <span className="block">Super</span>
+              <span className="block">Creative</span>
+              <span
+                id="line"
+                className="block h-[0.5rem] my-sm:w-[13.75rem] xl-2:w-[17rem] mt-3 bg-black"
+              />
             </div>
-          </div>
+          </AnimateInBlock>
 
           {/* Responsible Width-Mid-Break */}
           <div className="my-md:flex flex-row justify-between my-lg:justify-around lg-2:justify-center my-2xl:justify-between">
             {/* Header & Content Container A */}
             <div>
               {/* Header */}
-              <div className="text-4xl xl:text-white my-sm:text-5xl mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
-                Be <br />
-                Super <br />
-                <div className="underline underline-offset-[20px] decoration-[6px]">
-                  Creative
+              <AnimateInBlock>
+                <div className="text-4xl xl:text-white my-sm:text-5xl mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
+                  <span className="block">Be</span>
+                  <span className="block">Super</span>
+                  <span className="block">Creative</span>
+                  <span
+                    id="line"
+                    className="block  h-[0.5rem] w-[10.25rem] my-sm:w-[13.7rem] mt-3 bg-black"
+                  />
                 </div>
-              </div>
+              </AnimateInBlock>
               {/* Content Container A */}
               <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
                 {/* Content 1 */}
@@ -102,6 +111,7 @@ export default function Panel1() {
                 <br />
                 <br />
                 <br />
+                <span className="block h-[0.5rem] w-[13zrem] mt-3 bg-transparent" />
               </div>
               {/* Content Container B */}
               <div>

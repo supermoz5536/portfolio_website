@@ -3,7 +3,7 @@ export const animista = {
     /* textTags "h1", "h2", "h3", "h4", "h5", "h6", "p", "span" */
     "scale-in-ver-bottom":
       "scale-in-ver-bottom 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
-    /* chart-r */
+    /* fade ib bottom */
     "fade-in-bottom":
       "fade-in-bottom 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000)   both",
     /* line */
@@ -12,11 +12,17 @@ export const animista = {
     /* chart-b */
     "bounce-in-top": "bounce-in-top 1.25s ease   both",
     /* chart-l */
-    "slide-in-tl":
-      "slide-in-tl 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+    "rotate-in-2-tl-ccw":
+      "rotate-in-2-tl-ccw 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+    /* chart-r */
+    "rotate-in-2-fwd-ccw":
+      "rotate-in-2-fwd-ccw 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
     /* svg */
     "scale-in-center":
       "scale-in-center 0.85s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+    /* button */
+    "scale-in-hor-center":
+      "scale-in-hor-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
   },
 
   keyframes: {
@@ -86,13 +92,26 @@ export const animista = {
       },
     },
     /* chart-l */
-    "slide-in-tl": {
+    "rotate-in-2-tl-ccw": {
       "0%": {
-        transform: "translateY(-1000px) translateX(-1000px)",
+        transform: "rotate(45deg)",
+        "transform-origin": "0 0",
         opacity: "0",
       },
       to: {
-        transform: "translateY(0) translateX(0)",
+        transform: "rotate(0)",
+        "transform-origin": "0 0",
+        opacity: "1",
+      },
+    },
+    /* chart-r */
+    "rotate-in-2-fwd-ccw": {
+      "0%": {
+        transform: "translateZ(-200px) rotate(45deg)",
+        opacity: "0",
+      },
+      to: {
+        transform: "translateZ(0) rotate(0)",
         opacity: "1",
       },
     },
@@ -104,6 +123,17 @@ export const animista = {
       },
       to: {
         transform: "scale(1)",
+        opacity: "1",
+      },
+    },
+    /* button */
+    "scale-in-hor-center": {
+      "0%": {
+        transform: "scaleX(0)",
+        opacity: "1",
+      },
+      to: {
+        transform: "scaleX(1)",
         opacity: "1",
       },
     },
