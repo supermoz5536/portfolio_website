@@ -1,7 +1,7 @@
 import { BarChartWrapper } from "./component/Bar_chart_wrapper";
 import GraphRadar from "./component/Radar_chart";
 import GanttChart from "./component/Gantt_chart_";
-import { AnimateIn } from "../../components/animate_in";
+import { AnimateInBlock } from "../../components/animate_in_block";
 
 export default function Panel2() {
   return (
