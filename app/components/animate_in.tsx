@@ -67,8 +67,8 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
         if (id == "chart-l") animateClassName = "animate-slide-in-tl";
         if (id == "chart-r") animateClassName = "animate-fade-in-bottom";
         if (id == "chart-b") animateClassName = "animate-bounce-in-top";
-        /* テストの場合 */
-        if (id == "test") animateClassName = "animate-fade-in-bottom";
+        /* svgアイコンの場合 */
+        if (id == "svg") animateClassName = "animate-scale-in-center";
 
         console.log("5");
 

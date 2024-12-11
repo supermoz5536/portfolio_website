@@ -14,6 +14,9 @@ export const animista = {
     /* chart-l */
     "slide-in-tl":
       "slide-in-tl 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+    /* svg */
+    "scale-in-center":
+      "scale-in-center 0.85s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
   },
 
   keyframes: {
@@ -90,6 +93,17 @@ export const animista = {
       },
       to: {
         transform: "translateY(0) translateX(0)",
+        opacity: "1",
+      },
+    },
+    /* svg */
+    "scale-in-center": {
+      "0%": {
+        transform: "scale(0)",
+        opacity: "1",
+      },
+      to: {
+        transform: "scale(1)",
         opacity: "1",
       },
     },

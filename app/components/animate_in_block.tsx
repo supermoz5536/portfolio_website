@@ -13,13 +13,15 @@ type AnimateInProps = {
 
 /**
  * @example
- * return (
- *  <>
- *    <AnimateIn>
- *       その他の全てのコンポーネント
- *    </AnimateIn>
- *  <>
- * )
+ *    <AnimateInBlock>
+ *       <Component Group />
+ *    </AnimateInBlock>
+ *
+ * @note
+ * 対象要素群の1番目にのみ Ref を渡し
+ * そのRefを監視して、その他全要素のアニメーションをトリガーする。
+ * しかし、その要素の子孫にCSSアニメーションがデフォルトで設定されていると
+ * 適切にトリガーされない。その場合は AnimateIn を部分的に代用する
  */
 export const AnimateInBlock = ({ children }: AnimateInProps) => {
   const [triggered, setTriggered] = useState<boolean>(false);
@@ -72,9 +74,11 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
           /* 丸アイコンの場合 */
           if (id == "circle") animateClassName = "animate-scale-in-ver-bottom";
           /* チャートの場合 */
-          if (id == "chart") animateClassName = "animate-scale-in-ver-bottom";
-          /* テストの場合 */
-          if (id == "test") animateClassName = "animate-fade-in-bottom";
+          if (id == "chart-l") animateClassName = "animate-slide-in-tl";
+          if (id == "chart-r") animateClassName = "animate-fade-in-bottom";
+          if (id == "chart-b") animateClassName = "animate-bounce-in-top";
+          /* svgアイコンの場合 */
+          if (id == "svg") animateClassName = "animate-scale-in-center";
 
           console.log("5");
 
