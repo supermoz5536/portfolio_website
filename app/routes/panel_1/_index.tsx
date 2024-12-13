@@ -89,16 +89,16 @@ export default function Panel1() {
               <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
                 {/* Content 1 */}
                 <ContentBlock
-                  title="Title Cotent-1"
-                  subtitle="Subtitle Content-1"
-                  body="body"
+                  title="ChatBus"
+                  subtitle="Exchange Learning with Random Chat"
+                  medium="Web App"
                   number={1}
                 />
                 {/* Content 3 */}
                 <ContentBlock
-                  title="Title Cotent-3"
-                  subtitle="Subtitle Content-3"
-                  body="body"
+                  title="TraceSpeaker"
+                  subtitle="YouTube Simultaneous Interpretation"
+                  medium="Web App"
                   number={3}
                 />
               </div>
@@ -118,17 +118,17 @@ export default function Panel1() {
                 <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
                   {/* Content 2 */}
                   <ContentBlock
-                    title="Title Cotent-2"
-                    subtitle="Subtitle Content-2"
-                    body="body"
+                    title="Inventory Z"
+                    subtitle="Scraping Amazon to Fetch Inventory Data"
+                    medium="Desktop"
                     number={2}
                   />
 
                   {/* Content 4 */}
                   <ContentBlock
-                    title="Title Cotent-4"
-                    subtitle="Subtitle Content-4"
-                    body="body"
+                    title="Inner World"
+                    subtitle="Steps to Evolution of Mind"
+                    medium="Web App"
                     number={4}
                   />
                 </div>

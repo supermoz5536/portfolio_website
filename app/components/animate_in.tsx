@@ -9,6 +9,7 @@ type AnimateInProps = {
    * 個別の子要素や子要素の配列を区別せずに扱うことができます。
    */
   children: React.ReactNode;
+  rootMarginBottom?: number;
 };
 
 /**
@@ -21,8 +22,9 @@ type AnimateInProps = {
  *  <>
  * )
  */
-export const AnimateIn = ({ children }: AnimateInProps) => {
+export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
   const textTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"];
+  if (rootMarginBottom == undefined) rootMarginBottom = -30;
 
   /**
    * React.ReactNode:
@@ -34,7 +36,7 @@ export const AnimateIn = ({ children }: AnimateInProps) => {
    */
   const processChildren = (children: React.ReactNode): any => {
     const { ref, inView } = useInView({
-      rootMargin: "0% 0% -30% 0%",
+      rootMargin: `0% 0% ${rootMarginBottom}% 0%`,
       triggerOnce: true,
       threshold: 0,
     });

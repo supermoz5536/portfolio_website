@@ -9,7 +9,7 @@ import { AnimateInBlock } from "~/components/animate_in_block";
 type ContentBlockProps = {
   title: string;
   subtitle: string;
-  body: string;
+  medium: string;
   number: 1 | 2 | 3 | 4;
 };
 
@@ -30,7 +30,7 @@ const iconStyles = tv({
 export const ContentBlock = ({
   title,
   subtitle,
-  body,
+  medium,
   number,
 }: ContentBlockProps) => {
   const [popupFlag, setPopupFlag] = useState<boolean>(false);
@@ -56,10 +56,12 @@ export const ContentBlock = ({
         </AnimateIn>
         <AnimateInBlock>
           {/* Content Title  */}
-          <h2 className="text-2xl font-bold mt-4">{title}</h2>
+          <h2 className="text-2xl font-bold text-gray-600 mt-4">{title}</h2>
 
           {/* Content Subtitle  */}
-          <h3 className="text-base font-semibold mt-1">{subtitle}</h3>
+          <h3 className="text-base font-semibold text-gray-500 mt-1">
+            {subtitle}
+          </h3>
 
           {/* Asset Image */}
           <div className="flex mt-6">
@@ -73,11 +75,8 @@ export const ContentBlock = ({
 
           {/* Divider */}
           <div className="flex items-center mt-10 mb-20">
-            <span className="text-xs">PROJECT 0{number} //</span>
-            <span
-              id="line"
-              className="w-[225px] border-gray-500 border-b"
-            ></span>
+            <span className="text-xs">{medium}&nbsp;//&nbsp;</span>
+            <span id="line" className="w-[65%] border-gray-500 border-b"></span>
           </div>
         </AnimateInBlock>
       </div>

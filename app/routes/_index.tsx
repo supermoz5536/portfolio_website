@@ -52,7 +52,7 @@ export default function Index() {
       <Panel1 />
       <Scene2 />
       <Panel2 />
-      <Scene3 />
+      {/* <Scene3 /> */}
     </div>
   );
 }

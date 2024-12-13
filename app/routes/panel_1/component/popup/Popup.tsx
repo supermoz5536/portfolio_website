@@ -154,10 +154,38 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
               : null}
 
             {/* 上層の4つのコンテナー */}
-            {number == 1 && <PopupLayer1 viewFlag={viewFlag} number={number} />}
-            {number == 2 && <PopupLayer2 viewFlag={viewFlag} number={number} />}
-            {number == 3 && <PopupLayer3 viewFlag={viewFlag} number={number} />}
-            {number == 4 && <PopupLayer4 viewFlag={viewFlag} number={number} />}
+            {number == 1 && (
+              <PopupLayer1
+                viewFlag={viewFlag}
+                number={number}
+                height={typeof window != "undefined" ? aspects.height : 100}
+                width={typeof window != "undefined" ? aspects.width : 100}
+              />
+            )}
+            {number == 2 && (
+              <PopupLayer2
+                viewFlag={viewFlag}
+                number={number}
+                height={typeof window != "undefined" ? aspects.height : 100}
+                width={typeof window != "undefined" ? aspects.width : 100}
+              />
+            )}
+            {number == 3 && (
+              <PopupLayer3
+                viewFlag={viewFlag}
+                number={number}
+                height={typeof window != "undefined" ? aspects.height : 100}
+                width={typeof window != "undefined" ? aspects.width : 100}
+              />
+            )}
+            {number == 4 && (
+              <PopupLayer4
+                viewFlag={viewFlag}
+                number={number}
+                height={typeof window != "undefined" ? aspects.height : 100}
+                width={typeof window != "undefined" ? aspects.width : 100}
+              />
+            )}
           </div>
 
           {/* クローズボタン */}

@@ -3,20 +3,24 @@ import "./Popup_layer.css";
 import { useLoaderData } from "@remix-run/react";
 import { AnimateIn } from "~/components/animate_in";
 import { MdScreenRotation } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 type PopupLayerProps = {
   viewFlag: boolean;
   number: number;
+  height: number;
+  width: number;
 };
 
 export const PopupLayer1 = (props: PopupLayerProps) => {
   const { viewFlag, number } = props;
   const { downloadUrlArray }: any = useLoaderData();
   const FallbackLink = `zhttps://firebasestorage.googleapis.com/v0/b/portfolio-website-4645b.firebasestorage.app/o/system%2Fvideo%2Fcontent_block%1F${number}.mp4?alt=media`;
+  const [isResized, setIsResized] = useState<boolean>();
 
-  if (typeof window != "undefined") {
-    console.log("現在のwindow.innerWidth:", window.innerWidth);
-  }
+  useEffect(() => {
+    setIsResized((prev) => !prev);
+  }, [props.height, props.width]);
 
   return (
     <>

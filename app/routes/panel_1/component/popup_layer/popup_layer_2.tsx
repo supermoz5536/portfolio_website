@@ -1,18 +1,25 @@
 import { AnimateIn } from "~/components/animate_in";
 import "./Popup_layer.css";
 import { useLoaderData } from "@remix-run/react";
-import { AnimateInPopupAbove } from "~/components/animate_in_popup_above";
 import { MdScreenRotation } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 type PopupLayerProps = {
   viewFlag: boolean;
   number: number;
+  height: number;
+  width: number;
 };
 
 export const PopupLayer2 = (props: PopupLayerProps) => {
   const { viewFlag, number } = props;
   const { downloadUrlArray }: any = useLoaderData();
   const FallbackLink = `zhttps://firebasestorage.googleapis.com/v0/b/portfolio-website-4645b.firebasestorage.app/o/system%2Fvideo%2Fcontent_block%1F${number}.mp4?alt=media`;
+  const [isResized, setIsResized] = useState<boolean>();
+
+  useEffect(() => {
+    setIsResized((prev) => !prev);
+  }, [props.height, props.width]);
 
   return (
     <>
@@ -68,28 +75,36 @@ export const PopupLayer2 = (props: PopupLayerProps) => {
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        2昔々あるところに、小さな山里がありました。その村には、心優しいおばあさんと、一匹の白い狐が住んでいました。おばあさんは狐を家族のように可愛がり、狐もおばあさんを守るように寄り添っていました。
+                        Inventory Z is a desktop application specialized in
+                        inventory management for Amazon import businesses and
+                        retail arbitrage, known as "Sedori" in Japan.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        ある日、村に大きな嵐が襲い、川が氾濫して橋が壊れてしまいました。村人たちは困り果てましたが、狐が不思議な力で橋を修復しました。その光景に村人たちは感謝し、狐を守り神として祀ることにしました。
+                        Simply register the product's ASIN code, and it will
+                        automatically track daily fluctuations in "accurate"
+                        inventory levels.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        その後も、狐は村の平和を見守り続けました。しかし、ある満月の夜、狐はおばあさんに別れを告げ、静かに森の奥へ帰っていきました。村人たちはその後も狐への感謝を忘れず、祭りを開きました。
+                        Inventory Z retrieves data for each ASIN with meticulous
+                        attention to detail. Compared to industry-standard tools
+                        like Keepa, which prioritize large-scale efficiency, it
+                        offers higher reliability in data acquisition.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        そして今でも、その村では満月の夜に白い狐の姿が見えると言い伝えられています。それは、おばあさんと村を愛した狐の魂が村を守っているからだと信じられているのです。
+                        Trustworthy and accurate numbers maximize the potential
+                        of your business.
                         <br />
                         <br />
                         Inventory Z: <br />
@@ -177,28 +192,36 @@ export const PopupLayer2 = (props: PopupLayerProps) => {
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        2昔々あるところに、小さな山里がありました。その村には、心優しいおばあさんと、一匹の白い狐が住んでいました。おばあさんは狐を家族のように可愛がり、狐もおばあさんを守るように寄り添っていました。
+                        Inventory Z is a desktop application specialized in
+                        inventory management for Amazon import businesses and
+                        retail arbitrage, known as "Sedori" in Japan.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        ある日、村に大きな嵐が襲い、川が氾濫して橋が壊れてしまいました。村人たちは困り果てましたが、狐が不思議な力で橋を修復しました。その光景に村人たちは感謝し、狐を守り神として祀ることにしました。
+                        Simply register the product's ASIN code, and it will
+                        automatically track daily fluctuations in "accurate"
+                        inventory levels.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        その後も、狐は村の平和を見守り続けました。しかし、ある満月の夜、狐はおばあさんに別れを告げ、静かに森の奥へ帰っていきました。村人たちはその後も狐への感謝を忘れず、祭りを開きました。
+                        Inventory Z retrieves data for each ASIN with meticulous
+                        attention to detail. Compared to industry-standard tools
+                        like Keepa, which prioritize large-scale efficiency, it
+                        offers higher reliability in data acquisition.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        そして今でも、その村では満月の夜に白い狐の姿が見えると言い伝えられています。それは、おばあさんと村を愛した狐の魂が村を守っているからだと信じられているのです。
+                        Trustworthy and accurate numbers maximize the potential
+                        of your business.
                         <br />
                         <br />
                         Inventory Z: <br />
