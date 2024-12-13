@@ -11,6 +11,7 @@ import {
   fetchBarChartDocData,
   setBarChartDocDataForDev,
 } from "~/model/firestore/firestore_server_model";
+import Scene1Test from "./scene_1_test/_index";
 
 export const meta: MetaFunction = () => {
   return [
@@ -48,11 +49,12 @@ export const loader = async () => {
 export default function Index() {
   return (
     <div className="relative flex flex-col items-center justify-start">
-      {/* <Scene1 /> */}
-      <Panel1 />
+      {/* <Scene1Test /> */}
+      <Scene1 />
+      {/* <Panel1 />
       <Scene2 />
-      <Panel2 />
-      <Scene3 />
+      <Panel2 /> */}
+      {/* <Scene3 /> */}
     </div>
   );
 }
