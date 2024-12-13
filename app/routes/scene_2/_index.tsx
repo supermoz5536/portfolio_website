@@ -97,22 +97,3 @@ export default function Scene2() {
     </>
   );
 }
-
-// /// スクロール禁止
-// // passive: false: イベントリスナーが「能動的」に
-// // 動きを制御する可能性があることをブラウザに宣言
-// function banScroll() {
-//   document.addEventListener("wheel", notscroll, { passive: false }); // PC用
-//   document.addEventListener("touchmove", notscroll, { passive: false }); // スマホ用
-// }
-
-// /// スクロール禁止解除
-// function goScroll() {
-//   document.removeEventListener("wheel", notscroll); // PC用
-//   document.removeEventListener("touchmove", notscroll); // スマホ用
-// }
-
-// /// スクロール禁止のコールバック関数
-// function notscroll(event: any) {
-//   event.preventDefault();
-// }

@@ -25,7 +25,7 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
     <>
       {/* デスクトップの場合 or タブレットの場合*/}
       {typeof window != "undefined"
-        ? window.innerWidth > 768 && (
+        ? window.innerWidth > 500 && (
             <>
               <div className="absolute top-1/2 left-1/2 z-30 h-1/2 w-1/2 bg-gray-200">
                 {/* ConentBlock1 (右下) */}
@@ -129,7 +129,7 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
         : null}
 
       {typeof window != "undefined"
-        ? window.innerWidth < 768 && (
+        ? window.innerWidth < 500 && (
             <>
               {/* モバイルの場合 */}
               <div className="absolute top-0 left-0 z-30 h-1/3 w-full bg-gray-200">
