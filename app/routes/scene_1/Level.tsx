@@ -121,9 +121,5 @@ export function BlockStart({ position = [0, 0, 0] }) {
 }
 
 export default function Level() {
-  return (
-    <>
-      <BlockStart position={[0, 0, 0]} />
-    </>
-  );
+  return <>{/* <BlockStart position={[0, 0, 0]} /> */}</>;
 }
