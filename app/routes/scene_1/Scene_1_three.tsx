@@ -4,7 +4,7 @@ import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 
-export const ThreeScene2 = () => {
+export const ThreeScene1 = () => {
   return (
     <>
       <KeyboardControls
@@ -21,22 +21,23 @@ export const ThreeScene2 = () => {
             minHeight: "100vh",
             height: "100%",
             width: "100%",
-            pointerEvents: "none",
+            // pointerEvents: "none",
           }}
           shadows
+          // Canvas の呼び出し時に
+          // PerspectiveCamera が設定可能
           camera={{
             fov: 45,
             near: 0.1,
             far: 200,
-            position: [2.5, 4, 6],
+            position: [2.5, 8, 20],
           }}
         >
           <Experience />
         </Canvas>
       </KeyboardControls>
-      ,
     </>
   );
 };
 
-export default ThreeScene2;
+export default ThreeScene1;

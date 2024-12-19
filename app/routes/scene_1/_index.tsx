@@ -1,6 +1,6 @@
 // import { Button } from "@mui/material";
 import { Button } from "@headlessui/react";
-import ThreeScene2 from "./Scene_2_three";
+import ThreeScene1 from "./Scene_1_three";
 import { useStore } from "zustand";
 import { useSystemStore } from "~/store/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -77,7 +77,7 @@ export default function Scene1() {
 
             {/* Three.js */}
             <div className="absolute top-0 left-0 h-[100vh] w-[100vw] z-0">
-              <ThreeScene2 />
+              <ThreeScene1 />
             </div>
           </div>
         ) : (
@@ -89,7 +89,7 @@ export default function Scene1() {
                 onClick={() => handleButton()}
               />
               {/* Three.js */}
-              <ThreeScene2 />
+              <ThreeScene1 />
             </div>
           </div>
         )}

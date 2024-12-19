@@ -6,301 +6,124 @@ import { useFrame } from "@react-three/fiber";
 import { Float, Text, useGLTF } from "@react-three/drei";
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const floor1Material = new THREE.MeshStandardMaterial({ color: "limegreen" });
-const floor2Material = new THREE.MeshStandardMaterial({ color: "greenYellow" });
-const obstacleMaterial = new THREE.MeshStandardMaterial({
-  color: "orangered",
+const coneGeometry = new THREE.ConeGeometry(9 * Math.sqrt(2), 10, 4);
+coneGeometry.translate(0, coneGeometry.parameters.height / 2, 0);
+const floorLayerMaterial = new THREE.MeshStandardMaterial({ color: "#cccccc" });
+const floorBodyMaterial = new THREE.MeshStandardMaterial({ color: "yellow" });
+const showcaseTopBottomMaterial = new THREE.MeshStandardMaterial({
+  color: "black",
 });
-const wallMaterial = new THREE.MeshStandardMaterial({
-  color: "slategrey",
+
+const showcaseBottomLayerMaterial = new THREE.MeshStandardMaterial({
+  color: "#f1f1f1",
+});
+
+const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
+  metalness: 0,
+  roughness: 0,
+  transmission: 1,
+  ior: 1.62,
+  thickness: 0.001,
+  opacity: 0.95, // 透明度を強調
+  transparent: true, // 透明を有効化
+  color: 0xffffff, // 完全な白
 });
 
 export function BlockStart({ position = [0, 0, 0] }) {
   return (
-    <group position={new THREE.Vector3(position[0], position[1], position[2])}>
-      <Float floatIntensity={1} rotationIntensity={1}>
-        <Text
-          font="/bebas-neue-v9-latin-regular.woff"
-          scale={0.5}
-          maxWidth={3.25}
-          lineHeight={0.75}
-          textAlign="right"
-          position={[0.75, 0.65, 0]}
-          rotation-y={-0.25}
-          color="white"
-        >
-          <meshBasicMaterial toneMapped={false} />
-          Marble Race
-        </Text>
-      </Float>
-      {/* Floor*/}
-      <mesh
-        geometry={boxGeometry}
-        material={floor1Material}
-        position={[0, -0.1, 0]}
-        scale={[4, 0.2, 4]}
-        receiveShadow
-      ></mesh>
-    </group>
-  );
-}
-
-export function BlockSpinner({ position = [0, 0, 0] }) {
-  const obstacle: any = useRef();
-  const [speed] = useState(
-    () => (Math.random() + 0.2) * (Math.random() < 0.5 ? -1 : 1),
-  );
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-
-    const rotation = new THREE.Quaternion();
-    rotation.setFromEuler(new THREE.Euler(0, time * speed, 0));
-    obstacle.current.setNextKinematicRotation(rotation);
-  });
-
-  return (
-    <group position={new THREE.Vector3(position[0], position[1], position[2])}>
-      {/* Floor*/}
-      <mesh
-        geometry={boxGeometry}
-        material={floor2Material}
-        position={[0, -0.1, 0]}
-        scale={[4, 0.2, 4]}
-        receiveShadow
-      ></mesh>
-
-      {/* RigidBody: 物理法則が適用（重力など） */}
-      {/* kinematicPosition: 重力や他objからの物理演算を無効化して
-      開発者の指定した運動のみで動作 */}
-      {/* restitution: 反発係数 */}
-      {/* friction: 摩擦係数 */}
-      <RigidBody
-        ref={obstacle}
-        type="kinematicPosition"
-        position={[0, 0.3, 0]}
-        restitution={0.2}
-        friction={0}
-      >
-        <mesh
-          geometry={boxGeometry}
-          material={obstacleMaterial}
-          scale={[3.5, 0.3, 0.3]}
-          castShadow
-          receiveShadow
-        ></mesh>
-      </RigidBody>
-    </group>
-  );
-}
-
-export function BlockLimbo({ position = [0, 0, 0] }) {
-  const obstacle: any = useRef();
-  const [timeOffset] = useState(() => Math.random() * Math.PI * 2);
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-
-    const y = Math.sin(time + timeOffset) + 1.15;
-    obstacle.current.setNextKinematicTranslation({
-      x: position[0],
-      y: position[1] + y,
-      z: position[2],
-    });
-  });
-
-  return (
-    <group position={new THREE.Vector3(position[0], position[1], position[2])}>
-      {/* Floor*/}
-      <primitive object={new THREE.AxesHelper(2.5)}></primitive>
-      <mesh
-        geometry={boxGeometry}
-        material={floor2Material}
-        position={[0, -0.1, 0]}
-        scale={[4, 0.2, 4]}
-        receiveShadow
-      ></mesh>
-
-      {/* RigidBody: 物理法則が適用（重力など） */}
-      {/* kinematicPosition: 重力や他objからの物理演算を無効化して
-      開発者の指定した運動のみで動作 */}
-      {/* restitution: 反発係数 */}
-      {/* friction: 摩擦係数 */}
-      <RigidBody
-        ref={obstacle}
-        type="kinematicPosition"
-        position={[0, 0.3, 0]}
-        restitution={0.2}
-        friction={0}
-      >
-        <mesh
-          geometry={boxGeometry}
-          material={obstacleMaterial}
-          scale={[3.5, 0.3, 0.3]}
-          castShadow
-          receiveShadow
-        ></mesh>
-      </RigidBody>
-    </group>
-  );
-}
-
-export function BlockAxe({ position = [0, 0, 0] }) {
-  const obstacle: any = useRef();
-  const [timeOffset] = useState(() => Math.random() * Math.PI * 2);
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-
-    const x = Math.sin(time + timeOffset) * 1.25;
-    obstacle.current.setNextKinematicTranslation({
-      x: position[0] + x,
-      y: position[1] + 0.75,
-      z: position[2],
-    });
-  });
-
-  return (
-    <group position={new THREE.Vector3(position[0], position[1], position[2])}>
-      {/* Floor*/}
-      <primitive object={new THREE.AxesHelper(2.5)}></primitive>
-      <mesh
-        geometry={boxGeometry}
-        material={floor2Material}
-        position={[0, -0.1, 0]}
-        scale={[4, 0.2, 4]}
-        receiveShadow
-      ></mesh>
-
-      {/* RigidBody: 物理法則が適用（重力など） */}
-      {/* kinematicPosition: 重力や他objからの物理演算を無効化して
-      開発者の指定した運動のみで動作 */}
-      {/* restitution: 反発係数 */}
-      {/* friction: 摩擦係数 */}
-      <RigidBody
-        ref={obstacle}
-        type="kinematicPosition"
-        position={[0, 0.3, 0]}
-        restitution={0.2}
-        friction={0}
-      >
-        <mesh
-          geometry={boxGeometry}
-          material={obstacleMaterial}
-          scale={[1.5, 1.5, 0.3]}
-          castShadow
-          receiveShadow
-        ></mesh>
-      </RigidBody>
-    </group>
-  );
-}
-
-function BlockEnd({ position = [0, 0, 0] }) {
-  const hamburger = useGLTF("./hamburger.glb");
-
-  hamburger.scene.children.forEach((child) => {
-    child.castShadow = true;
-  });
-
-  return (
-    <group position={new THREE.Vector3(position[0], position[1], position[2])}>
-      <Text
-        font="/bebas-neue-v9-latin-regular.woff"
-        scale={1}
-        position={[0, 2.25, 2]}
-      >
-        FINISH
-        <meshBasicMaterial toneMapped={false} />
-      </Text>
-
-      {/* Floor*/}
-      <mesh
-        geometry={boxGeometry}
-        material={floor1Material}
-        position={[0, 0, 0]}
-        scale={[4, 0.2, 4]}
-        receiveShadow
-      ></mesh>
-
-      {/* Hamburger */}
-      <RigidBody
-        type="fixed"
-        colliders="hull"
-        position={[0, 0.25, 0]}
-        restitution={0.2}
-        friction={0}
-      >
-        <primitive object={hamburger.scene} scale={0.2} />
-      </RigidBody>
-    </group>
-  );
-}
-
-function Bounds({ length = 1 }) {
-  return (
     <>
-      <RigidBody type="fixed" restitution={0.2} friction={0}>
-        <mesh
-          position={[2.15, 0.75, -((length * 4) / 2) + 2]}
-          geometry={boxGeometry}
-          material={wallMaterial}
-          scale={[0.3, 1.5, 4 * length]}
-          castShadow
-        ></mesh>
-        <mesh
-          position={[-2.15, 0.75, -((length * 4) / 2) + 2]}
-          geometry={boxGeometry}
-          material={wallMaterial}
-          scale={[0.3, 1.5, 4 * length]}
-          castShadow
+      <group
+        position={new THREE.Vector3(position[0], position[1], position[2])}
+      >
+        {/* Floor Layer */}
+        <RigidBody type="fixed">
+          {/* <mesh
+            geometry={boxGeometry}
+            material={floorLayerMaterial}
+            position={[0, -0.1, 0]}
+            scale={[18, 0.2, 18]}
+            receiveShadow
+          /> */}
+        </RigidBody>
+        {/* Floor Body */}
+        {/* <mesh
+          geometry={coneGeometry}
+          material={floorBodyMaterial}
+          position={[0, -0.2, 0]}
+          rotation={[Math.PI, Math.PI / 4, 0]}
           receiveShadow
-        ></mesh>
-        <mesh
-          position={[0, 0.75, 2 - length * 4]}
-          geometry={boxGeometry}
-          material={wallMaterial}
-          scale={[4, 1.5, 0.3]}
-          castShadow
-        ></mesh>
-        <CuboidCollider
-          args={[2, 0.1, 2 * length]}
-          position={[0, -0.1, 2 - (length * 4) / 2]}
-          restitution={0.2}
-          friction={1}
         />
-      </RigidBody>
+        <mesh /> */}
+
+        {/* ShowCase */}
+        <group>
+          {/* Bottom */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseTopBottomMaterial}
+            position={[0, 0.5, 0]}
+            scale={[4, 1, 4]}
+          />
+
+          {/* Bottom Layer */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBottomLayerMaterial}
+            position={[0, 1.005, 0]}
+            scale={[3.8, 0.01, 3.8]}
+          />
+
+          {/* Body Left */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[-1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
+
+          {/* Body Right */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
+
+          {/* Body Forward */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 3, -1.95]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[0.1, 4, 4]}
+          />
+
+          {/* Body Backward */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 3, 1.95]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[0.1, 4, 4]}
+          />
+
+          {/* Top */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseTopBottomMaterial}
+            position={[0, 5.125, 0]}
+            scale={[4, 0.25, 4]}
+          />
+        </group>
+      </group>
     </>
   );
 }
 
-export default function Level({
-  count = 5,
-  types = [BlockSpinner, BlockAxe, BlockLimbo],
-  seed = 0,
-}) {
-  const blocks = useMemo(() => {
-    const blocks = [];
-
-    // countの数だけループ処理
-    for (let i = 0; i < count; i++) {
-      const type = types[Math.floor(Math.random() * types.length)];
-      blocks.push(type);
-    }
-
-    return blocks;
-  }, [count, types, seed]);
-
+export default function Level() {
   return (
     <>
-      {/* <BlockStart position={[0, 0, 0]} /> */}
-
-      {blocks.map((Block, index) => (
-        <Block key={index} position={[0, 0, (index + 1) * -4]} />
-      ))}
-
-      {/* <BlockEnd position={[0, 0, (count + 1) * -4]} /> */}
-      <Bounds length={count + 2} />
+      <BlockStart position={[0, 0, 0]} />
     </>
   );
 }

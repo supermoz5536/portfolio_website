@@ -41,13 +41,9 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
       threshold: 0,
     });
 
-    console.log("2");
     const resultProcessedChildren = React.Children.map(children, (child) => {
-      console.log("3");
-
       /* isValidElement: React要素であれば true  */
       if (React.isValidElement(child)) {
-        console.log("4");
         const id = child.props.id;
         const tagName = typeof child.type == "string" ? child.type : null;
         let animateClassName = null;
@@ -76,8 +72,6 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
         /* 下からのフェードインの場合 */
         if (id == "fade-in-bottom") animateClassName = "animate-fade-in-bottom";
 
-        console.log("5");
-
         /* アニメーションする要素のみに動的なCSSクラスを設定 */
         if (animateClassName != null) {
           className = [
@@ -89,8 +83,6 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
         } else {
           className = child.props.className;
         }
-
-        console.log("6");
 
         // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
         // useInView一括版のコンポーネントでなく
@@ -112,13 +104,9 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
             children: processedNestedChildren,
           },
         );
-        console.log("7 className:", className);
-        console.log("7 processedChildren:", processedNestedChildren);
-        console.log("7 processedResult:", processedResult);
 
         return processedResult;
       } else {
-        console.log("9");
         return child;
       }
     });
@@ -126,9 +114,7 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
   };
 
   const wrappedChildren = React.Children.map(children, (child) => {
-    console.log("1");
     const result = processChildren(child);
-    console.log("end:", result);
     return result;
   });
 

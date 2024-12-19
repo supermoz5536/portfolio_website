@@ -50,14 +50,11 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
    * 子要素が単一の場合でも、配列の場合でも、falsyの場合でも同じ方法で処理できる
    */
   const processChildren = (children: React.ReactNode): React.ReactNode => {
-    console.log("2");
     const resultProcessedChildren = React.Children.map(
       children,
       (child, index) => {
-        console.log("3");
         /* isValidElement: React要素であれば true  */
         if (React.isValidElement(child)) {
-          console.log("4");
           const id = child.props.id;
           const tagName = typeof child.type == "string" ? child.type : null;
           let animateClassName = null;
@@ -84,8 +81,6 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
           if (id == "fade-in-bottom")
             animateClassName = "animate-fade-in-bottom";
 
-          console.log("5");
-
           /**
            * アニメーションする要素のみに以下を設定
            * 動的なCSSクラス
@@ -110,10 +105,6 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
             animationDelay: `${delay}s`,
           };
 
-          console.log(`6 index:${index} delay:`, delay);
-
-          console.log("6");
-
           const processedNestedChildren = child.props.children
             ? React.Children.map(child.props.children, (nestedChild) =>
                 processChildren(nestedChild),
@@ -134,13 +125,8 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
 
           firstRefFlag = true;
 
-          console.log("7 className:", className);
-          console.log("7 processedChildren:", processedNestedChildren);
-          console.log("7 processedResult:", processedResult);
-
           return processedResult;
         } else {
-          console.log("9");
           return child;
         }
       },
@@ -149,9 +135,7 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
   };
 
   const wrappedChildren = React.Children.map(children, (child) => {
-    console.log("1");
     const result = processChildren(child);
-    console.log("end:", result);
     return result;
   });
 
