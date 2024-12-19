@@ -3,7 +3,7 @@ import { Physics } from "@react-three/rapier";
 import Level from "./Level.js";
 import Lights from "./Lights.js";
 import { Player } from "./Player.js";
-import { Floor, Step } from "./Step.js";
+import { Floor, Stage } from "./Stage.js";
 
 export default function Experience() {
   return (
@@ -15,7 +15,7 @@ export default function Experience() {
         <Level />
         <Lights />
         <Player />
-        <Step />
+        <Stage />
       </Physics>
     </>
   );
