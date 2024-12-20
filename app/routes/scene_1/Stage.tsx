@@ -12,6 +12,8 @@ type stageProps = {
   boundingBox: THREE.Box3;
 };
 
+const floorInterval = 80;
+
 /**
  * Loader
  */
@@ -30,8 +32,7 @@ export function Floor({ position, scene, boundingBox }: stageProps) {
 
   useEffect(() => {
     boundingBox = new THREE.Box3().setFromObject(scene);
-    const positionY = boundingBox.min.y - boundingBox.max.y;
-    setAdjustedPosition([position[0], position[1] + positionY, position[2]]);
+    setAdjustedPosition([position[0], position[1], position[2]]);
     setIsPositionReady(true);
   }, [position, scene, boundingBox]);
 
@@ -49,8 +50,17 @@ export function Floor({ position, scene, boundingBox }: stageProps) {
 }
 
 export function Bridge({ position, scene, boundingBox }: stageProps) {
-  const FloorTopLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
-  const bridgeGeometry = new THREE.BoxGeometry(10, 1, 80 - FloorTopLength / 2);
+  /* FloorTopLengthの取得値が想定値の２倍になる不具合　→ /2 で調整 */
+  const FloorTopSideLength =
+    Math.abs(boundingBox.max.z - boundingBox.min.z) / 2;
+
+  const triangleBase = floorInterval - FloorTopSideLength; // 底辺
+  const triangleHeight = 0; // 高さ
+  const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
+  const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
+
+  const bridgeGeometry = new THREE.BoxGeometry(1, 1, 5);
+
   const bridgeMaterial = new THREE.MeshStandardMaterial({ color: "blue" });
   const [adjustedPosition, setAdjustedPosition] =
     useState<[number, number, number]>();
@@ -58,11 +68,7 @@ export function Bridge({ position, scene, boundingBox }: stageProps) {
   console.log("boundingBox.max.z", boundingBox.max.z);
 
   useEffect(() => {
-    setAdjustedPosition([
-      position[0],
-      position[1] - bridgeGeometry.parameters.height / 2,
-      position[2] - (bridgeGeometry.parameters.depth / 2 + FloorTopLength / 4),
-    ]);
+    setAdjustedPosition([0, 0, 0]);
   }, [position, scene, boundingBox]);
 
   return (
@@ -82,11 +88,9 @@ export function Stage() {
 
   useEffect(() => {
     gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
-      gltf.scene.scale.set(22, 22, 22);
-      gltf.scene.updateMatrixWorld(true);
+      gltf.scene.scale.set(1, 1, 1);
       setScene(gltf.scene);
       const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
-      console.log("boundingBox:", boundingBox);
       setBoundingBoxFloor(boundingBox);
     });
   }, []);
@@ -100,16 +104,16 @@ export function Stage() {
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
           />
-          <Bridge
+          {/* <Bridge
             position={[0, 0, 0]}
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
-          />
-          <Floor
-            position={[0, 0, -80]}
+          /> */}
+          {/* <Floor
+            position={[0, 20, -floorInterval]}
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
-          />
+          /> */}
         </>
       )}
     </>

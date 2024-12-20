@@ -29,8 +29,8 @@ export const ThreeScene1 = () => {
           camera={{
             fov: 45,
             near: 0.1,
-            far: 1000,
-            position: [10, 30, 100],
+            far: 4000,
+            position: [2.5, 4, 6],
           }}
         >
           <Experience />

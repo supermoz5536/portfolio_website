@@ -4,12 +4,17 @@ import Level from "./Level.js";
 import Lights from "./Lights.js";
 import { Player } from "./Player.js";
 import { Floor, Stage } from "./Stage.js";
+import { XAxis } from "recharts";
 
 export default function Experience() {
   return (
     <>
       <color args={["#bdedfc"]} attach="background" />
-      <axesHelper scale={100} />
+      <axesHelper position={[0, 0.05, 0]} scale={1000} />
+      <gridHelper
+        position={[0, 0, 0]}
+        args={[1000, 250, "#cccccc", "#cccccc"]}
+      />
       <OrbitControls makeDefault />
       <Physics debug>
         <Level />

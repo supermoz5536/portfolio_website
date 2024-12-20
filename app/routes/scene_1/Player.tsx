@@ -4,7 +4,7 @@ export function Player() {
   return (
     <>
       {/* Pedestal */}
-      <RigidBody type="dynamic" position={[0, 20, -5]}>
+      <RigidBody type="dynamic" position={[0, 10, 0]}>
         <mesh>
           <icosahedronGeometry args={[1, 0]} />
           <meshStandardMaterial color={"mediumpurple"} />
