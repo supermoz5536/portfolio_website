@@ -12,7 +12,7 @@ type stageProps = {
   boundingBox: THREE.Box3;
 };
 
-const floorInterval = 80;
+const floorInterval = 36;
 
 /**
  * Loader
@@ -50,34 +50,48 @@ export function Floor({ position, scene, boundingBox }: stageProps) {
 }
 
 export function Bridge({ position, scene, boundingBox }: stageProps) {
-  /* FloorTopLengthの取得値が想定値の２倍になる不具合　→ /2 で調整 */
-  const FloorTopSideLength =
-    Math.abs(boundingBox.max.z - boundingBox.min.z) / 2;
+  const FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
 
-  const triangleBase = floorInterval - FloorTopSideLength; // 底辺
-  const triangleHeight = 0; // 高さ
+  const triangleBase = floorInterval; // 底辺
+  const triangleHeight = 20; // 高さ
   const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  const bridgeGeometry = new THREE.BoxGeometry(1, 1, 5);
-
+  const bridgeGeometry = new THREE.BoxGeometry(
+    FloorTopSuareLength / 3,
+    FloorTopSuareLength / 50,
+    triangleSlope,
+  );
   const bridgeMaterial = new THREE.MeshStandardMaterial({ color: "blue" });
-  const [adjustedPosition, setAdjustedPosition] =
-    useState<[number, number, number]>();
 
-  console.log("boundingBox.max.z", boundingBox.max.z);
+  const [adjustedPositionChild, setAdjustedPositionChild] =
+    useState<[number, number, number]>();
+  const [adjustedPositionParent, setAdjustedPositionParent] = useState<
+    [number, number, number]
+  >([0, 0, 0]);
 
   useEffect(() => {
-    setAdjustedPosition([0, 0, 0]);
+    setAdjustedPositionParent([
+      position[0],
+      position[1] - bridgeGeometry.parameters.height / 2,
+      position[2] - FloorTopSuareLength / 2,
+    ]);
+
+    setAdjustedPositionChild([0, 0, -bridgeGeometry.parameters.depth / 2]);
   }, [position, scene, boundingBox]);
 
   return (
     <>
-      <mesh
-        geometry={bridgeGeometry}
-        material={bridgeMaterial}
-        position={adjustedPosition}
-      />
+      <group
+        position={adjustedPositionParent}
+        rotation={new THREE.Euler(triangleAngle, 0, 0)}
+      >
+        <mesh
+          geometry={bridgeGeometry}
+          material={bridgeMaterial}
+          position={adjustedPositionChild}
+        />
+      </group>
     </>
   );
 }
@@ -104,16 +118,27 @@ export function Stage() {
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
           />
-          {/* <Bridge
+          <Bridge
             position={[0, 0, 0]}
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
-          /> */}
-          {/* <Floor
-            position={[0, 20, -floorInterval]}
+          />
+
+          <Floor
+            position={[0, 20, -60]}
             scene={scene.clone()}
             boundingBox={boundingBoxFloor}
-          /> */}
+          />
+          <Bridge
+            position={[0, 20, -60]}
+            scene={scene.clone()}
+            boundingBox={boundingBoxFloor}
+          />
+          <Floor
+            position={[0, 40, -120]}
+            scene={scene.clone()}
+            boundingBox={boundingBoxFloor}
+          />
         </>
       )}
     </>
