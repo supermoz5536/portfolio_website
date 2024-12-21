@@ -5,6 +5,10 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Text, useGLTF } from "@react-three/drei";
 
+type showCaseProps = {
+  position: number[];
+};
+
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const coneGeometry = new THREE.ConeGeometry(9 * Math.sqrt(2), 10, 4);
 coneGeometry.translate(0, coneGeometry.parameters.height / 2, 0);
@@ -29,34 +33,14 @@ const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
   color: 0xffffff, // 完全な白
 });
 
-export function BlockStart({ position = [0, 0, 0] }) {
+export function ShowCase({ position }: showCaseProps) {
   return (
     <>
       <group
         position={new THREE.Vector3(position[0], position[1], position[2])}
       >
-        {/* Floor Layer */}
-        <RigidBody type="fixed">
-          {/* <mesh
-            geometry={boxGeometry}
-            material={floorLayerMaterial}
-            position={[0, -0.1, 0]}
-            scale={[18, 0.2, 18]}
-            receiveShadow
-          /> */}
-        </RigidBody>
-        {/* Floor Body */}
-        {/* <mesh
-          geometry={coneGeometry}
-          material={floorBodyMaterial}
-          position={[0, -0.2, 0]}
-          rotation={[Math.PI, Math.PI / 4, 0]}
-          receiveShadow
-        />
-        <mesh /> */}
-
         {/* ShowCase */}
-        <group>
+        <group scale={0.7}>
           {/* Bottom */}
           <mesh
             geometry={boxGeometry}
@@ -108,18 +92,14 @@ export function BlockStart({ position = [0, 0, 0] }) {
           />
 
           {/* Top */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={showcaseTopBottomMaterial}
             position={[0, 5.125, 0]}
             scale={[4, 0.25, 4]}
-          />
+          /> */}
         </group>
       </group>
     </>
   );
-}
-
-export default function Level() {
-  return <>{/* <BlockStart position={[0, 0, 0]} /> */}</>;
 }
