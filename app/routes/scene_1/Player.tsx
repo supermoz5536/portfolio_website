@@ -3,12 +3,14 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import useThreePlayer from "../../store/three_player_store";
 
 export function Player() {
   const body: any = useRef();
-  const [subscribeKeys, getState] = useKeyboardControls();
   const [smoothCameraPosition] = useState(() => new THREE.Vector3(50, 50, 50));
   const [smoothCameraTarget] = useState(() => new THREE.Vector3());
+  const [subscribeKeys, getState] = useKeyboardControls();
+  const setPlayerPosition = useThreePlayer((state: any) => state.setPosition);
 
   useFrame((state, delta) => {
     /**
@@ -29,22 +31,22 @@ export function Player() {
      * Camera Controls
      */
     const bodyPosition = body.current.translation();
-    console.log("Player Position:", body.current.translation());
+    setPlayerPosition(bodyPosition);
 
-    const cameraPosition = new THREE.Vector3();
-    cameraPosition.copy(bodyPosition);
-    cameraPosition.z += 20.5;
-    cameraPosition.y += 20.65;
+    // const cameraPosition = new THREE.Vector3();
+    // cameraPosition.copy(bodyPosition);
+    // cameraPosition.z += 20.5;
+    // cameraPosition.y += 20.65;
 
-    const cameraTarget = new THREE.Vector3();
-    cameraTarget.copy(bodyPosition);
-    cameraTarget.y += 0.25;
+    // const cameraTarget = new THREE.Vector3();
+    // cameraTarget.copy(bodyPosition);
+    // cameraTarget.y += 0.25;
 
-    smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-    smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+    // smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+    // smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    state.camera.position.copy(smoothCameraPosition);
-    state.camera.lookAt(smoothCameraTarget);
+    // state.camera.position.copy(smoothCameraPosition);
+    // state.camera.lookAt(smoothCameraTarget);
   });
 
   return (

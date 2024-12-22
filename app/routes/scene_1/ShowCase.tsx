@@ -40,67 +40,67 @@ export function ShowCase({ position }: showCaseProps) {
         position={new THREE.Vector3(position[0], position[1], position[2])}
       >
         {/* ShowCase */}
-        <RigidBody type="fixed" colliders="hull">
-          <group scale={0.7}>
-            {/* Bottom */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseTopBottomMaterial}
-              position={[0, 0.5, 0]}
-              scale={[4, 1, 4]}
-            />
+        {/* <RigidBody type="fixed" colliders="hull"> */}
+        <group scale={0.7}>
+          {/* Bottom */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseTopBottomMaterial}
+            position={[0, 0.5, 0]}
+            scale={[4, 1, 4]}
+          />
 
-            {/* Bottom Layer */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBottomLayerMaterial}
-              position={[0, 1.005, 0]}
-              scale={[3.8, 0.01, 3.8]}
-            />
+          {/* Bottom Layer */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBottomLayerMaterial}
+            position={[0, 1.005, 0]}
+            scale={[3.8, 0.01, 3.8]}
+          />
 
-            {/* Body Left */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[-1.95, 3, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Left */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[-1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Right */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[1.95, 3, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Right */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Forward */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[0, 3, -1.95]}
-              rotation={[0, Math.PI / 2, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Forward */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 3, -1.95]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Backward */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[0, 3, 1.95]}
-              rotation={[0, Math.PI / 2, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Backward */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 3, 1.95]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Top */}
-            {/* <mesh
+          {/* Top */}
+          {/* <mesh
             geometry={boxGeometry}
             material={showcaseTopBottomMaterial}
             position={[0, 5.125, 0]}
             scale={[4, 0.25, 4]}
           /> */}
-          </group>
-        </RigidBody>
+        </group>
+        {/* </RigidBody> */}
       </group>
     </>
   );

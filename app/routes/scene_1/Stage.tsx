@@ -8,6 +8,7 @@ import { Object3D } from "three";
 import { floorPowerOfTwo } from "three/src/math/MathUtils.js";
 import { ShowCase } from "./ShowCase";
 import React from "react";
+import ThreePlayer from "../../store/three_player_store";
 
 type floorProps = {
   position: [number, number, number];
@@ -20,12 +21,6 @@ type bridgeProps = {
   heightDifference: number;
 };
 
-// 隣り合うフロアの中心軸の距離
-// ratePositionYDiff を乗算してY軸の高さの差異を算出するための
-// 基準値として利用
-const floorAxesInterval = 64;
-// 隣り合うフロア間のy軸の調節用の変数
-const ratePositionYDiff = 0.25;
 // 隣り合うフロア間の空間距離 (10 Unit)
 const floorSpaceInterval = 40;
 
@@ -132,18 +127,33 @@ export function Bridge({
 export function Stage() {
   const stageRow = 4;
   const stageColumn = 3;
+  const floorAxesInterval = 64; // フロア間の中心軸の距離 (高さの差分の基準値として利用)
   const floorPositions = [];
+  const [controlRatePositionY, setControlRatePositionY] = useState(0); // フロア間のy軸の調節用変数
   const [scene, setScene] = useState<Object3D>();
   const [boundingBoxFloor, setBoundingBoxFloor] = useState<THREE.Box3>();
 
-  /* Initialize Importing Each Model */
+  /* Initialize */
   useEffect(() => {
+    /* Importing Each Model  */
     gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
       gltf.scene.scale.set(1, 1, 1);
       setScene(gltf.scene);
       const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
       setBoundingBoxFloor(boundingBox);
     });
+
+    /* Listem Pkayer State */
+    const unsubscibePlayerPosition = ThreePlayer.subscribe(
+      (state: any) => state.currentFloorNum,
+      (value) => {
+        // console.log("currentFloorNum", value);
+        // setControlRatePositionY(0.25 * value.z);
+      },
+    );
+    return () => {
+      unsubscibePlayerPosition();
+    };
   }, []);
 
   /* Calculate Each Position for Floor */
@@ -151,13 +161,13 @@ export function Stage() {
     for (let columnIndex = 0; columnIndex < stageColumn; columnIndex++) {
       const firstLeftColumnFloorPosition = [
         columnIndex * floorAxesInterval,
-        rowIndex * floorAxesInterval * ratePositionYDiff,
+        rowIndex * floorAxesInterval * controlRatePositionY,
         rowIndex * -floorAxesInterval,
       ];
       const floorPosition = [
         firstLeftColumnFloorPosition[0],
         firstLeftColumnFloorPosition[1] +
-          columnIndex * floorAxesInterval * ratePositionYDiff,
+          columnIndex * floorAxesInterval * controlRatePositionY,
         rowIndex * -floorAxesInterval,
       ];
       floorPositions.push(floorPosition);
@@ -196,7 +206,7 @@ export function Stage() {
                       floorPosition[2],
                     ]}
                     boundingBox={boundingBoxFloor}
-                    heightDifference={floorAxesInterval * ratePositionYDiff}
+                    heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
 
@@ -214,7 +224,9 @@ export function Stage() {
                     <Bridge
                       position={[0, 0, 0]}
                       boundingBox={boundingBoxFloor}
-                      heightDifference={floorAxesInterval * ratePositionYDiff}
+                      heightDifference={
+                        floorAxesInterval * controlRatePositionY
+                      }
                     />
                   </group>
                 )}
