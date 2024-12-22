@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { Object3D } from "three";
 import { floorPowerOfTwo } from "three/src/math/MathUtils.js";
 import { ShowCase } from "./ShowCase";
+import React from "react";
 
 type floorProps = {
   position: [number, number, number];
@@ -91,6 +92,7 @@ export function Bridge({
     color: 0xffffff, // 完全な白
   });
 
+  const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [adjustedPositionChild, setAdjustedPositionChild] =
     useState<[number, number, number]>();
   const [adjustedPositionParent, setAdjustedPositionParent] = useState<
@@ -103,22 +105,26 @@ export function Bridge({
       position[1] - bridgeGeometry.parameters.height / 2,
       position[2] - FloorTopSuareLength / 2,
     ]);
-
     setAdjustedPositionChild([0, 0, -bridgeGeometry.parameters.depth / 2]);
+    setIsPositionReady(true);
   }, [position, boundingBox]);
 
   return (
     <>
-      <group
-        position={adjustedPositionParent}
-        rotation={new THREE.Euler(triangleAngle, 0, 0)}
-      >
-        <mesh
-          geometry={bridgeGeometry}
-          material={bridgeMaterial}
-          position={adjustedPositionChild}
-        />
-      </group>
+      {isPositionReady && (
+        <group
+          position={adjustedPositionParent}
+          rotation={new THREE.Euler(triangleAngle, 0, 0)}
+        >
+          <RigidBody type="fixed" colliders="hull">
+            <mesh
+              geometry={bridgeGeometry}
+              material={bridgeMaterial}
+              position={adjustedPositionChild}
+            />
+          </RigidBody>
+        </group>
+      )}
     </>
   );
 }
@@ -171,7 +177,7 @@ export function Stage() {
             if (hiddenFloorArray.includes(index)) return;
 
             return (
-              <>
+              <React.Fragment key={`Fragment${index}`}>
                 <Floor
                   position={[
                     floorPosition[0],
@@ -219,7 +225,7 @@ export function Stage() {
                     floorPosition[2],
                   ]}
                 />
-              </>
+              </React.Fragment>
             );
           })}
         </>
