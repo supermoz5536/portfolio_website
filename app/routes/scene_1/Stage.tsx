@@ -82,14 +82,14 @@ export function Bridge({
   boundingBox,
   heightDifference,
 }: bridgeProps) {
-  const FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
+  let FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
 
-  const triangleBase = floorSpaceInterval; // 底辺
-  const triangleHeight = heightDifference; // 高さ
-  const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
-  const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
+  let triangleBase = floorSpaceInterval; // 底辺
+  let triangleHeight = heightDifference; // 高さ
+  let triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
+  let triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  const bridgeGeometry = new THREE.BoxGeometry(
+  let bridgeGeometry = new THREE.BoxGeometry(
     FloorTopSuareLength / 3,
     FloorTopSuareLength / 50,
     triangleSlope,
@@ -106,43 +106,126 @@ export function Bridge({
     color: 0xffffff, // 完全な白
   });
 
-  const rigidBodyRef: any = useRef();
+  const parentGroupRef: any = useRef();
+  const childRef: any = useRef();
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [adjustedPositionChild, setAdjustedPositionChild] =
-    useState<THREE.Vector3>(new THREE.Vector3());
-  const [adjustedPositionParent, setAdjustedPositionParent] =
-    useState<THREE.Vector3>(new THREE.Vector3());
+  const [adjustedPositionParent] = useState(
+    new THREE.Vector3(
+      position.x,
+      position.y - bridgeGeometry.parameters.height / 2,
+      position.z - FloorTopSuareLength / 2,
+    ),
+  );
+  const [adjustedPositionChild] = useState(
+    new THREE.Vector3(0, 0, -bridgeGeometry.parameters.depth / 2),
+  );
+
+  /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
+  useEffect(() => {
+    setIsPositionReady(true);
+  }, []);
 
   useEffect(() => {
-    setAdjustedPositionParent(
-      new THREE.Vector3(
+    FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
+
+    triangleBase = floorSpaceInterval; // 底辺
+    triangleHeight = heightDifference; // 高さ
+    triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
+    triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
+
+    bridgeGeometry = new THREE.BoxGeometry(
+      FloorTopSuareLength / 3,
+      FloorTopSuareLength / 50,
+      triangleSlope,
+    );
+
+    if (parentGroupRef.current) {
+      parentGroupRef.current.position.set(
         position.x,
         position.y - bridgeGeometry.parameters.height / 2,
         position.z - FloorTopSuareLength / 2,
-      ),
-    );
-    setAdjustedPositionChild(
-      new THREE.Vector3(0, 0, -bridgeGeometry.parameters.depth / 2),
-    );
-    setIsPositionReady(true);
-  }, [position, boundingBox]);
+      );
+    }
+
+    // if (childRef.current) {
+    //   childRef.current.setNextKinematicTranslation({
+    //     x: 0,
+    //     y: 0,
+    //     z: -bridgeGeometry.parameters.depth / 2,
+    //   });
+    // }
+
+    if (childRef.current) {
+      childRef.current.position.set(0, 0, -bridgeGeometry.parameters.depth / 2);
+    }
+  }, [position, boundingBox, heightDifference]);
+
+  // useEffect(() => {
+  //   if (parentGroupRef.current) {
+  //     console.log(
+  //       "parentGroupRef.current.position.z",
+  //       parentGroupRef.current.position.z,
+  //     );
+  //   }
+  // }, [parentGroupRef.current, rigidBodyRef.current]);
+
+  /* 初回マウント後以降の更新 */
+  // useFrame((state, delta) => {
+  //   if (parentGroupRef.current) {
+  //     const parentTarget = new THREE.Vector3(
+  //       position.x,
+  //       position.y - bridgeGeometry.parameters.height / 2,
+  //       position.z - FloorTopSuareLength / 2,
+  //     );
+
+  //     adjustedPositionParent.lerp(parentTarget, 0.5 * delta);
+
+  //     parentGroupRef.current.position.set(
+  //       adjustedPositionParent.x,
+  //       adjustedPositionParent.y,
+  //       adjustedPositionParent.z,
+  //     );
+  //   }
+
+  //   if (rigidBodyRef.current) {
+  //     const childTarget = new THREE.Vector3(
+  //       0,
+  //       0,
+  //       -bridgeGeometry.parameters.depth / 2,
+  //     );
+
+  //     adjustedPositionChild.lerp(childTarget, 0.5 * delta);
+
+  //     rigidBodyRef.current.setNextKinematicTranslation({
+  //       x: adjustedPositionChild.x,
+  //       y: adjustedPositionChild.y,
+  //       z: adjustedPositionChild.z,
+  //     });
+  //   }
+  // });
 
   return (
     <>
       {isPositionReady && (
-        // <group
-        //   position={adjustedPositionParent}
-        //   rotation={new THREE.Euler(triangleAngle, 0, 0)}
-        // >
-        <RigidBody
-          // ref={rigidBodyRef}
-          position={adjustedPositionChild}
-          type="fixed"
-          colliders="hull"
+        <group
+          ref={parentGroupRef}
+          position={adjustedPositionParent}
+          rotation={new THREE.Euler(triangleAngle, 0, 0)}
         >
-          <mesh geometry={bridgeGeometry} material={bridgeMaterial} />
-        </RigidBody>
-        // </group>
+          {/* <RigidBody
+            ref={childRef}
+            position={adjustedPositionChild}
+            type="kinematicPosition"
+            colliders="hull"
+          > */}
+          <mesh
+            ref={childRef}
+            position={adjustedPositionChild}
+            geometry={bridgeGeometry}
+            material={bridgeMaterial}
+          />
+          {/* </RigidBody> */}
+        </group>
       )}
     </>
   );
