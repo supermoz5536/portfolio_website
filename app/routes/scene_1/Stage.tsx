@@ -109,6 +109,9 @@ export function Bridge({
   const parentGroupRef: any = useRef();
   const childRef: any = useRef();
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
+  const [smoothAngle, setSmoothAngle] = useState(
+    new THREE.Euler(triangleAngle, 0, 0),
+  );
   const [adjustedPositionParent] = useState(
     new THREE.Vector3(
       position.x,
@@ -125,6 +128,7 @@ export function Bridge({
     setIsPositionReady(true);
   }, []);
 
+  /* 初回マウント後の Bridge のサイズ変更 */
   useEffect(() => {
     FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
 
@@ -138,71 +142,50 @@ export function Bridge({
       FloorTopSuareLength / 50,
       triangleSlope,
     );
+  }, [position, boundingBox, heightDifference]);
 
+  /* 初回マウント後の Bridge のポジションと角度の変更 */
+  useFrame((state, delta) => {
     if (parentGroupRef.current) {
-      parentGroupRef.current.position.set(
+      /* Parentのポジション更新 */
+      const targetPositionParent = new THREE.Vector3(
         position.x,
         position.y - bridgeGeometry.parameters.height / 2,
         position.z - FloorTopSuareLength / 2,
       );
+
+      adjustedPositionParent.lerp(targetPositionParent, 0.5 * delta);
+
+      parentGroupRef.current.position.set(
+        adjustedPositionParent.x,
+        adjustedPositionParent.y,
+        adjustedPositionParent.z,
+      );
+
+      /* Parentの角度更新 */
+      const smoothedAngleX = THREE.MathUtils.lerp(
+        smoothAngle.x, // start
+        triangleAngle, // end
+        0.45 * delta, // alpha
+      );
+
+      setSmoothAngle(new THREE.Euler(smoothedAngleX, 0, 0));
+      parentGroupRef.current.rotation.set(smoothAngle.x, 0, 0);
     }
 
-    // if (childRef.current) {
-    //   childRef.current.setNextKinematicTranslation({
-    //     x: 0,
-    //     y: 0,
-    //     z: -bridgeGeometry.parameters.depth / 2,
-    //   });
-    // }
-
+    /* Childのポジション更新 */
     if (childRef.current) {
-      childRef.current.position.set(0, 0, -bridgeGeometry.parameters.depth / 2);
+      // Mesh テスト更新用
+      // childRef.current.position.set(0, 0, -bridgeGeometry.parameters.depth / 2);
+
+      // RigidBody 本番更新用
+      childRef.current.setNextKinematicTranslation({
+        x: adjustedPositionChild.x,
+        y: adjustedPositionChild.y,
+        z: adjustedPositionChild.z,
+      });
     }
-  }, [position, boundingBox, heightDifference]);
-
-  // useEffect(() => {
-  //   if (parentGroupRef.current) {
-  //     console.log(
-  //       "parentGroupRef.current.position.z",
-  //       parentGroupRef.current.position.z,
-  //     );
-  //   }
-  // }, [parentGroupRef.current, rigidBodyRef.current]);
-
-  /* 初回マウント後以降の更新 */
-  // useFrame((state, delta) => {
-  //   if (parentGroupRef.current) {
-  //     const parentTarget = new THREE.Vector3(
-  //       position.x,
-  //       position.y - bridgeGeometry.parameters.height / 2,
-  //       position.z - FloorTopSuareLength / 2,
-  //     );
-
-  //     adjustedPositionParent.lerp(parentTarget, 0.5 * delta);
-
-  //     parentGroupRef.current.position.set(
-  //       adjustedPositionParent.x,
-  //       adjustedPositionParent.y,
-  //       adjustedPositionParent.z,
-  //     );
-  //   }
-
-  //   if (rigidBodyRef.current) {
-  //     const childTarget = new THREE.Vector3(
-  //       0,
-  //       0,
-  //       -bridgeGeometry.parameters.depth / 2,
-  //     );
-
-  //     adjustedPositionChild.lerp(childTarget, 0.5 * delta);
-
-  //     rigidBodyRef.current.setNextKinematicTranslation({
-  //       x: adjustedPositionChild.x,
-  //       y: adjustedPositionChild.y,
-  //       z: adjustedPositionChild.z,
-  //     });
-  //   }
-  // });
+  });
 
   return (
     <>
@@ -210,21 +193,21 @@ export function Bridge({
         <group
           ref={parentGroupRef}
           position={adjustedPositionParent}
-          rotation={new THREE.Euler(triangleAngle, 0, 0)}
+          rotation={smoothAngle}
         >
-          {/* <RigidBody
+          <RigidBody
             ref={childRef}
             position={adjustedPositionChild}
             type="kinematicPosition"
             colliders="hull"
-          > */}
-          <mesh
-            ref={childRef}
-            position={adjustedPositionChild}
-            geometry={bridgeGeometry}
-            material={bridgeMaterial}
-          />
-          {/* </RigidBody> */}
+          >
+            <mesh
+              // ref={childRef}
+              // position={adjustedPositionChild}
+              geometry={bridgeGeometry}
+              material={bridgeMaterial}
+            />
+          </RigidBody>
         </group>
       )}
     </>
