@@ -21,7 +21,6 @@ export default create(
 
       setPosition: (position: THREE.Vector3) => {
         set((state: any) => {
-          // console.log("position.z", position.z);
           let currentFloorNum = state.currentFloorNum;
 
           if (-204 < position.z && position.z < -180) {
@@ -57,7 +56,6 @@ export default create(
               currentFloorNum = 0;
             }
           }
-          console.log("currentFloorNum", currentFloorNum);
 
           return { currentFloorNum: currentFloorNum };
         });

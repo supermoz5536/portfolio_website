@@ -1,6 +1,6 @@
-import { Vector3, useLoader } from "@react-three/fiber";
+import { Vector3, useFrame, useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
@@ -11,12 +11,12 @@ import React from "react";
 import ThreePlayer from "../../store/three_player_store";
 
 type floorProps = {
-  position: [number, number, number];
+  position: THREE.Vector3;
   scene: Object3D;
 };
 
 type bridgeProps = {
-  position: [number, number, number];
+  position: THREE.Vector3;
   boundingBox: THREE.Box3;
   heightDifference: number;
 };
@@ -36,21 +36,40 @@ gltfLoader.setDRACOLoader(dracoLoader);
  * Model Setting
  */
 export function Floor({ position, scene }: floorProps) {
+  const rigidBodyRef: any = useRef();
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [adjustedPosition, setAdjustedPosition] =
-    useState<[number, number, number]>();
+  const [adjustedPosition] = useState<THREE.Vector3>(
+    new THREE.Vector3(position.x, position.y, position.z),
+  );
 
+  /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
-    setAdjustedPosition([position[0], position[1], position[2]]);
     setIsPositionReady(true);
-  }, [position, scene]);
+  }, []);
+
+  /* 初回マウント後以降の更新 */
+  useFrame((state, delta) => {
+    adjustedPosition.lerp(position, 0.5 * delta);
+    if (rigidBodyRef.current) {
+      rigidBodyRef.current.setNextKinematicTranslation({
+        x: adjustedPosition.x,
+        y: adjustedPosition.y,
+        z: adjustedPosition.z,
+      });
+    }
+  });
 
   return (
     <>
       {isPositionReady && (
         <>
-          <RigidBody type="fixed" colliders="hull">
-            <primitive object={scene} position={adjustedPosition} />
+          <RigidBody
+            ref={rigidBodyRef}
+            position={adjustedPosition}
+            type="kinematicPosition"
+            colliders="hull"
+          >
+            <primitive object={scene} />
           </RigidBody>
         </>
       )}
@@ -87,20 +106,24 @@ export function Bridge({
     color: 0xffffff, // 完全な白
   });
 
+  const rigidBodyRef: any = useRef();
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [adjustedPositionChild, setAdjustedPositionChild] =
-    useState<[number, number, number]>();
-  const [adjustedPositionParent, setAdjustedPositionParent] = useState<
-    [number, number, number]
-  >([0, 0, 0]);
+    useState<THREE.Vector3>(new THREE.Vector3());
+  const [adjustedPositionParent, setAdjustedPositionParent] =
+    useState<THREE.Vector3>(new THREE.Vector3());
 
   useEffect(() => {
-    setAdjustedPositionParent([
-      position[0],
-      position[1] - bridgeGeometry.parameters.height / 2,
-      position[2] - FloorTopSuareLength / 2,
-    ]);
-    setAdjustedPositionChild([0, 0, -bridgeGeometry.parameters.depth / 2]);
+    setAdjustedPositionParent(
+      new THREE.Vector3(
+        position.x,
+        position.y - bridgeGeometry.parameters.height / 2,
+        position.z - FloorTopSuareLength / 2,
+      ),
+    );
+    setAdjustedPositionChild(
+      new THREE.Vector3(0, 0, -bridgeGeometry.parameters.depth / 2),
+    );
     setIsPositionReady(true);
   }, [position, boundingBox]);
 
@@ -111,12 +134,13 @@ export function Bridge({
           position={adjustedPositionParent}
           rotation={new THREE.Euler(triangleAngle, 0, 0)}
         >
-          <RigidBody type="fixed" colliders="hull">
-            <mesh
-              geometry={bridgeGeometry}
-              material={bridgeMaterial}
-              position={adjustedPositionChild}
-            />
+          <RigidBody
+            // ref={rigidBodyRef}
+            position={adjustedPositionChild}
+            type="fixed"
+            colliders="hull"
+          >
+            <mesh geometry={bridgeGeometry} material={bridgeMaterial} />
           </RigidBody>
         </group>
       )}
@@ -127,9 +151,9 @@ export function Bridge({
 export function Stage() {
   const stageRow = 4;
   const stageColumn = 3;
-  const floorAxesInterval = 64; // フロア間の中心軸の距離 (高さの差分の基準値として利用)
-  const floorPositions = [];
-  const [controlRatePositionY, setControlRatePositionY] = useState(0); // フロア間のy軸の調節用変数
+  const floorAxesInterval = 64; // フロア間の中心軸の距離 (高さの差分の基準値としても利用)
+  let floorPositions: THREE.Vector3[] = [];
+  const [controlRatePositionY, setControlRatePositionY] = useState(0.25); // フロア間のy軸の調節用変数
   const [scene, setScene] = useState<Object3D>();
   const [boundingBoxFloor, setBoundingBoxFloor] = useState<THREE.Box3>();
 
@@ -143,12 +167,17 @@ export function Stage() {
       setBoundingBoxFloor(boundingBox);
     });
 
-    /* Listem Pkayer State */
+    /* Listem Player Current Floor */
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
-        // console.log("currentFloorNum", value);
-        // setControlRatePositionY(0.25 * value.z);
+        if ([0].includes(value)) setControlRatePositionY(0.25);
+        if ([1, 3].includes(value)) setControlRatePositionY(0.2);
+        if ([2, 4, 6].includes(value)) setControlRatePositionY(0.15);
+        if ([2, 4, 6].includes(value)) setControlRatePositionY(0.15);
+        if ([5, 7, 9].includes(value)) setControlRatePositionY(0.1);
+        if ([8, 10].includes(value)) setControlRatePositionY(0.05);
+        if ([11].includes(value)) setControlRatePositionY(0);
       },
     );
     return () => {
@@ -164,13 +193,13 @@ export function Stage() {
         rowIndex * floorAxesInterval * controlRatePositionY,
         rowIndex * -floorAxesInterval,
       ];
-      const floorPosition = [
+      const floorPosition = new THREE.Vector3(
         firstLeftColumnFloorPosition[0],
         firstLeftColumnFloorPosition[1] +
           columnIndex * floorAxesInterval * controlRatePositionY,
         rowIndex * -floorAxesInterval,
-      ];
-      floorPositions.push(floorPosition);
+      );
+      floorPositions = [...floorPositions, floorPosition];
     }
   }
 
@@ -178,7 +207,7 @@ export function Stage() {
     <>
       {scene != null && boundingBoxFloor != null && (
         <>
-          {floorPositions.map((floorPosition, index) => {
+          {floorPositions.map((floorPosition: any, index: any) => {
             const hiddenFloorArray = [1, 2, 4, 5, 8];
             const hiddenBridgeForward = [9, 10, 11];
             const hiddenBridgeRight = [0, 3, 7, 11];
@@ -188,30 +217,19 @@ export function Stage() {
 
             return (
               <React.Fragment key={`Fragment${index}`}>
-                <Floor
-                  position={[
-                    floorPosition[0],
-                    floorPosition[1],
-                    floorPosition[2],
-                  ]}
-                  scene={scene.clone()}
-                />
+                <Floor position={floorPosition} scene={scene.clone()} />
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
                 {!hiddenBridgeForward.includes(index) && (
                   <Bridge
-                    position={[
-                      floorPosition[0],
-                      floorPosition[1],
-                      floorPosition[2],
-                    ]}
+                    position={floorPosition}
                     boundingBox={boundingBoxFloor}
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
-                {!hiddenBridgeRight.includes(index) && (
+                {/* {!hiddenBridgeRight.includes(index) && (
                   // Bridgeを回転させて再利用
                   <group
                     position={[
@@ -222,14 +240,14 @@ export function Stage() {
                     rotation={[0, -Math.PI / 2, 0]}
                   >
                     <Bridge
-                      position={[0, 0, 0]}
+                      position={new THREE.Vector3(0, 0, 0)}
                       boundingBox={boundingBoxFloor}
                       heightDifference={
                         floorAxesInterval * controlRatePositionY
                       }
                     />
                   </group>
-                )}
+                )} */}
                 <ShowCase
                   position={[
                     floorPosition[0],
