@@ -130,19 +130,19 @@ export function Bridge({
   return (
     <>
       {isPositionReady && (
-        <group
-          position={adjustedPositionParent}
-          rotation={new THREE.Euler(triangleAngle, 0, 0)}
+        // <group
+        //   position={adjustedPositionParent}
+        //   rotation={new THREE.Euler(triangleAngle, 0, 0)}
+        // >
+        <RigidBody
+          // ref={rigidBodyRef}
+          position={adjustedPositionChild}
+          type="fixed"
+          colliders="hull"
         >
-          <RigidBody
-            // ref={rigidBodyRef}
-            position={adjustedPositionChild}
-            type="fixed"
-            colliders="hull"
-          >
-            <mesh geometry={bridgeGeometry} material={bridgeMaterial} />
-          </RigidBody>
-        </group>
+          <mesh geometry={bridgeGeometry} material={bridgeMaterial} />
+        </RigidBody>
+        // </group>
       )}
     </>
   );
