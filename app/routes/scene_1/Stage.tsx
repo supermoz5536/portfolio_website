@@ -125,11 +125,11 @@ export function Bridge({
     new THREE.Vector3(
       position.x,
       position.y - smoothBridgeGeometry.parameters.height / 2,
-      position.z - FloorTopSuareLength / 2,
+      position.z + FloorTopSuareLength / 2,
     ),
   );
   const [smoothPositionChild] = useState(
-    new THREE.Vector3(0, 0, -smoothBridgeGeometry.parameters.depth / 2),
+    new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
   );
 
   /**
@@ -148,7 +148,7 @@ export function Bridge({
       const targetPositionParent = new THREE.Vector3(
         position.x,
         position.y - childRef.current.geometry.parameters.height / 2,
-        position.z - FloorTopSuareLength / 2,
+        position.z + FloorTopSuareLength / 2,
       );
 
       smoothPositionParent.lerp(targetPositionParent, 0.5 * delta);
@@ -171,7 +171,7 @@ export function Bridge({
       const smoothedAngleX = THREE.MathUtils.lerp(
         smoothAngle.x, // start
         triangleAngle, // end
-        0.45 * delta, // alpha
+        0.5 * delta, // alpha
       );
 
       /* 次の計算に使うための状態を保存 */
@@ -198,7 +198,9 @@ export function Bridge({
       /**Geometryのサイズ更新 */
       const targetBase = floorSpaceInterval; // 底辺
       const targetHeight = heightDifference; // 高さ
-      const targetSlope = Math.hypot(targetBase, targetHeight); // 斜辺
+      // 制御できないあまり部分の部分を+2して
+      // フロアオブジェクト内にめり込ませて隠蔽
+      const targetSlope = Math.hypot(targetBase, targetHeight) + 2;
 
       const targetScaleZ = targetSlope / smoothSlope;
 
@@ -210,13 +212,13 @@ export function Bridge({
 
       setCurrentScaleZ(lerpScaleZ);
 
-      childRef.current.scale.set(1, 1, lerpScaleZ);
+      childRef.current.scale.set(1, 1, targetScaleZ);
 
       /* Positionの更新 */
       childRef.current.position.set(
         0,
         0,
-        (-smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
+        (+smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
       );
     }
   });
@@ -225,7 +227,6 @@ export function Bridge({
     <>
       {isPositionReady && (
         <RigidBody
-          key={`bridgeRigidBody-${heightDifference}`} // ★ ここがポイント
           ref={parentRef}
           type="kinematicPosition"
           colliders="hull"
