@@ -137,11 +137,7 @@ export function Bridge({
    */
   useEffect(() => {
     setIsPositionReady(true);
-    console.log(
-      "`bridgeRigidBody-${heightDifference}`",
-      `bridgeRigidBody-${heightDifference}`,
-    );
-  }, [heightDifference]);
+  }, []);
 
   /* 初回マウント後の Bridge のポジションと角度の変更 */
   useFrame((state, delta) => {
