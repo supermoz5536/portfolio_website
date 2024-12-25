@@ -110,7 +110,7 @@ export function Bridge({
 
   const [currentScaleZ, setCurrentScaleZ] = useState(1);
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [smoothSlope, setSmoothSlope] = useState(triangleSlope);
+  const [smoothSlope] = useState(triangleSlope);
   const [smoothAngle, setSmoothAngle] = useState(
     new THREE.Euler(triangleAngle, 0, 0),
   );
@@ -137,11 +137,11 @@ export function Bridge({
    */
   useEffect(() => {
     setIsPositionReady(true);
-  }, []);
-
-  // useEffect(() => {
-  //   console.log("originalVertexArray", originalVertexArray);
-  // }, [originalVertexArray]);
+    console.log(
+      "`bridgeRigidBody-${heightDifference}`",
+      `bridgeRigidBody-${heightDifference}`,
+    );
+  }, [heightDifference]);
 
   /* 初回マウント後の Bridge のポジションと角度の変更 */
   useFrame((state, delta) => {
@@ -229,6 +229,7 @@ export function Bridge({
     <>
       {isPositionReady && (
         <RigidBody
+          key={`bridgeRigidBody-${heightDifference}`} // ★ ここがポイント
           ref={parentRef}
           type="kinematicPosition"
           colliders="hull"
