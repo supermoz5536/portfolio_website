@@ -108,9 +108,8 @@ export function Bridge({
   const parentRef: any = useRef();
   const childRef: any = useRef();
 
-  const [originalVertexArray, setOriginalVertexArray] = useState();
+  const [currentScaleZ, setCurrentScaleZ] = useState(1);
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [isRefInit, setIsRefInit] = useState<boolean>(false);
   const [smoothSlope, setSmoothSlope] = useState(triangleSlope);
   const [smoothAngle, setSmoothAngle] = useState(
     new THREE.Euler(triangleAngle, 0, 0),
@@ -140,18 +139,9 @@ export function Bridge({
     setIsPositionReady(true);
   }, []);
 
-  useEffect(() => {
-    if (childRef.current && isRefInit == false) {
-      setIsRefInit(true);
-      setOriginalVertexArray(
-        childRef.current.geometry.attributes.position.array,
-      );
-    }
-  }, [childRef.current]);
-
-  useEffect(() => {
-    console.log("originalVertexArray", originalVertexArray);
-  }, [originalVertexArray]);
+  // useEffect(() => {
+  //   console.log("originalVertexArray", originalVertexArray);
+  // }, [originalVertexArray]);
 
   /* 初回マウント後の Bridge のポジションと角度の変更 */
   useFrame((state, delta) => {
@@ -208,38 +198,30 @@ export function Bridge({
     /**
      * Childの更新
      */
-    if (childRef.current && originalVertexArray != null) {
-      /* Positionの更新 */
-      childRef.current.position.set(
-        0,
-        0,
-        -childRef.current.geometry.parameters.depth / 2,
-      );
-
-      /* Geometryのサイズ更新 */
+    if (childRef.current) {
+      /**Geometryのサイズ更新 */
       const targetBase = floorSpaceInterval; // 底辺
       const targetHeight = heightDifference; // 高さ
       const targetSlope = Math.hypot(targetBase, targetHeight); // 斜辺
 
-      const newSmoothSlope = THREE.MathUtils.lerp(
-        smoothSlope,
-        targetSlope,
-        0.8 * delta,
+      const targetScaleZ = targetSlope / smoothSlope;
+
+      const lerpScaleZ = THREE.MathUtils.lerp(
+        currentScaleZ,
+        targetScaleZ,
+        1 * delta,
       );
 
-      const currentVertexArray =
-        childRef.current.geometry.attributes.position.array;
+      setCurrentScaleZ(lerpScaleZ);
 
-      for (let i = 0; i < 24; i += 3) {
-        currentVertexArray[i + 2] =
-          originalVertexArray[i + 2] * (newSmoothSlope / smoothSlope);
-      }
+      childRef.current.scale.set(1, 1, lerpScaleZ);
 
-      /* 次の計算に使うための状態を保存 */
-      setSmoothSlope(newSmoothSlope);
-
-      /* Three.js に頂点データの更新を通知 */
-      childRef.current.geometry.attributes.position.needsUpdate = true;
+      /* Positionの更新 */
+      childRef.current.position.set(
+        0,
+        0,
+        (-smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
+      );
     }
   });
 
