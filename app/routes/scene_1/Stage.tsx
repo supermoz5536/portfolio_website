@@ -9,6 +9,7 @@ import { floorPowerOfTwo } from "three/src/math/MathUtils.js";
 import { ShowCase } from "./ShowCase";
 import React from "react";
 import ThreePlayer from "../../store/three_player_store";
+import { isRef } from "@react-three/fiber/dist/declarations/src/core/utils";
 
 type floorProps = {
   position: THREE.Vector3;
@@ -82,45 +83,54 @@ export function Bridge({
   boundingBox,
   heightDifference,
 }: bridgeProps) {
-  let FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
+  const FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
 
-  let triangleBase = floorSpaceInterval; // 底辺
-  let triangleHeight = heightDifference; // 高さ
-  let triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
-  let triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
+  const triangleBase = floorSpaceInterval; // 底辺
+  const triangleHeight = heightDifference; // 高さ
+  const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
+  const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  let bridgeGeometry = new THREE.BoxGeometry(
-    FloorTopSuareLength / 3,
-    FloorTopSuareLength / 50,
-    triangleSlope,
-  );
-  // const bridgeMaterial = new THREE.MeshStandardMaterial({ color: "blue" });
   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    metalness: 0,
-    roughness: 0,
-    transmission: 1,
-    ior: 1.62,
-    thickness: 0.001,
-    opacity: 0.95, // 透明度を強調
-    transparent: true, // 透明を有効化
-    color: 0xffffff, // 完全な白
+    color: "blue", // 完全な白
   });
+
+  // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
+  //   metalness: 0,
+  //   roughness: 0,
+  //   transmission: 1,
+  //   ior: 1.62,
+  //   thickness: 0.001,
+  //   opacity: 0.95, // 透明度を強調
+  //   // transparent: true, // 透明を有効化
+  //   color: 0xffffff, // 完全な白
+  // });
 
   const parentRef: any = useRef();
   const childRef: any = useRef();
+
+  const [originalVertexArray, setOriginalVertexArray] = useState();
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
+  const [isRefInit, setIsRefInit] = useState<boolean>(false);
+  const [smoothSlope, setSmoothSlope] = useState(triangleSlope);
   const [smoothAngle, setSmoothAngle] = useState(
     new THREE.Euler(triangleAngle, 0, 0),
+  );
+  const [smoothBridgeGeometry] = useState(
+    new THREE.BoxGeometry(
+      FloorTopSuareLength / 3,
+      FloorTopSuareLength / 50,
+      triangleSlope,
+    ),
   );
   const [smoothPositionParent, setSmoothPositionParent] = useState(
     new THREE.Vector3(
       position.x,
-      position.y - bridgeGeometry.parameters.height / 2,
+      position.y - smoothBridgeGeometry.parameters.height / 2,
       position.z - FloorTopSuareLength / 2,
     ),
   );
   const [smoothPositionChild] = useState(
-    new THREE.Vector3(0, 0, -bridgeGeometry.parameters.depth / 2),
+    new THREE.Vector3(0, 0, -smoothBridgeGeometry.parameters.depth / 2),
   );
 
   /**
@@ -130,33 +140,28 @@ export function Bridge({
     setIsPositionReady(true);
   }, []);
 
-  /**
-   * 初回マウント後の Bridge のサイズ変更
-   */
   useEffect(() => {
-    FloorTopSuareLength = Math.abs(boundingBox.max.z - boundingBox.min.z);
+    if (childRef.current && isRefInit == false) {
+      setIsRefInit(true);
+      setOriginalVertexArray(
+        childRef.current.geometry.attributes.position.array,
+      );
+    }
+  }, [childRef.current]);
 
-    triangleBase = floorSpaceInterval; // 底辺
-    triangleHeight = heightDifference; // 高さ
-    triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
-    triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
-
-    bridgeGeometry = new THREE.BoxGeometry(
-      FloorTopSuareLength / 3,
-      FloorTopSuareLength / 50,
-      triangleSlope,
-    );
-  }, [position, boundingBox, heightDifference]);
+  useEffect(() => {
+    console.log("originalVertexArray", originalVertexArray);
+  }, [originalVertexArray]);
 
   /* 初回マウント後の Bridge のポジションと角度の変更 */
   useFrame((state, delta) => {
-    if (parentRef.current) {
+    if (parentRef.current && childRef.current) {
       /**
        * Parentの更新
        */
       const targetPositionParent = new THREE.Vector3(
         position.x,
-        position.y - bridgeGeometry.parameters.height / 2,
+        position.y - childRef.current.geometry.parameters.height / 2,
         position.z - FloorTopSuareLength / 2,
       );
 
@@ -176,7 +181,7 @@ export function Bridge({
         z: smoothPositionParent.z,
       });
 
-      /* Parentの角度更新 */
+      /* 角度更新 */
       const smoothedAngleX = THREE.MathUtils.lerp(
         smoothAngle.x, // start
         triangleAngle, // end
@@ -203,8 +208,38 @@ export function Bridge({
     /**
      * Childの更新
      */
-    if (childRef.current) {
-      childRef.current.position.set(0, 0, -bridgeGeometry.parameters.depth / 2);
+    if (childRef.current && originalVertexArray != null) {
+      /* Positionの更新 */
+      childRef.current.position.set(
+        0,
+        0,
+        -childRef.current.geometry.parameters.depth / 2,
+      );
+
+      /* Geometryのサイズ更新 */
+      const targetBase = floorSpaceInterval; // 底辺
+      const targetHeight = heightDifference; // 高さ
+      const targetSlope = Math.hypot(targetBase, targetHeight); // 斜辺
+
+      const newSmoothSlope = THREE.MathUtils.lerp(
+        smoothSlope,
+        targetSlope,
+        0.8 * delta,
+      );
+
+      const currentVertexArray =
+        childRef.current.geometry.attributes.position.array;
+
+      for (let i = 0; i < 24; i += 3) {
+        currentVertexArray[i + 2] =
+          originalVertexArray[i + 2] * (newSmoothSlope / smoothSlope);
+      }
+
+      /* 次の計算に使うための状態を保存 */
+      setSmoothSlope(newSmoothSlope);
+
+      /* Three.js に頂点データの更新を通知 */
+      childRef.current.geometry.attributes.position.needsUpdate = true;
     }
   });
 
@@ -221,7 +256,7 @@ export function Bridge({
           <mesh
             ref={childRef}
             position={smoothPositionChild}
-            geometry={bridgeGeometry}
+            geometry={smoothBridgeGeometry}
             material={bridgeMaterial}
           />
         </RigidBody>
@@ -314,15 +349,17 @@ export function Stage() {
                 {/* {!hiddenBridgeRight.includes(index) && (
                   // Bridgeを回転させて再利用
                   <group
-                    position={[
-                      floorPosition[0],
-                      floorPosition[1],
-                      floorPosition[2],
-                    ]}
+                    position={
+                      new THREE.Vector3(
+                        floorPosition[0],
+                        floorPosition[1],
+                        floorPosition[2],
+                      )
+                    }
                     rotation={[0, -Math.PI / 2, 0]}
                   >
                     <Bridge
-                      position={new THREE.Vector3(0, 0, 0)}
+                      position={floorPosition}
                       boundingBox={boundingBoxFloor}
                       heightDifference={
                         floorAxesInterval * controlRatePositionY
