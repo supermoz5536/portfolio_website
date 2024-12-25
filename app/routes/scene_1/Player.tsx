@@ -36,11 +36,11 @@ export function Player() {
     // const cameraPosition = new THREE.Vector3();
     // cameraPosition.copy(bodyPosition);
     // cameraPosition.z += 20.5;
-    // cameraPosition.y += 20.65;
+    // cameraPosition.y += 10.65;
 
     // const cameraTarget = new THREE.Vector3();
     // cameraTarget.copy(bodyPosition);
-    // cameraTarget.y += 0.25;
+    // cameraTarget.y += 5.25;
 
     // smoothCameraPosition.lerp(cameraPosition, 5 * delta);
     // smoothCameraTarget.lerp(cameraTarget, 5 * delta);
@@ -58,7 +58,7 @@ export function Player() {
         colliders="ball"
         linearDamping={0.5}
         angularDamping={0.5}
-        restitution={0.2}
+        restitution={0}
         friction={1}
       >
         <mesh castShadow>
