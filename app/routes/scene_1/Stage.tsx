@@ -48,6 +48,10 @@ export function Floor({ position, scene }: floorProps) {
     setIsPositionReady(true);
   }, []);
 
+  useEffect(() => {
+    console.log("scene", scene);
+  }, [position]);
+
   /* 初回マウント後以降の更新 */
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -90,20 +94,20 @@ export function Bridge({
   const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-  //   color: "blue", // 完全な白
-  // });
-
   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    metalness: 0,
-    roughness: 0,
-    transmission: 1,
-    ior: 1.62,
-    thickness: 0.001,
-    opacity: 0.95, // 透明度を強調
-    // transparent: true, // 透明を有効化
-    color: 0xffffff, // 完全な白
+    color: "white", // 完全な白
   });
+
+  // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
+  //   metalness: 0,
+  //   roughness: 0,
+  //   transmission: 1,
+  //   ior: 1.62,
+  //   thickness: 0.001,
+  //   opacity: 0.95, // 透明度を強調
+  //   // transparent: true, // 透明を有効化
+  //   color: 0xffffff, // 完全な白
+  // });
 
   const parentRef: any = useRef();
   const childRef: any = useRef();
@@ -225,6 +229,8 @@ export function Bridge({
         >
           <mesh
             ref={childRef}
+            castShadow
+            receiveShadow
             position={smoothPositionChild}
             geometry={smoothBridgeGeometry}
             material={bridgeMaterial}
@@ -247,20 +253,20 @@ export function BridgeRight({
   const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-  //   color: "blue", // 完全な白
-  // });
-
   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    metalness: 0,
-    roughness: 0,
-    transmission: 1,
-    ior: 1.62,
-    thickness: 0.001,
-    opacity: 0.95, // 透明度を強調
-    // transparent: true, // 透明を有効化
-    color: 0xffffff, // 完全な白
+    color: "blue", // 完全な白
   });
+
+  // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
+  //   metalness: 0,
+  //   roughness: 0,
+  //   transmission: 1,
+  //   ior: 1.62,
+  //   thickness: 0.001,
+  //   opacity: 0.95, // 透明度を強調
+  //   // transparent: true, // 透明を有効化
+  //   color: 0xffffff, // 完全な白
+  // });
 
   const parentRef: any = useRef();
   const childRef: any = useRef();
@@ -405,9 +411,14 @@ export function Stage() {
   useEffect(() => {
     /* Importing Each Model  */
     gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
-      gltf.scene.scale.set(1, 1, 1);
-      setScene(gltf.scene);
+      gltf.scene.traverse((child: any) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
       const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
+      setScene(gltf.scene);
       setBoundingBoxFloor(boundingBox);
     });
 

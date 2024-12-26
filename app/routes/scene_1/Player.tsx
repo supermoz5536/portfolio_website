@@ -33,20 +33,20 @@ export function Player() {
     const bodyPosition = body.current.translation();
     setPlayerPosition(bodyPosition);
 
-    // const cameraPosition = new THREE.Vector3();
-    // cameraPosition.copy(bodyPosition);
-    // cameraPosition.z += 20.5;
-    // cameraPosition.y += 10.65;
+    const cameraPosition = new THREE.Vector3();
+    cameraPosition.copy(bodyPosition);
+    cameraPosition.z += 20.5;
+    cameraPosition.y += 10.65;
 
-    // const cameraTarget = new THREE.Vector3();
-    // cameraTarget.copy(bodyPosition);
-    // cameraTarget.y += 5.25;
+    const cameraTarget = new THREE.Vector3();
+    cameraTarget.copy(bodyPosition);
+    cameraTarget.y += 5.25;
 
-    // smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-    // smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+    smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+    smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    // state.camera.position.copy(smoothCameraPosition);
-    // state.camera.lookAt(smoothCameraTarget);
+    state.camera.position.copy(smoothCameraPosition);
+    state.camera.lookAt(smoothCameraTarget);
   });
 
   return (
@@ -61,9 +61,14 @@ export function Player() {
         restitution={0}
         friction={1}
       >
-        <mesh castShadow>
+        <mesh castShadow receiveShadow>
           <icosahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial flatShading color={"mediumpurple"} />
+          <meshStandardMaterial
+            flatShading
+            color={"mediumpurple"}
+            transparent={false}
+            opacity={0}
+          />
         </mesh>
       </RigidBody>
     </>
