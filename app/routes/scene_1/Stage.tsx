@@ -48,10 +48,6 @@ export function Floor({ position, scene }: floorProps) {
     setIsPositionReady(true);
   }, []);
 
-  useEffect(() => {
-    console.log("scene", scene);
-  }, [position]);
-
   /* 初回マウント後以降の更新 */
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -254,7 +250,7 @@ export function BridgeRight({
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    color: "blue", // 完全な白
+    color: "white", // 完全な白
   });
 
   // const bridgeMaterial = new THREE.MeshPhysicalMaterial({
@@ -387,6 +383,8 @@ export function BridgeRight({
           rotation={smoothAngle}
         >
           <mesh
+            castShadow
+            receiveShadow
             ref={childRef}
             position={smoothPositionChild}
             geometry={smoothBridgeGeometry}
