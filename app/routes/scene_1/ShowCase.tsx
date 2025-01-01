@@ -81,21 +81,21 @@ export function ShowCase({ position }: showCaseProps) {
           />
 
           {/* Body Backward */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={showcaseBodyMaterial}
             position={[0, 3, 1.95]}
             rotation={[0, Math.PI / 2, 0]}
             scale={[0.1, 4, 4]}
-          />
+          /> */}
 
           {/* Top */}
-          {/* <mesh
+          <mesh
             geometry={boxGeometry}
-            material={showcaseTopBottomMaterial}
+            material={showcaseBodyMaterial}
             position={[0, 5.125, 0]}
             scale={[4, 0.25, 4]}
-          /> */}
+          />
         </group>
       </RigidBody>
     </>

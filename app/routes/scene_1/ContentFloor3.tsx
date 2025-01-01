@@ -1,5 +1,5 @@
 import { Vector3, useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 type positionProps = {
@@ -32,16 +32,23 @@ const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const externalFloorMaterial = new THREE.MeshStandardMaterial({
   color: "red",
   transparent: true,
-  opacity: 0.2,
+  opacity: 0.3,
   side: THREE.DoubleSide,
   depthWrite: false,
 });
 
 /**
+ * Arrow
+ */
+const arrowTipGeometry = new THREE.ConeGeometry(0.0175, 0.08, 16);
+arrowTipGeometry.rotateX(Math.PI / 2); // ジオメトリを -Z 軸の代わりに Y 軸方向に設定
+const arrowTipMaterial = new THREE.MeshStandardMaterial({ color: "#6D6D6D" });
+
+/**
  * Static Dot
  */
 const staticDotGeometry = new THREE.SphereGeometry(0.01, 32, 16);
-const staticDotMaterial = new THREE.MeshStandardMaterial({ color: "gray" });
+const staticDotMaterial = new THREE.MeshStandardMaterial({ color: "#6D6D6D" });
 
 export function StaticDot({ position }: positionProps) {
   return (
@@ -67,10 +74,42 @@ const dynamicDotGeometry = new THREE.SphereGeometry(
   0, // thetaStart: 垂直方向の開始角度 (ラジアン)
   Math.PI / 2, // thetaLength: 垂直方向の角度範囲 (ラジアン)
 );
-const dynamicDotMaterial = new THREE.MeshStandardMaterial({
+const dynamicDotMaterial1 = new THREE.MeshStandardMaterial({
   color: "purple",
   side: THREE.DoubleSide,
 });
+
+const dynamicDotMaterial2 = new THREE.MeshStandardMaterial({
+  color: "red",
+  side: THREE.DoubleSide,
+});
+
+const dynamicDotMaterial3 = new THREE.MeshStandardMaterial({
+  color: "blue",
+  side: THREE.DoubleSide,
+});
+
+export function ArrowTip() {
+  const arrowRef: any = useRef();
+
+  useEffect(() => {
+    if (arrowRef.current) {
+      // ターゲットの方向を向く
+      arrowRef.current.rotation.set(-Math.PI / 2, 0, 0);
+      arrowRef.current.lookAt(new THREE.Vector3(0.6, 1.75, -0.6));
+    }
+  }, []);
+  return (
+    <>
+      <mesh
+        ref={arrowRef}
+        geometry={arrowTipGeometry}
+        material={arrowTipMaterial}
+        position={[0.5, 1.685, -0.5]}
+      />
+    </>
+  );
+}
 
 export function TurnedDynamicDot({ position }: positionProps) {
   const dotBody: any = useRef();
@@ -79,7 +118,7 @@ export function TurnedDynamicDot({ position }: positionProps) {
     if (dotBody.current) {
       const currentPosition = dotBody.current.position;
 
-      if (dotBody.current.position.z > 0) {
+      if (dotBody.current.position.x < 0) {
         dotBody.current.position.set(
           currentPosition.x,
           currentPosition.y,
@@ -104,7 +143,7 @@ export function TurnedDynamicDot({ position }: positionProps) {
       <mesh
         ref={dotBody}
         geometry={dynamicDotGeometry}
-        material={dynamicDotMaterial}
+        material={dynamicDotMaterial1}
         position={position}
       />
     </>
@@ -135,7 +174,7 @@ export function DynamicDotAxisZ({ position }: positionProps) {
       <mesh
         ref={dotBody}
         geometry={dynamicDotGeometry}
-        material={dynamicDotMaterial}
+        material={dynamicDotMaterial2}
         position={position}
       />
     </>
@@ -149,11 +188,31 @@ export function DynamicDotAxisXZ({ position }: positionProps) {
     if (dotBody.current) {
       const currentPosition = dotBody.current.position;
 
-      dotBody.current.position.set(
-        currentPosition.x + 0.3 * delta,
-        currentPosition.y,
-        currentPosition.z - 0.3 * delta,
-      );
+      if (currentPosition.x < -0.1) {
+        dotBody.current.position.set(
+          currentPosition.x + 0.3 * delta,
+          currentPosition.y,
+          currentPosition.z - 0.3 * delta,
+        );
+      } else if (-0.1 < currentPosition.x && currentPosition.x < 0) {
+        dotBody.current.position.set(
+          currentPosition.x + 0.3 * delta,
+          currentPosition.y - 0.2 * delta,
+          currentPosition.z - 0.3 * delta,
+        );
+      } else if (0 < currentPosition.x && currentPosition.x < 0.1) {
+        dotBody.current.position.set(
+          currentPosition.x + 0.3 * delta,
+          currentPosition.y + 0.2 * delta,
+          currentPosition.z - 0.3 * delta,
+        );
+      } else if (currentPosition.x > 0.1) {
+        dotBody.current.position.set(
+          currentPosition.x + 0.3 * delta,
+          currentPosition.y,
+          currentPosition.z - 0.3 * delta,
+        );
+      }
 
       if (dotBody.current.position.z < -0.6) {
         dotBody.current.position.set(-0.6, 1, 0.6);
@@ -166,7 +225,7 @@ export function DynamicDotAxisXZ({ position }: positionProps) {
       <mesh
         ref={dotBody}
         geometry={dynamicDotGeometry}
-        material={dynamicDotMaterial}
+        material={dynamicDotMaterial3}
         position={position}
       />
     </>
@@ -174,14 +233,19 @@ export function DynamicDotAxisXZ({ position }: positionProps) {
 }
 
 export function ContentFloor3({ position }: positionProps) {
-  const diagonalStaticDots = [];
+  const diagonalStaticDotsAbove = [];
+  const diagonalStaticDotsBelow = [];
   const verticallStaticDots = [];
   const turnedDynamicDots = [];
   const dynamicDotsAxisZ = [];
   const dynamicDotsAxisXZ = [];
 
-  for (let i = 0; i < 12; i++) {
-    diagonalStaticDots.push(StaticDot);
+  for (let i = 0; i < 11; i++) {
+    diagonalStaticDotsAbove.push(StaticDot);
+  }
+
+  for (let i = 0; i < 13; i++) {
+    diagonalStaticDotsBelow.push(StaticDot);
   }
 
   for (let i = 0; i < 8; i++) {
@@ -226,8 +290,11 @@ export function ContentFloor3({ position }: positionProps) {
           position={[-0.6, 1, 0.6]}
         />
 
-        {/* Diagonal Static Dots */}
-        {diagonalStaticDots.map((Dot, index) => {
+        {/* Arrow Tip */}
+        <ArrowTip />
+
+        {/* Diagonal Static Dots Above */}
+        {diagonalStaticDotsAbove.map((Dot, index) => {
           if (index == 0) return;
           const dotPosition = new THREE.Vector3(
             // Calculate from Sphere Bottom Left
@@ -237,6 +304,18 @@ export function ContentFloor3({ position }: positionProps) {
           );
           return <Dot position={dotPosition} />;
         })}
+
+        {/* Diagonal Static Dots Below */}
+        {/* {diagonalStaticDotsBelow.map((Dot, index) => {
+          if (index == 0) return;
+          const dotPosition = new THREE.Vector3(
+            // Calculate from Sphere Bottom Left
+            -0.6 + 0.1 * index,
+            1,
+            0.6 - 0.1 * index,
+          );
+          return <Dot position={dotPosition} />;
+        })} */}
 
         {/* Vertical Static Dots */}
         {verticallStaticDots.map((Dot, index) => {
@@ -251,36 +330,42 @@ export function ContentFloor3({ position }: positionProps) {
         })}
 
         {/* Turned Dynamic Dots */}
-        {turnedDynamicDots.map((Dot, index) => {
-          let dotPosition;
-          if (index < 4) {
-            dotPosition = new THREE.Vector3(0, 1, 0.6 - index * 0.15);
-          } else {
-            dotPosition = new THREE.Vector3(0 + (index - 4) * 0.15, 1, 0);
+        {/* {turnedDynamicDots.map((Dot, index) => {
+          if (index < 1) {
+            let dotPosition;
+            if (index < 4) {
+              dotPosition = new THREE.Vector3(0, 1, 0.6 - index * 0.15);
+            } else {
+              dotPosition = new THREE.Vector3(0 + (index - 4) * 0.15, 1, 0);
+            }
+            return <TurnedDynamicDot position={dotPosition} />;
           }
-          return <TurnedDynamicDot position={dotPosition} />;
-        })}
+        })} */}
 
         {/* Dynamic Dots Axis Z */}
         {dynamicDotsAxisZ.map((Dot, index) => {
-          let dotPosition;
+          if (index < 1) {
+            let dotPosition;
 
-          dotPosition = new THREE.Vector3(0, 1, 0.6 - index * 0.15);
+            dotPosition = new THREE.Vector3(0, 1, 0.6 - index * 0.15);
 
-          return <DynamicDotAxisZ position={dotPosition} />;
+            return <DynamicDotAxisZ position={dotPosition} />;
+          }
         })}
 
         {/* Dynamic Dots Axis XZ */}
         {dynamicDotsAxisXZ.map((Dot, index) => {
-          let dotPosition;
+          if (index < 1) {
+            let dotPosition;
 
-          dotPosition = new THREE.Vector3(
-            -0.6 + index * 0.1,
-            1,
-            0.6 - index * 0.1,
-          );
+            dotPosition = new THREE.Vector3(
+              -0.6 + index * 0.1,
+              1,
+              0.6 - index * 0.1,
+            );
 
-          return <DynamicDotAxisXZ position={dotPosition} />;
+            return <DynamicDotAxisXZ position={dotPosition} />;
+          }
         })}
       </group>
     </>

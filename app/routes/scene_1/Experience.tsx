@@ -8,7 +8,7 @@ export default function Experience() {
   return (
     <>
       <color args={["#bdedfc"]} attach="background" />
-      <axesHelper position={[0, 0.05, 0]} scale={1000} />
+      {/* <axesHelper position={[0, 0.05, 0]} scale={1000} /> */}
       <gridHelper
         position={[0, 0, 0]}
         args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
