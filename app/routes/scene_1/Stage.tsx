@@ -10,6 +10,7 @@ import { ShowCase } from "./ShowCase";
 import React from "react";
 import ThreePlayer from "../../store/three_player_store";
 import { isRef } from "@react-three/fiber/dist/declarations/src/core/utils";
+import { ContentFloor3 } from "./ContentFloor3";
 
 type floorProps = {
   position: THREE.Vector3;
@@ -490,13 +491,8 @@ export function Stage() {
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
-                <ShowCase
-                  position={[
-                    floorPosition[0],
-                    floorPosition[1],
-                    floorPosition[2],
-                  ]}
-                />
+                <ShowCase position={floorPosition} />
+                <ContentFloor3 position={floorPosition} />
               </React.Fragment>
             );
           })}

@@ -30,7 +30,13 @@ export const ThreeScene1 = () => {
             fov: 45,
             near: 0.1,
             far: 4000,
-            position: [10.5, 20, 30],
+            position: [1.125, 3.5, 3.25],
+
+            // fov: 45,
+            // near: 0.1,
+            // far: 4000,
+            // position: [10.5, 20, 30],
+
             // fov: 45,
             // near: 0.1,
             // far: 4000,

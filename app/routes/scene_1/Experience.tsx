@@ -2,8 +2,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import Lights from "./Lights.js";
 import { Player } from "./Player.js";
-import { Floor, Stage } from "./Stage.js";
-import { XAxis } from "recharts";
+import { Stage } from "./Stage.js";
 
 export default function Experience() {
   return (

@@ -6,22 +6,16 @@ import { useFrame } from "@react-three/fiber";
 import { Float, Text, useGLTF } from "@react-three/drei";
 
 type showCaseProps = {
-  position: number[];
+  position: THREE.Vector3;
 };
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const coneGeometry = new THREE.ConeGeometry(9 * Math.sqrt(2), 10, 4);
-coneGeometry.translate(0, coneGeometry.parameters.height / 2, 0);
-const floorLayerMaterial = new THREE.MeshStandardMaterial({ color: "#cccccc" });
-const floorBodyMaterial = new THREE.MeshStandardMaterial({ color: "yellow" });
-const showcaseTopBottomMaterial = new THREE.MeshStandardMaterial({
+const showcaseBottomMaterial = new THREE.MeshStandardMaterial({
   color: "black",
 });
-
 const showcaseBottomLayerMaterial = new THREE.MeshStandardMaterial({
   color: "#f1f1f1",
 });
-
 const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0,
   roughness: 0,
@@ -31,21 +25,24 @@ const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
   opacity: 0.95, // 透明度を強調
   transparent: true, // 透明を有効化
   color: 0xffffff, // 完全な白
+  depthWrite: false,
 });
 
 export function ShowCase({ position }: showCaseProps) {
   return (
     <>
-      <group
-        position={new THREE.Vector3(position[0], position[1], position[2])}
+      {/* ShowCase */}
+      <RigidBody
+        type="fixed"
+        colliders="hull"
+        position={[position.x, position.y, position.z]}
+        scale={0.7}
       >
-        {/* ShowCase */}
-        {/* <RigidBody type="fixed" colliders="hull"> */}
         <group scale={0.7}>
           {/* Bottom */}
           <mesh
             geometry={boxGeometry}
-            material={showcaseTopBottomMaterial}
+            material={showcaseBottomMaterial}
             position={[0, 0.5, 0]}
             scale={[4, 1, 4]}
           />
@@ -100,8 +97,7 @@ export function ShowCase({ position }: showCaseProps) {
             scale={[4, 0.25, 4]}
           /> */}
         </group>
-        {/* </RigidBody> */}
-      </group>
+      </RigidBody>
     </>
   );
 }
