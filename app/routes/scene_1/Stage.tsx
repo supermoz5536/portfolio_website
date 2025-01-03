@@ -409,7 +409,7 @@ export function Stage() {
   /* Initialize */
   useEffect(() => {
     /* Importing Each Model  */
-    gltfLoader.load("/asset/model/floor2.glb", (gltf: any) => {
+    gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -491,8 +491,8 @@ export function Stage() {
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
-                <ShowCase position={floorPosition} />
-                <ContentFloor3 position={floorPosition} />
+                {/* <ShowCase position={floorPosition} /> */}
+                {/* <ContentFloor3 position={floorPosition} /> */}
               </React.Fragment>
             );
           })}
