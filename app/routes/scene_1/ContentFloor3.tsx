@@ -32,7 +32,7 @@ const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const externalFloorMaterial = new THREE.MeshStandardMaterial({
   color: "red",
   transparent: true,
-  opacity: 0.3,
+  opacity: 0.4,
   side: THREE.DoubleSide,
   depthWrite: false,
 });
@@ -42,13 +42,13 @@ const externalFloorMaterial = new THREE.MeshStandardMaterial({
  */
 const arrowTipGeometry = new THREE.ConeGeometry(0.0175, 0.08, 16);
 arrowTipGeometry.rotateX(Math.PI / 2); // ジオメトリを -Z 軸の代わりに Y 軸方向に設定
-const arrowTipMaterial = new THREE.MeshStandardMaterial({ color: "#6D6D6D" });
+const arrowTipMaterial = new THREE.MeshStandardMaterial({ color: "white" });
 
 /**
  * Static Dot
  */
 const staticDotGeometry = new THREE.SphereGeometry(0.01, 32, 16);
-const staticDotMaterial = new THREE.MeshStandardMaterial({ color: "#6D6D6D" });
+const staticDotMaterial = new THREE.MeshStandardMaterial({ color: "white" });
 
 export function StaticDot({ position }: positionProps) {
   return (
@@ -266,7 +266,7 @@ export function ContentFloor3({ position }: positionProps) {
 
   return (
     <>
-      <group position={[position.x, position.y, position.z]}>
+      <group position={[position.x, position.y + 0.5, position.z]}>
         {/* Filed Layder*/}
         <mesh
           geometry={planeGeometry}

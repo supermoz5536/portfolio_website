@@ -71,12 +71,13 @@ export function Player() {
 
     // const cameraPosition = new THREE.Vector3();
     // cameraPosition.copy(playerPosition);
-    // cameraPosition.z += 20.5;
-    // cameraPosition.y += 10.65;
+    // cameraPosition.z += 7.5;
+    // cameraPosition.y += 2.65;
 
     // const cameraTarget = new THREE.Vector3();
     // cameraTarget.copy(playerPosition);
-    // cameraTarget.y += 5.25;
+
+    // cameraTarget.z -= 4.25;
 
     // smoothCameraPosition.lerp(cameraPosition, 5 * delta);
     // smoothCameraTarget.lerp(cameraTarget, 5 * delta);

@@ -491,8 +491,8 @@ export function Stage() {
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
-                {/* <ShowCase position={floorPosition} /> */}
-                {/* <ContentFloor3 position={floorPosition} /> */}
+                <ShowCase position={floorPosition} />
+                <ContentFloor3 position={floorPosition} />
               </React.Fragment>
             );
           })}
