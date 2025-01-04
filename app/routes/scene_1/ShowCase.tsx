@@ -4,6 +4,8 @@ import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Text, useGLTF } from "@react-three/drei";
+import { Wave } from "./Wave";
+import { ContentFloor3 } from "./ContentFloor3";
 
 type showCaseProps = {
   position: THREE.Vector3;
@@ -30,6 +32,8 @@ const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
 
 export function ShowCase({ position }: showCaseProps) {
   const rigidBodyRef: any = useRef();
+  const groupRef: any = useRef();
+
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
@@ -43,12 +47,21 @@ export function ShowCase({ position }: showCaseProps) {
   /* 初回マウント後以降の更新 */
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
+
     if (rigidBodyRef.current) {
       rigidBodyRef.current.setNextKinematicTranslation({
         x: adjustedPosition.x,
         y: adjustedPosition.y,
         z: adjustedPosition.z,
       });
+    }
+
+    if (groupRef.current) {
+      groupRef.current.position.set(
+        adjustedPosition.x,
+        adjustedPosition.y,
+        adjustedPosition.z,
+      );
     }
   });
 
@@ -57,14 +70,14 @@ export function ShowCase({ position }: showCaseProps) {
       {isPositionReady && (
         <>
           {/* ShowCase */}
-          <RigidBody
+          {/* <RigidBody
             ref={rigidBodyRef}
             position={adjustedPosition}
             type="kinematicPosition"
             colliders="hull"
-            scale={0.7}
-          >
-            {/* <group position={[position.x, position.y, position.z]} scale={0.7}> */}
+            scale={1.1}
+          > */}
+          <group ref={groupRef} position={adjustedPosition} scale={1.1}>
             {/* Bottom */}
             <mesh
               geometry={boxGeometry}
@@ -131,8 +144,13 @@ export function ShowCase({ position }: showCaseProps) {
               position={[0, 5.125, 0]}
               scale={[4, 0.25, 4]}
             />
-            {/* </group> */}
-          </RigidBody>
+
+            <ContentFloor3 />
+
+            <Wave flag={0} />
+            <Wave flag={1} />
+          </group>
+          {/* </RigidBody> */}
         </>
       )}
     </>

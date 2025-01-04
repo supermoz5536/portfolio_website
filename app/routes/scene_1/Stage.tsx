@@ -6,11 +6,12 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { Object3D } from "three";
 import { floorPowerOfTwo } from "three/src/math/MathUtils.js";
-import { ShowCase } from "./ShowCase";
 import React from "react";
 import ThreePlayer from "../../store/three_player_store";
 import { isRef } from "@react-three/fiber/dist/declarations/src/core/utils";
 import { ContentFloor3 } from "./ContentFloor3";
+import { Wave } from "./Wave";
+import { ShowCase } from "./ShowCase";
 
 type floorProps = {
   position: THREE.Vector3;
@@ -492,7 +493,8 @@ export function Stage() {
                   />
                 )}
                 <ShowCase position={floorPosition} />
-                <ContentFloor3 position={floorPosition} />
+                {/* <Wave position={floorPosition} flag={0} />
+                <Wave position={floorPosition} flag={1} /> */}
               </React.Fragment>
             );
           })}

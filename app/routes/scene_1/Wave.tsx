@@ -70,7 +70,7 @@ export function Wave({ flag }: waveProps) {
     <>
       <mesh
         ref={wavesRef}
-        geometry={new THREE.PlaneGeometry(1, 1, 256, 256)}
+        geometry={new THREE.PlaneGeometry(1, 1, 12, 12)}
         material={
           new THREE.ShaderMaterial({
             vertexShader: waveVertexShader,
@@ -89,19 +89,18 @@ export function Wave({ flag }: waveProps) {
               uSmallWavesIteration: { value: 2.0 },
 
               // For Fragment
-              uSurfaceColor: { value: new THREE.Color(debugObj.uSurfaceColor) },
+              uSurfaceColor: {
+                value: new THREE.Color(debugObj.uSurfaceColor),
+              },
               uDepthColor: { value: new THREE.Color(debugObj.uDepthColor) },
               uColorOffset: { value: 0.289 },
               uColorMultiplier: { value: 15.0 },
             },
           })
         }
-        // material={testMaterial}
-        position={[0, flag == 0 ? 0.975 : 3.49, 0]}
+        position={[0, flag == 0 ? 1.25 : 4.975, 0]}
         rotation={[flag == 0 ? -Math.PI / 2 : Math.PI / 2, 0, 0]}
-        scale={[2.7, 2.7, 1]}
-        castShadow
-        receiveShadow
+        scale={[3.8, 3.8, 1]}
       />
     </>
   );

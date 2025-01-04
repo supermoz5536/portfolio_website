@@ -109,7 +109,7 @@ export default function Lights() {
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.5} // normalBias を追加
+        shadow-normalBias={0.005} // normalBias を追加
       />
     </>
   );
