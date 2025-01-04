@@ -17,7 +17,7 @@ export default function Experience() {
         args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
       />
       <OrbitControls makeDefault />
-      <Physics debug>
+      <Physics>
         <Lights />
         <Player />
         <Stage />

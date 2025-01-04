@@ -23,9 +23,9 @@ export default function Lights() {
     if (gui) {
       const lightsGui = gui.addFolder("Lights");
 
-      lightsGui
-        .add(dirLightRef.current.position, "x", -40, 40)
-        .name("dirLight.y");
+      // lightsGui
+      //   .add(dirLightRef.current.position, "x", -40, 40)
+      //   .name("dirLight.y");
       lightsGui
         .add(pointLightRef.current.position, "x", -10, 10)
         .name("pointLight.x");
@@ -81,7 +81,7 @@ export default function Lights() {
         shadow-camera-bottom={-100}
         shadow-camera-left={-100}
       /> */}
-      <directionalLight
+      {/* <directionalLight
         ref={dirLightRef}
         color={"#ffffff"}
         castShadow
@@ -95,7 +95,7 @@ export default function Lights() {
         shadow-camera-bottom={-5}
         shadow-camera-left={-5}
         shadow-normalBias={0.05} // normalBias を追加
-      />
+      /> */}
 
       <ambientLight intensity={0.75} />
 
@@ -103,13 +103,13 @@ export default function Lights() {
         ref={pointLightRef}
         color="#fff"
         intensity={1000}
-        distance={10}
+        distance={15}
         position={[0, 12.5, 0]}
         castShadow
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.05} // normalBias を追加
+        shadow-normalBias={0.5} // normalBias を追加
       />
     </>
   );

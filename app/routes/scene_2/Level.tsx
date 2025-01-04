@@ -112,7 +112,7 @@ export function BlockLimbo({ position = [0, 0, 0] }) {
   return (
     <group position={new THREE.Vector3(position[0], position[1], position[2])}>
       {/* Floor*/}
-      <primitive object={new THREE.AxesHelper(2.5)}></primitive>
+      {/* <primitive object={new THREE.AxesHelper(2.5)}></primitive> */}
       <mesh
         geometry={boxGeometry}
         material={floor2Material}
@@ -163,7 +163,7 @@ export function BlockAxe({ position = [0, 0, 0] }) {
   return (
     <group position={new THREE.Vector3(position[0], position[1], position[2])}>
       {/* Floor*/}
-      <primitive object={new THREE.AxesHelper(2.5)}></primitive>
+      {/* <primitive object={new THREE.AxesHelper(2.5)}></primitive> */}
       <mesh
         geometry={boxGeometry}
         material={floor2Material}
