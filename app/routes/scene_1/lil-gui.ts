@@ -15,7 +15,7 @@ export const getGui = (): GUI | null => {
   // Cliant Side: シングルトンでインスタンス化
   if (!isInstantiated) {
     isInstantiated = true;
-    // gui = new GUI();
+    gui = new GUI();
     // gui.hide();
   }
 

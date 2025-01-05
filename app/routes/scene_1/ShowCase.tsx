@@ -5,9 +5,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Text, useGLTF } from "@react-three/drei";
 import { Wave } from "./Wave";
-import { ContentFloor3 } from "./ContentFloor3";
+import {
+  ShowCaseContent0,
+  ShowCaseContent3,
+  ShowCaseContent6,
+  ShowCaseContent7,
+  ShowCaseContent9,
+  ShowCaseContent10,
+  ShowCaseContent11,
+} from "./ShowCaseContents";
 
 type showCaseProps = {
+  index: number;
   position: THREE.Vector3;
 };
 
@@ -30,9 +39,21 @@ const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
   depthWrite: false,
 });
 
-export function ShowCase({ position }: showCaseProps) {
+const showcaseComponents: any = {
+  0: ShowCaseContent0,
+  3: ShowCaseContent3,
+  6: ShowCaseContent6,
+  7: ShowCaseContent7,
+  9: ShowCaseContent9,
+  10: ShowCaseContent10,
+  11: ShowCaseContent11,
+};
+
+export function ShowCase({ index, position }: showCaseProps) {
   const rigidBodyRef: any = useRef();
   const groupRef: any = useRef();
+
+  const ShowcaseComponent: any = showcaseComponents[index];
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [adjustedPosition] = useState<THREE.Vector3>(
@@ -145,7 +166,7 @@ export function ShowCase({ position }: showCaseProps) {
               scale={[4, 0.25, 4]}
             />
 
-            <ContentFloor3 />
+            <ShowcaseComponent />
 
             <Wave flag={0} />
             <Wave flag={1} />

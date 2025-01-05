@@ -25,38 +25,33 @@ export function Wave({ flag }: waveProps) {
   }
 
   useEffect(() => {
-    if (wavesRef.current && gui) {
-      const wavesGui = gui.addFolder("Waves");
-      wavesGui.add(wavesRef.current.position, "y", 0, 3, 0.0001).name("PositionY"); // prettier-ignore
-
-      wavesGui.add(wavesRef.current.material.uniforms.uBigWavesElevation,"value", 0, 10, 0.001).name("wavesElevation"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uBigWavesFrequency.value,"x", 0, 2, 0.001).name("wavesFrequency.x"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uBigWavesFrequency.value,"y", 0, 2, 0.001).name("wavesFrequency.z"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uBigWavesSpeed.value,"x", 0, 2, 0.001).name("wavesSpeed.x"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uBigWavesSpeed.value, "y", 0, 2, 0.001).name("wavesSpeed.z"); // prettier-ignore
-
-      wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesElevation, "value", 0, 2, 0.001).name("uSmallWavesElevation"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesFrequency, "value", 0, 2, 0.001).name("uSmallWavesFrequency"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesSpeed, "value", 0, 2, 0.001).name("uSmallWavesSpeed"); // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesIteration, "value", 0, 5, 0.001).name("uSmallWavesIteration"); // prettier-ignore
-
-      wavesGui
-        .addColor(debugObj, "uSurfaceColor")
-        .onChange((value: any) => {
-          wavesRef.current.material.uniforms.uSurfaceColor.value.set(value);
-        })
-        .name("uSurfaceColor");
-
-      wavesGui
-        .addColor(debugObj, "uDepthColor")
-        .onChange((value: any) => {
-          wavesRef.current.material.uniforms.uDepthColor.value.set(value);
-        })
-        .name("uDepthColor");
-
-      wavesGui.add(wavesRef.current.material.uniforms.uColorOffset,"value", 0, 10, 0.001).name("uColorOffset") // prettier-ignore
-      wavesGui.add(wavesRef.current.material.uniforms.uColorMultiplier,"value", 0, 20, 0.001).name("uColorMultiplier"); // prettier-ignore
-    }
+    // if (wavesRef.current && gui) {
+    //   const wavesGui = gui.addFolder("Waves");
+    //   wavesGui.add(wavesRef.current.position, "y", 0, 3, 0.0001).name("PositionY"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uBigWavesElevation,"value", 0, 10, 0.001).name("wavesElevation"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uBigWavesFrequency.value,"x", 0, 2, 0.001).name("wavesFrequency.x"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uBigWavesFrequency.value,"y", 0, 2, 0.001).name("wavesFrequency.z"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uBigWavesSpeed.value,"x", 0, 2, 0.001).name("wavesSpeed.x"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uBigWavesSpeed.value, "y", 0, 2, 0.001).name("wavesSpeed.z"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesElevation, "value", 0, 2, 0.001).name("uSmallWavesElevation"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesFrequency, "value", 0, 2, 0.001).name("uSmallWavesFrequency"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesSpeed, "value", 0, 2, 0.001).name("uSmallWavesSpeed"); // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uSmallWavesIteration, "value", 0, 5, 0.001).name("uSmallWavesIteration"); // prettier-ignore
+    //   wavesGui
+    //     .addColor(debugObj, "uSurfaceColor")
+    //     .onChange((value: any) => {
+    //       wavesRef.current.material.uniforms.uSurfaceColor.value.set(value);
+    //     })
+    //     .name("uSurfaceColor");
+    //   wavesGui
+    //     .addColor(debugObj, "uDepthColor")
+    //     .onChange((value: any) => {
+    //       wavesRef.current.material.uniforms.uDepthColor.value.set(value);
+    //     })
+    //     .name("uDepthColor");
+    //   wavesGui.add(wavesRef.current.material.uniforms.uColorOffset,"value", 0, 10, 0.001).name("uColorOffset") // prettier-ignore
+    //   wavesGui.add(wavesRef.current.material.uniforms.uColorMultiplier,"value", 0, 20, 0.001).name("uColorMultiplier"); // prettier-ignore
+    // }
   }, []);
 
   useFrame((state, delta) => {

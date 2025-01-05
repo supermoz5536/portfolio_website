@@ -9,7 +9,7 @@ import { floorPowerOfTwo } from "three/src/math/MathUtils.js";
 import React from "react";
 import ThreePlayer from "../../store/three_player_store";
 import { isRef } from "@react-three/fiber/dist/declarations/src/core/utils";
-import { ContentFloor3 } from "./ContentFloor3";
+import { ShowCaseContent3 } from "./ShowCaseContents";
 import { Wave } from "./Wave";
 import { ShowCase } from "./ShowCase";
 
@@ -492,9 +492,11 @@ export function Stage() {
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
                 )}
-                <ShowCase position={floorPosition} />
-                {/* <Wave position={floorPosition} flag={0} />
-                <Wave position={floorPosition} flag={1} /> */}
+                <ShowCase index={index} position={floorPosition} />
+
+                {/* Particle Codes */}
+                {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}
+                {/* here */}
               </React.Fragment>
             );
           })}
