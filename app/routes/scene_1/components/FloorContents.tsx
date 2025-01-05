@@ -9,6 +9,12 @@ type FloorContentsProps = {
   position: THREE.Vector3;
 };
 
+const transparentMaterial = new THREE.MeshStandardMaterial({
+  transparent: true,
+  opacity: 0,
+  depthWrite: false,
+});
+
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef: any = useRef();
   const groupRef: any = useRef();
@@ -48,9 +54,25 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     <>
       {isPositionReady && (
         <>
+          {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
             <ShowCase index={index} />
           </group>
+
+          {/* 衝突判定のあるFloor上のコンテンツ */}
+          <RigidBody
+            ref={rigidBodyRef}
+            position={adjustedPosition}
+            type="kinematicPosition"
+            colliders="hull"
+          >
+            {/* ShowCaseの代替用コライダーを適用するコンポーネント */}
+            <mesh
+              geometry={new THREE.BoxGeometry(4, 10.5, 4)}
+              material={transparentMaterial}
+              scale={1.1}
+            />
+          </RigidBody>
         </>
       )}
     </>
