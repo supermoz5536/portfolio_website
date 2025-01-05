@@ -4,7 +4,7 @@ import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 
-export const ThreeScene1 = () => {
+export const threeEntryPoint = () => {
   return (
     <>
       <KeyboardControls
@@ -50,4 +50,4 @@ export const ThreeScene1 = () => {
   );
 };
 
-export default ThreeScene1;
+export default threeEntryPoint;

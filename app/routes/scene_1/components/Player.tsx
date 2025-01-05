@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import ThreePlayer from "../../store/three_player_store";
+import ThreePlayer from "../../../store/three_player_store";
 
 export function Player() {
   const rigidRef: any = useRef();
@@ -71,8 +71,8 @@ export function Player() {
 
     const cameraPosition = new THREE.Vector3();
     cameraPosition.copy(playerPosition);
-    cameraPosition.z += 7.5;
-    cameraPosition.y += 2.65;
+    cameraPosition.z += 15.5;
+    cameraPosition.y += 5.65;
 
     const cameraTarget = new THREE.Vector3();
     cameraTarget.copy(playerPosition);

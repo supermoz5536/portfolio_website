@@ -1,15 +1,15 @@
 import * as THREE from "three";
-import waveVertexShader from "./shaders/wave/vertex.glsl";
-import waveFragmentShader from "./shaders/wave/fragment.glsl";
+import waveVertexShader from "../shaders/wave/vertex.glsl";
+import waveFragmentShader from "../shaders/wave/fragment.glsl";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getGui } from "./lil-gui";
+import { getGui } from "../util/lil-gui";
 
 type waveProps = {
   flag: number;
 };
 
-export function Wave({ flag }: waveProps) {
+export function Waves({ flag }: waveProps) {
   const wavesRef: any = useRef();
 
   // Debug

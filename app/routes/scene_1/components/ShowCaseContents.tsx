@@ -2,7 +2,7 @@ import { Vector3, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-type positionProps = {
+type PositionProps = {
   position: THREE.Vector3;
 };
 
@@ -61,7 +61,7 @@ const arrowTipMaterial = new THREE.MeshStandardMaterial({ color: "white" });
 const staticDotGeometry = new THREE.SphereGeometry(0.01, 32, 16);
 const staticDotMaterial = new THREE.MeshStandardMaterial({ color: "white" });
 
-export function StaticDot({ position }: positionProps) {
+export function StaticDot({ position }: PositionProps) {
   return (
     <>
       <mesh

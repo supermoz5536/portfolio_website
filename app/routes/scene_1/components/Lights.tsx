@@ -1,10 +1,10 @@
 import { useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import ThreePlayer from "../../store/three_player_store";
+import ThreePlayer from "../../../store/three_player_store";
 import * as THREE from "three";
 import { GUI } from "lil-gui";
-import { getGui } from "./lil-gui";
+import { getGui } from "../util/lil-gui";
 
 export default function Lights() {
   const sampleDirLightRef: any = useRef();

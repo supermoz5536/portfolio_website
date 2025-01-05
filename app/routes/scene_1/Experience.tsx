@@ -1,10 +1,10 @@
 import { OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import Lights from "./Lights.js";
-import { Player } from "./Player.js";
-import { Stage } from "./Stage.js";
+import { Player } from "./components/Player.js";
+import { Floors } from "./components/Floors.js";
 import * as THREE from "three";
-import { Wave } from "./Wave.js";
+import { Waves } from "./components/Waves.js";
+import Lights from "./components/Lights.js";
 
 export default function Experience() {
   return (
@@ -17,10 +17,10 @@ export default function Experience() {
         args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
       /> */}
       <OrbitControls makeDefault />
-      <Physics>
+      <Physics debug>
         <Lights />
         <Player />
-        <Stage />
+        <Floors />
       </Physics>
     </>
   );
