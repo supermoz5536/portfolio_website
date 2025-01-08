@@ -1,10 +1,9 @@
-import { MeshStandardMaterial } from "three";
-import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Float, Text, useGLTF } from "@react-three/drei";
 import { Waves } from "./Waves";
+import { ShowCaseLight } from "./Lights";
+import { Question } from "./Question";
+import ThreePlayer from "../../../store/three_player_store";
 import {
   ShowCaseContent0,
   ShowCaseContent3,
@@ -49,16 +48,40 @@ const showcaseComponents: any = {
 };
 
 export function ShowCase({ index }: ShowCaseProps) {
-  const rigidBodyRef: any = useRef();
-  const groupRef: any = useRef();
+  // const rigidBodyRef: any = useRef();
+  // const groupRef: any = useRef();
 
-  const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
+  const displayedQuestion = [7, 9, 10, 11];
+  const displayedGreenWave = [0, 3, 6, 9];
+  const displayedBlueWave = [9];
 
   const ShowcaseComponent: any = showcaseComponents[index];
+
+  const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
+  const [currentFloorNum, setCurrentFloorNum] = useState(0);
+  const [shadowLevel, setShadowLevel] = useState(75);
 
   /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
     setIsPositionReady(true);
+
+    /* Listem Current Floor */
+    const unsubscibePlayerPosition = ThreePlayer.subscribe(
+      (state: any) => state.currentFloorNum,
+      (value) => {
+        setCurrentFloorNum(value);
+
+        // Light Shadow Level for Player
+        if ([0].includes(value)) setShadowLevel(70);
+        if ([3].includes(value)) setShadowLevel(100);
+        if ([6, 7].includes(value)) setShadowLevel(50);
+        if ([9].includes(value)) setShadowLevel(25);
+        if ([10, 11].includes(value)) setShadowLevel(0);
+      },
+    );
+    return () => {
+      unsubscibePlayerPosition();
+    };
   }, []);
 
   return (
@@ -128,16 +151,25 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Top */}
             <mesh
               geometry={boxGeometry}
-              // material={showcaseBodyMaterial}
               material={showcaseBottomMaterial}
               position={[0, 5.125, 0]}
               scale={[4, 0.25, 4]}
             />
 
+            {/* Empty Content */}
+            {displayedQuestion.includes(index) && <Question />}
+
+            {/* Main Content */}
             <ShowcaseComponent />
 
-            <Waves flag={0} />
-            <Waves flag={1} />
+            {/* Waves */}
+            {displayedGreenWave.includes(index) && <Waves flag={0} />}
+            {displayedBlueWave.includes(index) && <Waves flag={1} />}
+
+            {/* Light Right Above ShowCase */}
+            {currentFloorNum == index && (
+              <ShowCaseLight shadowLevel={shadowLevel} />
+            )}
           </group>
         </>
       )}

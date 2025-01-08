@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import { RigidBody } from "@react-three/rapier";
+import { Fireflies } from "./Fireflies";
 
 type FloorContentsProps = {
   index: number;
@@ -57,6 +58,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
           {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
             <ShowCase index={index} />
+            <Fireflies index={index} />
           </group>
 
           {/* 衝突判定のあるFloor上のコンテンツ */}

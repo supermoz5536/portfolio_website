@@ -124,7 +124,7 @@ void main() {
     
     // ワールド座標にviewMatrixを適用して
     // カメラの座標を基準としたビュー座標に変換
-    vec4 viewPosition =  viewMatrix * modelPosition;
+    vec4 viewPosition = viewMatrix * modelPosition;
 
     // ビュー座標を2D上に投影するためのクリップ座標に変換
     vec4 projectedPosition = projectionMatrix * viewPosition;

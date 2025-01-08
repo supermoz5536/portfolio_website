@@ -1,10 +1,14 @@
 import { useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ThreePlayer from "../../../store/three_player_store";
 import * as THREE from "three";
 import { GUI } from "lil-gui";
 import { getGui } from "../util/lil-gui";
+
+type ShowCaseLightProps = {
+  shadowLevel: number;
+};
 
 export default function Lights() {
   const sampleDirLightRef: any = useRef();
@@ -21,17 +25,16 @@ export default function Lights() {
   /* Initialize */
   useEffect(() => {
     if (gui) {
-      const lightsGui = gui.addFolder("Lights");
-
+      // const lightsGui = gui.addFolder("Lights");
       // lightsGui
       //   .add(dirLightRef.current.position, "x", -40, 40)
       //   .name("dirLight.y");
-      lightsGui
-        .add(pointLightRef.current.position, "x", -10, 10)
-        .name("pointLight.x");
-      lightsGui
-        .add(pointLightRef.current.position, "y", 0, 15)
-        .name("pointLight.y");
+      // lightsGui
+      //   .add(pointLightRef.current.position, "x", -10, 10)
+      //   .name("pointLight.x");
+      // lightsGui
+      //   .add(pointLightRef.current.position, "y", 0, 15)
+      //   .name("pointLight.y");
     }
 
     /* Listem Player Current Floor */
@@ -98,7 +101,7 @@ export default function Lights() {
       /> */}
 
       <ambientLight intensity={0.75} />
-
+      {/* 
       <pointLight
         ref={pointLightRef}
         color="#fff"
@@ -106,6 +109,113 @@ export default function Lights() {
         distance={15}
         position={[0, 12.5, 0]}
         castShadow
+        shadow-mapSize-width={1024} // 解像度を2048x2048に設定
+        shadow-mapSize-height={1024}
+        shadow-bias={-0.0001}
+        shadow-normalBias={0.005} // normalBias を追加
+      /> */}
+    </>
+  );
+}
+
+/**
+ * @param shadowLevel - 0から100の間で影の濃さを調整
+ */
+export function ShowCaseLight({ shadowLevel }: ShowCaseLightProps) {
+  const withShadowRef: any = useRef();
+  const withoutShadowRef: any = useRef();
+  const gui = getGui();
+
+  const [lerpIntengityWithShadow, setLerpIntengityWithShadow] = useState(0);
+  const [targetIntengityWithShadow, setTargetIntengityWithShadow] = useState(0);
+
+  const [lerpIntengityWithoutShadow, setLerpIntengityWithoutShadow] =
+    useState(0);
+  const [targetIntengityWithoutShadow, setTargetIntengityWithoutShadow] =
+    useState(0);
+
+  useHelper(withShadowRef, THREE.PointLightHelper, 1, "red");
+
+  useEffect(() => {
+    /**
+     * Debug
+     */
+
+    if (gui) {
+      if (withShadowRef.current && gui) {
+        const lightsFolder = gui.addFolder("Lights");
+
+        lightsFolder
+          .add(withShadowRef.current.position, "x", -10, 10, 0.0001)
+          .name("pointLight.x");
+
+        lightsFolder
+          .add(withShadowRef.current.position, "y", 0, 15, 0.0001)
+          .name("pointLight.y");
+
+        lightsFolder
+          .add(withShadowRef.current.position, "z", -10, 10, 0.0001)
+          .name("pointLight.Z");
+
+        lightsFolder.close();
+      }
+    }
+
+    setTargetIntengityWithShadow(shadowLevel);
+    setTargetIntengityWithoutShadow(100 - shadowLevel);
+  }, []);
+
+  useFrame((state, delta) => {
+    if (withShadowRef.current) {
+      const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
+        lerpIntengityWithShadow, // start
+        targetIntengityWithShadow, // end
+        delta, // alpha
+      );
+
+      withShadowRef.current.intensity = newLerpIntensityWithShadow;
+
+      /* 次の計算に使うための状態を保存 */
+      setLerpIntengityWithShadow(newLerpIntensityWithShadow);
+    }
+
+    if (withoutShadowRef.current) {
+      const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
+        lerpIntengityWithoutShadow, // start
+        targetIntengityWithoutShadow, // end
+        delta, // alpha
+      );
+
+      withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
+
+      /* 次の計算に使うための状態を保存 */
+      setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
+    }
+  });
+
+  return (
+    <>
+      {/* With Shadow */}
+      <pointLight
+        ref={withShadowRef}
+        color="#fff"
+        intensity={lerpIntengityWithShadow}
+        distance={15}
+        position={[0, 5, 0]}
+        castShadow
+        shadow-mapSize-width={1024} // 解像度を2048x2048に設定
+        shadow-mapSize-height={1024}
+        shadow-bias={-0.0001}
+        shadow-normalBias={0.005} // normalBias を追加
+      />
+
+      {/* Without Shadow */}
+      <pointLight
+        ref={withoutShadowRef}
+        color="#fff"
+        intensity={lerpIntengityWithoutShadow}
+        distance={15}
+        position={[0, 5, 0]}
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}

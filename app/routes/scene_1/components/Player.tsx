@@ -21,12 +21,10 @@ export function Player() {
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
-        if ([0].includes(value)) setTargetOpacity(1);
-        if ([1, 3].includes(value)) setTargetOpacity(0.8);
-        if ([2, 4, 6].includes(value)) setTargetOpacity(0.6);
-        if ([5, 7, 9].includes(value)) setTargetOpacity(0.4);
-        if ([8, 10].includes(value)) setTargetOpacity(0.2);
-        if ([11].includes(value)) setTargetOpacity(0);
+        if ([0, 3, 6].includes(value)) setTargetOpacity(1);
+        if ([7, 9].includes(value)) setTargetOpacity(0.75);
+        if ([10].includes(value)) setTargetOpacity(0.5);
+        if ([11].includes(value)) setTargetOpacity(0.05);
       },
     );
     return () => {

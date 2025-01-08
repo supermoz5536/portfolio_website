@@ -4,7 +4,7 @@ import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 
-export const ThreeEntryPoint = () => {
+const EntryPointThree = () => {
   return (
     <>
       <KeyboardControls
@@ -27,15 +27,16 @@ export const ThreeEntryPoint = () => {
           // Canvas の呼び出し時に
           // PerspectiveCamera が設定可能
           camera={{
-            fov: 45,
-            near: 0.1,
-            far: 4000,
-            position: [7.125, 20.5, 20.25],
-
+            // Floor[0]のShowCaseのアップ
             // fov: 45,
             // near: 0.1,
             // far: 4000,
-            // position: [10.5, 20, 30],
+            // position: [0, 5, 5.25],
+
+            fov: 45,
+            near: 0.1,
+            far: 4000,
+            position: [10.5, 20, 30],
 
             // fov: 45,
             // near: 0.1,
@@ -50,4 +51,4 @@ export const ThreeEntryPoint = () => {
   );
 };
 
-export default ThreeEntryPoint;
+export default EntryPointThree;
