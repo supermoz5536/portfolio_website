@@ -168,7 +168,7 @@ export function ShowCase({ index }: ShowCaseProps) {
 
             {/* Light Right Above ShowCase */}
             {currentFloorNum == index && (
-              <ShowCaseLight shadowLevel={shadowLevel} />
+              <ShowCaseLight shadowLevel={shadowLevel} index={index} />
             )}
           </group>
         </>

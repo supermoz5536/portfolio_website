@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import ThreePlayer from "../../../store/three_player_store";
 import * as THREE from "three";
 import { GUI } from "lil-gui";
-import { getGui } from "../util/lil-gui";
+import { getGui, getShowcaseLightsFolder } from "../util/lil-gui";
 
 type ShowCaseLightProps = {
   shadowLevel: number;
+  index: number;
 };
 
 export default function Lights() {
@@ -121,10 +122,10 @@ export default function Lights() {
 /**
  * @param shadowLevel - 0から100の間で影の濃さを調整
  */
-export function ShowCaseLight({ shadowLevel }: ShowCaseLightProps) {
+export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
   const withShadowRef: any = useRef();
   const withoutShadowRef: any = useRef();
-  const gui = getGui();
+  const showcaseLightsFolder = getShowcaseLightsFolder();
 
   const [lerpIntengityWithShadow, setLerpIntengityWithShadow] = useState(0);
   const [targetIntengityWithShadow, setTargetIntengityWithShadow] = useState(0);
@@ -135,63 +136,97 @@ export function ShowCaseLight({ shadowLevel }: ShowCaseLightProps) {
     useState(0);
 
   useHelper(withShadowRef, THREE.PointLightHelper, 1, "red");
+  useHelper(withoutShadowRef, THREE.PointLightHelper, 1, "red");
 
   useEffect(() => {
     /**
      * Debug
+     * useFrame内のintensityのイージング処理と競合するので
+     * 必ず、useFrameをコメントアウトしてから実行する
      */
+    if (
+      withShadowRef.current &&
+      withoutShadowRef.current &&
+      showcaseLightsFolder
+    ) {
+      // with Shadow
+      const withShadowX = showcaseLightsFolder
+        .add(withShadowRef.current.position, "x", -10, 10, 0.0001)
+        .name(`with ShadowX${index}`);
 
-    if (gui) {
-      if (withShadowRef.current && gui) {
-        const lightsFolder = gui.addFolder("Lights");
+      const withShadowY = showcaseLightsFolder
+        .add(withShadowRef.current.position, "y", 0, 15, 0.0001)
+        .name(`with ShadowY${index}`);
 
-        lightsFolder
-          .add(withShadowRef.current.position, "x", -10, 10, 0.0001)
-          .name("pointLight.x");
+      const withShadowZ = showcaseLightsFolder
+        .add(withShadowRef.current.position, "z", -10, 10, 0.0001)
+        .name(`with ShadowZ${index}`);
 
-        lightsFolder
-          .add(withShadowRef.current.position, "y", 0, 15, 0.0001)
-          .name("pointLight.y");
+      const withShadowIntensity = showcaseLightsFolder
+        .add(withShadowRef.current, "intensity", 0, 1000, 0.0001)
+        .name(`with ShadowStr${index}`);
 
-        lightsFolder
-          .add(withShadowRef.current.position, "z", -10, 10, 0.0001)
-          .name("pointLight.Z");
+      // without Shadow
+      const withoutShadowX = showcaseLightsFolder
+        .add(withoutShadowRef.current.position, "x", -10, 10, 0.0001)
+        .name(`without ShadowX${index}`);
 
-        lightsFolder.close();
-      }
+      const withoutShadowY = showcaseLightsFolder
+        .add(withoutShadowRef.current.position, "y", 0, 15, 0.0001)
+        .name(`without ShadowY${index}`);
+
+      const withoutShadowZ = showcaseLightsFolder
+        .add(withoutShadowRef.current.position, "z", -10, 10, 0.0001)
+        .name(`without ShadowZ${index}`);
+
+      const withoutShadowIntensity = showcaseLightsFolder
+        .add(withoutShadowRef.current, "intensity", 0, 1000, 0.0001)
+        .name(`without ShadowStr${index}`);
+
+      return () => {
+        withShadowX.destroy();
+        withShadowY.destroy();
+        withShadowZ.destroy();
+        withShadowIntensity.destroy();
+
+        withoutShadowX.destroy();
+        withoutShadowY.destroy();
+        withoutShadowZ.destroy();
+        withoutShadowIntensity.destroy();
+      };
     }
 
     setTargetIntengityWithShadow(shadowLevel);
     setTargetIntengityWithoutShadow(100 - shadowLevel);
   }, []);
 
-  useFrame((state, delta) => {
-    if (withShadowRef.current) {
-      const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithShadow, // start
-        targetIntengityWithShadow, // end
-        delta, // alpha
-      );
+  // useFrame((state, delta) => {
+  //   if (withShadowRef.current) {
+  //     const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithShadow, // start
+  //       targetIntengityWithShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withShadowRef.current.intensity = newLerpIntensityWithShadow;
+  //     withShadowRef.current.intensity = newLerpIntensityWithShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithShadow(newLerpIntensityWithShadow);
-    }
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithShadow(newLerpIntensityWithShadow);
+  //   }
 
-    if (withoutShadowRef.current) {
-      const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithoutShadow, // start
-        targetIntengityWithoutShadow, // end
-        delta, // alpha
-      );
+  //   if (withoutShadowRef.current) {
+  //     const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithoutShadow, // start
+  //       targetIntengityWithoutShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
+  //     withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
-    }
-  });
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
+  //   }
+  // });
 
   return (
     <>
@@ -203,10 +238,10 @@ export function ShowCaseLight({ shadowLevel }: ShowCaseLightProps) {
         distance={15}
         position={[0, 5, 0]}
         castShadow
-        shadow-mapSize-width={1024} // 解像度を2048x2048に設定
+        shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.005} // normalBias を追加
+        shadow-normalBias={0.05}
       />
 
       {/* Without Shadow */}
@@ -219,7 +254,7 @@ export function ShowCaseLight({ shadowLevel }: ShowCaseLightProps) {
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.005} // normalBias を追加
+        shadow-normalBias={0.05}
       />
     </>
   );

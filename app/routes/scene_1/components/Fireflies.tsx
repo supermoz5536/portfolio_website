@@ -2,14 +2,12 @@ import * as THREE from "three";
 import firefliesVertex from "../shaders/firelies/vertex.glsl";
 import firefliesFragment from "../shaders/firelies/fragment.glsl";
 import { useEffect, useRef, useState } from "react";
-import { getGui } from "../util/lil-gui";
+import { getFirefliesFolder, getGui } from "../util/lil-gui";
 import { useFrame } from "@react-three/fiber";
 
 type FirefliesProps = {
   index: number;
 };
-
-let isFirstTry = true;
 
 const firefliesGeometry = new THREE.BufferGeometry();
 
@@ -20,7 +18,7 @@ export function Fireflies({ index }: FirefliesProps) {
    * FireLies Value
    */
   const spaceSize = 24;
-  const firefriesCount = 10;
+  const firefriesCount = 15;
   const positionArray = new Float32Array(firefriesCount * 3); // * 3: xyzで1組
   const aScaleArray = new Float32Array(firefriesCount);
   const aRandomArray = new Float32Array(firefriesCount);
@@ -29,29 +27,25 @@ export function Fireflies({ index }: FirefliesProps) {
    * Debug
    */
   const gui = getGui();
+  const firefliesFolder = getFirefliesFolder();
   const debugObj: any = {};
 
-  if (index == 0) debugObj.uColor = "red";
-  if (index == 3) debugObj.uColor = "blue";
-  if (index == 6) debugObj.uColor = "pink";
-  if (index == 7) debugObj.uColor = "green";
-  if (index == 9) debugObj.uColor = "#ffffff";
-  if (index == 10) debugObj.uColor = "#cccccc";
-  if (index == 11) debugObj.uColor = "#000000";
+  if (index == 0) debugObj.uColor = "#ffa6a6";
+  if (index == 3) debugObj.uColor = "#ffb8fd";
+  if (index == 6) debugObj.uColor = "#2c8dff";
+  if (index == 7) debugObj.uColor = "#b0b1ff";
+  if (index == 9) debugObj.uColor = "#87f3ff";
+  if (index == 10) debugObj.uColor = "#a1ffad";
+  if (index == 11) debugObj.uColor = "#fffee4";
 
   useEffect(() => {
     if (firefliesRef.current) {
       /**
        * Debug
        */
-      if (isFirstTry && gui) {
-        // isFirstTry = false;
-        const firefliesFolder = gui.addFolder(`fireflies${index}`);
-
+      if (firefliesFolder) {
         firefliesFolder.add(firefliesRef.current.material.uniforms.uPointSize, "value", 0, 2000, 0.0001).name("firelies.uPointSize"); // prettier-ignore
         firefliesFolder.addColor(debugObj, "uColor").onChange((value: any)=>firefliesRef.current.material.uniforms.uColor.value.set(value)).name("firelies.uColor"); // prettier-ignore
-
-        firefliesFolder.close();
       }
 
       /**
@@ -91,6 +85,18 @@ export function Fireflies({ index }: FirefliesProps) {
         new THREE.BufferAttribute(aRandomArray, 1),
       );
     }
+
+    /**
+     * ReCalculate Bounding Sphere
+     *
+     * デフォルトの boundingSphere は
+     * VertexShaderで拡大されるFireliesの可視サイズは反映しないので
+     * 半径を２倍にしてShader適用後のオブジェクトを確実に包摂し
+     * カメラ内で写っているFireliesの消失を避ける
+     */
+
+    firefliesRef.current.geometry.computeBoundingSphere();
+    firefliesRef.current.geometry.boundingSphere.radius *= 2; //
 
     /**
      * Set Listner
@@ -142,7 +148,7 @@ export function Fireflies({ index }: FirefliesProps) {
               blending: THREE.AdditiveBlending,
             })
           }
-          position={[0, 2.5, 0]}
+          position={[0, 2, 0]}
         />
       </>
     </>
