@@ -13,19 +13,24 @@ import {
   ShowCaseContent10,
   ShowCaseContent11,
 } from "./ShowCaseContents";
+import { getGui } from "../util/lil-gui";
 
 type ShowCaseProps = {
   index: number;
 };
 
+let isFirstTry = true;
+
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const showcaseBottomMaterial = new THREE.MeshStandardMaterial({
-  color: "black",
+const showcaseBodyMaterial = new THREE.MeshStandardMaterial({
+  // color: "black",
+  metalness: 1,
+  roughness: 0,
 });
-const showcaseBottomLayerMaterial = new THREE.MeshStandardMaterial({
+const showcaseSheetMaterial = new THREE.MeshStandardMaterial({
   color: "#f1f1f1",
 });
-const showcaseBodyMaterial = new THREE.MeshPhysicalMaterial({
+const showcaseGlassMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0,
   roughness: 0,
   transmission: 1,
@@ -47,6 +52,11 @@ const showcaseComponents: any = {
   11: ShowCaseContent11,
 };
 
+/**
+ * Texture Loader
+ */
+const textureLoader = new THREE.TextureLoader();
+
 export function ShowCase({ index }: ShowCaseProps) {
   // const rigidBodyRef: any = useRef();
   // const groupRef: any = useRef();
@@ -65,6 +75,24 @@ export function ShowCase({ index }: ShowCaseProps) {
   useEffect(() => {
     setIsPositionReady(true);
 
+    /**
+     * Texture Setup
+     */
+    const stoneTexture = textureLoader.load("asset/texture/stone.png");
+
+    if (stoneTexture) {
+      showcaseBodyMaterial.map = stoneTexture;
+      showcaseBodyMaterial.metalnessMap = stoneTexture; // テクスチャを使用して金属感を制御
+      showcaseBodyMaterial.bumpScale = 0.3; // デフォルトは 1 だが、視覚的に目立つよう増加
+      // stoneTexture.colorSpace = THREE.NoColorSpace; // グレースケールデータのために色空間無効化
+      // stoneTexture.colorSpace = THREE.SRGBColorSpace;
+
+      stoneTexture.repeat.x = 2;
+      stoneTexture.repeat.y = 1;
+      stoneTexture.wrapS = THREE.RepeatWrapping;
+      stoneTexture.wrapT = THREE.RepeatWrapping;
+    }
+
     /* Listem Current Floor */
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
@@ -79,6 +107,23 @@ export function ShowCase({ index }: ShowCaseProps) {
         if ([10, 11].includes(value)) setShadowLevel(0);
       },
     );
+
+    // /**
+    //  * Debug
+    //  */
+    // const gui = getGui();
+    // if (gui && isFirstTry) {
+    //   isFirstTry = false;
+    //   const showcaseFolder = gui.addFolder("Showcase");
+
+    //   showcaseFolder
+    //     .add(showcaseBodyMaterial, "metalness", 0, 1, 0.001)
+    //     .name("metalness");
+
+    //   showcaseFolder
+    //     .add(showcaseBodyMaterial, "roughness", 0, 1, 0.001)
+    //     .name("roughness");
+    // }
     return () => {
       unsubscibePlayerPosition();
     };
@@ -93,7 +138,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Bottom */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBottomMaterial}
+              material={showcaseBodyMaterial}
               position={[0, 0.5, 0]}
               scale={[4, 1, 4]}
             />
@@ -101,7 +146,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Bottom Layer */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBottomLayerMaterial}
+              material={showcaseSheetMaterial}
               position={[0, 1.005, 0]}
               scale={[3.8, 0.01, 3.8]}
             />
@@ -109,7 +154,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Top Layer */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBottomLayerMaterial}
+              material={showcaseSheetMaterial}
               position={[0, 5, 0]}
               scale={[3.8, 0.01, 3.8]}
             />
@@ -117,7 +162,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Body Left */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBodyMaterial}
+              material={showcaseGlassMaterial}
               position={[-1.95, 3, 0]}
               scale={[0.1, 4, 4]}
             />
@@ -125,7 +170,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Body Right */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBodyMaterial}
+              material={showcaseGlassMaterial}
               position={[1.95, 3, 0]}
               scale={[0.1, 4, 4]}
             />
@@ -133,7 +178,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Body Forward */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBodyMaterial}
+              material={showcaseGlassMaterial}
               position={[0, 3, -1.95]}
               rotation={[0, Math.PI / 2, 0]}
               scale={[0.1, 4, 4]}
@@ -151,7 +196,7 @@ export function ShowCase({ index }: ShowCaseProps) {
             {/* Top */}
             <mesh
               geometry={boxGeometry}
-              material={showcaseBottomMaterial}
+              material={showcaseBodyMaterial}
               position={[0, 5.125, 0]}
               scale={[4, 0.25, 4]}
             />

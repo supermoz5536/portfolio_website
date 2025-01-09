@@ -26,8 +26,6 @@ export function Fireflies({ index }: FirefliesProps) {
   /**
    * Debug
    */
-  const gui = getGui();
-  const firefliesFolder = getFirefliesFolder();
   const debugObj: any = {};
 
   if (index == 0) debugObj.uColor = "#ffa6a6";
@@ -43,6 +41,9 @@ export function Fireflies({ index }: FirefliesProps) {
       /**
        * Debug
        */
+
+      const firefliesFolder = getFirefliesFolder();
+
       if (firefliesFolder) {
         firefliesFolder.add(firefliesRef.current.material.uniforms.uPointSize, "value", 0, 2000, 0.0001).name("firelies.uPointSize"); // prettier-ignore
         firefliesFolder.addColor(debugObj, "uColor").onChange((value: any)=>firefliesRef.current.material.uniforms.uColor.value.set(value)).name("firelies.uColor"); // prettier-ignore

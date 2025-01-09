@@ -3,7 +3,7 @@ import waveVertexShader from "../shaders/wave/vertex.glsl";
 import waveFragmentShader from "../shaders/wave/fragment.glsl";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getGui } from "../util/lil-gui";
+import { getGui, getWavesFolder } from "../util/lil-gui";
 
 type waveProps = {
   flag: number;
@@ -17,7 +17,6 @@ export function Waves({ flag }: waveProps) {
   const wavesRef: any = useRef();
 
   // Debug
-  const gui = getGui();
   const debugObj: any = {};
 
   if (flag == 0) {
@@ -34,9 +33,11 @@ export function Waves({ flag }: waveProps) {
     /**
      * Debug
      */
-    if (wavesRef.current && gui && isFirstTry) {
+
+    const wavesFolder = getWavesFolder();
+
+    if (wavesRef.current && wavesFolder && isFirstTry) {
       isFirstTry = false;
-      const wavesFolder = gui.addFolder("Waves");
 
       wavesFolder.add(wavesRef.current.position, "y", 0, 3, 0.0001).name("PositionY"); // prettier-ignore
       wavesFolder.add(wavesRef.current.material.uniforms.uBigWavesElevation,"value", 0, 10, 0.001).name("wavesElevation"); // prettier-ignore

@@ -11,6 +11,9 @@ let firefliesFolder: GUI;
 
 let lightsFolder: GUI;
 let showcaseLightsFolder: GUI;
+let environmentLightsFolder: GUI;
+
+let wavesFolder: GUI;
 
 let isInstantiated: boolean = false;
 
@@ -27,10 +30,14 @@ export const getGui = (): GUI | null => {
 
     lightsFolder = gui.addFolder("lights");
     showcaseLightsFolder = lightsFolder.addFolder("Showcase Lights");
+    environmentLightsFolder = lightsFolder.addFolder("Environment Lights");
+
+    wavesFolder = gui.addFolder("waves");
 
     // gui.hide();
   }
 
+  gui.close();
   return gui;
 };
 
@@ -50,5 +57,24 @@ export const getShowcaseLightsFolder = (): GUI | null => {
 
   lightsFolder.close();
   showcaseLightsFolder.close();
+
   return showcaseLightsFolder;
+};
+
+export const getEnvironmentLightsFolder = (): GUI | null => {
+  if (!environmentLightsFolder) {
+    getGui();
+  }
+
+  environmentLightsFolder.close();
+  return environmentLightsFolder;
+};
+
+export const getWavesFolder = (): GUI | null => {
+  if (!wavesFolder) {
+    getGui();
+  }
+
+  wavesFolder.close();
+  return wavesFolder;
 };

@@ -12,6 +12,26 @@ type bridgeProps = {
 // 隣り合うフロア間の空間距離 (10 Unit)
 const floorSpaceInterval = 40;
 
+const stoneBridgeMaterial = new THREE.MeshPhysicalMaterial({
+  color: "white", // 完全な白
+});
+
+const transparentBridgeMaterial = new THREE.MeshPhysicalMaterial({
+  metalness: 0,
+  roughness: 0,
+  transmission: 1,
+  ior: 1.62,
+  thickness: 0.001,
+  opacity: 0.95, // 透明度を強調
+  // transparent: true, // 透明を有効化
+  color: 0xffffff, // 完全な白
+});
+
+/**
+ * Texture Loader
+ */
+const textureLoader = new THREE.TextureLoader();
+
 export function Bridge({
   position,
   boundingBox,
@@ -24,21 +44,6 @@ export function Bridge({
   const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  //   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-  //     color: "white", // 完全な白
-  //   });
-
-  const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    metalness: 0,
-    roughness: 0,
-    transmission: 1,
-    ior: 1.62,
-    thickness: 0.001,
-    opacity: 0.95, // 透明度を強調
-    // transparent: true, // 透明を有効化
-    color: 0xffffff, // 完全な白
-  });
-
   const parentRef: any = useRef();
   const childRef: any = useRef();
 
@@ -49,7 +54,7 @@ export function Bridge({
   );
   const [smoothBridgeGeometry] = useState(
     new THREE.BoxGeometry(
-      FloorTopSuareLength / 3,
+      FloorTopSuareLength / 5,
       FloorTopSuareLength / 50,
       triangleSlope,
     ),
@@ -70,6 +75,30 @@ export function Bridge({
    */
   useEffect(() => {
     setIsPositionReady(true);
+
+    /**
+     * Texture Setup
+     */
+    const stoneTexture = textureLoader.load("asset/texture/stone.png");
+
+    if (stoneTexture) {
+      stoneBridgeMaterial.map = stoneTexture;
+      stoneTexture.colorSpace = THREE.SRGBColorSpace;
+
+      stoneTexture.repeat.x = 0.7;
+      stoneTexture.repeat.y = 0.7;
+
+      stoneTexture.wrapS = THREE.RepeatWrapping;
+      stoneTexture.wrapT = THREE.RepeatWrapping;
+
+      stoneTexture.offset.x = 0.2;
+      stoneTexture.offset.y = 0.7;
+
+      stoneTexture.center.x = 0.5;
+      stoneTexture.center.y = 0.5;
+
+      stoneTexture.rotation = Math.PI / 2;
+    }
   }, []);
 
   /* 初回マウント後の Bridge のポジションと角度の変更 */
@@ -163,7 +192,7 @@ export function Bridge({
             receiveShadow
             position={smoothPositionChild}
             geometry={smoothBridgeGeometry}
-            material={bridgeMaterial}
+            material={stoneBridgeMaterial}
           />
         </RigidBody>
       )}
@@ -183,21 +212,6 @@ export function BridgeRight({
   const triangleSlope = Math.hypot(triangleBase, triangleHeight); // 斜辺
   const triangleAngle = Math.atan(triangleHeight / triangleBase); // 角度
 
-  //   const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-  //     color: "white", // 完全な白
-  //   });
-
-  const bridgeMaterial = new THREE.MeshPhysicalMaterial({
-    metalness: 0,
-    roughness: 0,
-    transmission: 1,
-    ior: 1.62,
-    thickness: 0.001,
-    opacity: 0.95, // 透明度を強調
-    // transparent: true, // 透明を有効化
-    color: 0xffffff, // 完全な白
-  });
-
   const parentRef: any = useRef();
   const childRef: any = useRef();
 
@@ -210,7 +224,7 @@ export function BridgeRight({
     new THREE.BoxGeometry(
       triangleSlope,
       FloorTopSuareLength / 50,
-      FloorTopSuareLength / 3,
+      FloorTopSuareLength / 5,
     ),
   );
   const [smoothPositionParent, setSmoothPositionParent] = useState(
@@ -322,7 +336,7 @@ export function BridgeRight({
             ref={childRef}
             position={smoothPositionChild}
             geometry={smoothBridgeGeometry}
-            material={bridgeMaterial}
+            material={stoneBridgeMaterial}
           />
         </RigidBody>
       )}
