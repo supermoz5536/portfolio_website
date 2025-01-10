@@ -109,7 +109,8 @@ export function Waves({ flag }: waveProps) {
             },
           })
         }
-        position={[0, flag == 0 ? 1.25 : 4.975, 0]}
+        position={[0, flag == 0 ? 1.5 : 4.975, 0]}
+        // position={[0, flag == 0 ? 1.25 : 4.975, 0]}
         rotation={[flag == 0 ? -Math.PI / 2 : Math.PI / 2, 0, 0]}
         scale={[3.8, 3.8, 1]}
       />

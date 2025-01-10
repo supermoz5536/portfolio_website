@@ -52,15 +52,7 @@ const showcaseComponents: any = {
   11: ShowCaseContent11,
 };
 
-/**
- * Texture Loader
- */
-const textureLoader = new THREE.TextureLoader();
-
 export function ShowCase({ index }: ShowCaseProps) {
-  // const rigidBodyRef: any = useRef();
-  // const groupRef: any = useRef();
-
   const displayedQuestion = [7, 9, 10, 11];
   const displayedGreenWave = [0, 3, 6, 9];
   const displayedBlueWave = [9];
@@ -69,7 +61,6 @@ export function ShowCase({ index }: ShowCaseProps) {
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloorNum, setCurrentFloorNum] = useState(0);
-  const [shadowLevel, setShadowLevel] = useState(75);
 
   /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
@@ -78,35 +69,25 @@ export function ShowCase({ index }: ShowCaseProps) {
     /**
      * Texture Setup
      */
+    const textureLoader = new THREE.TextureLoader();
     const stoneTexture = textureLoader.load("asset/texture/stone.png");
 
     if (stoneTexture) {
       showcaseBodyMaterial.map = stoneTexture;
       showcaseBodyMaterial.metalnessMap = stoneTexture; // テクスチャを使用して金属感を制御
-      showcaseBodyMaterial.bumpScale = 0.3; // デフォルトは 1 だが、視覚的に目立つよう増加
-      // stoneTexture.colorSpace = THREE.NoColorSpace; // グレースケールデータのために色空間無効化
-      // stoneTexture.colorSpace = THREE.SRGBColorSpace;
-
       stoneTexture.repeat.x = 2;
       stoneTexture.repeat.y = 1;
       stoneTexture.wrapS = THREE.RepeatWrapping;
       stoneTexture.wrapT = THREE.RepeatWrapping;
     }
 
-    /* Listem Current Floor */
-    const unsubscibePlayerPosition = ThreePlayer.subscribe(
-      (state: any) => state.currentFloorNum,
-      (value) => {
-        setCurrentFloorNum(value);
-
-        // Light Shadow Level for Player
-        if ([0].includes(value)) setShadowLevel(70);
-        if ([3].includes(value)) setShadowLevel(100);
-        if ([6, 7].includes(value)) setShadowLevel(50);
-        if ([9].includes(value)) setShadowLevel(25);
-        if ([10, 11].includes(value)) setShadowLevel(0);
-      },
-    );
+    // /* Listem Current Floor */
+    // const unsubscibePlayerPosition = ThreePlayer.subscribe(
+    //   (state: any) => state.currentFloorNum,
+    //   (value) => {
+    //     setCurrentFloorNum(value);
+    //   },
+    // );
 
     // /**
     //  * Debug
@@ -124,9 +105,9 @@ export function ShowCase({ index }: ShowCaseProps) {
     //     .add(showcaseBodyMaterial, "roughness", 0, 1, 0.001)
     //     .name("roughness");
     // }
-    return () => {
-      unsubscibePlayerPosition();
-    };
+    // return () => {
+    //   unsubscibePlayerPosition();
+    // };
   }, []);
 
   return (
@@ -202,19 +183,19 @@ export function ShowCase({ index }: ShowCaseProps) {
             />
 
             {/* Empty Content */}
-            {displayedQuestion.includes(index) && <Question />}
+            {/* {displayedQuestion.includes(index) && <Question />} */}
 
             {/* Main Content */}
             <ShowcaseComponent />
 
             {/* Waves */}
-            {displayedGreenWave.includes(index) && <Waves flag={0} />}
-            {displayedBlueWave.includes(index) && <Waves flag={1} />}
-
-            {/* Light Right Above ShowCase */}
-            {currentFloorNum == index && (
-              <ShowCaseLight shadowLevel={shadowLevel} index={index} />
+            {/* {currentFloorNum == index && displayedGreenWave.includes(index) && (
+              <Waves flag={0} />
             )}
+
+            {currentFloorNum == index && displayedBlueWave.includes(index) && (
+              <Waves flag={1} />
+            )} */}
           </group>
         </>
       )}

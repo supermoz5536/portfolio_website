@@ -31,7 +31,7 @@ export default create(
             } else if (-12 < position.x && position.x < 12) {
               currentFloorNum = 9;
             }
-          } else if (-130 < position.z && position.z < -116) {
+          } else if (-140 < position.z && position.z < -116) {
             if (116 < position.x && position.x < 130) {
               currentFloorNum = 8;
             } else if (52 < position.x && position.x < 76) {

@@ -15,12 +15,12 @@ type ShowCaseLightProps = {
   index: number;
 };
 
-export default function Lights() {
+export function EnvironmentLights() {
   const dirLightRef: any = useRef();
   const ambLightRef: any = useRef();
   const environmentLightsFolder = getEnvironmentLightsFolder();
 
-  useHelper(dirLightRef, THREE.DirectionalLightHelper, 4, "red");
+  // useHelper(dirLightRef, THREE.DirectionalLightHelper, 4, "red");
 
   useEffect(() => {
     /**
@@ -68,7 +68,7 @@ export default function Lights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={0.44}
+        intensity={1}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -79,7 +79,7 @@ export default function Lights() {
         shadow-normalBias={0.005} // normalBias を追加
       />
 
-      <ambientLight ref={ambLightRef} intensity={0.586} />
+      <ambientLight ref={ambLightRef} intensity={0.4} />
     </>
   );
 }
@@ -99,8 +99,8 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
   const [targetIntengityWithoutShadow, setTargetIntengityWithoutShadow] =
     useState(0);
 
-  useHelper(withShadowRef, THREE.PointLightHelper, 1, "red");
-  useHelper(withoutShadowRef, THREE.PointLightHelper, 1, "red");
+  // useHelper(withShadowRef, THREE.PointLightHelper, 1, "red");
+  // useHelper(withoutShadowRef, THREE.PointLightHelper, 1, "red");
 
   useEffect(() => {
     /**
@@ -198,7 +198,7 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
   return (
     <>
       {/* With Shadow */}
-      <pointLight
+      {/* <pointLight
         ref={withShadowRef}
         color="#fff"
         intensity={lerpIntengityWithShadow}
@@ -209,7 +209,7 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
         shadow-normalBias={0.05}
-      />
+      /> */}
 
       {/* Without Shadow */}
       <pointLight

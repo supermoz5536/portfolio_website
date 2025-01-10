@@ -8,11 +8,12 @@ import ThreePlayer from "../../../store/three_player_store";
 export function Player() {
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
-  const [smoothCameraPosition] = useState(() => new THREE.Vector3(50, 50, 50));
+  const [smoothCameraPosition] = useState(() => new THREE.Vector3(5, 5, 5));
   const [smoothCameraTarget] = useState(() => new THREE.Vector3());
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
+  const [currentFloor, setCurrentFloor] = useState();
 
   const setPlayerPosition = ThreePlayer((state: any) => state.setPosition);
 
@@ -21,6 +22,8 @@ export function Player() {
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
+        setCurrentFloor(value);
+
         if ([0, 3, 6].includes(value)) setTargetOpacity(1);
         if ([7, 9].includes(value)) setTargetOpacity(0.75);
         if ([10].includes(value)) setTargetOpacity(0.5);
@@ -37,6 +40,55 @@ export function Player() {
      * Player
      */
 
+    const playerPosition = rigidRef.current.translation();
+    setPlayerPosition(playerPosition);
+
+    /* Restart */
+    if (playerPosition.y < -4) {
+      if (currentFloor == 0 && currentFloor == 3) {
+        rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+      }
+
+      if (currentFloor == 6) {
+        rigidRef.current.setTranslation({ x: 0, y: 27, z: -64 + 7 });
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+      }
+
+      if (currentFloor == 7 && currentFloor == 9) {
+        rigidRef.current.setTranslation({ x: 0, y: 37, z: -128 + 7 });
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+      }
+
+      if (currentFloor == 10) {
+        const randomBack = Math.random();
+        if (randomBack >= 0.5) {
+          rigidRef.current.setTranslation({ x: 0, y: 30, z: -192 + 7 });
+          rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+          rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+        }
+        if (randomBack < 0.5) {
+          rigidRef.current.setTranslation({ x: 64, y: 37, z: -128 + 7 });
+          rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+          rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+        }
+      }
+
+      if (currentFloor == 11) {
+        rigidRef.current.setTranslation({ x: 64, y: 25, z: -192 + 7 });
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+      }
+
+      // 非表示のフロア領域に落下した場合
+      rigidRef.current.setTranslation({ x: 0, y: 0, z: 7 });
+      rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+      rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+    }
+
     /* Controls */
     const { forward, backward, leftward, rightward } = getState();
     const impulse = { x: 0, y: 0, z: 0 };
@@ -48,8 +100,6 @@ export function Player() {
     if (rightward) impulse.x += imuplseStrength;
 
     rigidRef.current.applyImpulse(impulse);
-
-    /* Material */
 
     const lerpOpacity = THREE.MathUtils.lerp(
       smoothOpacity,
@@ -64,8 +114,6 @@ export function Player() {
     /**
      * Camera Controls
      */
-    const playerPosition = rigidRef.current.translation();
-    setPlayerPosition(playerPosition);
 
     const cameraPosition = new THREE.Vector3();
     cameraPosition.copy(playerPosition);
@@ -88,7 +136,7 @@ export function Player() {
     <>
       <RigidBody
         ref={rigidRef}
-        position={[0, 7, 7]}
+        position={[0, 20, 7]}
         canSleep={false}
         colliders="ball"
         linearDamping={0.5}
@@ -97,7 +145,7 @@ export function Player() {
         friction={1}
       >
         <mesh ref={meshRef} castShadow receiveShadow>
-          <icosahedronGeometry args={[1, 0]} />
+          <icosahedronGeometry args={[1, 1]} />
           <meshStandardMaterial
             flatShading
             color={"mediumpurple"}

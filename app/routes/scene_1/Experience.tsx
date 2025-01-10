@@ -4,7 +4,7 @@ import { Player } from "./components/Player.js";
 import { Floors } from "./components/Floor.js";
 import * as THREE from "three";
 import { Waves } from "./components/Waves.js";
-import Lights from "./components/Lights.js";
+import { EnvironmentLights } from "./components/Lights.js";
 
 export default function Experience() {
   return (
@@ -18,7 +18,7 @@ export default function Experience() {
       /> */}
       <OrbitControls makeDefault />
       <Physics>
-        <Lights />
+        <EnvironmentLights />
         <Player />
         <Floors />
       </Physics>
