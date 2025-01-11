@@ -107,10 +107,10 @@ export default function Scene2() {
             <AnimateIn>
               <Button
                 id="svg"
-                className="absolute mt-5 mr-5 top-[5%] right-[5%] z-10 rounded-full h-5 w-5"
+                className="absolute mt-5 mr-5 top-[5%] right-[5%]"
                 onClick={() => handleButton()}
               >
-                <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-300 duration-200" />
+                <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
               </Button>
             </AnimateIn>
           </div>
