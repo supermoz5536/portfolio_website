@@ -6,6 +6,7 @@ import { useSystemStore } from "~/store/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
+import { AnimateIn } from "~/components/animate_in";
 
 export default function Scene2() {
   const { isActivated, toggleIsActivated } = useSystemStore();
@@ -103,10 +104,15 @@ export default function Scene2() {
         ) : (
           <div className="fixed top-0 left-0 h-[100vh] w-full outline-none z-[5]">
             {/* クローズボタン */}
-            <IoMdCloseCircleOutline
-              className="absolute mt-5 mr-5 top-[5%] right-[5%] h-12 w-12 z-10 transform translate-x-5 -translate-y-5 hover:cursor-pointer text-white"
-              onClick={() => handleButton()}
-            />
+            <AnimateIn>
+              <Button
+                id="svg"
+                className="absolute mt-5 mr-5 top-[5%] right-[5%] z-10 rounded-full h-5 w-5"
+                onClick={() => handleButton()}
+              >
+                <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-300 duration-200" />
+              </Button>
+            </AnimateIn>
           </div>
         )}
       </div>
