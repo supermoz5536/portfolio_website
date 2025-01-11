@@ -5,8 +5,8 @@ export default function Scene1Test() {
         <p className="mt-16 text-5xl">Coming soon!</p>
         <p className="mt-4 text-1xl text-center">
           (Header Page is Getting Ready Now.)
-          <p className="mt-16 text-2xl">Scroll down to the next page!</p>
         </p>
+        <p className="mt-16 text-2xl">Scroll down to the next page!</p>
       </div>
     </>
   );

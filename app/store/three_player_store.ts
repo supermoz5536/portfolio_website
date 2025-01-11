@@ -5,19 +5,17 @@ import * as THREE from "three";
 export default create(
   subscribeWithSelector((set) => {
     return {
+      isPlayerMoved: false,
       currentFloorNum: 0,
 
-      /**
-       * Time
-       */
-      // startTime: 0,
-      // elapseTime: 0,
-      // endTime: 0,
-
-      /**
-       * Fhases
-       */
-      // phase: "ready",
+      setIsPlayerMoved: (moved: boolean) => {
+        set((state: any) => {
+          if (state.isPlayerMoved == false) {
+            return { isPlayerMoved: true };
+          }
+          return {};
+        });
+      },
 
       setPosition: (position: THREE.Vector3) => {
         set((state: any) => {

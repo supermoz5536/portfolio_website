@@ -20,6 +20,7 @@ export function Player() {
   const [isActicated, setIsActicated] = useState(false);
 
   const setPlayerPosition = ThreePlayer((state: any) => state.setPosition);
+  const setIsPlayerMoved = ThreePlayer((state: any) => state.setIsPlayerMoved);
 
   useEffect(() => {
     /* Listem Player Current Floor */
@@ -61,7 +62,9 @@ export function Player() {
     const playerPosition = rigidRef.current.translation();
     setPlayerPosition(playerPosition);
 
-    /* Restart */
+    /**
+     * Restart
+     */
     if (playerPosition.y < -4) {
       if (currentFloor == 0 && currentFloor == 3) {
         rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
@@ -107,8 +110,11 @@ export function Player() {
       rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
     }
 
-    /* Controls */
+    /**
+     * Controls
+     */
     if (isActicated) {
+      /* Move */
       const { forward, backward, leftward, rightward } = getState();
       const impulse = { x: 0, y: 0, z: 0 };
       const imuplseStrength = 0.9 + delta;
@@ -120,15 +126,20 @@ export function Player() {
 
       rigidRef.current.applyImpulse(impulse);
 
+      // プレイヤーの動きを感知し、ガイドの非表示フラグをトリガー
+      if (impulse.x != 0 || impulse.y != 0 || impulse.z != 0) {
+        setIsPlayerMoved(true);
+      }
+
+      /* Opacity */
       const lerpOpacity = THREE.MathUtils.lerp(
         smoothOpacity,
         targetOpacity,
         0.5 * delta,
       );
 
-      setSmoothOpacity(lerpOpacity);
-
       meshRef.current.material.opacity = lerpOpacity;
+      setSmoothOpacity(lerpOpacity);
     }
 
     /**
