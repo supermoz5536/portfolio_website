@@ -4,22 +4,26 @@ import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import ThreePlayer from "../../../store/three_player_store";
+import { useSystemStore } from "../../../store/system_store";
 
 export function Player() {
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
-  const [smoothCameraPosition] = useState(() => new THREE.Vector3(5, 5, 5));
-  const [smoothCameraTarget] = useState(() => new THREE.Vector3());
+  const [smoothCameraPosition, setSmoothCameraPosition] = useState(
+    new THREE.Vector3(5, 5, 5),
+  );
+  const [smoothCameraTarget] = useState(new THREE.Vector3());
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
   const [currentFloor, setCurrentFloor] = useState();
+  const [isActicated, setIsActicated] = useState(false);
 
   const setPlayerPosition = ThreePlayer((state: any) => state.setPosition);
 
   useEffect(() => {
     /* Listem Player Current Floor */
-    const unsubscibePlayerPosition = ThreePlayer.subscribe(
+    const unsubscribePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
         setCurrentFloor(value);
@@ -30,8 +34,23 @@ export function Player() {
         if ([11].includes(value)) setTargetOpacity(0.05);
       },
     );
+
+    // Setup When Entrying into Three
+    const unsubscribeSystemStore = useSystemStore.subscribe(
+      (state: any) => state.isActivated,
+      (value) => {
+        rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+
+        setSmoothCameraPosition(new THREE.Vector3(100, 100, -20));
+        setIsActicated(value);
+      },
+    );
+
     return () => {
-      unsubscibePlayerPosition();
+      unsubscribePlayerPosition();
+      unsubscribeSystemStore();
     };
   }, []);
 
@@ -39,7 +58,6 @@ export function Player() {
     /**
      * Player
      */
-
     const playerPosition = rigidRef.current.translation();
     setPlayerPosition(playerPosition);
 
@@ -90,31 +108,32 @@ export function Player() {
     }
 
     /* Controls */
-    const { forward, backward, leftward, rightward } = getState();
-    const impulse = { x: 0, y: 0, z: 0 };
-    const imuplseStrength = 0.9 + delta;
+    if (isActicated) {
+      const { forward, backward, leftward, rightward } = getState();
+      const impulse = { x: 0, y: 0, z: 0 };
+      const imuplseStrength = 0.9 + delta;
 
-    if (forward) impulse.z -= imuplseStrength;
-    if (backward) impulse.z += imuplseStrength;
-    if (leftward) impulse.x -= imuplseStrength;
-    if (rightward) impulse.x += imuplseStrength;
+      if (forward) impulse.z -= imuplseStrength;
+      if (backward) impulse.z += imuplseStrength;
+      if (leftward) impulse.x -= imuplseStrength;
+      if (rightward) impulse.x += imuplseStrength;
 
-    rigidRef.current.applyImpulse(impulse);
+      rigidRef.current.applyImpulse(impulse);
 
-    const lerpOpacity = THREE.MathUtils.lerp(
-      smoothOpacity,
-      targetOpacity,
-      0.5 * delta,
-    );
+      const lerpOpacity = THREE.MathUtils.lerp(
+        smoothOpacity,
+        targetOpacity,
+        0.5 * delta,
+      );
 
-    setSmoothOpacity(lerpOpacity);
+      setSmoothOpacity(lerpOpacity);
 
-    meshRef.current.material.opacity = lerpOpacity;
+      meshRef.current.material.opacity = lerpOpacity;
+    }
 
     /**
      * Camera Controls
      */
-
     const cameraPosition = new THREE.Vector3();
     cameraPosition.copy(playerPosition);
     cameraPosition.z += 20.5;

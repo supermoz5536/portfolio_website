@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 /**
+* Scene2のisActivated == trueの状態でも
+* scroll barの表示を維持
+*/
+html {
+  overflow-y: scroll;
+}
+
+/**
 * html ページ全体の外枠部分
 * body 中身の内容部分
 * 両方にスタイルを適用

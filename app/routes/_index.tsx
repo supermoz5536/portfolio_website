@@ -1,6 +1,5 @@
 import { json, type MetaFunction } from "@remix-run/node";
-import Scene1 from "./scene_1/_index";
-import Scene2 from "./scene_2/_index";
+import Scene1 from "./scene_2/_index";
 import Scene3 from "./scene_3/_index";
 import Panel1 from "./panel_1/_index";
 import Panel2 from "./panel_2/_index";
@@ -11,7 +10,8 @@ import {
   fetchBarChartDocData,
   setBarChartDocDataForDev,
 } from "~/model/firestore/firestore_server_model";
-import Scene1Test from "./scene_1_test/_index";
+import Scene1Test from "./scene_1_asap/_index";
+import Scene2 from "./scene_2/_index";
 
 export const meta: MetaFunction = () => {
   return [
@@ -49,12 +49,11 @@ export const loader = async () => {
 export default function Index() {
   return (
     <div className="relative flex flex-col items-center justify-start">
-      {/* <Scene1Test /> */}
-      <Scene1 />
-      {/* <Panel1 />
+      <Scene1Test />
+      <Panel1 />
       <Scene2 />
-      <Panel2 /> */}
-      {/* <Scene3 /> */}
+      <Panel2 />
+      <Scene3 />
     </div>
   );
 }

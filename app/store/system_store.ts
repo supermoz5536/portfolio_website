@@ -12,7 +12,7 @@ export const useSystemStore = create<SystemStore>()(
       /**
        * Scene 2
        */
-      isActivated: true,
+      isActivated: false,
 
       toggleIsActivated: () => {
         set((state: any) => {

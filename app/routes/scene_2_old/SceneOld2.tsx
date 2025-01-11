@@ -1,13 +1,11 @@
-// import { Button } from "@mui/material";
 import { Button } from "@headlessui/react";
-import EntryPointThree from "./EntryPointThree";
-import { useStore } from "zustand";
+import { ThreeSceneOld2 } from "./Scene_2_three";
 import { useSystemStore } from "~/store/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 
-export default function Scene1() {
+export default function SceneOld2() {
   const { isActivated, toggleIsActivated } = useSystemStore();
   const [fixedScrollPoint, setFixedScrollPoint] = useState<number>();
 
@@ -77,7 +75,7 @@ export default function Scene1() {
 
             {/* Three.js */}
             <div className="absolute top-0 left-0 h-[100vh] w-[100vw] z-0">
-              <EntryPointThree />
+              <ThreeSceneOld2 />
             </div>
           </div>
         ) : (
@@ -89,7 +87,7 @@ export default function Scene1() {
                 onClick={() => handleButton()}
               />
               {/* Three.js */}
-              <EntryPointThree />
+              <ThreeSceneOld2 />
             </div>
           </div>
         )}
