@@ -3,6 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
+import { MovementPad } from "./components/interface/Interface";
+import Index from "../_index";
 
 const EntryPointThree = () => {
   return (
@@ -18,10 +20,11 @@ const EntryPointThree = () => {
       >
         <Canvas
           style={{
+            position: "relative",
             minHeight: "100vh",
             height: "100%",
             width: "100%",
-            // pointerEvents: "none",
+            zIndex: 0,
           }}
           shadows
           // Canvas の呼び出し時に
@@ -46,6 +49,7 @@ const EntryPointThree = () => {
         >
           <Experience />
         </Canvas>
+        <MovementPad />
       </KeyboardControls>
     </>
   );

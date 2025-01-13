@@ -115,6 +115,8 @@ export function Player() {
      */
     if (isActicated) {
       /* Move */
+      // getState: 現在の入力状態（オブジェクト）を即時取得する関数
+      // 対応するキーが押されている場合に true になります。
       const { forward, backward, leftward, rightward } = getState();
       const impulse = { x: 0, y: 0, z: 0 };
       const imuplseStrength = 0.9 + delta;

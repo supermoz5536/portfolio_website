@@ -1,0 +1,47 @@
+.movement-pad {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/** 
+  * .movement-pad というクラスを持つ要素の「直下または内側」にある 
+  * .region クラスを持つ要素に適用される。 
+  * ,（カンマ）は 複数のセレクターを同時に対象 にするためのセレクター
+  */
+.movement-pad .region {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(
+    rgba(218, 225, 230, 0.25) 5%,
+    rgba(218, 225, 230, 0.5) 95%
+  );
+  border: 2px solid rgba(218, 225, 230, 0.25);
+  border-radius: 90px; /* 円形の領域を作成。 */
+  box-shadow: 0px 0px 5px rgba(194, 200, 204, 0.55);
+  user-select: none;
+}
+
+.movement-pad .handle {
+  /* opacity: 0.1; */
+  opacity: 1;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: 0px;
+  left: 0px;
+  background: radial-gradient(
+    rgba(215, 225, 255, 0.7) 0%,
+    rgba(215, 225, 255, 0.5) 100%
+  );
+  /*border: 1px solid rgba(145, 105, 245, 0.90);*/
+  border-radius: 50%;
+  box-shadow: 0px 0px 7px rgba(195, 205, 245, 0.9);
+  text-align: center;
+  font: 24px/44px "Courier New", Courier, monospace;
+  user-select: none;
+}
