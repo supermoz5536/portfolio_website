@@ -46,8 +46,8 @@ export function MovementPad() {
       /* Re Calculate RegionData and HandleData */
       alignAndConfigPad();
 
-      handleRef.current.style.opacity = 1.0;
-      padRef.current.style.opacity = 1.0;
+      handleRef.current.style.opacity = 1;
+      padRef.current.style.opacity = 1;
 
       update(event.touches[0].pageX, event.touches[0].pageY);
     });
@@ -88,14 +88,17 @@ export function MovementPad() {
       setIsTouched(true);
 
       /* Re Position Pad */
+
+      handleRef.current.style.opacity = 1;
+      padRef.current.style.opacity = 1;
+      padRef.current.style.transform = "translate(-50%, -50%) scale(1.0)";
+
       const scene2Element = document.getElementById("scene2");
       padRef.current.style.top = event.pageY - scene2Element!.offsetLeft + "px";
       padRef.current.style.left = event.pageX + "px";
 
       /* Re Calculate RegionData and HandleData */
       alignAndConfigPad();
-
-      handleRef.current.style.opacity = 1.0;
 
       update(event.pageX, event.pageY);
     });
@@ -110,7 +113,9 @@ export function MovementPad() {
     });
 
     document.addEventListener("mouseup", () => {
-      handleRef.current.style.opacity = 1.1;
+      handleRef.current.style.opacity = 0;
+      padRef.current.style.opacity = 0;
+      padRef.current.style.transform = "translate(-50%, -50%) scale(0.0)";
       setIsTouched(false);
       resetHandlePosition();
     });
@@ -252,12 +257,14 @@ export function MovementPad() {
         className="movement-pad"
         style={{
           position: "absolute", // 親の親コンポーネントの scene_2　のトップの div　の　relative　に従属
-          width: "100px",
-          height: "100px",
+          zIndex: 5,
+          width: "150px",
+          height: "150px",
           top: "0px",
           left: "0px",
           transform: "translate(-50%, -50%)",
-          zIndex: 5,
+          opacity: 0,
+          transition: "opacity 0.3s ease, transform 0.3s ease",
         }}
       >
         <div ref={regionRef} className="region">
@@ -265,20 +272,20 @@ export function MovementPad() {
             ref={handleRef}
             className="handle"
             style={{
-              opacity: 1.1,
               position: "absolute",
+              zIndex: 10,
               height: "30px",
               width: "30px",
               top: "0px",
               left: "0px",
               background:
-                "radial-gradient(rgba(215, 225, 255, 0.7) 0%, rgba(215, 225, 255, 0.5) 100%)",
+                "radial-gradient(rgba(215, 225, 255, 0.7) 0%, rgba(255, 255, 255, 1.0) 100%)",
               borderRadius: "50%",
               boxShadow: "0px 0px 7px rgba(195, 205, 245, 0.9)",
               textAlign: "center",
               font: '24px/44px "Courier New", Courier, monospace',
               userSelect: "none",
-              zIndex: 10,
+              opacity: 0,
             }}
           ></div>
         </div>
