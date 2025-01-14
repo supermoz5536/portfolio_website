@@ -30,11 +30,25 @@ export function MovementPad() {
 
     document.addEventListener("resize", (event) => alignAndConfigPad());
 
-    /* Touch Pad */
+    /**
+     * Touch Pad
+     */
 
     document.addEventListener("touchstart", (event) => {
-      handleRef.current.style.opacity = 1.0;
       setIsTouched(true);
+
+      /* Re Position Pad */
+      const scene2Element = document.getElementById("scene2");
+      padRef.current.style.top =
+        event.touches[0].pageY - scene2Element!.offsetLeft + "px";
+      padRef.current.style.left = event.touches[0].pageX + "px";
+
+      /* Re Calculate RegionData and HandleData */
+      alignAndConfigPad();
+
+      handleRef.current.style.opacity = 1.0;
+      padRef.current.style.opacity = 1.0;
+
       update(event.touches[0].pageX, event.touches[0].pageY);
     });
 
@@ -53,22 +67,36 @@ export function MovementPad() {
     });
 
     document.addEventListener("touchend", () => {
-      handleRef.current.style.opacity = 0.1;
+      handleRef.current.style.opacity = 0;
+      padRef.current.style.opacity = 0;
       setIsTouched(false);
       resetHandlePosition();
     });
 
     document.addEventListener("touchcancel", () => {
-      handleRef.current.style.opacity = 0.1;
+      handleRef.current.style.opacity = 0;
+      padRef.current.style.opacity = 0;
       setIsTouched(false);
       resetHandlePosition();
     });
 
-    /* Mouse */
+    /**
+     * Mouse
+     */
 
     document.addEventListener("mousedown", (event) => {
       setIsTouched(true);
+
+      /* Re Position Pad */
+      const scene2Element = document.getElementById("scene2");
+      padRef.current.style.top = event.pageY - scene2Element!.offsetLeft + "px";
+      padRef.current.style.left = event.pageX + "px";
+
+      /* Re Calculate RegionData and HandleData */
+      alignAndConfigPad();
+
       handleRef.current.style.opacity = 1.0;
+
       update(event.pageX, event.pageY);
     });
 
@@ -89,16 +117,11 @@ export function MovementPad() {
   }, []);
 
   function alignAndConfigPad() {
-    if (padRef.current && regionRef.current && handleRef.current) {
-      /**
-       * Position Pad
-       */
-      padRef.current.style.left = "50%";
-      padRef.current.style.top = "80%";
-
+    if (regionRef.current && handleRef.current) {
       /**
        * Calculate regionData
        */
+
       const scene2Element = document.getElementById("scene2");
 
       // ViewPort 左上(0, 0)が基準
@@ -203,26 +226,23 @@ export function MovementPad() {
 
     // deltaX: -2 ~ 2
     // deltaY: -2 ~ 2
-    updateStore(deltaX, deltaY);
-  }
-
-  function updateStore(deltaX: number, deltaY: number) {
-    // setTimeoutの多重実行はエラーになるので既存のインスタンスを削除
-    if (updateRepeatTimeout) clearTimeout(updateRepeatTimeout);
-
-    // 入力された新しい座標を自身に更新し続ける処理
-    // POINT: 押下の持続に対応してデータの送信も持続させる場合、
-    // タッチイベントに依存するとは安定さに欠けるので
-    // 継続的なタッチイベントに対して明示的に
-    // 5ms ごとに再帰ループして更新処理を行う
-    setUpdateRepeatTimeout(setTimeout(() => setMoveDelta(deltaX, deltaY), 5));
+    setMoveDelta(deltaX, deltaY);
   }
 
   function resetHandlePosition() {
-    handleRef.current.style.top = regionData.centerY - handleData.radius + "px";
-    handleRef.current.style.left =
-      regionData.centerX - handleData.radius + "px";
+    if (updateRepeatTimeout) clearTimeout(updateRepeatTimeout);
+
+    /* Reset UI */
     handleRef.current.opacity = 1.1;
+
+    // -2: region の border: 2px の分だけ中心からズレるので offset
+    handleRef.current.style.top =
+      regionData.centerY - handleData.radius - 2 + "px";
+    handleRef.current.style.left =
+      regionData.centerX - handleData.radius - 2 + "px";
+
+    /* Reset Store */
+    setMoveDelta(0, 0);
   }
 
   return (
@@ -231,6 +251,12 @@ export function MovementPad() {
         ref={padRef}
         className="movement-pad"
         style={{
+          position: "absolute", // 親の親コンポーネントの scene_2　のトップの div　の　relative　に従属
+          width: "100px",
+          height: "100px",
+          top: "0px",
+          left: "0px",
+          transform: "translate(-50%, -50%)",
           zIndex: 5,
         }}
       >
