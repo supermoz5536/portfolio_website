@@ -4,6 +4,7 @@ import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import ThreePlayer from "../../../store/three_player_store";
+import ThreeInterface from "../../../store/three_interface_store";
 import { useSystemStore } from "../../../store/system_store";
 
 export function Player() {
@@ -16,8 +17,10 @@ export function Player() {
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
-  const [currentFloor, setCurrentFloor] = useState();
+  const [currentFloor, setCurrentFloor] = useState(0);
   const [isActicated, setIsActicated] = useState(false);
+  const [moveDeltaX, setMoveDeltaX] = useState(0);
+  const [moveDeltaY, setMoveDeltaY] = useState(0);
 
   const setPlayerPosition = ThreePlayer((state: any) => state.setPosition);
   const setIsPlayerMoved = ThreePlayer((state: any) => state.setIsPlayerMoved);
@@ -33,6 +36,8 @@ export function Player() {
         if ([7, 9].includes(value)) setTargetOpacity(0.75);
         if ([10].includes(value)) setTargetOpacity(0.5);
         if ([11].includes(value)) setTargetOpacity(0.05);
+
+        console.log(value);
       },
     );
 
@@ -49,9 +54,22 @@ export function Player() {
       },
     );
 
+    // Recieve Pad Delta
+    const unsubscribeMoveDelta = ThreeInterface.subscribe(
+      (state: any) => ({
+        moveDeltaX: state.moveDeltaX,
+        moveDeltaY: state.moveDeltaY,
+      }),
+      (value) => {
+        setMoveDeltaX(value.moveDeltaX);
+        setMoveDeltaY(value.moveDeltaY);
+      },
+    );
+
     return () => {
       unsubscribePlayerPosition();
       unsubscribeSystemStore();
+      unsubscribeMoveDelta();
     };
   }, []);
 
@@ -65,47 +83,25 @@ export function Player() {
     /**
      * Restart
      */
+    const randomBack = Math.random();
     if (playerPosition.y < -4) {
-      if (currentFloor == 0 && currentFloor == 3) {
+      if (currentFloor == 0 || currentFloor == 3) {
         rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
-        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
-      }
-
-      if (currentFloor == 6) {
+      } else if (currentFloor == 6) {
         rigidRef.current.setTranslation({ x: 0, y: 27, z: -64 + 7 });
-        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
-      }
-
-      if (currentFloor == 7 && currentFloor == 9) {
+      } else if (currentFloor == 7 || currentFloor == 9) {
         rigidRef.current.setTranslation({ x: 0, y: 37, z: -128 + 7 });
-        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
-      }
-
-      if (currentFloor == 10) {
-        const randomBack = Math.random();
-        if (randomBack >= 0.5) {
-          rigidRef.current.setTranslation({ x: 0, y: 30, z: -192 + 7 });
-          rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-          rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
-        }
-        if (randomBack < 0.5) {
-          rigidRef.current.setTranslation({ x: 64, y: 37, z: -128 + 7 });
-          rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-          rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
-        }
-      }
-
-      if (currentFloor == 11) {
+      } else if (currentFloor == 10 && randomBack >= 0.5) {
+        rigidRef.current.setTranslation({ x: 0, y: 30, z: -192 + 7 });
+      } else if (currentFloor == 10 && randomBack < 0.5) {
+        rigidRef.current.setTranslation({ x: 64, y: 37, z: -128 + 7 });
+      } else if (currentFloor == 11) {
         rigidRef.current.setTranslation({ x: 64, y: 25, z: -192 + 7 });
-        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
-        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+      } else {
+        // 非表示のフロア領域に落下した場合
+        rigidRef.current.setTranslation({ x: 0, y: 0, z: 7 });
       }
 
-      // 非表示のフロア領域に落下した場合
-      rigidRef.current.setTranslation({ x: 0, y: 0, z: 7 });
       rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
       rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
     }
@@ -114,17 +110,22 @@ export function Player() {
      * Controls
      */
     if (isActicated) {
-      /* Move */
-      // getState: 現在の入力状態（オブジェクト）を即時取得する関数
-      // 対応するキーが押されている場合に true になります。
-      const { forward, backward, leftward, rightward } = getState();
       const impulse = { x: 0, y: 0, z: 0 };
       const imuplseStrength = 0.9 + delta;
 
+      // getState: 現在の入力状態（オブジェクト）を即時取得する関数
+      // 対応するキーが押されている場合に true になります。
+      const { forward, backward, leftward, rightward } = getState();
+
+      /* Keypad */
       if (forward) impulse.z -= imuplseStrength;
       if (backward) impulse.z += imuplseStrength;
       if (leftward) impulse.x -= imuplseStrength;
       if (rightward) impulse.x += imuplseStrength;
+
+      /* Pad */
+      if (moveDeltaX) impulse.x += moveDeltaX * 0.5 * imuplseStrength;
+      if (moveDeltaY) impulse.z -= moveDeltaY * 0.5 * imuplseStrength;
 
       rigidRef.current.applyImpulse(impulse);
 
@@ -134,6 +135,7 @@ export function Player() {
       }
 
       /* Opacity */
+
       const lerpOpacity = THREE.MathUtils.lerp(
         smoothOpacity,
         targetOpacity,
@@ -147,6 +149,7 @@ export function Player() {
     /**
      * Camera Controls
      */
+
     const cameraPosition = new THREE.Vector3();
     cameraPosition.copy(playerPosition);
     cameraPosition.z += 20.5;

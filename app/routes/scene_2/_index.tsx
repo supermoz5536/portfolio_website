@@ -34,28 +34,28 @@ export default function Scene2() {
       /**
        * Scroll Setup
        */
+
+      // 初回のマウント時はスキップ（スクロール補正が必要ない）
+      fixScroll();
+
+      // fixScroll()で scene2 の位置に移動した後に
+      // 現在のスクロール位置を取得
+      const currentScrollY = window.scrollY;
+
+      // bodyを固定（トップを -scrollY にする）
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${currentScrollY}px`; // body自体を上にズラしてスクロール再現
+      document.body.style.left = "0"; // 水平方向のbodyのスクロール位置を0(tailwind left-0と同じ)
+      document.body.style.width = "100vw"; // position: fixed で body のサイズが縮小し不具合の可能性。初期化が必要。
+    } else {
       if (!isFirstMount) {
-        if (isActivated) {
-          fixScroll();
+        // body固定を解除する
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.width = "";
 
-          // fixScroll()で scene2 の位置に移動した後に
-          // 現在のスクロール位置を取得
-          const currentScrollY = window.scrollY;
-
-          // bodyを固定（トップを -scrollY にする）
-          document.body.style.position = "fixed";
-          document.body.style.top = `-${currentScrollY}px`; // body自体を上にズラしてスクロール再現
-          document.body.style.left = "0"; // 水平方向のbodyのスクロール位置を0(tailwind left-0と同じ)
-          document.body.style.width = "100vw"; // position: fixed で body のサイズが縮小し不具合の可能性。初期化が必要。
-        } else {
-          // body固定を解除する
-          document.body.style.position = "";
-          document.body.style.top = "";
-          document.body.style.left = "";
-          document.body.style.width = "";
-
-          fixScroll();
-        }
+        fixScroll();
       }
     }
 
