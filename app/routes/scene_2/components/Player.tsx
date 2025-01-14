@@ -3,8 +3,8 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import ThreePlayer from "../../../store/three_player_store";
-import ThreeInterface from "../../../store/three_interface_store";
+import ThreePlayerStore from "../../../store/three_player_store";
+import ThreeInterfaceStore from "../../../store/three_interface_store";
 import { useSystemStore } from "../../../store/system_store";
 
 export function Player() {
@@ -22,12 +22,14 @@ export function Player() {
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
 
-  const setPlayerPosition = ThreePlayer((state: any) => state.setPosition);
-  const setIsPlayerMoved = ThreePlayer((state: any) => state.setIsPlayerMoved);
+  const setPlayerPosition = ThreePlayerStore((state: any) => state.setPosition);
+  const setIsPlayerMoved = ThreePlayerStore(
+    (state: any) => state.setIsPlayerMoved,
+  );
 
   useEffect(() => {
     /* Listem Player Current Floor */
-    const unsubscribePlayerPosition = ThreePlayer.subscribe(
+    const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
         setCurrentFloor(value);
@@ -55,7 +57,7 @@ export function Player() {
     );
 
     // Recieve Pad Delta
-    const unsubscribeMoveDelta = ThreeInterface.subscribe(
+    const unsubscribeMoveDelta = ThreeInterfaceStore.subscribe(
       (state: any) => ({
         moveDeltaX: state.moveDeltaX,
         moveDeltaY: state.moveDeltaY,

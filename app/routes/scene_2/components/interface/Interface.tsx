@@ -1,142 +1,166 @@
 /// regionData の position.top が panel1 が含まれると
 /// 0.5pxだけズレるが、一旦このまま開発を進める。
 
-import "./interface.css";
 import { useEffect, useRef, useState } from "react";
-import ThreeInterface from "../../../../store/three_interface_store";
+import ThreeInterfaceStore from "../../../../store/three_interface_store";
+import { useSystemStore } from "../../../../store/system_store";
 
 export function MovementPad() {
   const padRef = useRef<any>();
   const regionRef = useRef<any>();
   const handleRef = useRef<any>();
 
+  const [isActicated, setIsActicated] = useState(false);
   const [updateRepeatTimeout, setUpdateRepeatTimeout] = useState<any>();
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
   let regionData: any = {};
-  let handleData: any = {};
 
-  const setMoveDelta = ThreeInterface((state: any) => state.setMoveDelta);
+  const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
 
   useEffect(() => {
     /**
      * Setup values
      */
+
     alignAndConfigPad();
 
     /**
-     * Setup Listeners
+     * Functions of Listeners for Touch Pad
      */
 
-    document.addEventListener("resize", (event) => alignAndConfigPad());
-
-    /**
-     * Touch Pad
-     */
-
-    document.addEventListener("touchstart", (event) => {
-      setIsTouched(true);
-
-      /* Re Position Pad */
-      const scene2Element = document.getElementById("scene2");
-      padRef.current.style.top =
-        event.touches[0].pageY - scene2Element!.offsetLeft + "px";
-      padRef.current.style.left = event.touches[0].pageX + "px";
-
-      /* Re Calculate RegionData and HandleData */
-      alignAndConfigPad();
-
-      handleRef.current.style.opacity = 1;
-      padRef.current.style.opacity = 1;
-
-      update(event.touches[0].pageX, event.touches[0].pageY);
-    });
-
-    document.addEventListener("touchmove", (event) => {
+    const handleTouchStart = (event: TouchEvent) => {
       // stale closure の問題を避けるため
-      // useStateの更新関数引数を用いるテクニックを採用
-      // setState の prev は、
-      // リスナーのセット時のクロージャによる古い値ではなく
-      // 常に最新の値を参照する
+      // 更新関数の引数で最新の状態を取得する記述
+      setIsActicated((prev) => {
+        if (prev) {
+          setIsTouched(true);
+
+          // Re Position Pad
+          regionRef.current.style.opacity = 1;
+          regionRef.current.style.transform = "scale(1.0)";
+
+          const scene2Element = document.getElementById("scene2");
+          padRef.current.style.top =
+            event.touches[0].pageY - scene2Element!.offsetLeft + "px";
+          padRef.current.style.left = event.touches[0].pageX + "px";
+
+          // Re Calculate RegionData and HandleData
+          alignAndConfigPad();
+
+          update(event.touches[0].pageX, event.touches[0].pageY);
+        }
+
+        return prev;
+      });
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
       setIsTouched((prev) => {
         if (prev) {
           update(event.touches[0].pageX, event.touches[0].pageY);
         }
         return prev;
       });
-    });
+    };
 
-    document.addEventListener("touchend", () => {
-      handleRef.current.style.opacity = 0;
-      padRef.current.style.opacity = 0;
+    const handleTouchEndAndCancel = () => {
       setIsTouched(false);
       resetHandlePosition();
-    });
-
-    document.addEventListener("touchcancel", () => {
-      handleRef.current.style.opacity = 0;
-      padRef.current.style.opacity = 0;
-      setIsTouched(false);
-      resetHandlePosition();
-    });
+    };
 
     /**
-     * Mouse
+     * Functions of Listeners for Mouse
      */
 
-    document.addEventListener("mousedown", (event) => {
-      setIsTouched(true);
+    const handleMouseDown = (event: MouseEvent) => {
+      if (isActicated) {
+        setIsTouched(true);
 
-      /* Re Position Pad */
+        // Re Position Pad
+        regionRef.current.style.opacity = 1;
+        regionRef.current.style.transform = "scale(1.0)";
 
-      handleRef.current.style.opacity = 1;
-      padRef.current.style.opacity = 1;
-      padRef.current.style.transform = "translate(-50%, -50%) scale(1.0)";
+        const scene2Element = document.getElementById("scene2");
+        padRef.current.style.top =
+          event.pageY - scene2Element!.offsetLeft + "px";
+        padRef.current.style.left = event.pageX + "px";
 
-      const scene2Element = document.getElementById("scene2");
-      padRef.current.style.top = event.pageY - scene2Element!.offsetLeft + "px";
-      padRef.current.style.left = event.pageX + "px";
+        // Re Calculate RegionData and HandleData
+        alignAndConfigPad();
 
-      /* Re Calculate RegionData and HandleData */
-      alignAndConfigPad();
+        update(event.pageX, event.pageY);
+      }
+    };
 
-      update(event.pageX, event.pageY);
-    });
-
-    document.addEventListener("mousemove", (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
       setIsTouched((prev) => {
         if (prev) {
           update(event.pageX, event.pageY);
         }
         return prev;
       });
-    });
+    };
 
-    document.addEventListener("mouseup", () => {
-      handleRef.current.style.opacity = 0;
-      padRef.current.style.opacity = 0;
-      padRef.current.style.transform = "translate(-50%, -50%) scale(0.0)";
+    const handleMouseUp = (event: MouseEvent) => {
       setIsTouched(false);
       resetHandlePosition();
-    });
+    };
+
+    /**
+     * Add Listemers
+     */
+    document.addEventListener("resize", alignAndConfigPad);
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEndAndCancel);
+    document.addEventListener("touchcancel", handleTouchEndAndCancel);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    /**
+     * System
+     */
+    const unsubscribeSystemStore = useSystemStore.subscribe(
+      (state: any) => state.isActivated,
+      (value) => {
+        setIsActicated(value);
+      },
+    );
+
+    return () => {
+      document.removeEventListener("resize", alignAndConfigPad);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEndAndCancel);
+      document.removeEventListener("touchcancel", handleTouchEndAndCancel);
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      unsubscribeSystemStore();
+    };
   }, []);
 
   function alignAndConfigPad() {
-    if (regionRef.current && handleRef.current) {
+    if (padRef.current && handleRef.current) {
       /**
        * Calculate regionData
        */
 
+      // region の cssで設定した border幅 を取得
+      const computedStyle = window.getComputedStyle(regionRef.current);
+      const borderWidth = parseFloat(computedStyle.borderLeftWidth);
+
       const scene2Element = document.getElementById("scene2");
 
       // ViewPort 左上(0, 0)が基準
-      const regionRect = regionRef.current.getBoundingClientRect();
+      const regionRect = padRef.current.getBoundingClientRect();
 
       // グローバル 左上(0, 0)が基準
       const regionBodyOffsetTop =
-        regionRef.current.getBoundingClientRect().top + window.scrollY;
-      const regionBodyOffsetLeft =
-        regionRef.current.getBoundingClientRect().left;
+        padRef.current.getBoundingClientRect().top + window.scrollY;
+      const regionBodyOffsetLeft = padRef.current.getBoundingClientRect().left;
 
       regionData = {
         width: regionRect.width, // .cssで指定した横幅(px)
@@ -152,20 +176,8 @@ export function MovementPad() {
         radius: regionRect.width / 2,
         centerX: regionRect.width / 2,
         centerY: regionRect.height / 2,
+        borderLength: borderWidth,
       };
-
-      /**
-       * Calculate handleData
-       */
-      const handleRect = handleRef.current.getBoundingClientRect();
-      handleData = {
-        widht: handleRect.width,
-        height: handleRect.height,
-        radius: handleRect.width / 2,
-      };
-
-      // Adjust region radius for wrapping a whole handle.
-      regionData.radius -= handleData.radius;
     }
   }
 
@@ -173,8 +185,17 @@ export function MovementPad() {
     // PageX(Y)は、グローバル座標基準の(0, 0)
     // region の左上部分(0, 0)を基準としたローカル座標に変換する
     // その場合グローバル座標からローカルの基準座標をマイナスすれば良い
-    let newTop = pageY - regionData.localOffset.top;
+    let newTop = pageY - regionData.globalOffset.top;
     let newLeft = pageX - regionData.localOffset.left;
+
+    console.log("pageX", pageX);
+    console.log("pageY", pageY);
+
+    console.log("regionData.localOffset.top", regionData.localOffset.top);
+    console.log("regionData.localOffset.Left", regionData.localOffset.left);
+
+    console.log("newTop", newTop);
+    console.log("newLeft", newLeft);
 
     // Math.pow() を使って、ハンドルの移動先 (newLeft, newTop) から
     // ジョイスティックの中心 (centerX, centerY) までの 距離の二乗 の値を
@@ -205,8 +226,11 @@ export function MovementPad() {
     // インラインスタイルで直接 CSS を変更
     // region の中心と handle の中心との距離を delta　で扱いたいので
     // region の左上の座標と handle の中心座標を一致させる
-    handleRef.current.style.top = newTop - handleData.radius + "px";
-    handleRef.current.style.left = newLeft - handleData.radius + "px";
+    // handleRef.current.style.top = newTop - handleData.radius + "px";
+    // handleRef.current.style.left = newLeft - handleData.radius + "px";
+
+    handleRef.current.style.top = newTop - regionData.borderLength + "px";
+    handleRef.current.style.left = newLeft - regionData.borderLength + "px";
 
     // parseInt で string を intに変換(第二引数なしの場合は数字以外の文字が現れた時点で 解釈を停止 )
     let deltaX = newLeft - regionData.centerX;
@@ -238,13 +262,15 @@ export function MovementPad() {
     if (updateRepeatTimeout) clearTimeout(updateRepeatTimeout);
 
     /* Reset UI */
-    handleRef.current.opacity = 1.1;
+    regionRef.current.style.opacity = 0;
+    regionRef.current.style.transform = "scale(0.0)";
 
     // -2: region の border: 2px の分だけ中心からズレるので offset
     handleRef.current.style.top =
-      regionData.centerY - handleData.radius - 2 + "px";
+      regionData.centerY - regionData.borderLength + "px";
+
     handleRef.current.style.left =
-      regionData.centerX - handleData.radius - 2 + "px";
+      regionData.centerX - regionData.borderLength + "px";
 
     /* Reset Store */
     setMoveDelta(0, 0);
@@ -260,24 +286,34 @@ export function MovementPad() {
           zIndex: 5,
           width: "150px",
           height: "150px",
-          top: "0px",
-          left: "0px",
           transform: "translate(-50%, -50%)",
-          opacity: 0,
-          transition: "opacity 0.3s ease, transform 0.3s ease",
         }}
       >
-        <div ref={regionRef} className="region">
+        <div
+          ref={regionRef}
+          className="region"
+          style={{
+            position: "absolute",
+            width: "150px",
+            height: "150px",
+            background:
+              "radial-gradient(rgba(255, 255, 255, 1.0) 0%, rgba(255, 255, 255, 1.0) 4%, rgba(218, 225, 230, 0.25) 5%, rgba(218, 225, 230, 0.5) 95%)",
+            border: "2px solid rgba(218, 225, 230, 0.25)",
+            borderRadius: "50%",
+            boxShadow: "0px 0px 5px rgba(194, 200, 204, 0.55)",
+            userSelect: "none",
+            transition: "opacity 0.3s ease, transform 0.3s ease",
+            opacity: 0,
+          }}
+        >
           <div
             ref={handleRef}
             className="handle"
             style={{
               position: "absolute",
               zIndex: 10,
-              height: "30px",
-              width: "30px",
-              top: "0px",
-              left: "0px",
+              height: "60px",
+              width: "60px",
               background:
                 "radial-gradient(rgba(215, 225, 255, 0.7) 0%, rgba(255, 255, 255, 1.0) 100%)",
               borderRadius: "50%",
@@ -285,7 +321,7 @@ export function MovementPad() {
               textAlign: "center",
               font: '24px/44px "Courier New", Courier, monospace',
               userSelect: "none",
-              opacity: 0,
+              transform: "translate(-50%, -50%)",
             }}
           ></div>
         </div>

@@ -228,7 +228,7 @@ export default function Scene2() {
                     className="absolute mt-5 mr-5 top-[5%] right-[5%]"
                     onClick={() => handleButton()}
                   >
-                    <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
+                    <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
                   </Button>
                 </AnimateIn>
               </>
