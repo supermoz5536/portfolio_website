@@ -53,14 +53,9 @@ const showcaseComponents: any = {
 };
 
 export function ShowCase({ index }: ShowCaseProps) {
-  const displayedQuestion = [7, 9, 10, 11];
-  const displayedGreenWave = [0, 3, 6, 9];
-  const displayedBlueWave = [9];
-
   const ShowcaseComponent: any = showcaseComponents[index];
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [currentFloorNum, setCurrentFloorNum] = useState(0);
 
   /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
@@ -80,14 +75,6 @@ export function ShowCase({ index }: ShowCaseProps) {
       stoneTexture.wrapS = THREE.RepeatWrapping;
       stoneTexture.wrapT = THREE.RepeatWrapping;
     }
-
-    // /* Listem Current Floor */
-    // const unsubscibePlayerPosition = ThreePlayer.subscribe(
-    //   (state: any) => state.currentFloorNum,
-    //   (value) => {
-    //     setCurrentFloorNum(value);
-    //   },
-    // );
 
     // /**
     //  * Debug
@@ -182,20 +169,8 @@ export function ShowCase({ index }: ShowCaseProps) {
               scale={[4, 0.25, 4]}
             />
 
-            {/* Empty Content */}
-            {/* {displayedQuestion.includes(index) && <Question />} */}
-
             {/* Main Content */}
             <ShowcaseComponent />
-
-            {/* Waves */}
-            {/* {currentFloorNum == index && displayedGreenWave.includes(index) && (
-              <Waves flag={0} />
-            )}
-
-            {currentFloorNum == index && displayedBlueWave.includes(index) && (
-              <Waves flag={1} />
-            )} */}
           </group>
         </>
       )}

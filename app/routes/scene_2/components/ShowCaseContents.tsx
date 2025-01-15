@@ -145,6 +145,12 @@ export function ArrowTip({
 export function TurnedDynamicDot({ position, isColorRed }: DynamicDotProps) {
   const dotBody: any = useRef();
 
+  useEffect(() => {
+    if (dotBody.current) {
+      dotBody.current.position.set(position.x, position.y, position.z);
+    }
+  }, []);
+
   useFrame((state, delta) => {
     if (dotBody.current) {
       const currentPosition = dotBody.current.position;
@@ -175,7 +181,6 @@ export function TurnedDynamicDot({ position, isColorRed }: DynamicDotProps) {
         ref={dotBody}
         geometry={dynamicDotGeometry}
         material={isColorRed ? dynamicDotRedMaterial : dynamicDotBlueMaterial}
-        position={position}
       />
     </>
   );
@@ -183,6 +188,12 @@ export function TurnedDynamicDot({ position, isColorRed }: DynamicDotProps) {
 
 export function DynamicDotAxisZ({ position, isColorRed }: DynamicDotProps) {
   const dotBody: any = useRef();
+
+  useEffect(() => {
+    if (dotBody.current) {
+      dotBody.current.position.set(position.x, position.y, position.z);
+    }
+  }, []);
 
   useFrame((state, delta) => {
     if (dotBody.current) {
@@ -206,7 +217,6 @@ export function DynamicDotAxisZ({ position, isColorRed }: DynamicDotProps) {
         ref={dotBody}
         geometry={dynamicDotGeometry}
         material={dynamicDotRedMaterial}
-        position={position}
       />
     </>
   );
@@ -217,6 +227,12 @@ export function DynamicDotAxisXZ({
   isPassUnder: passUnder,
 }: DynamicDotProps) {
   const dotBody: any = useRef();
+
+  useEffect(() => {
+    if (dotBody.current) {
+      dotBody.current.position.set(position.x, position.y, position.z);
+    }
+  }, []);
 
   useFrame((state, delta) => {
     if (dotBody.current) {
@@ -260,7 +276,6 @@ export function DynamicDotAxisXZ({
         ref={dotBody}
         geometry={dynamicDotGeometry}
         material={passUnder ? dynamicDotBlueMaterial : dynamicDotRedMaterial}
-        position={position}
       />
     </>
   );
@@ -924,7 +939,7 @@ export function ShowCaseContent0() {
           position={new THREE.Vector3(0, 1.5, 1)}
           isColorRed={false}
         />
-        ;
+
         <DynamicDotAxisXZ
           position={new THREE.Vector3(-1, 1.5, 1)}
           isPassUnder={false}
