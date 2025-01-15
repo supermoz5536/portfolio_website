@@ -80,7 +80,9 @@ export function Player() {
      * Player
      */
     const playerPosition = rigidRef.current.translation();
-    setPlayerPosition(playerPosition);
+    setPlayerPosition(
+      new THREE.Vector3(playerPosition.x, playerPosition.y, playerPosition.z),
+    );
 
     /**
      * Restart

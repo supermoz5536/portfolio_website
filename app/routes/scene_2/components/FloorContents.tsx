@@ -20,37 +20,56 @@ const transparentMaterial = new THREE.MeshStandardMaterial({
   depthWrite: false,
 });
 
+const playerShadowMaterial = new THREE.MeshStandardMaterial({
+  color: "black",
+  transparent: true,
+  opacity: 1,
+});
+
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
-  const rigidBodyRef: any = useRef();
-  const groupRef: any = useRef();
+  const rigidBodyRef = useRef<any>();
+  const groupRef = useRef<any>();
+  const playerShadowRef = useRef<any>();
 
-  const [currentFloor, setCurrentFloor] = useState(0);
-  const [shadowLevel, setShadowLevel] = useState(75);
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
+  const [currentFloor, setCurrentFloor] = useState(0);
+  const [currentPlayerPosition, setCurrentPlayerPosition] = 
+    useState(new THREE.Vector3(0, 0, 7)); // prettier-ignore
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
   );
 
-  /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
+    // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
     setIsPositionReady(true);
 
-    /* Listem Current Floor */
-    const unsubscibePlayerPosition = ThreePlayer.subscribe(
-      (state: any) => state.currentFloorNum,
-      (value) => {
-        setCurrentFloor(value);
+    /**
+     * Texture Setup
+     */
 
-        // Light Shadow Level for Player
-        if ([0].includes(value)) setShadowLevel(70);
-        if ([3].includes(value)) setShadowLevel(100);
-        if ([6, 7].includes(value)) setShadowLevel(50);
-        if ([9].includes(value)) setShadowLevel(25);
-        if ([10, 11].includes(value)) setShadowLevel(0);
+    const textureLoader = new THREE.TextureLoader();
+    const playerShadowTexture = textureLoader.load(
+      "asset/texture/playerShadow.jpg",
+    );
+
+    playerShadowMaterial.alphaMap = playerShadowTexture;
+
+    /*
+     * Listem Player Position and FloorNum
+     */
+
+    const unsubscibePlayerPosition = ThreePlayer.subscribe(
+      (state: any) => ({
+        currentPosition: state.currentPosition,
+        currentFloorNum: state.currentFloorNum,
+      }),
+      ({ currentPosition, currentFloorNum }) => {
+        setCurrentPlayerPosition(currentPosition);
+        setCurrentFloor(currentFloorNum);
       },
     );
 
@@ -78,6 +97,64 @@ export function FloorContents({ index, position }: FloorContentsProps) {
         adjustedPosition.z,
       );
     }
+
+    if (playerShadowRef.current) {
+      /*
+       * Player Shadow
+       */
+
+      /*  Fade Opacity */
+
+      const distanceFromLocalCenterToPlayer =
+        new THREE.Vector3(position.x, position.y, position.z).distanceTo(currentPlayerPosition) // prettier-ignore
+
+      if (distanceFromLocalCenterToPlayer < 8) {
+        playerShadowRef.current.material.opacity = 1;
+      } else if (
+        distanceFromLocalCenterToPlayer >= 8 &&
+        distanceFromLocalCenterToPlayer <= 16
+      ) {
+        playerShadowRef.current.material.opacity =
+          1 - (distanceFromLocalCenterToPlayer - 8) / 8;
+      } else {
+        playerShadowRef.current.material.opacity = 0;
+      }
+
+      /*  Shadow Position */
+
+      const currentFloorCenter = new THREE.Vector3(
+        position.x,
+        position.y,
+        position.z,
+      );
+
+      const directionToPlayer = new THREE.Vector3().subVectors(
+        currentPlayerPosition,
+        currentFloorCenter,
+      );
+
+      const normalizedDirection = directionToPlayer.clone().normalize();
+
+      const offsetDistance = 0.375;
+
+      const playerShadowPositionGlobal = currentPlayerPosition
+        .clone()
+        .add(normalizedDirection.multiplyScalar(offsetDistance));
+
+      // parent は <group>
+      // leap の動的ポジションを保持している。
+      const parent = playerShadowRef.current.parent;
+
+      // ローカル座標に変換
+      const playerShadowPositionLocal = playerShadowPositionGlobal.clone();
+      parent.worldToLocal(playerShadowPositionLocal);
+
+      playerShadowRef.current.position.set(
+        playerShadowPositionLocal.x,
+        0.15,
+        playerShadowPositionLocal.z,
+      );
+    }
   });
 
   return (
@@ -101,7 +178,19 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>
                 {/* ShowCase */}
                 <ShowCaseLight shadowLevel={0} index={index} />
-                {/* <ShowCaseLight shadowLevel={shadowLevel} index={index} /> */}
+
+                {/* Player Shadow  */}
+                <mesh
+                  ref={playerShadowRef}
+                  geometry={new THREE.PlaneGeometry(2.25, 2.25)}
+                  material={playerShadowMaterial}
+                  position={[
+                    currentPlayerPosition.x,
+                    0.15,
+                    currentPlayerPosition.z,
+                  ]}
+                  rotation={[(Math.PI * 3) / 2, 0, 0]}
+                />
               </>
             )}
           </group>

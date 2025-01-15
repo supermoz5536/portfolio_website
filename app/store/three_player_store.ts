@@ -6,6 +6,7 @@ export default create(
   subscribeWithSelector((set) => {
     return {
       isPlayerMoved: false,
+      currentPosition: new THREE.Vector3(0, 0, 0),
       currentFloorNum: 0,
 
       setIsPlayerMoved: (moved: boolean) => {
@@ -55,7 +56,10 @@ export default create(
             }
           }
 
-          return { currentFloorNum: currentFloorNum };
+          return {
+            currentPosition: position,
+            currentFloorNum: currentFloorNum,
+          };
         });
       },
 
