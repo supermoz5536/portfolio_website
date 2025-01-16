@@ -8,6 +8,7 @@ import ThreePlayer from "../../../store/three_player_store";
 import { ShowCaseLight } from "./Lights";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
+import { PlayerShadow } from "./PlayerShadow";
 
 type FloorContentsProps = {
   index: number;
@@ -52,15 +53,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     new THREE.Vector3(position.x, position.y, position.z),
   );
 
-  const tempCurrentFloorCenterRef = useRef<THREE.Vector3>(new THREE.Vector3());
+  const tempCurrentFloorCenter = useRef<THREE.Vector3>(new THREE.Vector3());
   const tempDirectionToPlayer = useRef<THREE.Vector3>(new THREE.Vector3());
   const tempNormalizedDirection = useRef<THREE.Vector3>(new THREE.Vector3());
-  const tempPlayerShadowPositionGlobal = useRef<THREE.Vector3>(
-    new THREE.Vector3(),
-  );
-  const tempPlayerShadowPositionLocal = useRef<THREE.Vector3>(
-    new THREE.Vector3(),
-  );
+  const tempPlayerShadowPositionGlobal = useRef<THREE.Vector3>(new THREE.Vector3()); // prettier-ignore
+  const tempPlayerShadowPositionLocal = useRef<THREE.Vector3>(new THREE.Vector3()); // prettier-ignore
+  const tempPlayerShadowPositionUV = useRef<THREE.Vector2>(new THREE.Vector2());
 
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
@@ -133,12 +131,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
   function setPlayerShadowPosition(): void {
     // ローカル座標の中心値をセット
-    tempCurrentFloorCenterRef.current.set(position.x, position.y, position.z);
+    tempCurrentFloorCenter.current.set(position.x, position.y, position.z);
 
     // ローカル座標の中心値とプレイヤーとの距離(方向)ベクトルをセット
     tempDirectionToPlayer.current.subVectors(
       currentPlayerPosition,
-      tempCurrentFloorCenterRef.current,
+      tempCurrentFloorCenter.current,
     );
 
     // Vec3 で普通に代入すると参照の代入になってしまう。そこで
@@ -147,7 +145,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       .copy(tempDirectionToPlayer.current)
       .normalize();
 
-    const offsetDistance = 0.325;
+    const offsetDistance = 0;
+    // const offsetDistance = 0.325;
 
     // プレイヤーのGlobal座標を代入
     tempPlayerShadowPositionGlobal.current.copy(currentPlayerPosition);
@@ -158,8 +157,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     );
 
     // ローカル座標の中心 parent は <group>
-    // leap の動的ポジションを保持している。
-    const parent = playerShadowRef.current.parent;
+    const parent = groupRef.current;
 
     // ローカル座標用のオブジェクトにグローバル座標をコピー
     tempPlayerShadowPositionLocal.current.copy(
@@ -167,13 +165,20 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     );
 
     // コピーしたグローバル座標をローカル座標に変換
-    parent.worldToLocal(tempPlayerShadowPositionLocal.current),
-      // ローカル座標で更新
-      playerShadowRef.current.position.set(
-        tempPlayerShadowPositionLocal.current.x,
-        0.1,
-        tempPlayerShadowPositionLocal.current.z,
-      );
+    parent.worldToLocal(tempPlayerShadowPositionLocal.current);
+
+    // UVマップ（PlaneGeometry）に正規化
+    tempPlayerShadowPositionUV.current.set(
+      tempPlayerShadowPositionLocal.current.x / 24 + 0.5,
+      -tempPlayerShadowPositionLocal.current.z / 24 + 0.5,
+    );
+
+    // // ローカル座標で更新
+    // playerShadowRef.current.position.set(
+    //   tempPlayerShadowPositionLocal.current.x,
+    //   0.1,
+    //   tempPlayerShadowPositionLocal.current.z,
+    // );
   }
 
   function setPlayerShadowOpacity(): void {
@@ -274,8 +279,11 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* ShowCase */}
                 <ShowCaseLight shadowLevel={0} index={index} />
 
+                {/* Player Shadow with Shader */}
+                <PlayerShadow />
+
                 {/*
-                 * Player Shadow
+                 * Player Shadow with Texture
                  *
                  * rayCastメソッド で Floor との判定処理をしたい場合は
                  * isPlayerShadowVisible が利用可能
