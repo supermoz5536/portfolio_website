@@ -52,6 +52,16 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     new THREE.Vector3(position.x, position.y, position.z),
   );
 
+  const tempCurrentFloorCenterRef = useRef<THREE.Vector3>(new THREE.Vector3());
+  const tempDirectionToPlayer = useRef<THREE.Vector3>(new THREE.Vector3());
+  const tempNormalizedDirection = useRef<THREE.Vector3>(new THREE.Vector3());
+  const tempPlayerShadowPositionGlobal = useRef<THREE.Vector3>(
+    new THREE.Vector3(),
+  );
+  const tempPlayerShadowPositionLocal = useRef<THREE.Vector3>(
+    new THREE.Vector3(),
+  );
+
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
     setIsPositionReady(true);
@@ -122,38 +132,48 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   });
 
   function setPlayerShadowPosition(): void {
-    const currentFloorCenter = new THREE.Vector3(
-      position.x,
-      position.y,
-      position.z,
-    );
+    // ローカル座標の中心値をセット
+    tempCurrentFloorCenterRef.current.set(position.x, position.y, position.z);
 
-    const directionToPlayer = new THREE.Vector3().subVectors(
+    // ローカル座標の中心値とプレイヤーとの距離(方向)ベクトルをセット
+    tempDirectionToPlayer.current.subVectors(
       currentPlayerPosition,
-      currentFloorCenter,
+      tempCurrentFloorCenterRef.current,
     );
 
-    const normalizedDirection = directionToPlayer.clone().normalize();
+    // Vec3 で普通に代入すると参照の代入になってしまう。そこで
+    // .copy() は既存のオブジェクトの内部データ（x, y, z の値）を上書きするので使用
+    tempNormalizedDirection.current
+      .copy(tempDirectionToPlayer.current)
+      .normalize();
 
-    const offsetDistance = 0.375;
+    const offsetDistance = 0.325;
 
-    const playerShadowPositionGlobal = currentPlayerPosition
-      .clone()
-      .add(normalizedDirection.multiplyScalar(offsetDistance));
+    // プレイヤーのGlobal座標を代入
+    tempPlayerShadowPositionGlobal.current.copy(currentPlayerPosition);
 
-    // parent は <group>
+    // 指定した距離のオフセットを実行
+    tempPlayerShadowPositionGlobal.current.add(
+      tempNormalizedDirection.current.multiplyScalar(offsetDistance),
+    );
+
+    // ローカル座標の中心 parent は <group>
     // leap の動的ポジションを保持している。
     const parent = playerShadowRef.current.parent;
 
-    // ローカル座標に変換
-    const playerShadowPositionLocal = playerShadowPositionGlobal.clone();
-    parent.worldToLocal(playerShadowPositionLocal);
-
-    playerShadowRef.current.position.set(
-      playerShadowPositionLocal.x,
-      0.1,
-      playerShadowPositionLocal.z,
+    // ローカル座標用のオブジェクトにグローバル座標をコピー
+    tempPlayerShadowPositionLocal.current.copy(
+      tempPlayerShadowPositionGlobal.current,
     );
+
+    // コピーしたグローバル座標をローカル座標に変換
+    parent.worldToLocal(tempPlayerShadowPositionLocal.current),
+      // ローカル座標で更新
+      playerShadowRef.current.position.set(
+        tempPlayerShadowPositionLocal.current.x,
+        0.1,
+        tempPlayerShadowPositionLocal.current.z,
+      );
   }
 
   function setPlayerShadowOpacity(): void {

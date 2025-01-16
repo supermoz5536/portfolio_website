@@ -48,7 +48,6 @@ export default function Scene2() {
       document.body.style.left = "0"; // 水平方向のbodyのスクロール位置を0(tailwind left-0と同じ)
       document.body.style.width = "100vw"; // position: fixed で body のサイズが縮小し不具合の可能性。初期化が必要。
       document.documentElement.style.overflow = "hidden";
-      // document.body.style.overflow = "hidden";
     } else {
       if (!isFirstMount) {
         // body固定を解除する
@@ -57,7 +56,6 @@ export default function Scene2() {
         document.body.style.left = "";
         document.body.style.width = "";
         document.documentElement.style.overflow = "";
-        // document.body.style.overflow = "";
 
         fixScroll();
       }
