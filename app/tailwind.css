@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /**
-* Scene2のisActivated == trueの状態でも
-* scroll barの表示を維持
-*/
-html {
-  overflow-y: scroll;
-  box-sizing: "border-box";
+ * 全要素リセットスタイル
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /**
@@ -18,6 +18,10 @@ html {
 */
 html,
 body {
+  overflow-y: scroll; /* Scene2のisActivated == true の状態でも scroll bar の表示を維持 */
+  box-sizing: "border-box";
+  user-select: none;
+
   /**
   * @apply は、「Tailwind CSS のクラスを通常の CSS の中で使うよ！」という宣言
   * Tailwind のユーティリティクラスを
@@ -38,13 +42,4 @@ body {
     /* ダークモードを選択してる場合 */
     color-scheme: dark;
   }
-}
-
-/**
- * 全要素リセットスタイル
- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
