@@ -1,6 +1,6 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { RigidBody } from "@react-three/rapier";
+import { useRapier, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import ThreePlayerStore from "../../../store/three_player_store";
@@ -10,6 +10,9 @@ import { useSystemStore } from "../../../store/system_store";
 export function Player() {
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
+
+  const { rapier, world } = useRapier();
+
   const [smoothCameraPosition, setSmoothCameraPosition] = useState(
     new THREE.Vector3(5, 5, 5),
   );
@@ -22,10 +25,14 @@ export function Player() {
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
 
-  const setPlayerPosition = ThreePlayerStore((state: any) => state.setPosition);
-  const setIsPlayerMoved = ThreePlayerStore(
-    (state: any) => state.setIsPlayerMoved,
-  );
+  const setIsVisibleShadow = 
+    ThreePlayerStore((state: any) => state.setIsVisibleShadow); // prettier-ignore
+
+  const setPlayerPosition = 
+    ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
+
+  const setIsPlayerMoved = 
+    ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
 
   useEffect(() => {
     /* Listem Player Current Floor */
@@ -169,6 +176,35 @@ export function Player() {
 
     state.camera.position.copy(smoothCameraPosition);
     state.camera.lookAt(smoothCameraTarget);
+
+    /**
+     * Shadow Control
+     */
+
+    const rayOrigin = {
+      x: playerPosition.x,
+      y: playerPosition.y,
+      z: playerPosition.z,
+    };
+
+    rayOrigin.y -= 1;
+
+    const direction = { x: 0, y: -1, z: 0 };
+    const ray = new rapier.Ray(rayOrigin, direction);
+    const hit = world.castRay(ray, 10, true);
+
+    if (hit && hit?.timeOfImpact < 0.2) {
+      if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
+        const rigidBodyUserData: any = hit.collider.parent()?.userData;
+        if (rigidBodyUserData.key == "floor") {
+          setIsVisibleShadow(true);
+        } else {
+          setIsVisibleShadow(false);
+        }
+      } else {
+        setIsVisibleShadow(false);
+      }
+    }
   });
 
   return (

@@ -37,6 +37,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloor, setCurrentFloor] = useState(0);
+  const [isPlayerShadowVisible, setIsPlayerShadowVisible] = useState(false);
   const [currentPlayerPosition, setCurrentPlayerPosition] = 
     useState(new THREE.Vector3(0, 0, 7)); // prettier-ignore
   const [adjustedPosition] = useState<THREE.Vector3>(
@@ -62,19 +63,21 @@ export function FloorContents({ index, position }: FloorContentsProps) {
      * Listem Player Position and FloorNum
      */
 
-    const unsubscibePlayerPosition = ThreePlayer.subscribe(
+    const unsubscibePlayer = ThreePlayer.subscribe(
       (state: any) => ({
         currentPosition: state.currentPosition,
         currentFloorNum: state.currentFloorNum,
+        isVisibleShadow: state.isVisibleShadow,
       }),
-      ({ currentPosition, currentFloorNum }) => {
+      ({ currentPosition, currentFloorNum, isVisibleShadow }) => {
         setCurrentPlayerPosition(currentPosition);
         setCurrentFloor(currentFloorNum);
+        setIsPlayerShadowVisible(isVisibleShadow);
       },
     );
 
     return () => {
-      unsubscibePlayerPosition();
+      unsubscibePlayer();
     };
   }, [index]);
 
@@ -240,18 +243,26 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* ShowCase */}
                 <ShowCaseLight shadowLevel={0} index={index} />
 
-                {/* Player Shadow  */}
-                <mesh
-                  ref={playerShadowRef}
-                  geometry={new THREE.PlaneGeometry(2.1, 2.1)}
-                  material={playerShadowMaterial}
-                  position={[
-                    currentPlayerPosition.x,
-                    0.01,
-                    currentPlayerPosition.z,
-                  ]}
-                  rotation={[(Math.PI * 3) / 2, 0, 0]}
-                />
+                {/*
+                 * Player Shadow
+                 *
+                 * rayCastメソッド で Floor との判定処理をしたい場合は
+                 * isPlayerShadowVisible が利用可能
+                 */}
+                {isPlayerShadowVisible && <></>}
+                <>
+                  <mesh
+                    ref={playerShadowRef}
+                    geometry={new THREE.PlaneGeometry(2.1, 2.1)}
+                    material={playerShadowMaterial}
+                    position={[
+                      currentPlayerPosition.x,
+                      0.05,
+                      currentPlayerPosition.z,
+                    ]}
+                    rotation={[(Math.PI * 3) / 2, 0, 0]}
+                  />
+                </>
               </>
             )}
           </group>

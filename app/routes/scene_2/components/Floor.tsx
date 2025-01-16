@@ -60,6 +60,7 @@ export function Floor({ position, scene }: floorProps) {
             position={adjustedPosition}
             type="kinematicPosition"
             colliders="hull"
+            userData={{ key: "floor" }}
           >
             <primitive object={scene} />
           </RigidBody>
