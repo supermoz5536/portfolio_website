@@ -9,8 +9,8 @@ import { EnvironmentLights } from "./components/Lights.js";
 export default function Experience() {
   return (
     <>
-      <color args={["#bdedfc"]} attach="background" />
-      {/* <color args={["#201919"]} attach="background" /> */}
+      {/* <color args={["#bdedfc"]} attach="background" /> */}
+      <color args={["#201919"]} attach="background" />
       {/* <axesHelper position={[0, 0.05, 0]} scale={1000} /> */}
       {/* <gridHelper
         position={[0, 0, 0]}

@@ -168,21 +168,19 @@ export default function Scene2() {
                   <AnimateInBlock>
                     {/* 文字とボタンの配置管理するコンテナ */}
                     <div className="flex flex-col justify-center items-center h-[80vh] w-[80vw] z-20">
-                      <div className="mb-10 z-10 text-6xl text-white whitespace-nowrap">
+                      <div className="mb-16 z-10 text-6xl text-white whitespace-nowrap">
                         <p>How to Play</p>
                       </div>
-                      <span className="mb-5 z-10 text-4xl text-white ">
-                        (A W S D)
+
+                      <span className="mb-10 z-10 text-4xl text-white ">
+                        Drag on touchpad!
                       </span>
-                      <span className="mb-5 z-10 text-4xl text-white ">or</span>
-                      <span className="mb-5 z-10 text-4xl text-white ">
-                        (← ↑ ↓ →)
-                      </span>
+
                       <span className="mt-5 mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        Click obejests!
+                        Try clicking obejests!
                       </span>
                       <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        You could find something interesting.
+                        You can find something interesting.
                       </span>
                     </div>
                   </AnimateInBlock>
@@ -211,7 +209,10 @@ export default function Scene2() {
                         (A W S D) or (← ↑ ↓ →)
                       </span>
                       <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        Click obejests and you could find something interesting.
+                        Try clicking obejests.
+                      </span>
+                      <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+                        You could find something interesting.
                       </span>
                     </div>
                   </AnimateInBlock>

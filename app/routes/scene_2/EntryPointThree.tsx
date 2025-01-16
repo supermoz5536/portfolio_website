@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
-import { MovementPad } from "./components/interface/Interface";
+import { MovementPad } from "./components/Interface";
 import Index from "../_index";
 
 const EntryPointThree = () => {
@@ -26,6 +26,7 @@ const EntryPointThree = () => {
             zIndex: 0,
           }}
           shadows
+          gl={{ localClippingEnabled: true }}
           // Canvas の呼び出し時に
           // PerspectiveCamera が設定可能
           camera={{

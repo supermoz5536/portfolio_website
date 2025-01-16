@@ -2,8 +2,11 @@
 /// 0.5pxだけズレるが、一旦このまま開発を進める。
 
 import { useEffect, useRef, useState } from "react";
-import ThreeInterfaceStore from "../../../../store/three_interface_store";
-import { useSystemStore } from "../../../../store/system_store";
+import ThreeInterfaceStore from "../../../store/three_interface_store";
+import { useSystemStore } from "../../../store/system_store";
+import ThreePlayerStore from "../../../store/three_player_store";
+
+let isFirstTry = true;
 
 export function MovementPad() {
   const padRef = useRef<any>();
@@ -17,6 +20,9 @@ export function MovementPad() {
   let regionData: any = {};
 
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
+  const setIsPlayerMoved = ThreePlayerStore(
+    (state: any) => state.setIsPlayerMoved,
+  );
 
   useEffect(() => {
     /**
@@ -34,6 +40,13 @@ export function MovementPad() {
       // 更新関数の引数で最新の状態を取得する記述
       setIsActicated((prev) => {
         if (prev) {
+          // For closing Guide Window
+          if (isFirstTry) {
+            isFirstTry = false;
+            setIsPlayerMoved(true);
+            return prev;
+          }
+
           setIsTouched(true);
 
           // Re Position Pad
@@ -57,6 +70,13 @@ export function MovementPad() {
 
     const handleTouchMove = (event: TouchEvent) => {
       setIsTouched((prev) => {
+        // For closing Guide Window
+        if (isFirstTry) {
+          isFirstTry = false;
+          setIsPlayerMoved(true);
+          return prev;
+        }
+
         if (prev) {
           update(event.touches[0].pageX, event.touches[0].pageY);
         }
