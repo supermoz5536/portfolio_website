@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import { RigidBody } from "@react-three/rapier";
@@ -24,6 +24,12 @@ const playerShadowMaterial = new THREE.MeshStandardMaterial({
   color: "black",
   transparent: true,
   opacity: 1,
+  clippingPlanes: [
+    new THREE.Plane(new THREE.Vector3(0, 0, 1), 12.1),
+    new THREE.Plane(new THREE.Vector3(0, 0, -1), 12.1),
+    new THREE.Plane(new THREE.Vector3(1, 0, 0), 12.1),
+    new THREE.Plane(new THREE.Vector3(-1, 0, 0), 12.1),
+  ],
 });
 
 const displayedQuestion = [7, 9, 10, 11];
@@ -36,10 +42,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const playerShadowRef = useRef<any>();
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [currentFloor, setCurrentFloor] = useState(0);
   const [isPlayerShadowVisible, setIsPlayerShadowVisible] = useState(false);
+  const [currentFloor, setCurrentFloor] = useState(0);
+
   const [currentPlayerPosition, setCurrentPlayerPosition] = 
     useState(new THREE.Vector3(0, 0, 7)); // prettier-ignore
+
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
   );
@@ -79,7 +87,11 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     return () => {
       unsubscibePlayer();
     };
-  }, [index]);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (playerShadowRef.current) setPlayerShadowClipping(currentFloor);
+  }, [index, currentFloor]);
 
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -104,10 +116,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       /*
        * Player Shadow
        */
-
       setPlayerShadowPosition();
       setPlayerShadowOpacity();
-      setPlayerShadowClipping(currentFloor);
     }
   });
 
@@ -125,7 +135,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
     const normalizedDirection = directionToPlayer.clone().normalize();
 
-    const offsetDistance = 0.35;
+    const offsetDistance = 0.375;
 
     const playerShadowPositionGlobal = currentPlayerPosition
       .clone()
@@ -141,14 +151,14 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
     playerShadowRef.current.position.set(
       playerShadowPositionLocal.x,
-      0.15,
+      0.1,
       playerShadowPositionLocal.z,
     );
   }
 
   function setPlayerShadowOpacity(): void {
     const distanceFromLocalCenterToPlayer =
-    new THREE.Vector3(position.x, position.y, position.z).distanceTo(currentPlayerPosition) // prettier-ignore
+    position.distanceTo(currentPlayerPosition) // prettier-ignore
 
     if (distanceFromLocalCenterToPlayer < 8) {
       playerShadowRef.current.material.opacity = 1;
@@ -190,7 +200,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     clippingPlanes.push(
       new THREE.Plane(
         new THREE.Vector3(0, 0, 1),
-        12 + 64 * rowMultiply, // prettier-ignore
+        12.1 + 64 * rowMultiply, // prettier-ignore
       ),
     );
 
@@ -198,7 +208,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     clippingPlanes.push(
       new THREE.Plane(
         new THREE.Vector3(0, 0, -1),
-        - ((12 + 64 * rowMultiply) - 24), // prettier-ignore
+        - ((12.1 + 64 * rowMultiply) - 24), // prettier-ignore
       ),
     );
 
@@ -206,7 +216,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     clippingPlanes.push(
       new THREE.Plane(
         new THREE.Vector3(1, 0, 0),
-        12 + 64 * colMultiply, // prettier-ignore
+        12.1 + 64 * colMultiply, // prettier-ignore
       ),
     );
 
@@ -214,11 +224,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     clippingPlanes.push(
       new THREE.Plane(
         new THREE.Vector3(-1, 0, 0),
-        - ((12 + 64 * colMultiply) - 24), // prettier-ignore
+        - ((12.1 + 64 * colMultiply) - 24), // prettier-ignore
       ),
     );
 
     playerShadowRef.current.material.clippingPlanes = clippingPlanes;
+    playerShadowRef.current.material.needsUpdate = true;
   }
 
   return (
@@ -255,11 +266,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                     ref={playerShadowRef}
                     geometry={new THREE.PlaneGeometry(2.1, 2.1)}
                     material={playerShadowMaterial}
-                    position={[
-                      currentPlayerPosition.x,
-                      0.05,
-                      currentPlayerPosition.z,
-                    ]}
                     rotation={[(Math.PI * 3) / 2, 0, 0]}
                   />
                 </>

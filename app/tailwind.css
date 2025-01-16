@@ -11,17 +11,8 @@
   box-sizing: border-box;
 }
 
-/**
-* html ページ全体の外枠部分
-* body 中身の内容部分
-* 両方にスタイルを適用
-*/
 html,
 body {
-  overflow-y: scroll; /* Scene2のisActivated == true の状態でも scroll bar の表示を維持 */
-  box-sizing: "border-box";
-  user-select: none;
-
   /**
   * @apply は、「Tailwind CSS のクラスを通常の CSS の中で使うよ！」という宣言
   * Tailwind のユーティリティクラスを
@@ -42,4 +33,9 @@ body {
     /* ダークモードを選択してる場合 */
     color-scheme: dark;
   }
+}
+
+body {
+  overflow-y: scroll; /* Scene2のisActivated == true の状態でも scroll bar の表示を維持 */
+  user-select: none;
 }

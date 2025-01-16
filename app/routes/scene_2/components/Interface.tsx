@@ -69,17 +69,25 @@ export function MovementPad() {
     };
 
     const handleTouchMove = (event: TouchEvent) => {
-      setIsTouched((prev) => {
-        // For closing Guide Window
-        if (isFirstTry) {
-          isFirstTry = false;
-          setIsPlayerMoved(true);
-          return prev;
+      // scene2 の Three のシーン操作以外の
+      // 入力を除外するための分岐
+      setIsActicated((prev) => {
+        if (prev) {
+          setIsTouched((prev) => {
+            // Close Guide Window for the first time.
+            if (isFirstTry) {
+              isFirstTry = false;
+              setIsPlayerMoved(true);
+              return prev;
+            }
+
+            if (prev) {
+              update(event.touches[0].pageX, event.touches[0].pageY);
+            }
+            return prev;
+          });
         }
 
-        if (prev) {
-          update(event.touches[0].pageX, event.touches[0].pageY);
-        }
         return prev;
       });
     };
