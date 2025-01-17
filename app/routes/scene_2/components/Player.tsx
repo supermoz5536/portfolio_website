@@ -25,9 +25,6 @@ export function Player() {
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
 
-  const setIsVisibleShadow = 
-    ThreePlayerStore((state: any) => state.setIsVisibleShadow); // prettier-ignore
-
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
 
@@ -181,30 +178,27 @@ export function Player() {
      * Shadow Control
      */
 
-    const rayOrigin = {
-      x: playerPosition.x,
-      y: playerPosition.y,
-      z: playerPosition.z,
-    };
+    // const rayOrigin = {
+    //   x: playerPosition.x,
+    //   y: playerPosition.y,
+    //   z: playerPosition.z,
+    // };
 
-    rayOrigin.y -= 1;
+    // rayOrigin.y -= 1;
 
-    const direction = { x: 0, y: -1, z: 0 };
-    const ray = new rapier.Ray(rayOrigin, direction);
-    const hit = world.castRay(ray, 10, true);
+    // const direction = { x: 0, y: -1, z: 0 };
+    // const ray = new rapier.Ray(rayOrigin, direction);
+    // const hit = world.castRay(ray, 10, true);
 
-    if (hit && hit?.timeOfImpact < 0.2) {
-      if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
-        const rigidBodyUserData: any = hit.collider.parent()?.userData;
-        if (rigidBodyUserData.key == "floor") {
-          setIsVisibleShadow(true);
-        } else {
-          setIsVisibleShadow(false);
-        }
-      } else {
-        setIsVisibleShadow(false);
-      }
-    }
+    // if (hit && hit?.timeOfImpact < 0.2) {
+    //   if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
+    //     const rigidBodyUserData: any = hit.collider.parent()?.userData;
+    //     if (rigidBodyUserData.key == "floor") {
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // }
   });
 
   return (

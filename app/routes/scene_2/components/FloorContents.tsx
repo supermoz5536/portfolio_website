@@ -8,7 +8,8 @@ import ThreePlayer from "../../../store/three_player_store";
 import { ShowCaseLight } from "./Lights";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
-import { PlayerShadow } from "./PlayerShadow";
+import playerShadowVertexShader from "../shaders/playerShadow/vertex.glsl";
+import playerShadowFragmentShader from "../shaders/playerShadow/fragment.glsl";
 
 type FloorContentsProps = {
   index: number;
@@ -21,17 +22,17 @@ const transparentMaterial = new THREE.MeshStandardMaterial({
   depthWrite: false,
 });
 
-const playerShadowMaterial = new THREE.MeshStandardMaterial({
-  color: "black",
-  transparent: true,
-  opacity: 1,
-  clippingPlanes: [
-    new THREE.Plane(new THREE.Vector3(0, 0, 1), 12.1),
-    new THREE.Plane(new THREE.Vector3(0, 0, -1), 12.1),
-    new THREE.Plane(new THREE.Vector3(1, 0, 0), 12.1),
-    new THREE.Plane(new THREE.Vector3(-1, 0, 0), 12.1),
-  ],
-});
+// const playerShadowMaterial = new THREE.MeshStandardMaterial({
+//   color: "black",
+//   transparent: true,
+//   opacity: 1,
+//   clippingPlanes: [
+//     new THREE.Plane(new THREE.Vector3(0, 0, 1), 12.1),
+//     new THREE.Plane(new THREE.Vector3(0, 0, -1), 12.1),
+//     new THREE.Plane(new THREE.Vector3(1, 0, 0), 12.1),
+//     new THREE.Plane(new THREE.Vector3(-1, 0, 0), 12.1),
+//   ],
+// });
 
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
@@ -43,7 +44,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const playerShadowRef = useRef<any>();
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-  const [isPlayerShadowVisible, setIsPlayerShadowVisible] = useState(false);
+
   const [currentFloor, setCurrentFloor] = useState(0);
 
   const [currentPlayerPosition, setCurrentPlayerPosition] = 
@@ -58,22 +59,15 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const tempNormalizedDirection = useRef<THREE.Vector3>(new THREE.Vector3());
   const tempPlayerShadowPositionGlobal = useRef<THREE.Vector3>(new THREE.Vector3()); // prettier-ignore
   const tempPlayerShadowPositionLocal = useRef<THREE.Vector3>(new THREE.Vector3()); // prettier-ignore
-  const tempPlayerShadowPositionUV = useRef<THREE.Vector2>(new THREE.Vector2());
+  const tempPlayerShadowPositionUv = useRef<THREE.Vector2>(new THREE.Vector2());
+
+  // useLayoutEffect(() => {
+  //   if (playerShadowRef.current) setPlayerShadowClipping(currentFloor);
+  // }, [index, currentFloor]);
 
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
     setIsPositionReady(true);
-
-    /**
-     * Texture Setup
-     */
-
-    const textureLoader = new THREE.TextureLoader();
-    const playerShadowTexture = textureLoader.load(
-      "asset/texture/playerShadow.jpg",
-    );
-
-    playerShadowMaterial.alphaMap = playerShadowTexture;
 
     /*
      * Listem Player Position and FloorNum
@@ -83,12 +77,10 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       (state: any) => ({
         currentPosition: state.currentPosition,
         currentFloorNum: state.currentFloorNum,
-        isVisibleShadow: state.isVisibleShadow,
       }),
-      ({ currentPosition, currentFloorNum, isVisibleShadow }) => {
+      ({ currentPosition, currentFloorNum }) => {
         setCurrentPlayerPosition(currentPosition);
         setCurrentFloor(currentFloorNum);
-        setIsPlayerShadowVisible(isVisibleShadow);
       },
     );
 
@@ -96,10 +88,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       unsubscibePlayer();
     };
   }, []);
-
-  useLayoutEffect(() => {
-    if (playerShadowRef.current) setPlayerShadowClipping(currentFloor);
-  }, [index, currentFloor]);
 
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -145,8 +133,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       .copy(tempDirectionToPlayer.current)
       .normalize();
 
-    const offsetDistance = 0;
-    // const offsetDistance = 0.325;
+    const offsetDistance = 0.325;
 
     // プレイヤーのGlobal座標を代入
     tempPlayerShadowPositionGlobal.current.copy(currentPlayerPosition);
@@ -168,17 +155,16 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     parent.worldToLocal(tempPlayerShadowPositionLocal.current);
 
     // UVマップ（PlaneGeometry）に正規化
-    tempPlayerShadowPositionUV.current.set(
+    // / 24: 単位サイズに縮尺
+    //  + 0.5: 原点中央で左下(-0.5, -0.5) 右上(0.5, 0.5)を原点左下にオフセット
+    tempPlayerShadowPositionUv.current.set(
       tempPlayerShadowPositionLocal.current.x / 24 + 0.5,
       -tempPlayerShadowPositionLocal.current.z / 24 + 0.5,
     );
 
-    // // ローカル座標で更新
-    // playerShadowRef.current.position.set(
-    //   tempPlayerShadowPositionLocal.current.x,
-    //   0.1,
-    //   tempPlayerShadowPositionLocal.current.z,
-    // );
+    playerShadowRef.current.material.uniforms.uPlayerShadowPositionUv.value.copy(
+      tempPlayerShadowPositionUv.current,
+    );
   }
 
   function setPlayerShadowOpacity(): void {
@@ -280,23 +266,24 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 <ShowCaseLight shadowLevel={0} index={index} />
 
                 {/* Player Shadow with Shader */}
-                <PlayerShadow />
-
-                {/*
-                 * Player Shadow with Texture
-                 *
-                 * rayCastメソッド で Floor との判定処理をしたい場合は
-                 * isPlayerShadowVisible が利用可能
-                 */}
-                {isPlayerShadowVisible && <></>}
-                <>
-                  <mesh
-                    ref={playerShadowRef}
-                    geometry={new THREE.PlaneGeometry(2.1, 2.1)}
-                    material={playerShadowMaterial}
-                    rotation={[(Math.PI * 3) / 2, 0, 0]}
-                  />
-                </>
+                <mesh
+                  ref={playerShadowRef}
+                  geometry={new THREE.PlaneGeometry(24, 24)}
+                  material={
+                    new THREE.ShaderMaterial({
+                      vertexShader: playerShadowVertexShader,
+                      fragmentShader: playerShadowFragmentShader,
+                      uniforms: {
+                        uPlayerShadowPositionUv: {
+                          value: tempPlayerShadowPositionUv.current,
+                        },
+                      },
+                      transparent: true,
+                    })
+                  }
+                  position={[0, 0.1, 0]}
+                  rotation={[(Math.PI * 3) / 2, 0, 0]}
+                />
               </>
             )}
           </group>

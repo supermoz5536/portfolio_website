@@ -5,16 +5,9 @@ import * as THREE from "three";
 export default create(
   subscribeWithSelector((set) => {
     return {
-      isVisibleShadow: false,
       isPlayerMoved: false,
       currentPosition: new THREE.Vector3(0, 0, 0),
       currentFloorNum: 0,
-
-      setIsVisibleShadow: (isVisibleShadow: boolean) => {
-        set((state: any) => {
-          return { isVisibleShadow: isVisibleShadow };
-        });
-      },
 
       setIsPlayerMoved: (moved: boolean) => {
         set((state: any) => {
