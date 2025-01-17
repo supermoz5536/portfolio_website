@@ -55,12 +55,7 @@ const showcaseComponents: any = {
 export function ShowCase({ index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
 
-  const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
-
-  /* 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機 */
   useEffect(() => {
-    setIsPositionReady(true);
-
     /**
      * Texture Setup
      */
@@ -99,61 +94,60 @@ export function ShowCase({ index }: ShowCaseProps) {
 
   return (
     <>
-      {isPositionReady && (
-        <>
-          {/* ShowCase */}
-          <group scale={1.1}>
-            {/* Bottom */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[0, 0.5, 0]}
-              scale={[4, 1, 4]}
-            />
+      <>
+        {/* ShowCase */}
+        <group scale={1.1}>
+          {/* Bottom */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 0.5, 0]}
+            scale={[4, 1, 4]}
+          />
 
-            {/* Bottom Layer */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseSheetMaterial}
-              position={[0, 1.005, 0]}
-              scale={[3.8, 0.01, 3.8]}
-            />
+          {/* Bottom Layer */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseSheetMaterial}
+            position={[0, 1.005, 0]}
+            scale={[3.8, 0.01, 3.8]}
+          />
 
-            {/* Top Layer */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseSheetMaterial}
-              position={[0, 5, 0]}
-              scale={[3.8, 0.01, 3.8]}
-            />
+          {/* Top Layer */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseSheetMaterial}
+            position={[0, 5, 0]}
+            scale={[3.8, 0.01, 3.8]}
+          />
 
-            {/* Body Left */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseGlassMaterial}
-              position={[-1.95, 3, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Left */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseGlassMaterial}
+            position={[-1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Right */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseGlassMaterial}
-              position={[1.95, 3, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Right */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseGlassMaterial}
+            position={[1.95, 3, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Forward */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseGlassMaterial}
-              position={[0, 3, -1.95]}
-              rotation={[0, Math.PI / 2, 0]}
-              scale={[0.1, 4, 4]}
-            />
+          {/* Body Forward */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseGlassMaterial}
+            position={[0, 3, -1.95]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[0.1, 4, 4]}
+          />
 
-            {/* Body Backward */}
-            {/* <mesh
+          {/* Body Backward */}
+          {/* <mesh
             geometry={boxGeometry}
             material={showcaseBodyMaterial}
             position={[0, 3, 1.95]}
@@ -161,19 +155,18 @@ export function ShowCase({ index }: ShowCaseProps) {
             scale={[0.1, 4, 4]}
           /> */}
 
-            {/* Top */}
-            <mesh
-              geometry={boxGeometry}
-              material={showcaseBodyMaterial}
-              position={[0, 5.125, 0]}
-              scale={[4, 0.25, 4]}
-            />
+          {/* Top */}
+          <mesh
+            geometry={boxGeometry}
+            material={showcaseBodyMaterial}
+            position={[0, 5.125, 0]}
+            scale={[4, 0.25, 4]}
+          />
 
-            {/* Main Content */}
-            <ShowcaseComponent />
-          </group>
-        </>
-      )}
+          {/* Main Content */}
+          <ShowcaseComponent />
+        </group>
+      </>
     </>
   );
 }

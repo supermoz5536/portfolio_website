@@ -125,33 +125,31 @@ export function Fireflies({ index }: FirefliesProps) {
 
   return (
     <>
-      <>
-        <points
-          ref={firefliesRef}
-          geometry={firefliesGeometry}
-          material={
-            new THREE.ShaderMaterial({
-              uniforms: {
-                uTime: { value: 0 },
-                uPointSize: { value: 500.0 },
-                uPixelRatio: {
-                  value:
-                    typeof window != "undefined"
-                      ? Math.min(window.devicePixelRatio, 2)
-                      : null,
-                },
-                uColor: { value: new THREE.Color(debugObj.uColor) },
+      <points
+        ref={firefliesRef}
+        geometry={firefliesGeometry}
+        material={
+          new THREE.ShaderMaterial({
+            uniforms: {
+              uTime: { value: 0 },
+              uPointSize: { value: 500.0 },
+              uPixelRatio: {
+                value:
+                  typeof window != "undefined"
+                    ? Math.min(window.devicePixelRatio, 2)
+                    : null,
               },
-              vertexShader: firefliesVertex,
-              fragmentShader: firefliesFragment,
-              transparent: true,
-              depthWrite: false,
-              blending: THREE.AdditiveBlending,
-            })
-          }
-          position={[0, 2, 0]}
-        />
-      </>
+              uColor: { value: new THREE.Color(debugObj.uColor) },
+            },
+            vertexShader: firefliesVertex,
+            fragmentShader: firefliesFragment,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          })
+        }
+        position={[0, 2, 0]}
+      />
     </>
   );
 }
