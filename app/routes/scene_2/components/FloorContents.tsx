@@ -175,7 +175,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 <ShowCaseLight shadowLevel={0} index={index} />
 
                 {/* Player Shadow with Shader */}
-                <PlayerShadow position={adjustedPosition} />
+                <PlayerShadow />
               </>
             )}
           </group>
