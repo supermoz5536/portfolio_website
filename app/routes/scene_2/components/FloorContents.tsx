@@ -41,6 +41,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
   const groupRef = useRef<any>();
 
+  const cube = useRef<any>();
+
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloor, setCurrentFloor] = useState(0);
 
@@ -92,6 +94,11 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       );
     }
   });
+
+  const handleClick = (event: any) => {
+    if (cube) {
+    }
+  };
 
   // function setPlayerShadowClipping(currentFloor: number): void {
   //   let clippingPlanes = [];
@@ -173,6 +180,14 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* Waves */}
                 {displayedGreenWave.includes(index) && <Waves flag={0} />}
                 {displayedBlueWave.includes(index) && <Waves flag={1} />}
+
+                <mesh
+                  ref={cube}
+                  geometry={new THREE.BoxGeometry(3, 3, 3)}
+                  material={new THREE.MeshStandardMaterial({ color: "red" })}
+                  position={[0, 5, 5]}
+                  onClick={handleClick}
+                />
               </>
             )}
           </group>
