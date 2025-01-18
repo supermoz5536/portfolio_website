@@ -1,9 +1,5 @@
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Waves } from "./Waves";
-import { ShowCaseLight } from "./Lights";
-import { Question } from "./Question";
-import ThreePlayer from "../../../store/three_player_store";
 import {
   ShowCaseContent0,
   ShowCaseContent3,
@@ -18,8 +14,6 @@ import { getGui } from "../util/lil-gui";
 type ShowCaseProps = {
   index: number;
 };
-
-let isFirstTry = true;
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const showcaseBodyMaterial = new THREE.MeshStandardMaterial({
