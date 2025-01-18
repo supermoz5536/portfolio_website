@@ -158,12 +158,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
         <>
           {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
-            <Fireflies index={index} />
             <ShowCase index={index} />
-
-            {/* Waves */}
-            {displayedGreenWave.includes(index) && <Waves flag={0} />}
-            {displayedBlueWave.includes(index) && <Waves flag={1} />}
 
             {/* Empty Content */}
             {displayedQuestion.includes(index) && <Question />}
@@ -171,11 +166,13 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (
               <>
-                {/* ShowCase */}
                 <ShowCaseLight shadowLevel={0} index={index} />
-
-                {/* Player Shadow with Shader */}
+                <Fireflies index={index} />
                 <PlayerShadow />
+
+                {/* Waves */}
+                {displayedGreenWave.includes(index) && <Waves flag={0} />}
+                {displayedBlueWave.includes(index) && <Waves flag={1} />}
               </>
             )}
           </group>

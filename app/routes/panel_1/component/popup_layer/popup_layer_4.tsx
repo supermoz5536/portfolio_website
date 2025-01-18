@@ -176,10 +176,14 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                   <AnimateIn>
                     <div
                       id="fade-in-bottom"
-                      className="inline-flex justify-center items-center  text-gray-50 text-1xl font-normal"
+                      className="inline-flex flex-col justify-center items-center  text-gray-50 text-1xl font-normal"
                     >
-                      -&nbsp;Try landscape mode!&nbsp;-&nbsp;
-                      <MdScreenRotation className="h-[20px] w-[20px]" />
+                      <p> -&nbsp;Try landscape mode!&nbsp;-&nbsp;</p>
+
+                      <p>
+                        <br />
+                      </p>
+                      <MdScreenRotation className="h-[50px] w-[50px]" />
                     </div>
                     <p>
                       <br />
