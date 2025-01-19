@@ -4,7 +4,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 type SystemStore = {
   isActivated: boolean;
   isPlayerFocused: boolean;
-  toggleIsActivated: () => void;
+  setIsActivated: (newState: boolean) => void;
   setIsPlayerFocus: (newState: boolean) => void;
 };
 
@@ -14,9 +14,9 @@ export const useSystemStore = create<SystemStore>()(
       isActivated: false,
       isPlayerFocused: true,
 
-      toggleIsActivated: () => {
+      setIsActivated: (newState: boolean) => {
         set((state: any) => {
-          return { isActivated: !state.isActivated };
+          return { isActivated: newState };
         });
       },
 

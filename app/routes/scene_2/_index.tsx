@@ -11,7 +11,7 @@ import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/three_player_store";
 
 export default function Scene2() {
-  const { isActivated, toggleIsActivated } = useSystemStore();
+  const { isActivated, setIsActivated } = useSystemStore();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [isFirstActivate, setIsFirstActivate] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
@@ -19,8 +19,13 @@ export default function Scene2() {
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
 
-  const handleButton = () => {
-    toggleIsActivated();
+  const activateOn = () => {
+    setIsActivated(true);
+    setIsPlayerFocus(true);
+  };
+
+  const activateOff = () => {
+    setIsActivated(false);
     setIsPlayerFocus(true);
   };
 
@@ -67,6 +72,12 @@ export default function Scene2() {
         }
       },
     );
+
+    /**
+     * Resize
+     */
+
+    window.addEventListener("resize", () => activateOff());
 
     return () => {
       unsubscribePlayer();
@@ -167,7 +178,7 @@ export default function Scene2() {
                   className={
                     "z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
                   }
-                  onClick={() => handleButton()}
+                  onClick={() => activateOn()}
                 >
                   <p id="fade-in-bottom" className="p-3">
                     Get Started!
@@ -254,7 +265,7 @@ export default function Scene2() {
                   <Button
                     id="svg"
                     className="absolute mt-5 mr-5 top-[5%] right-[5%]"
-                    onClick={() => handleButton()}
+                    onClick={() => activateOff()}
                   >
                     <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
                   </Button>
