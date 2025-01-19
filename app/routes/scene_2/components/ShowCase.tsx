@@ -56,6 +56,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
       position.x, // prettier-ignore
@@ -76,6 +77,17 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   );
 
   useEffect(() => {
+    /**
+     * Add Listener
+     */
+
+    const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
+      (state: any) => state.isPlayerFocused,
+      (isPlayerFocused) => {
+        if (isPlayerFocused == true) handleZoomOut();
+      },
+    );
+
     /**
      * Device Setup
      */
@@ -119,6 +131,9 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     // return () => {
     //   unsubscibePlayerPosition();
     // };
+    return () => {
+      unsubscribeIsPlayerFocused();
+    };
   }, []);
 
   useFrame((state, delta) => {
@@ -253,9 +268,9 @@ export function ShowCase({ position, index }: ShowCaseProps) {
         <group
           scale={1.1}
           onClick={handleZoomIn}
-          onDoubleClick={handleZoomOut}
+          // onDoubleClick={handleZoomOut}
           onPointerUp={handleZoomIn}
-          onContextMenu={handleZoomOut}
+          // onContextMenu={handleZoomOut}
         >
           {/* Bottom */}
           <mesh

@@ -4,6 +4,7 @@ import EntryPointThree from "./EntryPointThree";
 import { useStore } from "zustand";
 import { useSystemStore } from "~/store/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { LuChevronDown } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
@@ -16,11 +17,36 @@ export default function Scene2() {
   const [isMobile, setIsMobile] = useState(true);
   const [isGuidOn, setIsGuideOn] = useState(true);
   const [isGuidVisible, setIsGuideVisible] = useState(false);
+  const [isPlayerFocused, setIsPlayerFocused] = useState(true);
 
   const handleButton = () => {
     toggleIsActivated();
   };
 
+  const setIsPlayerFocus = useSystemStore(
+    (state: any) => state.setIsPlayerFocus,
+  );
+
+  useEffect(() => {
+    /**
+     * Add Listener
+     */
+
+    const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
+      (state: any) => state.isPlayerFocused,
+      (isPlayerFocused) => {
+        setIsPlayerFocused(isPlayerFocused);
+      },
+    );
+
+    return () => {
+      unsubscribeIsPlayerFocused();
+    };
+  }, []);
+
+  /**
+   * Activationに依存した処理
+   */
   useEffect(() => {
     if (isActivated) {
       // 初回アクティベーション時の遅延演出の表示
@@ -234,6 +260,14 @@ export default function Scene2() {
                     <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
                   </Button>
                 </AnimateIn>
+
+                {isPlayerFocused == false && (
+                  <Button onClick={() => setIsPlayerFocus(true)}>
+                    <div className="absolute flex justify-center items-center top-[80%] right-[50%] h-16 w-16 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-blue-600 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
+                      <LuChevronDown className="h-10 w-10 text-gray-700" />
+                    </div>
+                  </Button>
+                )}
               </>
             )}
           </>

@@ -5,6 +5,7 @@ type SystemStore = {
   isActivated: boolean;
   isPlayerFocused: boolean;
   toggleIsActivated: () => void;
+  setIsPlayerFocus: (newState: boolean) => void;
 };
 
 export const useSystemStore = create<SystemStore>()(
