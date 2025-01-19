@@ -10,8 +10,12 @@ import {
   ShowCaseContent11,
 } from "./ShowCaseContents";
 import { getGui } from "../util/lil-gui";
+import { useSystemStore } from "~/store/system_store";
+import { useFrame } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 
 type ShowCaseProps = {
+  position: THREE.Vector3;
   index: number;
 };
 
@@ -46,10 +50,41 @@ const showcaseComponents: any = {
   11: ShowCaseContent11,
 };
 
-export function ShowCase({ index }: ShowCaseProps) {
+export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
+  const state = useThree();
+
+  const [isZoomIn, setIsZoomIn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [lerpCamera, setLeapCamera] = useState(
+    new THREE.Vector3(
+      position.x, // prettier-ignore
+      position.y + 10,
+      position.z + 27,
+    ),
+  );
+  const [lerpCameraTarget, setLeapCameraTarget] = useState(
+    new THREE.Vector3(
+      position.x, // prettier-ignore
+      position.y,
+      position.z - 4.25,
+    ),
+  );
+
+  const setIsPlayerFocus = useSystemStore(
+    (state: any) => state.setIsPlayerFocus,
+  );
 
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     /**
      * Texture Setup
      */
@@ -86,11 +121,142 @@ export function ShowCase({ index }: ShowCaseProps) {
     // };
   }, []);
 
+  useFrame((state, delta) => {
+    /**
+     * Desktop
+     */
+
+    if (isZoomIn && !isMobile) {
+      /**
+       * Position Camera
+       */
+      const endPositionCamera = new THREE.Vector3(
+        position.x, // prettier-ignore
+        position.y + 5,
+        position.z + 4,
+      );
+
+      lerpCamera.lerp(endPositionCamera, 5 * delta);
+
+      state.camera.position.set(
+        lerpCamera.x, // prettier-ignore
+        lerpCamera.y,
+        lerpCamera.z,
+      );
+
+      /**
+       * Position Camera Target
+       */
+
+      const endCameratarget = new THREE.Vector3(
+        position.x, // prettier-ignore
+        position.y + 1,
+        position.z - 4,
+      );
+
+      lerpCameraTarget.lerp(endCameratarget, 5 * delta);
+
+      state.camera.lookAt(
+        lerpCameraTarget.x, // prettier-ignore
+        lerpCameraTarget.y,
+        lerpCameraTarget.z,
+      );
+    }
+
+    /**
+     * Mobile
+     */
+
+    if (isZoomIn && isMobile) {
+      /**
+       * Position Camera
+       */
+      const endPositionCamera = new THREE.Vector3(
+        position.x - 0, // prettier-ignore
+        position.y + 6.5,
+        position.z + 8.5,
+      );
+
+      lerpCamera.lerp(endPositionCamera, 5 * delta);
+
+      state.camera.position.set(
+        lerpCamera.x, // prettier-ignore
+        lerpCamera.y,
+        lerpCamera.z,
+      );
+
+      /**
+       * Position Camera Target
+       */
+
+      const endCameratarget = new THREE.Vector3(
+        position.x + 0, // prettier-ignore
+        position.y + 1,
+        position.z - 2.5,
+      );
+
+      lerpCameraTarget.lerp(endCameratarget, 5 * delta);
+
+      state.camera.lookAt(
+        lerpCameraTarget.x, // prettier-ignore
+        lerpCameraTarget.y,
+        lerpCameraTarget.z,
+      );
+    }
+  });
+
+  const handleZoomIn = () => {
+    if (isZoomIn == false) {
+      /**
+       * Update to Current Camera Position
+       */
+
+      setLeapCamera(state.camera.position.clone());
+
+      /**
+       * Update to Current Camera Target Position
+       */
+
+      const cameraTargetPosition = state.camera.position.clone();
+
+      // Playerの位置を逆算
+      cameraTargetPosition.y -= 10.65;
+      cameraTargetPosition.z -= 20.5;
+
+      // ターゲット補正
+      cameraTargetPosition.z -= 4.25;
+
+      setLeapCameraTarget(cameraTargetPosition);
+
+      setIsPlayerFocus(false);
+      setIsZoomIn(true);
+    }
+  };
+
+  const handleZoomOut = () => {
+    setIsZoomIn(false);
+    setIsPlayerFocus(true);
+
+    setLeapCamera(
+      new THREE.Vector3(
+        position.x, // prettier-ignore
+        position.y + 10,
+        position.z + 27,
+      ),
+    );
+  };
+
   return (
     <>
       <>
         {/* ShowCase */}
-        <group scale={1.1}>
+        <group
+          scale={1.1}
+          onClick={handleZoomIn}
+          onDoubleClick={handleZoomOut}
+          onPointerUp={handleZoomIn}
+          onContextMenu={handleZoomOut}
+        >
           {/* Bottom */}
           <mesh
             geometry={boxGeometry}

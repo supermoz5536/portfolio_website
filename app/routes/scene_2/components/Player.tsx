@@ -1,29 +1,33 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRapier, RigidBody } from "@react-three/rapier";
+import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import ThreePlayerStore from "../../../store/three_player_store";
 import ThreeInterfaceStore from "../../../store/three_interface_store";
 import { useSystemStore } from "../../../store/system_store";
+import { useThree } from "@react-three/fiber";
 
 export function Player() {
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
 
-  const { rapier, world } = useRapier();
-
   const [smoothCameraPosition, setSmoothCameraPosition] = useState(
     new THREE.Vector3(5, 5, 5),
   );
-  const [smoothCameraTarget] = useState(new THREE.Vector3());
+  const [smoothCameraTarget, setSmoothCameraTarget] = useState(
+    new THREE.Vector3(),
+  );
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
   const [currentFloor, setCurrentFloor] = useState(0);
   const [isActicated, setIsActicated] = useState(false);
+  const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
+
+  const state = useThree();
 
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
@@ -42,21 +46,32 @@ export function Player() {
         if ([7, 9].includes(value)) setTargetOpacity(0.75);
         if ([10].includes(value)) setTargetOpacity(0.5);
         if ([11].includes(value)) setTargetOpacity(0.05);
-
-        console.log(value);
       },
     );
 
     // Setup When Entrying into Three
-    const unsubscribeSystemStore = useSystemStore.subscribe(
+    const unsubscribeIsActivated = useSystemStore.subscribe(
       (state: any) => state.isActivated,
-      (value) => {
+      (isActivated) => {
         rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
         setSmoothCameraPosition(new THREE.Vector3(100, 100, -20));
-        setIsActicated(value);
+        setIsActicated(isActivated);
+      },
+    );
+
+    // Control Camera Focus
+    const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
+      (state: any) => state.isPlayerFocused,
+      (isPlayerFocused) => {
+        setIsPlayerFocused(isPlayerFocused);
+
+        if (isPlayerFocused) {
+          setSmoothCameraPosition(state.camera.position.clone());
+          setSmoothCameraTarget(state.camera.position.clone());
+        }
       },
     );
 
@@ -74,7 +89,8 @@ export function Player() {
 
     return () => {
       unsubscribePlayerPosition();
-      unsubscribeSystemStore();
+      unsubscribeIsActivated();
+      unsubscribeIsPlayerFocused();
       unsubscribeMoveDelta();
     };
   }, []);
@@ -158,21 +174,23 @@ export function Player() {
      * Camera Controls
      */
 
-    const cameraPosition = new THREE.Vector3();
-    cameraPosition.copy(playerPosition);
-    cameraPosition.z += 20.5;
-    cameraPosition.y += 10.65;
+    if (isPlayerFocused) {
+      const cameraPosition = new THREE.Vector3();
+      cameraPosition.copy(playerPosition);
+      cameraPosition.y += 10.65;
+      cameraPosition.z += 20.5;
 
-    const cameraTarget = new THREE.Vector3();
-    cameraTarget.copy(playerPosition);
+      const cameraTarget = new THREE.Vector3();
+      cameraTarget.copy(playerPosition);
 
-    cameraTarget.z -= 4.25;
+      cameraTarget.z -= 4.25;
 
-    smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-    smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+      smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+      smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    state.camera.position.copy(smoothCameraPosition);
-    state.camera.lookAt(smoothCameraTarget);
+      state.camera.position.copy(smoothCameraPosition);
+      state.camera.lookAt(smoothCameraTarget);
+    }
 
     /**
      * Shadow Control

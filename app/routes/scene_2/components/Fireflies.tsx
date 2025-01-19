@@ -18,7 +18,7 @@ export function Fireflies({ index }: FirefliesProps) {
    * FireLies Value
    */
   const spaceSize = 24;
-  const firefriesCount = 15;
+  const firefriesCount = 20;
   const positionArray = new Float32Array(firefriesCount * 3); // * 3: xyzで1組
   const aScaleArray = new Float32Array(firefriesCount);
   const aRandomArray = new Float32Array(firefriesCount);

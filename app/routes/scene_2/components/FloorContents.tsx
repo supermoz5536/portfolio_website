@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
-import { RigidBody } from "@react-three/rapier";
+import { RigidBody, vec3 } from "@react-three/rapier";
 import { Fireflies } from "./Fireflies";
 import ThreePlayer from "../../../store/three_player_store";
 import { ShowCaseLight } from "./Lights";
@@ -41,8 +41,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
   const groupRef = useRef<any>();
 
-  const cube = useRef<any>();
-
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloor, setCurrentFloor] = useState(0);
 
@@ -62,7 +60,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
      * Listen Current Floor
      */
 
-    const unsubscibePlayer = ThreePlayer.subscribe(
+    const unsubscribePlayer = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
 
       (currentFloorNum) => {
@@ -71,7 +69,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     );
 
     return () => {
-      unsubscibePlayer();
+      unsubscribePlayer();
     };
   }, []);
 
@@ -94,11 +92,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       );
     }
   });
-
-  const handleClick = (event: any) => {
-    if (cube) {
-    }
-  };
 
   // function setPlayerShadowClipping(currentFloor: number): void {
   //   let clippingPlanes = [];
@@ -165,7 +158,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
         <>
           {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
-            <ShowCase index={index} />
+            <ShowCase position={adjustedPosition} index={index} />
 
             {/* Empty Content */}
             {displayedQuestion.includes(index) && <Question />}
@@ -180,14 +173,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* Waves */}
                 {displayedGreenWave.includes(index) && <Waves flag={0} />}
                 {displayedBlueWave.includes(index) && <Waves flag={1} />}
-
-                <mesh
-                  ref={cube}
-                  geometry={new THREE.BoxGeometry(3, 3, 3)}
-                  material={new THREE.MeshStandardMaterial({ color: "red" })}
-                  position={[0, 5, 5]}
-                  onClick={handleClick}
-                />
               </>
             )}
           </group>
