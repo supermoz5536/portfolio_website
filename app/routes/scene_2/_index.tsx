@@ -29,8 +29,17 @@ export default function Scene2() {
   );
 
   useEffect(() => {
+    /*
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     /**
-     * Add Listener
+     * ZoomOut Control
      */
 
     const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
@@ -40,14 +49,35 @@ export default function Scene2() {
       },
     );
 
+    /**
+     * Guide Control
+     */
+
+    // 入力を確認して非表示
+    const unsubscribePlayer = ThreePlayer.subscribe(
+      (state: any) => state.isPlayerMoved,
+      (value: any) => {
+        if (value) {
+          // フェードアウト
+          setIsGuideVisible(false);
+          //フェードアウト終了後にアンマウント
+          setTimeout(() => {
+            setIsGuideOn(false);
+          }, 500);
+        }
+      },
+    );
+
     return () => {
+      unsubscribePlayer();
       unsubscribeIsPlayerFocused();
     };
   }, []);
 
   /**
-   * Activationに依存した処理
+   * Control Activation
    */
+
   useEffect(() => {
     if (isActivated) {
       // 初回アクティベーション時の遅延演出の表示
@@ -59,7 +89,7 @@ export default function Scene2() {
       }
 
       /**
-       * Scroll Setup
+       * Setup Scroll
        */
 
       // 初回のマウント時はスキップ（スクロール補正が必要ない）
@@ -88,39 +118,7 @@ export default function Scene2() {
       }
     }
 
-    /**
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
-
-    /**
-     * Control Guide
-     */
-
-    // 入力を確認して非表示
-    const unsubscribePlayer = ThreePlayer.subscribe(
-      (state: any) => state.isPlayerMoved,
-      (value: any) => {
-        if (value) {
-          // フェードアウト
-          setIsGuideVisible(false);
-          //フェードアウト終了後にアンマウント
-          setTimeout(() => {
-            setIsGuideOn(false);
-          }, 500);
-        }
-      },
-    );
-
     setIsFirstMount(false);
-
-    return () => {
-      unsubscribePlayer();
-    };
   }, [isActivated]);
 
   function fixScroll() {

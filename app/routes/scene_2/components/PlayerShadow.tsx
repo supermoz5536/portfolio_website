@@ -5,7 +5,11 @@ import * as THREE from "three";
 import ThreePlayer from "../../../store/three_player_store";
 import { useFrame } from "@react-three/fiber";
 
-export function PlayerShadow() {
+type PlayerShadowProps = {
+  index: number;
+};
+
+export function PlayerShadow({ index }: PlayerShadowProps) {
   const playerShadowRef = useRef<any>();
 
   const [playerPosition, setPlayerPosition] = 

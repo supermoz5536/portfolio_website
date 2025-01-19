@@ -21,18 +21,6 @@ const transparentMaterial = new THREE.MeshStandardMaterial({
   depthWrite: false,
 });
 
-// const playerShadowMaterial = new THREE.MeshStandardMaterial({
-//   color: "black",
-//   transparent: true,
-//   opacity: 1,
-//   clippingPlanes: [
-//     new THREE.Plane(new THREE.Vector3(0, 0, 1), 12.1),
-//     new THREE.Plane(new THREE.Vector3(0, 0, -1), 12.1),
-//     new THREE.Plane(new THREE.Vector3(1, 0, 0), 12.1),
-//     new THREE.Plane(new THREE.Vector3(-1, 0, 0), 12.1),
-//   ],
-// });
-
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
@@ -93,65 +81,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     }
   });
 
-  // function setPlayerShadowClipping(currentFloor: number): void {
-  //   let clippingPlanes = [];
-  //   let rowMultiply = 0;
-  //   let colMultiply = 0;
-
-  //   const row0 = [0, 1, 2];
-  //   const row1 = [3, 4, 5];
-  //   const row2 = [6, 7, 8];
-  //   const row3 = [9, 10, 11];
-
-  //   const col0 = [0, 3, 6, 9];
-  //   const col1 = [1, 4, 7, 10];
-  //   const col2 = [2, 5, 8, 11];
-
-  //   if (row0.includes(currentFloor)) rowMultiply = 0;
-  //   if (row1.includes(currentFloor)) rowMultiply = 1;
-  //   if (row2.includes(currentFloor)) rowMultiply = 2;
-  //   if (row3.includes(currentFloor)) rowMultiply = 3;
-
-  //   if (col0.includes(currentFloor)) colMultiply = 0;
-  //   if (col1.includes(currentFloor)) colMultiply = 1;
-  //   if (col2.includes(currentFloor)) colMultiply = 2;
-
-  //   // Forword
-  //   clippingPlanes.push(
-  //     new THREE.Plane(
-  //       new THREE.Vector3(0, 0, 1),
-  //       12.1 + 64 * rowMultiply, // prettier-ignore
-  //     ),
-  //   );
-
-  //   // Backword
-  //   clippingPlanes.push(
-  //     new THREE.Plane(
-  //       new THREE.Vector3(0, 0, -1),
-  //       - ((12.1 + 64 * rowMultiply) - 24), // prettier-ignore
-  //     ),
-  //   );
-
-  //   // Left
-  //   clippingPlanes.push(
-  //     new THREE.Plane(
-  //       new THREE.Vector3(1, 0, 0),
-  //       12.1 + 64 * colMultiply, // prettier-ignore
-  //     ),
-  //   );
-
-  //   // Right
-  //   clippingPlanes.push(
-  //     new THREE.Plane(
-  //       new THREE.Vector3(-1, 0, 0),
-  //       - ((12.1 + 64 * colMultiply) - 24), // prettier-ignore
-  //     ),
-  //   );
-
-  //   playerShadowRef.current.material.clippingPlanes = clippingPlanes;
-  //   playerShadowRef.current.material.needsUpdate = true;
-  // }
-
   return (
     <>
       {isPositionReady && (
@@ -168,7 +97,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>
                 <ShowCaseLight shadowLevel={0} index={index} />
                 <Fireflies index={index} />
-                <PlayerShadow />
+                <PlayerShadow index={index} />
 
                 {/* Waves */}
                 {displayedGreenWave.includes(index) && <Waves flag={0} />}
@@ -196,3 +125,74 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     </>
   );
 }
+
+// const playerShadowMaterial = new THREE.MeshStandardMaterial({
+//   color: "black",
+//   transparent: true,
+//   opacity: 1,
+//   clippingPlanes: [
+//     new THREE.Plane(new THREE.Vector3(0, 0, 1), 12.1),
+//     new THREE.Plane(new THREE.Vector3(0, 0, -1), 12.1),
+//     new THREE.Plane(new THREE.Vector3(1, 0, 0), 12.1),
+//     new THREE.Plane(new THREE.Vector3(-1, 0, 0), 12.1),
+//   ],
+// });
+
+// function setPlayerShadowClipping(currentFloor: number): void {
+//   let clippingPlanes = [];
+//   let rowMultiply = 0;
+//   let colMultiply = 0;
+
+//   const row0 = [0, 1, 2];
+//   const row1 = [3, 4, 5];
+//   const row2 = [6, 7, 8];
+//   const row3 = [9, 10, 11];
+
+//   const col0 = [0, 3, 6, 9];
+//   const col1 = [1, 4, 7, 10];
+//   const col2 = [2, 5, 8, 11];
+
+//   if (row0.includes(currentFloor)) rowMultiply = 0;
+//   if (row1.includes(currentFloor)) rowMultiply = 1;
+//   if (row2.includes(currentFloor)) rowMultiply = 2;
+//   if (row3.includes(currentFloor)) rowMultiply = 3;
+
+//   if (col0.includes(currentFloor)) colMultiply = 0;
+//   if (col1.includes(currentFloor)) colMultiply = 1;
+//   if (col2.includes(currentFloor)) colMultiply = 2;
+
+//   // Forword
+//   clippingPlanes.push(
+//     new THREE.Plane(
+//       new THREE.Vector3(0, 0, 1),
+//       12.1 + 64 * rowMultiply, // prettier-ignore
+//     ),
+//   );
+
+//   // Backword
+//   clippingPlanes.push(
+//     new THREE.Plane(
+//       new THREE.Vector3(0, 0, -1),
+//       - ((12.1 + 64 * rowMultiply) - 24), // prettier-ignore
+//     ),
+//   );
+
+//   // Left
+//   clippingPlanes.push(
+//     new THREE.Plane(
+//       new THREE.Vector3(1, 0, 0),
+//       12.1 + 64 * colMultiply, // prettier-ignore
+//     ),
+//   );
+
+//   // Right
+//   clippingPlanes.push(
+//     new THREE.Plane(
+//       new THREE.Vector3(-1, 0, 0),
+//       - ((12.1 + 64 * colMultiply) - 24), // prettier-ignore
+//     ),
+//   );
+
+//   playerShadowRef.current.material.clippingPlanes = clippingPlanes;
+//   playerShadowRef.current.material.needsUpdate = true;
+// }
