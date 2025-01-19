@@ -1,3 +1,4 @@
+uniform float uShadowLevel;
 uniform vec3 uPlayerPosition; 
 uniform mat4 uModelMatrix;
 
@@ -33,7 +34,7 @@ void main () {
     // 取得した単位ベクトルにoffset値を与えて、
     // playerPositionUv に合成
     vec2 normalDirection = normalize(playerPositionUv - floorCenter);
-    float offset = 0.01;
+    float offset = 0.015;
     vec2 shadowCenter = playerPositionUv + normalDirection * offset; 
     
     
@@ -49,7 +50,7 @@ void main () {
 
     // 変化(t)に合わせて、opacityの値を減少させ
     // 放射状の影を再現
-    float baseOopacity = mix(0.9, 0.0, t1);
+    float baseOopacity = mix(1.0, 0.0, t1);
 
     if (distanceToShadowCenter > 0.05) {
         discard;
@@ -66,6 +67,6 @@ void main () {
 
     float opacityStrength = mix(baseOopacity, 0.0, t2);
 
-    gl_FragColor = vec4(0.0, 0.0, 0.0, opacityStrength);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, opacityStrength * uShadowLevel * 1.3);
 
 }

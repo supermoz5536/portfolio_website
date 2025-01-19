@@ -1,6 +1,7 @@
-uniform vec3 uPlayerPosition; 
-uniform mat4 uModelMatrix;
 uniform float uTime;
+uniform float uShadowLevel;
+uniform mat4 uModelMatrix;
+uniform vec3 uPlayerPosition; 
 
 varying vec2 vUv;
 
@@ -191,7 +192,7 @@ void main () {
         colorStrengthMixed, 
         colorStrengthMixed, 
         colorStrengthMixed, 
-        alpha
+        alpha * uShadowLevel
         );
 
 }
