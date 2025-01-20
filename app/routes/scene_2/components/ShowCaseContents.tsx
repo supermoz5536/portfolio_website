@@ -52,8 +52,15 @@ const outerRedMaterial = new THREE.MeshStandardMaterial({
  * Field
  */
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
-const externalFloorMaterial = new THREE.MeshStandardMaterial({
+const redFieldMaterial = new THREE.MeshStandardMaterial({
   color: "red",
+  transparent: true,
+  opacity: 0.4,
+  side: THREE.DoubleSide,
+  depthWrite: false,
+});
+const greenFieldMaterial = new THREE.MeshStandardMaterial({
+  color: "green",
   transparent: true,
   opacity: 0.4,
   side: THREE.DoubleSide,
@@ -883,7 +890,7 @@ export function ShowCaseContent0() {
         {/* Filed Layer */}
         <mesh
           geometry={planeGeometry}
-          material={externalFloorMaterial}
+          material={redFieldMaterial}
           position={[0, 1.5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[3, 3, 1]}
@@ -967,7 +974,7 @@ export function ShowCaseContent3() {
         {/* Filed Layer */}
         <mesh
           geometry={planeGeometry}
-          material={externalFloorMaterial}
+          material={redFieldMaterial}
           position={[0, 1.5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[3, 3, 1]}
@@ -1057,7 +1064,7 @@ export function ShowCaseContent6() {
         {/* Filed Layer */}
         <mesh
           geometry={planeGeometry}
-          material={externalFloorMaterial}
+          material={redFieldMaterial}
           position={[0, 1.5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[3, 3, 1]}
@@ -1268,7 +1275,18 @@ export function ShowCaseContent9() {
 }
 
 export function ShowCaseContent10() {
-  return null;
+  return (
+    <group position={[0, 0.5, 0]} scale={1.1}>
+      {/* Filed Layer */}
+      <mesh
+        geometry={planeGeometry}
+        material={greenFieldMaterial}
+        position={[0, 1.5, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        scale={[3, 3, 1]}
+      />
+    </group>
+  );
 }
 
 export function ShowCaseContent11() {

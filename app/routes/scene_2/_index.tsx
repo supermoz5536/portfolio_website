@@ -77,7 +77,9 @@ export default function Scene2() {
      * Resize
      */
 
-    window.addEventListener("resize", () => activateOff());
+    window.addEventListener("resize", () => {
+      activateOff();
+    });
 
     return () => {
       unsubscribePlayer();
@@ -273,7 +275,7 @@ export default function Scene2() {
 
                 {isPlayerFocused == false && (
                   <Button onClick={() => setIsPlayerFocus(true)}>
-                    <div className="absolute flex justify-center items-center top-[80%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
+                    <div className="absolute flex justify-center items-center top-[90%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
                       <LuChevronDown className="h-10 w-10 text-gray-700 bounce-animation" />
                     </div>
                   </Button>
