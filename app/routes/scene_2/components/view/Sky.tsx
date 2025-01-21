@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import backGroundVertex from "./Materials/shaders/skyBackground/vertex.glsl";
 import backGroundFragment from "./Materials/shaders/skyBackground/fragment.glsl";
 import { SkySphereMaterial } from "./Materials/SkySphereMaterial";
+import { getGui } from "../../util/lil-gui";
 
 type BackGroundProps = {
   texture: any;
@@ -12,6 +13,7 @@ type BackGroundProps = {
 export function useCustomRender() {
   const state = useThree();
   const customRender = useRef<any>({});
+  const sphere = Sphere();
 
   useEffect(() => {
     /**
@@ -30,10 +32,12 @@ export function useCustomRender() {
     );
     customRender.current.texture = customRender.current.renderTarget.texture;
 
-    customRender.current.scene.add(Sphere());
+    customRender.current.scene.add(sphere);
   }, []);
 
   useFrame(() => {
+    // cunstomRenderを同じ視点で描画させるため、通常カメラと回転角を同期
+    customRender.current.camera.quaternion.copy(state.camera.quaternion);
     // レンダーターゲットを解像度を下げた customRender に設定
     state.gl.setRenderTarget(customRender.current.renderTarget);
     // レンダーのセットアップ
@@ -49,15 +53,19 @@ export function BackGround({ texture }: BackGroundProps) {
   const backGroundRef = useRef<any>();
   const materialRef = useRef<any>(
     new THREE.ShaderMaterial({
-      vertexShader: backGroundVertex,
-      fragmentShader: backGroundFragment,
       uniforms: {
         uTexture: { value: null },
       },
+      vertexShader: backGroundVertex,
+      fragmentShader: backGroundFragment,
+      depthTest: false,
+      depthWrite: false,
     }),
   );
 
   const [isMounted, setIsMounted] = useState(false);
+
+  const state = useThree();
 
   useEffect(() => {
     setIsMounted(true);
@@ -66,15 +74,26 @@ export function BackGround({ texture }: BackGroundProps) {
     }
   }, [texture]);
 
+  useFrame(() => {
+    // Set Angle
+    backGroundRef.current.quaternion.copy(state.camera.quaternion);
+
+    // Set Position
+    const cameraDirection = state.camera.getWorldDirection(new THREE.Vector3());
+    const cameraNewPosition = state.camera.position.clone();
+    cameraNewPosition.add(cameraDirection.multiplyScalar(0.15)); // prettier-ignore
+
+    backGroundRef.current.position.copy(cameraNewPosition);
+  });
+
   return (
     <>
       {isMounted && (
         <mesh
           ref={backGroundRef}
-          geometry={new THREE.PlaneGeometry(1, 1)}
+          geometry={new THREE.PlaneGeometry(1.0, 1.0)}
           material={materialRef.current}
-          position={[0, 5, 0]}
-          scale={10}
+          frustumCulled={false}
         />
       )}
     </>
@@ -83,9 +102,29 @@ export function BackGround({ texture }: BackGroundProps) {
 
 export function Sphere() {
   const geometry = new THREE.SphereGeometry(100, 128, 64);
+
   const material = SkySphereMaterial();
+  material.uniforms.uColorDayCycleLow.value.set("#f0fff9");
+  material.uniforms.uColorDayCycleHigh.value.set("#2e89ff");
+  material.uniforms.uColorNightLow.value.set("#004794");
+  material.uniforms.uColorNightHigh.value.set("#001624");
+  material.uniforms.uDayCycleProgress.value = 1.0;
+  material.side = THREE.BackSide;
 
   const mesh = new THREE.Mesh(geometry, material);
+
+  const gui = getGui();
+
+  useEffect(() => {
+    /**
+     * lil-gui
+     */
+    if (gui) {
+      gui
+        .add(material.uniforms.uDayCycleProgress, "value", 0, 1, 0.001)
+        .name("uDayCycleProgress");
+    }
+  }, []);
 
   return mesh;
 }

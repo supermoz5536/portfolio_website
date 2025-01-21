@@ -13,6 +13,7 @@ const firefliesGeometry = new THREE.BufferGeometry();
 
 export function Fireflies({ index }: FirefliesProps) {
   const firefliesRef = useRef<any>();
+  const [isMounted, setIsMounted] = useState(false);
 
   /**
    * FireLies Value

@@ -15,7 +15,7 @@ let environmentLightsFolder: GUI;
 
 let wavesFolder: GUI;
 
-let isInstantiated: boolean = true;
+let isInstantiated: boolean = false;
 
 export const getGui = (): GUI | null => {
   // SSR: null を出力
@@ -37,8 +37,8 @@ export const getGui = (): GUI | null => {
 
   // gui.hide();
   // gui.close();
-  // return gui;
-  return null;
+  return gui;
+  // return null;
 };
 
 export const getFirefliesFolder = (): GUI | null => {
@@ -46,9 +46,9 @@ export const getFirefliesFolder = (): GUI | null => {
     getGui();
   }
 
-  // firefliesFolder.close();
-  // return firefliesFolder;
-  return null;
+  firefliesFolder.close();
+  return firefliesFolder;
+  // return null;
 };
 
 export const getShowcaseLightsFolder = (): GUI | null => {
@@ -56,10 +56,10 @@ export const getShowcaseLightsFolder = (): GUI | null => {
     getGui();
   }
 
-  // lightsFolder.close();
-  // showcaseLightsFolder.close();
-  // return showcaseLightsFolder;
-  return null;
+  lightsFolder.close();
+  showcaseLightsFolder.close();
+  return showcaseLightsFolder;
+  // return null;
 };
 
 export const getEnvironmentLightsFolder = (): GUI | null => {
@@ -67,9 +67,9 @@ export const getEnvironmentLightsFolder = (): GUI | null => {
     getGui();
   }
 
-  // environmentLightsFolder.close();
-  // return environmentLightsFolder;
-  return null;
+  environmentLightsFolder.close();
+  return environmentLightsFolder;
+  // return null;
 };
 
 export const getWavesFolder = (): GUI | null => {
@@ -77,7 +77,7 @@ export const getWavesFolder = (): GUI | null => {
     getGui();
   }
 
-  // wavesFolder.close();
-  // return wavesFolder;
-  return null;
+  wavesFolder.close();
+  return wavesFolder;
+  // return null;
 };
