@@ -27,7 +27,6 @@ const EntryPointThree = () => {
           }}
           shadows
           gl={{ localClippingEnabled: true }}
-          // Canvas の呼び出し時に
           // PerspectiveCamera が設定可能
           camera={{
             // Floor[0]のShowCaseのアップ

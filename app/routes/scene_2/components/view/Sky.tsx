@@ -20,7 +20,17 @@ export function useCustomRender() {
      * Setup Custom Render
      */
     customRender.current.scene = new THREE.Scene();
-    customRender.current.camera = state.camera.clone();
+    customRender.current.camera = new THREE.OrthographicCamera(
+      -1, // left
+      1, // right
+      1, // top
+      -1, // bottom
+      0.1, // near
+      4000, // far
+    );
+    // customRender.current.camera.position.copy(state.camera.position);
+    customRender.current.camera.quaternion.copy(state.camera.quaternion);
+
     customRender.current.resolutionRatio = 0.1;
     customRender.current.renderTarget = new THREE.RenderTarget(
       window.innerWidth * customRender.current.resolutionRatio,
@@ -49,7 +59,7 @@ export function useCustomRender() {
   return customRender.current;
 }
 
-export function BackGround({ texture }: BackGroundProps) {
+export function Background({ texture }: BackGroundProps) {
   const backGroundRef = useRef<any>();
   const materialRef = useRef<any>(
     new THREE.ShaderMaterial({
@@ -58,8 +68,8 @@ export function BackGround({ texture }: BackGroundProps) {
       },
       vertexShader: backGroundVertex,
       fragmentShader: backGroundFragment,
-      depthTest: false,
-      depthWrite: false,
+      depthWrite: false, // 深度情報を保存しない（比較対象にならない）
+      depthTest: false, // 他の obj との深度値の比較を行わない
     }),
   );
 
@@ -75,15 +85,35 @@ export function BackGround({ texture }: BackGroundProps) {
   }, [texture]);
 
   useFrame(() => {
-    // Set Angle
-    backGroundRef.current.quaternion.copy(state.camera.quaternion);
+    // パースペクティブカメラかどうかチェック
+    if (
+      state.camera instanceof THREE.PerspectiveCamera &&
+      backGroundRef.current
+    ) {
+      // 三角関数で計算するためにfovを度数からラジアンに変換
+      const fovInRadian = (state.camera.fov * Math.PI) / 180;
+      const offset = 0.15;
 
-    // Set Position
-    const cameraDirection = state.camera.getWorldDirection(new THREE.Vector3());
-    const cameraNewPosition = state.camera.position.clone();
-    cameraNewPosition.add(cameraDirection.multiplyScalar(0.15)); // prettier-ignore
+      // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
+      const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ
+      const planeWidth = planeHeight * state.camera.aspect;
 
-    backGroundRef.current.position.copy(cameraNewPosition);
+      // PlaneGeometry(1,1) を基準に、画面サイズに一致するよう調整
+      backGroundRef.current.scale.set(planeWidth, planeHeight, 1);
+
+      // Plane をカメラ前方のオフセット後の位置に移動
+      backGroundRef.current.position.copy(state.camera.position);
+      const normalizedDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
+        state.camera.quaternion,
+      );
+      backGroundRef.current.position.addScaledVector(
+        normalizedDirection,
+        offset,
+      );
+
+      // カメラの向きに合わせて回転を同期
+      backGroundRef.current.quaternion.copy(state.camera.quaternion);
+    }
   });
 
   return (
@@ -91,9 +121,14 @@ export function BackGround({ texture }: BackGroundProps) {
       {isMounted && (
         <mesh
           ref={backGroundRef}
-          geometry={new THREE.PlaneGeometry(1.0, 1.0)}
+          geometry={new THREE.PlaneGeometry(1, 1)}
           material={materialRef.current}
           frustumCulled={false}
+          // depthWrite と　depthTest が両方 false なので
+          // 奥行きという基準がなくなり、完全に配置順によってのみ前後関係が決定され
+          // 配置された瞬間に1番手前に描画されるので
+          // 背景ば一番最初に配置されるよう順序指定する必要がある
+          renderOrder={-1}
         />
       )}
     </>
@@ -101,14 +136,14 @@ export function BackGround({ texture }: BackGroundProps) {
 }
 
 export function Sphere() {
-  const geometry = new THREE.SphereGeometry(100, 128, 64);
+  const geometry = new THREE.SphereGeometry(3, 128, 64);
 
   const material = SkySphereMaterial();
   material.uniforms.uColorDayCycleLow.value.set("#f0fff9");
   material.uniforms.uColorDayCycleHigh.value.set("#2e89ff");
   material.uniforms.uColorNightLow.value.set("#004794");
   material.uniforms.uColorNightHigh.value.set("#001624");
-  material.uniforms.uDayCycleProgress.value = 1.0;
+  material.uniforms.uDayCycleProgress.value = 0.533;
   material.side = THREE.BackSide;
 
   const mesh = new THREE.Mesh(geometry, material);
@@ -139,7 +174,7 @@ export function Sky() {
 
   return (
     <>
-      <BackGround texture={bgTexture} />
+      <Background texture={bgTexture} />
     </>
   );
 }

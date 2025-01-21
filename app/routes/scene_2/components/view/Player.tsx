@@ -177,8 +177,8 @@ export function Player() {
     if (isPlayerFocused) {
       const cameraPosition = new THREE.Vector3();
       cameraPosition.copy(playerPosition);
-      cameraPosition.y += 10.65;
-      cameraPosition.z += 20.5;
+      cameraPosition.y += 5.65;
+      cameraPosition.z += 15.5;
 
       const cameraTarget = new THREE.Vector3();
       cameraTarget.copy(playerPosition);
