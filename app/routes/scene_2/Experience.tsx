@@ -1,10 +1,9 @@
 import { OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { Player } from "./components/Player.js";
-import { Floors } from "./components/Floor.js";
-import * as THREE from "three";
-import { Waves } from "./components/Waves.js";
-import { EnvironmentLights } from "./components/Lights.js";
+import { Player } from "./Components/view/Player";
+import { Floors } from "./Components/view/Floor.js";
+import { EnvironmentLights } from "./Components/view/Lights.js";
+import { Sky } from "./Components/view/Sky.js";
 
 export default function Experience() {
   return (
@@ -22,6 +21,7 @@ export default function Experience() {
         <Player />
         <Floors />
       </Physics>
+      <Sky />
     </>
   );
 }

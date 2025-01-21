@@ -1,9 +1,9 @@
-import playerShadowVertexShader from "../shaders/playerShadow/vertex.glsl";
-import playerShadowFragmentShader1 from "../shaders/playerShadow/fragment1.glsl";
-import playerShadowFragmentShader2 from "../shaders/playerShadow/fragment2.glsl";
+import playerShadowVertexShader from "./Materials/shaders/playerShadow/vertex.glsl";
+import playerShadowFragmentShader1 from "./Materials/shaders/playerShadow/fragment1.glsl";
+import playerShadowFragmentShader2 from "./Materials/shaders/playerShadow/fragment2.glsl";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import ThreePlayer from "../../../store/three_player_store";
+import ThreePlayer from "../../../../store/three_player_store";
 import { useFrame } from "@react-three/fiber";
 
 type PlayerShadowProps = {

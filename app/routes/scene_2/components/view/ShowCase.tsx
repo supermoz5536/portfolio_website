@@ -9,7 +9,7 @@ import {
   ShowCaseContent10,
   ShowCaseContent11,
 } from "./ShowCaseContents";
-import { getGui } from "../util/lil-gui";
+import { getGui } from "../../util/lil-gui";
 import { useSystemStore } from "~/store/system_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";

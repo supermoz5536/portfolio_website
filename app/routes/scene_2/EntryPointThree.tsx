@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import Experience from "./Experience";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
-import { MovementPad } from "./components/Interface";
+import { MovementPad } from "./Components/view/Interface";
 import Index from "../_index";
 
 const EntryPointThree = () => {
