@@ -174,23 +174,24 @@ export function Player() {
      * Camera Controls
      */
 
-    if (isPlayerFocused) {
-      const cameraPosition = new THREE.Vector3();
-      cameraPosition.copy(playerPosition);
-      cameraPosition.y += 5.65;
-      cameraPosition.z += 15.5;
+    // if (isPlayerFocused) {
+    //   //======== Showcase ZoomIn 時の補正値の同期が必要　========//
+    //   const cameraPosition = new THREE.Vector3();
+    //   cameraPosition.copy(playerPosition);
+    //   cameraPosition.y += 9.65; // 同期が必要
+    //   cameraPosition.z += 20.5; // 同期が必要
 
-      const cameraTarget = new THREE.Vector3();
-      cameraTarget.copy(playerPosition);
+    //   const cameraTarget = new THREE.Vector3();
+    //   cameraTarget.copy(playerPosition);
 
-      cameraTarget.z -= 4.25;
+    //   cameraTarget.z -= 10.25; // 同期が必要
 
-      smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-      smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+    //   smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+    //   smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-      state.camera.position.copy(smoothCameraPosition);
-      state.camera.lookAt(smoothCameraTarget);
-    }
+    //   state.camera.position.copy(smoothCameraPosition);
+    //   state.camera.lookAt(smoothCameraTarget);
+    // }
 
     /**
      * Shadow Control

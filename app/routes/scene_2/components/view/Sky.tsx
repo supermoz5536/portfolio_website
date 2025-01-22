@@ -5,10 +5,15 @@ import backGroundVertex from "./Materials/shaders/skyBackground/vertex.glsl";
 import backGroundFragment from "./Materials/shaders/skyBackground/fragment.glsl";
 import { SkySphereMaterial } from "./Materials/SkySphereMaterial";
 import { getGui } from "../../util/lil-gui";
+import { vec3 } from "three/webgpu";
+import { Point } from "@react-three/drei";
+import { StarsMaterial } from "./Materials/starsMaterial";
 
 type BackGroundProps = {
   texture: any;
 };
+
+const startsGeometry = new THREE.BufferGeometry();
 
 export function useCustomRender() {
   const state = useThree();
@@ -136,7 +141,7 @@ export function Background({ texture }: BackGroundProps) {
 }
 
 export function Sphere() {
-  const geometry = new THREE.SphereGeometry(3, 128, 64);
+  const geometry = new THREE.SphereGeometry(4, 128, 64);
 
   const material = SkySphereMaterial();
   material.uniforms.uColorDayCycleLow.value.set("#f0fff9");
@@ -164,6 +169,84 @@ export function Sphere() {
   return mesh;
 }
 
+export function Stars() {
+  const starsRef = useRef<any>();
+  const starsMaterial = StarsMaterial();
+
+  const distanceFromOriginToStars = 1000;
+  const counts = 1000;
+  const positionArray: any = new Float32Array(counts * 3);
+  const colorArray: any = new Float32Array(counts * 3);
+  const sizeArray: any = new Float32Array(counts);
+
+  useEffect(() => {
+    if (starsRef.current) {
+      for (let i = 0; i < counts; i++) {
+        const iOffset = i * 3;
+
+        /**
+         * Set Random Postion
+         */
+        //　球体表面の上半分にランダムな座標を生成する
+        const position = new THREE.Vector3();
+        position.setFromSphericalCoords(
+          distanceFromOriginToStars, // radius
+          Math.acos(Math.random()), // phi
+          Math.PI * 2 * Math.random(), // theta
+        );
+
+        positionArray[iOffset] = position.x;
+        positionArray[iOffset + 1] = position.y;
+        positionArray[iOffset + 2] = position.z;
+
+        /**
+         * Set Random Color
+         */
+
+        const aColor = new THREE.Color();
+
+        aColor.setHSL(Math.random(), 1, 0.5 + Math.random() * 0.5);
+
+        colorArray[iOffset] = aColor.r;
+        colorArray[iOffset + 1] = aColor.g;
+        colorArray[iOffset + 2] = aColor.b;
+
+        /**
+         * Set Random Size
+         */
+        const aSize = Math.pow(Math.random() * 0.9, 10) + 0.1;
+
+        sizeArray[iOffset] = aSize;
+      }
+
+      starsRef.current.geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(positionArray, 3),
+      );
+
+      starsRef.current.geometry.setAttribute(
+        "aColor",
+        new THREE.BufferAttribute(colorArray, 3),
+      );
+
+      starsRef.current.geometry.setAttribute(
+        "aSize",
+        new THREE.BufferAttribute(sizeArray, 1),
+      );
+    }
+  }, []);
+
+  return (
+    <>
+      <points
+        ref={starsRef} // prettier-ignore
+        geometry={startsGeometry}
+        material={starsMaterial}
+      />
+    </>
+  );
+}
+
 export function Sky() {
   const [bgTexture, setBgTexture] = useState();
   const customRender = useCustomRender();
@@ -172,9 +255,19 @@ export function Sky() {
     setBgTexture(customRender.texture);
   }, []);
 
+  /// まずは静的ポジションで太陽に依存関係を持たせる
+  // useFrame内で太陽のposition情報を計算し
+  // その内容をいかにProsで送る
+  // Background → Sphere: 太陽の高さ？でprogressの値を制御して背景色を更新
+  // Starts → materialでuSize更新
+
+  /// 太陽のポジションを FloorNumを監視して動的に変更する
+  // 関数を作ってSkyのトップレベルで呼び出し
+
   return (
     <>
       <Background texture={bgTexture} />
+      <Stars />
     </>
   );
 }

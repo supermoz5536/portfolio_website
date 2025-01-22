@@ -13,7 +13,6 @@ const firefliesGeometry = new THREE.BufferGeometry();
 
 export function Fireflies({ index }: FirefliesProps) {
   const firefliesRef = useRef<any>();
-  const [isMounted, setIsMounted] = useState(false);
 
   /**
    * FireLies Value
@@ -137,7 +136,7 @@ export function Fireflies({ index }: FirefliesProps) {
               uPixelRatio: {
                 value:
                   typeof window != "undefined"
-                    ? Math.min(window.devicePixelRatio, 2)
+                    ? Math.min(window.devicePixelRatio, 2.0)
                     : null,
               },
               uColor: { value: new THREE.Color(debugObj.uColor) },
