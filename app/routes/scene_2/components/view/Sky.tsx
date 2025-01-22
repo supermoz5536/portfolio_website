@@ -7,7 +7,7 @@ import { SkySphereMaterial } from "./Materials/SkySphereMaterial";
 import { getGui } from "../../util/lil-gui";
 import { vec3 } from "three/webgpu";
 import { Point } from "@react-three/drei";
-import { StarsMaterial } from "./Materials/starsMaterial";
+import { StarsMaterial } from "./Materials/StarsMaterial";
 
 type BackGroundProps = {
   texture: any;
