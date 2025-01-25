@@ -10,19 +10,28 @@ import { Point } from "@react-three/drei";
 import { StarsMaterial } from "./Materials/StarsMaterial";
 import ThreePlayer from "../../../../store/three_player_store";
 
-type BackGroundProps = {
-  texture: any;
+type CommonProps = {
+  sunPosition: THREE.Vector3;
+  playerMoveRatio: number;
 };
 
-type SunDataProps = {
-  sunPosition?: THREE.Vector3;
-  playerMoveRatio?: number;
-  playerPosition?: THREE.Vector3;
+type SphereProps = CommonProps;
+type UseCustomRenderProps = CommonProps;
+
+type BackGroundProps = { texture: any };
+type GetSunPositionProps = { playerMoveRatio: number };
+type StartsProps = { sunPosition: THREE.Vector3 };
+type SunPositionProps = {
+  sunPosition: THREE.Vector3;
+  playerPosition: THREE.Vector3;
 };
 
+/**
+ * Geometry / Material
+ */
 const startsGeometry = new THREE.BufferGeometry();
 
-const sunGeometry = new THREE.CircleGeometry(70);
+const sunGeometry = new THREE.CircleGeometry(40);
 const sunMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   blending: THREE.AdditiveBlending, // 加算ブレンドを適用
@@ -31,7 +40,7 @@ const sunMaterial = new THREE.MeshBasicMaterial({
 export function useCustomRender({
   sunPosition,
   playerMoveRatio,
-}: SunDataProps) {
+}: UseCustomRenderProps) {
   const state = useThree();
   const customRender = useRef<any>({});
   const sphere = Sphere({ sunPosition, playerMoveRatio });
@@ -80,27 +89,17 @@ export function useCustomRender({
   return customRender.current;
 }
 
-export function getUniformsData({ playerPosition }: SunDataProps) {
+export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
   const sunDistance = 3500;
-  const endPosition = new THREE.Vector3(128, 0, 192);
-  const result: any = {};
 
-  if (playerPosition) {
-    result.playerMoveRatio =
-      (playerPosition.x / endPosition.x - playerPosition.z / endPosition.z) / 2;
-  }
-
-  // phiの角度にplayerMoveRatioとの依存関係を持たせる
-  const sunPosition = new THREE.Vector3(0, 0, 0);
+  const sunPosition = new THREE.Vector3(128, 0, 192);
   sunPosition.setFromSphericalCoords(
-    sunDistance, // prettier-ignore
-    -Math.PI / 3,
-    0,
+    sunDistance,
+    -((1 - playerMoveRatio) * (5 / 4 - 1 / 4) + 1 / 4) * Math.PI, // [-(-5/4π → 1/4π)] phi
+    -(1 - playerMoveRatio) * (-7 / 4 + 1 / 4) * Math.PI, // [-(-6/4π → 1/4π)] theta
   );
 
-  result.sunPosition = sunPosition;
-
-  return result;
+  return sunPosition;
 }
 
 export function Background({ texture }: BackGroundProps) {
@@ -179,7 +178,7 @@ export function Background({ texture }: BackGroundProps) {
   );
 }
 
-export function Sphere({ sunPosition, playerMoveRatio }: SunDataProps) {
+export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   const geometryRef = useRef<any>(new THREE.SphereGeometry(4, 128, 64));
   const materialRef = useRef<any>(SkySphereMaterial());
   const geometry = geometryRef.current;
@@ -187,6 +186,8 @@ export function Sphere({ sunPosition, playerMoveRatio }: SunDataProps) {
 
   const mesh = new THREE.Mesh(geometry, material);
   const gui = getGui();
+
+  const rescaledPlayerMoveRatio = playerMoveRatio * 0.75 + 0.25;
 
   useEffect(() => {
     /**
@@ -215,14 +216,14 @@ export function Sphere({ sunPosition, playerMoveRatio }: SunDataProps) {
     /**
      * Update Material
      */
-    material.uniforms.uDayCycleProgress.value = playerMoveRatio;
+    material.uniforms.uDayCycleProgress.value = rescaledPlayerMoveRatio;
     material.uniforms.uSunPosition.value.copy(sunPosition);
-  }, [sunPosition, playerMoveRatio]);
+  }, [sunPosition, rescaledPlayerMoveRatio]);
 
   return mesh;
 }
 
-export function Stars({ sunPosition }: SunDataProps) {
+export function Stars({ sunPosition }: StartsProps) {
   const starsRef = useRef<any>();
   const starsMaterial = StarsMaterial();
 
@@ -300,9 +301,8 @@ export function Stars({ sunPosition }: SunDataProps) {
   );
 }
 
-export function Sun({ sunPosition, playerPosition }: SunDataProps) {
+export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
   const sunRef = useRef<any>();
-
   const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
@@ -327,40 +327,43 @@ export function Sun({ sunPosition, playerPosition }: SunDataProps) {
 }
 
 export function Sky() {
-  /**
-   * States
-   */
+  const endPosition = new THREE.Vector3(128, 0, 192);
 
   const [bgTexture, setBgTexture] = useState();
-
-  const [sunData, setSunData] = useState({
-    playerMoveRatio: 0,
-    sunPosition: new THREE.Vector3(),
-  });
-
-  const [playerPosition, setPlayerPosition] = 
-    useState(new THREE.Vector3(0, 0, 7)); // prettier-ignore
+  const [playerPosition, setPlayerPosition] = useState(new THREE.Vector3());
+  const [playerMoveRatio, setPlayerMoveRatio] = useState(0);
+  const [sunPosition, setSunPosition] = useState(new THREE.Vector3());
 
   /**
    * Setup Custom Render
    */
 
   const customRender = useCustomRender({
-    sunPosition: sunData.sunPosition,
-    playerMoveRatio: sunData.playerMoveRatio,
+    sunPosition: sunPosition,
+    playerMoveRatio: playerMoveRatio,
   });
 
   useEffect(() => {
+    /**
+     * Texture
+     */
+
     setBgTexture(customRender.texture);
 
     /*
-     * Listem Player Position
+     * Player Position
      */
 
     const unsubscibePlayer = ThreePlayer.subscribe(
       (state: any) => state.currentPosition,
       (currentPosition) => {
+        const playerMoveRatio =
+          (currentPosition.x / endPosition.x -
+            currentPosition.z / endPosition.z) /
+          2;
+
         setPlayerPosition(currentPosition);
+        setPlayerMoveRatio(playerMoveRatio);
       },
     );
 
@@ -369,24 +372,18 @@ export function Sky() {
     };
   }, []);
 
-  useFrame(() => {
-    setSunData(getUniformsData({ playerPosition }));
-  });
-
-  /// まずは静的ポジションで太陽に依存関係を持たせる
-  // useFrame内で太陽のposition情報を計算し
-  // その内容をいかにProsで送る
-  // Background → Sphere: 太陽の高さ？でprogressの値を制御して背景色を更新
-  // Starts → materialでuSize更新
-
-  /// 太陽のポジションを FloorNumを監視して動的に変更する
-  // 関数を作ってSkyのトップレベルで呼び出し
+  /**
+   * Sun Position
+   */
+  useEffect(() => {
+    setSunPosition(getSunPosition({ playerMoveRatio: playerMoveRatio }));
+  }, [playerMoveRatio]);
 
   return (
     <>
       <Background texture={bgTexture} />
-      <Stars sunPosition={sunData.sunPosition} />
-      <Sun sunPosition={sunData.sunPosition} playerPosition={playerPosition} />
+      <Stars sunPosition={sunPosition} />
+      <Sun sunPosition={sunPosition} playerPosition={playerPosition} />
     </>
   );
 }
