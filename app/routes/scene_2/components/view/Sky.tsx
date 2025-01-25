@@ -96,7 +96,7 @@ export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
   sunPosition.setFromSphericalCoords(
     sunDistance,
     -((1 - playerMoveRatio) * (5 / 4 - 1 / 4) + 1 / 4) * Math.PI, // [-(-5/4π → 1/4π)] phi
-    -(1 - playerMoveRatio) * (-7 / 4 + 1 / 4) * Math.PI, // [-(-6/4π → 1/4π)] theta
+    -((1 - playerMoveRatio) * (-7 / 4 + 1 / 4) + 1 / 10) * Math.PI, // [-(-6/4π → (1/4 + 1/10)π)] theta
   );
 
   return sunPosition;
@@ -381,6 +381,11 @@ export function Sky() {
 
   return (
     <>
+      <mesh
+        geometry={new THREE.PlaneGeometry(1000, 1000)}
+        material={new THREE.MeshBasicMaterial({ color: "red" })}
+        rotation={[-Math.PI / 2, 0, 0]}
+      />
       <Background texture={bgTexture} />
       <Stars sunPosition={sunPosition} />
       <Sun sunPosition={sunPosition} playerPosition={playerPosition} />
