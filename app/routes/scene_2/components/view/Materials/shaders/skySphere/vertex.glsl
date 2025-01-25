@@ -5,9 +5,25 @@ uniform vec3 uColorDayCycleHigh;
 uniform vec3 uColorNightLow;
 uniform vec3 uColorNightHigh;
 
+uniform vec3 uSunPosition;
+uniform vec3 uSunColor;
+
 uniform float uDayCycleProgress;
 
 varying vec3 vColor;
+
+
+vec3 blendAdd (vec3 base, vec3 blend) {
+    vec3 blendedColor = min(base + blend, vec3(1.0));
+    return blendedColor;
+}
+
+vec3 blendAdd (vec3 base, vec3 blend, float opacity) {
+    vec3 blendedColor = blendAdd(base, blend);
+    vec3 finalColor = mix(base, blendAdd(base, blendedColor), opacity);
+    return finalColor;
+
+}
 
 void main () {
 vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -88,6 +104,35 @@ gl_Position = projectedPosition;
     // という設計が採用されることがあります。
     // 例：CSS のシンプルな上下周期のアニメーション
     vec3 color = mix(colorNight, colorDayCycle, dayIntensity);
+
+
+    /*
+    * Sun Glow
+    */
+
+    // 単位円周上の各頂点と太陽との距離で、両者の単位ベクトルのなす角度の大きさを判定する
+    vec3 normalizedSunPosition = normalize(uSunPosition);
+    float distanceToSun = distance(normalizedPosition, normalizedSunPosition);
+
+    // base 
+    float sunBaseIntensity = 
+        smoothstep(0.0, 1.0, clamp(1.0 - (distanceToSun / 0.3), 0.0, 1.0)) * 0.7;
+    
+    color = blendAdd(color, uSunColor, sunBaseIntensity);
+
+    // layer
+    float sunLayerIntensity =
+        pow(max(0.0, 1.0 - distanceToSun * 2.5), 1.5);
+    
+    color = blendAdd(color, uSunColor, sunLayerIntensity);
+    
+
+
+    /*
+    * Atomosphere of Sunrise and Sunset.
+    */
+
+
 
     vColor = color;
 }

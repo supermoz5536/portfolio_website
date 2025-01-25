@@ -8,17 +8,33 @@ import { getGui } from "../../util/lil-gui";
 import { vec3 } from "three/webgpu";
 import { Point } from "@react-three/drei";
 import { StarsMaterial } from "./Materials/StarsMaterial";
+import ThreePlayer from "../../../../store/three_player_store";
 
 type BackGroundProps = {
   texture: any;
 };
 
+type SunDataProps = {
+  sunPosition?: THREE.Vector3;
+  playerMoveRatio?: number;
+  playerPosition?: THREE.Vector3;
+};
+
 const startsGeometry = new THREE.BufferGeometry();
 
-export function useCustomRender() {
+const sunGeometry = new THREE.CircleGeometry(70);
+const sunMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  blending: THREE.AdditiveBlending, // 加算ブレンドを適用
+});
+
+export function useCustomRender({
+  sunPosition,
+  playerMoveRatio,
+}: SunDataProps) {
   const state = useThree();
   const customRender = useRef<any>({});
-  const sphere = Sphere();
+  const sphere = Sphere({ sunPosition, playerMoveRatio });
 
   useEffect(() => {
     /**
@@ -62,6 +78,29 @@ export function useCustomRender() {
   });
 
   return customRender.current;
+}
+
+export function getUniformsData({ playerPosition }: SunDataProps) {
+  const sunDistance = 3500;
+  const endPosition = new THREE.Vector3(128, 0, 192);
+  const result: any = {};
+
+  if (playerPosition) {
+    result.playerMoveRatio =
+      (playerPosition.x / endPosition.x - playerPosition.z / endPosition.z) / 2;
+  }
+
+  // phiの角度にplayerMoveRatioとの依存関係を持たせる
+  const sunPosition = new THREE.Vector3(0, 0, 0);
+  sunPosition.setFromSphericalCoords(
+    sunDistance, // prettier-ignore
+    -Math.PI / 3,
+    0,
+  );
+
+  result.sunPosition = sunPosition;
+
+  return result;
 }
 
 export function Background({ texture }: BackGroundProps) {
@@ -140,22 +179,28 @@ export function Background({ texture }: BackGroundProps) {
   );
 }
 
-export function Sphere() {
-  const geometry = new THREE.SphereGeometry(4, 128, 64);
-
-  const material = SkySphereMaterial();
-  material.uniforms.uColorDayCycleLow.value.set("#f0fff9");
-  material.uniforms.uColorDayCycleHigh.value.set("#2e89ff");
-  material.uniforms.uColorNightLow.value.set("#004794");
-  material.uniforms.uColorNightHigh.value.set("#001624");
-  material.uniforms.uDayCycleProgress.value = 0.533;
-  material.side = THREE.BackSide;
+export function Sphere({ sunPosition, playerMoveRatio }: SunDataProps) {
+  const geometryRef = useRef<any>(new THREE.SphereGeometry(4, 128, 64));
+  const materialRef = useRef<any>(SkySphereMaterial());
+  const geometry = geometryRef.current;
+  const material = materialRef.current;
 
   const mesh = new THREE.Mesh(geometry, material);
-
   const gui = getGui();
 
   useEffect(() => {
+    /**
+     * Setup Material
+     */
+    material.uniforms.uColorDayCycleLow.value.set("#f0fff9");
+    material.uniforms.uColorDayCycleHigh.value.set("#2e89ff");
+
+    material.uniforms.uColorNightLow.value.set("#004794");
+    material.uniforms.uColorNightHigh.value.set("#001624");
+
+    material.uniforms.uSunColor.value.set("#ff531a");
+    material.side = THREE.BackSide;
+
     /**
      * lil-gui
      */
@@ -166,10 +211,18 @@ export function Sphere() {
     }
   }, []);
 
+  useEffect(() => {
+    /**
+     * Update Material
+     */
+    material.uniforms.uDayCycleProgress.value = playerMoveRatio;
+    material.uniforms.uSunPosition.value.copy(sunPosition);
+  }, [sunPosition, playerMoveRatio]);
+
   return mesh;
 }
 
-export function Stars() {
+export function Stars({ sunPosition }: SunDataProps) {
   const starsRef = useRef<any>();
   const starsMaterial = StarsMaterial();
 
@@ -247,13 +300,78 @@ export function Stars() {
   );
 }
 
+export function Sun({ sunPosition, playerPosition }: SunDataProps) {
+  const sunRef = useRef<any>();
+
+  const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0));
+
+  useEffect(() => {
+    // 後ほどlerp処理に変更
+    if (sunRef.current && sunPosition) {
+      setPosition(sunPosition);
+      sunRef.current.lookAt(playerPosition);
+    }
+  }, [sunPosition, playerPosition]);
+
+  return (
+    <>
+      <mesh
+        ref={sunRef}
+        geometry={sunGeometry}
+        material={sunMaterial}
+        position={position}
+      />
+      ;
+    </>
+  );
+}
+
 export function Sky() {
+  /**
+   * States
+   */
+
   const [bgTexture, setBgTexture] = useState();
-  const customRender = useCustomRender();
+
+  const [sunData, setSunData] = useState({
+    playerMoveRatio: 0,
+    sunPosition: new THREE.Vector3(),
+  });
+
+  const [playerPosition, setPlayerPosition] = 
+    useState(new THREE.Vector3(0, 0, 7)); // prettier-ignore
+
+  /**
+   * Setup Custom Render
+   */
+
+  const customRender = useCustomRender({
+    sunPosition: sunData.sunPosition,
+    playerMoveRatio: sunData.playerMoveRatio,
+  });
 
   useEffect(() => {
     setBgTexture(customRender.texture);
+
+    /*
+     * Listem Player Position
+     */
+
+    const unsubscibePlayer = ThreePlayer.subscribe(
+      (state: any) => state.currentPosition,
+      (currentPosition) => {
+        setPlayerPosition(currentPosition);
+      },
+    );
+
+    return () => {
+      unsubscibePlayer();
+    };
   }, []);
+
+  useFrame(() => {
+    setSunData(getUniformsData({ playerPosition }));
+  });
 
   /// まずは静的ポジションで太陽に依存関係を持たせる
   // useFrame内で太陽のposition情報を計算し
@@ -267,7 +385,8 @@ export function Sky() {
   return (
     <>
       <Background texture={bgTexture} />
-      <Stars />
+      <Stars sunPosition={sunData.sunPosition} />
+      <Sun sunPosition={sunData.sunPosition} playerPosition={playerPosition} />
     </>
   );
 }

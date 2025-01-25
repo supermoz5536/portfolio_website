@@ -30,6 +30,9 @@ export function SkySphereMaterial() {
       // 0.5: 夜間
       // 1.0: 昼間
       uDayCycleProgress: { value: 0.25 },
+
+      uSunPosition: { value: new THREE.Vector3() },
+      uSunColor: { value: new THREE.Color() },
     },
     vertexShader: skySphereVertex,
     fragmentShader: skySphereFragment,
