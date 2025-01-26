@@ -1,3 +1,5 @@
+float Math_PI = 3.141592653589793238462643383279502884197; 
+
 uniform float uAtmosphereElevation;
 uniform float uAtmospherePower;
 uniform vec3 uColorDayCycleLow;
@@ -110,7 +112,9 @@ gl_Position = projectedPosition;
     * Sun Glow
     */
 
-    // 単位円周上の各頂点と太陽との距離で、両者の単位ベクトルのなす角度の大きさを判定する
+    // 単位円周上の各頂点と太陽との距離で形成される「弦の長さ」を用いる
+    //「太陽と頂点の距離」＝「太陽の中心とする円の半径」となるため、
+    // 太陽の中心を軸に輝きの範囲を直感的に操作しやすい
     vec3 normalizedSunPosition = normalize(uSunPosition);
     float distanceToSun = distance(normalizedPosition, normalizedSunPosition);
 
@@ -130,9 +134,36 @@ gl_Position = projectedPosition;
 
     /*
     * Atomosphere of Sunrise and Sunset.
+    * なんでsunでは単位ベクトル上の点の距離で間接的に角度を出したのに、これだと直接内積を使ってるの？この使い分けの意味は？
     */
 
+    // 「太陽との距離が近く」（基本位置の決定）
+    // 単位ベクトルの内積を算出し、atomAngleIntensity の任意の範囲を[0.0 - 1.0]で正規化
+    float atomAngleIntensity = dot(normalizedPosition, normalizedSunPosition);
+    atomAngleIntensity = smoothstep(0.0, 1.0, (atomAngleIntensity - 0.8) / 0.2) * 1.0;
 
+    //「sphere下半分を最大として、上部に行くほど減衰」（増減のバリエーション１）
+    // uv.y [0.5 - 1.0]
+    // atomElevationIntensity[1.0 - 0.0] 
+    // の対応
+     float atomElevationIntensity = (1.0 - min((uv.y - 0.5) / 0.5, 1.0)) * 1.0;
+
+
+    //「sphere中心を最大として、中間部で値が増大する。」（増減のバリエーション２）
+    // [下から上] [上から下] で各1サイクル、計2サイクル（日の出・日の入り” の特徴的な色変化を）行うため
+    // cos(π) から始まる1周期　[-1(最小) → 1(最大) → -1(最小)]　を用いる
+    float atomDayCycleIntensity = cos(uDayCycleProgress * 4.0 * Math_PI + Math_PI) * 0.5 + 0.5;
+    
+    float atomIntensity =
+        clamp(
+            atomAngleIntensity * 
+            atomElevationIntensity * 
+            atomDayCycleIntensity,
+            0.0, 
+            1.0
+        );
+
+    color = blendAdd(color, uSunColor, atomIntensity);
 
     vColor = color;
 }

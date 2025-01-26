@@ -50,16 +50,10 @@ export function useCustomRender({
      * Setup Custom Render
      */
     customRender.current.scene = new THREE.Scene();
-    customRender.current.camera = new THREE.OrthographicCamera(
-      -1, // left
-      1, // right
-      1, // top
-      -1, // bottom
-      0.1, // near
-      4000, // far
-    );
-    // customRender.current.camera.position.copy(state.camera.position);
+
+    customRender.current.camera = state.camera.clone();
     customRender.current.camera.quaternion.copy(state.camera.quaternion);
+    customRender.current.camera.position.copy(state.camera.position);
 
     customRender.current.resolutionRatio = 0.1;
     customRender.current.renderTarget = new THREE.RenderTarget(
@@ -70,6 +64,7 @@ export function useCustomRender({
       //    パフォーマンス最適化のために無効化
       { generateMipmaps: false },
     );
+
     customRender.current.texture = customRender.current.renderTarget.texture;
 
     customRender.current.scene.add(sphere);
@@ -78,6 +73,8 @@ export function useCustomRender({
   useFrame(() => {
     // cunstomRenderを同じ視点で描画させるため、通常カメラと回転角を同期
     customRender.current.camera.quaternion.copy(state.camera.quaternion);
+    customRender.current.camera.position.copy(state.camera.position);
+
     // レンダーターゲットを解像度を下げた customRender に設定
     state.gl.setRenderTarget(customRender.current.renderTarget);
     // レンダーのセットアップ
@@ -90,7 +87,7 @@ export function useCustomRender({
 }
 
 export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
-  const sunDistance = 3500;
+  const sunDistance = 3850;
 
   const sunPosition = new THREE.Vector3(128, 0, 192);
   sunPosition.setFromSphericalCoords(
@@ -179,7 +176,7 @@ export function Background({ texture }: BackGroundProps) {
 }
 
 export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
-  const geometryRef = useRef<any>(new THREE.SphereGeometry(4, 128, 64));
+  const geometryRef = useRef<any>(new THREE.SphereGeometry(1000, 128, 64));
   const materialRef = useRef<any>(SkySphereMaterial());
   const geometry = geometryRef.current;
   const material = materialRef.current;
@@ -221,6 +218,25 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   }, [sunPosition, rescaledPlayerMoveRatio]);
 
   return mesh;
+}
+
+export function Ground() {
+  const [texture, setTexture] = useState<any>();
+
+  useEffect(() => {
+    const textureLoader = new THREE.TextureLoader();
+    const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+    setTexture(groundTexture);
+  }, []);
+
+  return (
+    <mesh
+      geometry={new THREE.CircleGeometry(5000)}
+      material={new THREE.MeshBasicMaterial({ map: texture })}
+      position={[0, -500, 0]}
+      rotation={[-Math.PI / 2, 0, 0]}
+    />
+  );
 }
 
 export function Stars({ sunPosition }: StartsProps) {
@@ -328,6 +344,7 @@ export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
 
 export function Sky() {
   const endPosition = new THREE.Vector3(128, 0, 192);
+  const gui = getGui();
 
   const [bgTexture, setBgTexture] = useState();
   const [playerPosition, setPlayerPosition] = useState(new THREE.Vector3());
@@ -363,7 +380,7 @@ export function Sky() {
           2;
 
         setPlayerPosition(currentPosition);
-        setPlayerMoveRatio(playerMoveRatio);
+        // setPlayerMoveRatio(playerMoveRatio);
       },
     );
 
@@ -379,13 +396,28 @@ export function Sky() {
     setSunPosition(getSunPosition({ playerMoveRatio: playerMoveRatio }));
   }, [playerMoveRatio]);
 
+  /**
+   * Debug
+   */
+  useEffect(() => {
+    if (gui) {
+      const controller = gui
+        .add({ playerMoveRatio }, "playerMoveRatio", 0, 1, 0.001)
+        .name("Player Move Ratio")
+        .onChange((value: number) => {
+          setPlayerMoveRatio(value);
+        });
+
+      // クリーンアップ時にコントローラーを削除
+      return () => {
+        controller.destroy();
+      };
+    }
+  }, []);
+
   return (
     <>
-      <mesh
-        geometry={new THREE.PlaneGeometry(1000, 1000)}
-        material={new THREE.MeshBasicMaterial({ color: "red" })}
-        rotation={[-Math.PI / 2, 0, 0]}
-      />
+      {/* <Ground /> */}
       <Background texture={bgTexture} />
       <Stars sunPosition={sunPosition} />
       <Sun sunPosition={sunPosition} playerPosition={playerPosition} />
