@@ -242,6 +242,7 @@ export function Ground() {
 export function Stars({ sunPosition }: StartsProps) {
   const starsRef = useRef<any>();
   const starsMaterial = StarsMaterial();
+  starsMaterial.uniforms.uSunPosition.value.copy(sunPosition);
 
   const distanceFromOriginToStars = 1000;
   const counts = 1000;

@@ -5,6 +5,7 @@ import starsFragment from "./shaders/stars/fragment.glsl";
 export function StarsMaterial() {
   const material = new THREE.ShaderMaterial({
     uniforms: {
+      uSunPosition: { value: new THREE.Vector3() },
       uPointSize: { value: 10.0 },
       uPixelRatio: {
         value:
