@@ -99,7 +99,9 @@ export function Player() {
     /**
      * Player
      */
+
     const playerPosition = rigidRef.current.translation();
+
     setPlayerPosition(
       new THREE.Vector3(playerPosition.x, playerPosition.y, playerPosition.z),
     );
@@ -136,6 +138,11 @@ export function Player() {
     if (isActicated) {
       const impulse = { x: 0, y: 0, z: 0 };
       const imuplseStrength = 0.9 + delta;
+
+      // Normalized direction from camera to player
+      const cameraDir = new THREE.Vector3();
+      cameraDir.subVectors(playerPosition, state.camera.position);
+      cameraDir.normalize();
 
       // getState: 現在の入力状態（オブジェクト）を即時取得する関数
       // 対応するキーが押されている場合に true になります。
@@ -174,50 +181,24 @@ export function Player() {
      * Camera Controls
      */
 
-    // if (isPlayerFocused) {
-    //   //======== Showcase ZoomIn 時の補正値の同期が必要　========//
-    //   const cameraPosition = new THREE.Vector3();
-    //   cameraPosition.copy(playerPosition);
-    //   cameraPosition.y += 9.65; // 同期が必要
-    //   cameraPosition.z += 20.5; // 同期が必要
+    if (isPlayerFocused) {
+      //======== Showcase ZoomIn 時の補正値の同期が必要　========//
+      const cameraPosition = new THREE.Vector3();
+      cameraPosition.copy(playerPosition);
+      cameraPosition.y += 9.65; // 同期が必要
+      cameraPosition.z += 20.5; // 同期が必要
 
-    //   const cameraTarget = new THREE.Vector3();
-    //   cameraTarget.copy(playerPosition);
+      const cameraTarget = new THREE.Vector3();
+      cameraTarget.copy(playerPosition);
 
-    //   cameraTarget.z -= 10.25; // 同期が必要
+      cameraTarget.z -= 10.25; // 同期が必要
 
-    //   smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-    //   smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+      smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+      smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    //   state.camera.position.copy(smoothCameraPosition);
-    //   state.camera.lookAt(smoothCameraTarget);
-    // }
-
-    /**
-     * Shadow Control
-     */
-
-    // const rayOrigin = {
-    //   x: playerPosition.x,
-    //   y: playerPosition.y,
-    //   z: playerPosition.z,
-    // };
-
-    // rayOrigin.y -= 1;
-
-    // const direction = { x: 0, y: -1, z: 0 };
-    // const ray = new rapier.Ray(rayOrigin, direction);
-    // const hit = world.castRay(ray, 10, true);
-
-    // if (hit && hit?.timeOfImpact < 0.2) {
-    //   if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
-    //     const rigidBodyUserData: any = hit.collider.parent()?.userData;
-    //     if (rigidBodyUserData.key == "floor") {
-    //     } else {
-    //     }
-    //   } else {
-    //   }
-    // }
+      state.camera.position.copy(smoothCameraPosition);
+      state.camera.lookAt(smoothCameraTarget);
+    }
   });
 
   return (
@@ -245,3 +226,28 @@ export function Player() {
     </>
   );
 }
+
+/**
+ * Shadow Control
+ */
+// const rayOrigin = {
+//   x: playerPosition.x,
+//   y: playerPosition.y,
+//   z: playerPosition.z,
+// };
+
+// rayOrigin.y -= 1;
+
+// const direction = { x: 0, y: -1, z: 0 };
+// const ray = new rapier.Ray(rayOrigin, direction);
+// const hit = world.castRay(ray, 10, true);
+
+// if (hit && hit?.timeOfImpact < 0.2) {
+//   if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
+//     const rigidBodyUserData: any = hit.collider.parent()?.userData;
+//     if (rigidBodyUserData.key == "floor") {
+//     } else {
+//     }
+//   } else {
+//   }
+// }
