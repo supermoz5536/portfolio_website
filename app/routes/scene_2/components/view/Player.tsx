@@ -13,7 +13,7 @@ export function Player() {
   const meshRef: any = useRef();
 
   const [smoothCameraPosition, setSmoothCameraPosition] = useState(
-    new THREE.Vector3(5, 5, 5),
+    new THREE.Vector3(0, 0, 50),
   );
   const [smoothCameraTarget, setSmoothCameraTarget] = useState(
     new THREE.Vector3(),
@@ -36,6 +36,11 @@ export function Player() {
     ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
 
   useEffect(() => {
+    /**
+     * Setup Camera Position
+     */
+    setSmoothCameraPosition(new THREE.Vector3(0, 0, 5));
+
     /* Listem Player Current Floor */
     const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
       (state: any) => state.currentFloorNum,
@@ -57,7 +62,7 @@ export function Player() {
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(100, 100, -20));
+        setSmoothCameraPosition(new THREE.Vector3(0, 500, 500));
         setIsActicated(isActivated);
       },
     );
@@ -130,33 +135,73 @@ export function Player() {
 
       rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
       rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+
+      setSmoothCameraPosition(
+        new THREE.Vector3(
+          rigidRef.current.translation().x,
+          rigidRef.current.translation().y,
+          rigidRef.current.translation().z + 50,
+        ),
+      );
+
+      setSmoothCameraTarget(
+        new THREE.Vector3(
+          rigidRef.current.translation().x,
+          rigidRef.current.translation().y,
+          rigidRef.current.translation().z - 10,
+        ),
+      );
     }
 
     /**
      * Controls
      */
+
+    // Impulse
+    let impulse: any = new THREE.Vector3();
+    const imuplseStrength = 0.9 + delta;
+
+    // Direction
+    const forwardDir: any = new THREE.Vector3();
+    forwardDir.subVectors(playerPosition, state.camera.position);
+    forwardDir.y = 0;
+    forwardDir.normalize();
+
+    const leftwardDir: any = new THREE.Vector3(
+      forwardDir.clone().z,
+      0,
+      -forwardDir.clone().x,
+    );
+
+    const backwardDir: any = forwardDir.clone().negate();
+    const rightwardDir: any = leftwardDir.clone().negate();
+
+    // getState: 現在の入力状態（オブジェクト）を即時取得する関数
+    // 対応するキーが押されている場合に true になります。
+    const { forward, backward, leftward, rightward } = getState();
+
     if (isActicated) {
-      const impulse = { x: 0, y: 0, z: 0 };
-      const imuplseStrength = 0.9 + delta;
+      // // Keypad
+      // if (forward) impulse.z -= imuplseStrength;
+      // if (backward) impulse.z += imuplseStrength;
+      // if (leftward) impulse.x -= imuplseStrength;
+      // if (rightward) impulse.x += imuplseStrength;
 
-      // Normalized direction from camera to player
-      const cameraDir = new THREE.Vector3();
-      cameraDir.subVectors(playerPosition, state.camera.position);
-      cameraDir.normalize();
+      // // Pad
+      // if (moveDeltaX) impulse.x += moveDeltaX * 0.5 * imuplseStrength;
+      // if (moveDeltaY) impulse.z -= moveDeltaY * 0.5 * imuplseStrength;
 
-      // getState: 現在の入力状態（オブジェクト）を即時取得する関数
-      // 対応するキーが押されている場合に true になります。
-      const { forward, backward, leftward, rightward } = getState();
+      // Keypad
+      if (forward) impulse.add(forwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
+      if (backward) impulse.add(backwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
+      if (leftward) impulse.add(leftwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
+      if (rightward) impulse.add(rightwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
 
-      /* Keypad */
-      if (forward) impulse.z -= imuplseStrength;
-      if (backward) impulse.z += imuplseStrength;
-      if (leftward) impulse.x -= imuplseStrength;
-      if (rightward) impulse.x += imuplseStrength;
-
-      /* Pad */
-      if (moveDeltaX) impulse.x += moveDeltaX * 0.5 * imuplseStrength;
-      if (moveDeltaY) impulse.z -= moveDeltaY * 0.5 * imuplseStrength;
+      // rigidRef.current.applyImpulse({
+      //   x: impulse.x,
+      //   y: impulse.y,
+      //   z: impulse.z,
+      // });
 
       rigidRef.current.applyImpulse(impulse);
 
@@ -185,13 +230,12 @@ export function Player() {
       //======== Showcase ZoomIn 時の補正値の同期が必要　========//
       const cameraPosition = new THREE.Vector3();
       cameraPosition.copy(playerPosition);
-      cameraPosition.y += 9.65; // 同期が必要
-      cameraPosition.z += 20.5; // 同期が必要
+      cameraPosition.add(backwardDir.clone().multiplyScalar(15)); // 同期が必要
+      cameraPosition.y += 5;
 
       const cameraTarget = new THREE.Vector3();
       cameraTarget.copy(playerPosition);
-
-      cameraTarget.z -= 10.25; // 同期が必要
+      cameraTarget.add(forwardDir.clone().multiplyScalar(10));
 
       smoothCameraPosition.lerp(cameraPosition, 5 * delta);
       smoothCameraTarget.lerp(cameraTarget, 5 * delta);
@@ -205,7 +249,7 @@ export function Player() {
     <>
       <RigidBody
         ref={rigidRef}
-        position={[0, 20, 7]}
+        position={[0, 10, 7]}
         canSleep={false}
         colliders="ball"
         linearDamping={0.5}
