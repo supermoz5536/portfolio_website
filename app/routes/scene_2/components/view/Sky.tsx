@@ -44,7 +44,7 @@ export function useCustomRender({
   const state = useThree();
   const customRender = useRef<any>({});
   const sphere = Sphere({ sunPosition, playerMoveRatio });
-  // const ground = SyGround();
+  const ground = SyGround();
 
   useEffect(() => {
     /**
@@ -56,7 +56,7 @@ export function useCustomRender({
     customRender.current.camera.quaternion.copy(state.camera.quaternion);
     customRender.current.camera.position.copy(state.camera.position);
 
-    customRender.current.resolutionRatio = 0.1;
+    customRender.current.resolutionRatio = 0.5;
     customRender.current.renderTarget = new THREE.RenderTarget(
       window.innerWidth * customRender.current.resolutionRatio,
       window.innerHeight * customRender.current.resolutionRatio,
@@ -69,7 +69,7 @@ export function useCustomRender({
     customRender.current.texture = customRender.current.renderTarget.texture;
 
     customRender.current.scene.add(sphere);
-    // customRender.current.scene.add(ground);
+    customRender.current.scene.add(ground);
   }, []);
 
   useFrame(() => {
@@ -246,18 +246,18 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
 }
 
 export function SyGround() {
-  // const textureLoader = new THREE.TextureLoader();
-  // const groundTexture = textureLoader.load("asset/texture/ground.jpg");
-  // const mesh = new THREE.Mesh(
-  //   new THREE.CircleGeometry(7000, 32),
-  //   new THREE.MeshBasicMaterial({
-  //     map: groundTexture,
-  //     side: THREE.DoubleSide,
-  //   }),
-  // );
-  // mesh.position.set(0, -200, 0);
-  // mesh.rotation.set(-Math.PI / 2, 0, 0);
-  // return mesh;
+  const textureLoader = new THREE.TextureLoader();
+  const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+  const mesh = new THREE.Mesh(
+    new THREE.CircleGeometry(1000, 124),
+    new THREE.MeshBasicMaterial({
+      map: groundTexture,
+      side: THREE.DoubleSide,
+    }),
+  );
+  mesh.position.set(0, -200, 0);
+  mesh.rotation.set(-Math.PI / 2, 0, 0);
+  return mesh;
 }
 
 export function Stars({ sunPosition }: StartsProps) {
