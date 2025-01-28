@@ -43,7 +43,7 @@ const EntryPointThree = () => {
             fov: 45,
             near: 0.1,
             far: 4000,
-            position: [0, 0, 20],
+            position: [0, 0, 100],
           }}
         >
           <Experience />

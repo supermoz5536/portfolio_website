@@ -120,21 +120,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               scale={1.1}
             />
           </RigidBody>
-
-          {currentFloor == index && (
-            <>
-              {/* <RigidBody
-              position={[0, 0.25, 0]}
-              type="kinematicPosition"
-              colliders="hull"
-            >
-              <mesh
-                geometry={new THREE.BoxGeometry(100, 0.5, 100)}
-                material={transparentMaterial}
-              />
-            </RigidBody> */}
-            </>
-          )}
         </>
       )}
     </>

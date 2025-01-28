@@ -92,8 +92,10 @@ export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
   const sunPosition = new THREE.Vector3(128, 0, 192);
   sunPosition.setFromSphericalCoords(
     sunDistance,
-    -((1 - playerMoveRatio) * (5 / 4 - 1 / 4) + 1 / 4) * Math.PI, // [-(-5/4π → 1/4π)] phi
-    -((1 - playerMoveRatio) * (-7 / 4 + 1 / 4) + 1 / 10) * Math.PI, // [-(-6/4π → (1/4 + 1/10)π)] theta
+    // phi [5/4π → 1/4]
+    ((1 - playerMoveRatio) * (5 / 4 - 1 / 4) + 1 / 4) * Math.PI,
+    // theta [-1/4π → 3/4π] [starts at ＋z]
+    ((1 - playerMoveRatio) * (-5 / 4) + 3 / 4) * Math.PI,
   );
 
   return sunPosition;
@@ -213,6 +215,7 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
     /**
      * Update Material
      */
+
     material.uniforms.uDayCycleProgress.value = rescaledPlayerMoveRatio;
     material.uniforms.uSunPosition.value.copy(sunPosition);
   }, [sunPosition, rescaledPlayerMoveRatio]);
@@ -377,11 +380,10 @@ export function Sky() {
       (currentPosition) => {
         const playerMoveRatio =
           (currentPosition.x / endPosition.x -
-            currentPosition.z / endPosition.z) /
-          2;
+            currentPosition.z / endPosition.z) / 2; // prettier-ignore
 
         setPlayerPosition(currentPosition);
-        // setPlayerMoveRatio(playerMoveRatio);
+        setPlayerMoveRatio(playerMoveRatio);
       },
     );
 
@@ -418,7 +420,7 @@ export function Sky() {
 
   return (
     <>
-      {/* <Ground /> */}
+      <Ground />
       <Background texture={bgTexture} />
       <Stars sunPosition={sunPosition} />
       <Sun sunPosition={sunPosition} playerPosition={playerPosition} />

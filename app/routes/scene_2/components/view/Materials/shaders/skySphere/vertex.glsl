@@ -122,13 +122,13 @@ gl_Position = projectedPosition;
     float sunBaseIntensity = 
         smoothstep(0.0, 1.0, clamp(1.0 - (distanceToSun / 0.3), 0.0, 1.0)) * 0.7;
     
-    // color = blendAdd(color, uSunColor, sunBaseIntensity);
+    color = blendAdd(color, uSunColor, sunBaseIntensity);
 
     // layer
     float sunLayerIntensity =
         pow(max(0.0, 1.0 - distanceToSun * 2.5), 1.5);
     
-    // color = blendAdd(color, uSunColor, sunLayerIntensity);
+    color = blendAdd(color, uSunColor, sunLayerIntensity);
     
 
 
