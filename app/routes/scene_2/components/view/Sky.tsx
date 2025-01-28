@@ -31,7 +31,7 @@ type SunPositionProps = {
  */
 const startsGeometry = new THREE.BufferGeometry();
 
-const sunGeometry = new THREE.CircleGeometry(40);
+const sunGeometry = new THREE.CircleGeometry(20);
 const sunMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   blending: THREE.AdditiveBlending, // 加算ブレンドを適用
@@ -44,6 +44,7 @@ export function useCustomRender({
   const state = useThree();
   const customRender = useRef<any>({});
   const sphere = Sphere({ sunPosition, playerMoveRatio });
+  // const ground = SyGround();
 
   useEffect(() => {
     /**
@@ -68,6 +69,7 @@ export function useCustomRender({
     customRender.current.texture = customRender.current.renderTarget.texture;
 
     customRender.current.scene.add(sphere);
+    // customRender.current.scene.add(ground);
   }, []);
 
   useFrame(() => {
@@ -87,15 +89,15 @@ export function useCustomRender({
 }
 
 export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
-  const sunDistance = 3850;
+  const sunDistance = 1000;
 
   const sunPosition = new THREE.Vector3(128, 0, 192);
   sunPosition.setFromSphericalCoords(
     sunDistance,
-    // phi [5/4π → 1/4]
-    ((1 - playerMoveRatio) * (5 / 4 - 1 / 4) + 1 / 4) * Math.PI,
+    // phi [π → 1/3π]
+    ((1 - playerMoveRatio) * (2 / 3) + 1 / 3) * Math.PI,
     // theta [-1/4π → 3/4π] [starts at ＋z]
-    ((1 - playerMoveRatio) * (-5 / 4) + 3 / 4) * Math.PI,
+    ((1 - playerMoveRatio) * (-5 / 4) + (3 - 0.5 / 4)) * Math.PI,
   );
 
   return sunPosition;
@@ -134,7 +136,7 @@ export function Background({ texture }: BackGroundProps) {
     ) {
       // 三角関数で計算するためにfovを度数からラジアンに変換
       const fovInRadian = (state.camera.fov * Math.PI) / 180;
-      const offset = 0.15;
+      const offset = 0.125;
 
       // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
       const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ
@@ -170,7 +172,7 @@ export function Background({ texture }: BackGroundProps) {
           // 奥行きという基準がなくなり、完全に配置順によってのみ前後関係が決定され
           // 配置された瞬間に1番手前に描画されるので
           // 背景ば一番最初に配置されるよう順序指定する必要がある
-          renderOrder={-1}
+          renderOrder={-2}
         />
       )}
     </>
@@ -206,8 +208,28 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
      */
     if (gui) {
       gui
+      .add(material.uniforms.uSunBaseIntensityMultiplier, "value", 0, 1, 0.001)
+      .name("uSunBaseIntensityMultiplier"); // prettier-ignore
+
+      gui
+        .add(material.uniforms.uSunLayerIntensityMultiplier, "value", 0, 1, 0.001)
+        .name("uSunLayerIntensityMultiplier"); // prettier-ignore
+
+      gui
+        .add(material.uniforms.uAtomAngleIntensityMultiplier, "value", 0, 1, 0.001)
+        .name("uAtomAngleIntensityMultiplier"); // prettier-ignore
+
+      gui
+        .add(material.uniforms.uAtomElevationIntensityMultiplier, "value", 0, 1, 0.001) 
+        .name("uAtomElevationIntensityMultiplier"); // prettier-ignore
+
+      gui
+        .add(material.uniforms.uAtomDayCycleIntensityMultiplier, "value", 0, 1, 0.001) 
+        .name("uAtomDayCycleIntensityMultiplier"); // prettier-ignore
+
+      gui
         .add(material.uniforms.uDayCycleProgress, "value", 0, 1, 0.001)
-        .name("uDayCycleProgress");
+        .name("uDayCycleProgress"); // prettier-ignore
     }
   }, []);
 
@@ -223,23 +245,19 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   return mesh;
 }
 
-export function Ground() {
-  const [texture, setTexture] = useState<any>();
-
-  useEffect(() => {
-    const textureLoader = new THREE.TextureLoader();
-    const groundTexture = textureLoader.load("asset/texture/ground.jpg");
-    setTexture(groundTexture);
-  }, []);
-
-  return (
-    <mesh
-      geometry={new THREE.CircleGeometry(5000)}
-      material={new THREE.MeshBasicMaterial({ map: texture })}
-      position={[0, -500, 0]}
-      rotation={[-Math.PI / 2, 0, 0]}
-    />
-  );
+export function SyGround() {
+  // const textureLoader = new THREE.TextureLoader();
+  // const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+  // const mesh = new THREE.Mesh(
+  //   new THREE.CircleGeometry(7000, 32),
+  //   new THREE.MeshBasicMaterial({
+  //     map: groundTexture,
+  //     side: THREE.DoubleSide,
+  //   }),
+  // );
+  // mesh.position.set(0, -200, 0);
+  // mesh.rotation.set(-Math.PI / 2, 0, 0);
+  // return mesh;
 }
 
 export function Stars({ sunPosition }: StartsProps) {
@@ -420,7 +438,6 @@ export function Sky() {
 
   return (
     <>
-      <Ground />
       <Background texture={bgTexture} />
       <Stars sunPosition={sunPosition} />
       <Sun sunPosition={sunPosition} playerPosition={playerPosition} />

@@ -26,7 +26,7 @@ const EntryPointThree = () => {
             zIndex: 0,
           }}
           shadows
-          gl={{ localClippingEnabled: true }}
+          gl={{ localClippingEnabled: true, alpha: true }}
           // PerspectiveCamera が設定可能
           camera={{
             // Floor[0]のShowCaseのアップ

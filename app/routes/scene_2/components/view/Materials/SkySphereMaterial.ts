@@ -25,14 +25,21 @@ export function SkySphereMaterial() {
       uColorNightLow: { value: new THREE.Color() },
       uColorNightHigh: { value: new THREE.Color() },
 
+      uSunPosition: { value: new THREE.Vector3() },
+      uSunColor: { value: new THREE.Color() },
+
+      uSunBaseIntensityMultiplier: { value: 0.8 },
+      uSunLayerIntensityMultiplier: { value: 0.9 },
+
+      uAtomAngleIntensityMultiplier: { value: 0.8 }, // 太陽との距離が近い部分
+      uAtomElevationIntensityMultiplier: { value: 0.8 }, // sphere下半分を最大として、上部に行くほど減衰
+      uAtomDayCycleIntensityMultiplier: { value: 0.8 }, // sphere中心を最大として、中間部で値が増大する。
+
       // 昼夜サイクルの進行度を示す値です(0～1)
       // 0.0: 昼間
       // 0.5: 夜間
       // 1.0: 昼間
       uDayCycleProgress: { value: 0.25 },
-
-      uSunPosition: { value: new THREE.Vector3() },
-      uSunColor: { value: new THREE.Color() },
     },
     vertexShader: skySphereVertex,
     fragmentShader: skySphereFragment,

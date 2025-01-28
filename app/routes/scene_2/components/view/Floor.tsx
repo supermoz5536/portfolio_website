@@ -89,7 +89,9 @@ export function Floors() {
           child.receiveShadow = true;
         }
       });
+
       const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
+
       setScene(gltf.scene);
       setBoundingBoxFloor(boundingBox);
     });

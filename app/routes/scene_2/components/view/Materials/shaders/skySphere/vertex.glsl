@@ -10,6 +10,13 @@ uniform vec3 uColorNightHigh;
 uniform vec3 uSunPosition;
 uniform vec3 uSunColor;
 
+uniform float uSunBaseIntensityMultiplier;
+uniform float uSunLayerIntensityMultiplier;
+
+uniform float uAtomAngleIntensityMultiplier;
+uniform float uAtomElevationIntensityMultiplier;
+uniform float uAtomDayCycleIntensityMultiplier;
+
 uniform float uDayCycleProgress;
 
 varying vec3 vColor;
@@ -120,13 +127,13 @@ gl_Position = projectedPosition;
 
     // base 
     float sunBaseIntensity = 
-        smoothstep(0.0, 1.0, clamp(1.0 - (distanceToSun / 0.3), 0.0, 1.0)) * 0.7;
+        smoothstep(0.0, 1.0, clamp(1.0 - (distanceToSun / 0.3), 0.0, 1.0)) * uSunBaseIntensityMultiplier;
     
     color = blendAdd(color, uSunColor, sunBaseIntensity);
 
     // layer
     float sunLayerIntensity =
-        pow(max(0.0, 1.0 - distanceToSun * 2.5), 1.5);
+        pow(max(0.0, 1.0 - distanceToSun * 2.5), 1.5) * uSunLayerIntensityMultiplier;
     
     color = blendAdd(color, uSunColor, sunLayerIntensity);
     
@@ -140,19 +147,19 @@ gl_Position = projectedPosition;
     // 「太陽との距離が近く」（基本位置の決定）
     // 単位ベクトルの内積を算出し、atomAngleIntensity の任意の範囲を[0.0 - 1.0]で正規化
     float atomAngleIntensity = dot(normalizedPosition, normalizedSunPosition);
-    atomAngleIntensity = smoothstep(0.0, 1.0, (atomAngleIntensity - 0.8) / 0.2) * 1.0;
+    atomAngleIntensity = smoothstep(0.0, 1.0, (atomAngleIntensity - 0.2) / 0.8) * uAtomAngleIntensityMultiplier;
 
     //「sphere下半分を最大として、上部に行くほど減衰」（増減のバリエーション１）
     // uv.y [0.5 - 1.0]
     // atomElevationIntensity[1.0 - 0.0] 
     // の対応
-     float atomElevationIntensity = (1.0 - min((uv.y - 0.5) / 0.5, 1.0)) * 1.0;
+     float atomElevationIntensity = (1.0 - min((uv.y - 0.5) / 0.5, 1.0)) * uAtomElevationIntensityMultiplier;
 
 
     //「sphere中心を最大として、中間部で値が増大する。」（増減のバリエーション２）
     // [下から上] [上から下] で各1サイクル、計2サイクル（日の出・日の入り” の特徴的な色変化を）行うため
     // cos(π) から始まる1周期　[-1(最小) → 1(最大) → -1(最小)]　を用いる
-    float atomDayCycleIntensity = cos(uDayCycleProgress * 4.0 * Math_PI + Math_PI) * 0.5 + 0.5;
+    float atomDayCycleIntensity = (cos(uDayCycleProgress * 4.0 * Math_PI + Math_PI) * 0.5 + 0.5) * uAtomDayCycleIntensityMultiplier;
     
     float atomIntensity =
         clamp(
@@ -163,7 +170,7 @@ gl_Position = projectedPosition;
             1.0
         );
 
-    // color = blendAdd(color, uSunColor, atomIntensity);
+    color = blendAdd(color, uSunColor, atomIntensity);
 
     vColor = color;
 }

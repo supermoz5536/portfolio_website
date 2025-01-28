@@ -4,6 +4,7 @@ import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
 import { EnvironmentLights } from "./Components/view/Lights.js";
 import { Sky } from "./Components/view/Sky.js";
+import { SetGround } from "./Components/view/Ground";
 
 export default function Experience() {
   return (
@@ -22,6 +23,7 @@ export default function Experience() {
         <Floors />
       </Physics>
       <Sky />
+      {/* <SetGround /> */}
     </>
   );
 }
