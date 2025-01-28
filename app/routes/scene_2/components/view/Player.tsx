@@ -181,37 +181,37 @@ export function Player() {
     const { forward, backward, leftward, rightward } = getState();
 
     if (isActicated) {
-      // // Keypad
-      // if (forward) impulse.z -= imuplseStrength;
-      // if (backward) impulse.z += imuplseStrength;
-      // if (leftward) impulse.x -= imuplseStrength;
-      // if (rightward) impulse.x += imuplseStrength;
-
-      // // Pad
-      // if (moveDeltaX) impulse.x += moveDeltaX * 0.5 * imuplseStrength;
-      // if (moveDeltaY) impulse.z -= moveDeltaY * 0.5 * imuplseStrength;
-
       // Keypad
       if (forward) impulse.add(forwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
       if (backward) impulse.add(backwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
       if (leftward) impulse.add(leftwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
       if (rightward) impulse.add(rightwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
 
-      // rigidRef.current.applyImpulse({
-      //   x: impulse.x,
-      //   y: impulse.y,
-      //   z: impulse.z,
-      // });
+      // Pad
+      if (moveDeltaX) {
+        impulse.add(
+          rightwardDir.clone().multiplyScalar(
+            imuplseStrength * moveDeltaX * 0.5, // prettier-ignore
+          ),
+        );
+      }
+
+      if (moveDeltaY) {
+        impulse.add(
+          forwardDir.clone().multiplyScalar(
+            imuplseStrength * moveDeltaY * 0.5, // prettier-ignore
+          ),
+        );
+      }
 
       rigidRef.current.applyImpulse(impulse);
 
-      // プレイヤーの動きを感知し、ガイドの非表示フラグをトリガー
+      // Hide the guide when player starts moving
       if (impulse.x != 0 || impulse.y != 0 || impulse.z != 0) {
         setIsPlayerMoved(true);
       }
 
-      /* Opacity */
-
+      // Opacity
       const lerpOpacity = THREE.MathUtils.lerp(
         smoothOpacity,
         targetOpacity,
