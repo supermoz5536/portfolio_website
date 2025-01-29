@@ -71,10 +71,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const [savedCameraPosition, setSavedCameraPosition] = useState(
-    new THREE.Vector3(),
-  );
-
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
       position.x, // prettier-ignore

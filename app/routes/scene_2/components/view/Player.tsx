@@ -171,7 +171,7 @@ export function Player() {
 
     // Impulse
     let impulse: any = new THREE.Vector3();
-    const imuplseStrength = 0.9 + delta;
+    const imuplseStrength = 75 * delta;
 
     // Direction
     const forwardDir: any = new THREE.Vector3();
@@ -203,7 +203,7 @@ export function Player() {
       if (moveDeltaX) {
         impulse.add(
           rightwardDir.clone().multiplyScalar(
-            imuplseStrength * moveDeltaX * 0.5, // prettier-ignore
+            imuplseStrength * moveDeltaX * 0.45, // prettier-ignore
           ),
         );
       }
@@ -211,7 +211,7 @@ export function Player() {
       if (moveDeltaY) {
         impulse.add(
           forwardDir.clone().multiplyScalar(
-            imuplseStrength * moveDeltaY * 0.5, // prettier-ignore
+            imuplseStrength * moveDeltaY * 0.45, // prettier-ignore
           ),
         );
       }
@@ -238,23 +238,23 @@ export function Player() {
      * Camera Controls
      */
 
-    if (isPlayerFocused) {
-      //======== Showcase ZoomIn 時の補正値の同期が必要　========//
-      const cameraPosition = new THREE.Vector3();
-      cameraPosition.copy(playerPosition);
-      cameraPosition.add(backwardDir.clone().multiplyScalar(15)); // 同期が必要
-      cameraPosition.y += 5;
+    // if (isPlayerFocused) {
+    //   //======== Showcase ZoomIn 時の補正値の同期が必要　========//
+    //   const cameraPosition = new THREE.Vector3();
+    //   cameraPosition.copy(playerPosition);
+    //   cameraPosition.add(backwardDir.clone().multiplyScalar(15)); // 同期が必要
+    //   cameraPosition.y += 5;
 
-      const cameraTarget = new THREE.Vector3();
-      cameraTarget.copy(playerPosition);
-      cameraTarget.add(forwardDir.clone().multiplyScalar(10));
+    //   const cameraTarget = new THREE.Vector3();
+    //   cameraTarget.copy(playerPosition);
+    //   cameraTarget.add(forwardDir.clone().multiplyScalar(10));
 
-      smoothCameraPosition.lerp(cameraPosition, 5 * delta);
-      smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+    //   smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+    //   smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-      state.camera.position.copy(smoothCameraPosition);
-      state.camera.lookAt(smoothCameraTarget);
-    }
+    //   state.camera.position.copy(smoothCameraPosition);
+    //   state.camera.lookAt(smoothCameraTarget);
+    // }
   });
 
   return (
@@ -264,9 +264,9 @@ export function Player() {
         position={[0, 10, 7]}
         canSleep={false}
         colliders="ball"
-        linearDamping={0.5}
-        angularDamping={0.5}
-        restitution={0}
+        linearDamping={1.5}
+        angularDamping={2}
+        restitution={0.5}
         friction={1}
       >
         <mesh ref={meshRef} castShadow receiveShadow>

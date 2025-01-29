@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, ArcballControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
@@ -15,7 +15,7 @@ export default function Experience() {
         position={[0, 0, 0]}
         args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
       /> */}
-      <OrbitControls makeDefault />
+      <ArcballControls makeDefault />
       <Physics>
         <EnvironmentLights />
         <Player />

@@ -112,6 +112,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             position={adjustedPosition}
             type="kinematicPosition"
             colliders="hull"
+            friction={0}
+            restitution={0.5}
           >
             {/* ShowCaseの代替用コライダーを適用するコンポーネント */}
             <mesh
