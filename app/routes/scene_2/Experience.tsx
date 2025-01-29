@@ -3,7 +3,7 @@ import { Physics } from "@react-three/rapier";
 import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
 import { EnvironmentLights } from "./Components/view/Lights.js";
-import { Sky } from "./Components/view/Sky.js";
+import { Earth } from "./Components/view/Earth.js";
 
 export default function Experience() {
   return (
@@ -21,7 +21,7 @@ export default function Experience() {
         <Player />
         <Floors />
       </Physics>
-      <Sky />
+      <Earth />
     </>
   );
 }

@@ -432,7 +432,7 @@ export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
   );
 }
 
-export function Sky() {
+export function Earth() {
   const endPosition = new THREE.Vector3(128, 0, 192);
   const gui = getGui();
 
