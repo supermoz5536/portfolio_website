@@ -9,15 +9,10 @@ import { useSystemStore } from "../../../../store/system_store";
 import { useThree } from "@react-three/fiber";
 
 export function Player() {
+  const state = useThree();
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
 
-  const [smoothCameraPosition, setSmoothCameraPosition] = useState(
-    new THREE.Vector3(0, 4, 8),
-  );
-  const [smoothCameraTarget, setSmoothCameraTarget] = useState(
-    new THREE.Vector3(),
-  );
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
@@ -27,7 +22,17 @@ export function Player() {
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
 
-  const state = useThree();
+  const [smoothCameraPosition, setSmoothCameraPosition] = useState(
+    new THREE.Vector3(0, 4, 8),
+  );
+
+  const [smoothCameraTarget, setSmoothCameraTarget] = useState(
+    new THREE.Vector3(),
+  );
+
+  const [savedCemeraPosition, setSavedCameraPosition] = useState(
+    new THREE.Vector3(),
+  );
 
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
@@ -74,8 +79,15 @@ export function Player() {
         setIsPlayerFocused(isPlayerFocused);
 
         if (isPlayerFocused) {
-          setSmoothCameraPosition(state.camera.position.clone());
-          setSmoothCameraTarget(state.camera.position.clone());
+          state.camera.position.set(
+            savedCemeraPosition.x,
+            savedCemeraPosition.y,
+            savedCemeraPosition.z,
+          );
+        }
+
+        if (!isPlayerFocused) {
+          setSavedCameraPosition(state.camera.position.clone());
         }
       },
     );

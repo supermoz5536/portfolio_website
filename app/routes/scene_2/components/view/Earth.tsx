@@ -419,7 +419,6 @@ export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
     if (sunRef.current && sunPosition) {
       setPosition(sunPosition);
       materialRef.current.uniforms.uSunPosition.value = sunPosition;
-      console.log("sunPosition.y", sunPosition.y);
 
       sunRef.current.lookAt(playerPosition);
     }

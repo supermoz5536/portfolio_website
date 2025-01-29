@@ -11,6 +11,7 @@ import {
 } from "./ShowCaseContents";
 import { getGui } from "../../util/lil-gui";
 import { useSystemStore } from "~/store/system_store";
+import ThreePlayerStore from "../../../../store/three_player_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 
@@ -70,6 +71,10 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const [savedCameraPosition, setSavedCameraPosition] = useState(
+    new THREE.Vector3(),
+  );
+
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
       position.x, // prettier-ignore
@@ -77,6 +82,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
       position.z + 27,
     ),
   );
+
   const [lerpCameraTarget, setLeapCameraTarget] = useState(
     new THREE.Vector3(
       position.x, // prettier-ignore
@@ -87,6 +93,10 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const setIsPlayerFocus = useSystemStore(
     (state: any) => state.setIsPlayerFocus,
+  );
+
+  const currentPosition = ThreePlayerStore(
+    (state: any) => state.currentPosition,
   );
 
   useEffect(() => {
@@ -101,9 +111,13 @@ export function ShowCase({ position, index }: ShowCaseProps) {
       },
     );
 
-    document.addEventListener("mouseup", () => setIsDown(false));
-    document.addEventListener("touchend", () => setIsDown(false));
-    document.addEventListener("touchcancel", () => setIsDown(false));
+    const handleMouseUp = () => setIsDown(false);
+    const handleTouchEnd = () => setIsDown(false);
+    const handleTouchCancel = () => setIsDown(false);
+
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("touchcancel", handleTouchCancel);
 
     /**
      * Device Setup
@@ -150,9 +164,9 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     // };
     return () => {
       unsubscribeIsPlayerFocused();
-      document.removeEventListener("mouseup", () => setIsDown(false));
-      document.removeEventListener("touchend", () => setIsDown(false));
-      document.removeEventListener("touchcancel", () => setIsDown(false));
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchend", handleTouchEnd);
+      document.removeEventListener("touchcancel", handleTouchCancel);
     };
   }, []);
 
@@ -262,12 +276,18 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
       const cameraTargetPosition = state.camera.position.clone();
 
-      // Playerの位置を逆算
-      cameraTargetPosition.y -= 10.65;
-      cameraTargetPosition.z -= 20.5;
+      // Direction
+      const forwardDir: any = new THREE.Vector3();
+      forwardDir.subVectors(currentPosition, state.camera.position);
+      forwardDir.y = 0;
+      forwardDir.normalize();
 
-      // ターゲット補正
-      cameraTargetPosition.z -= 4.25;
+      // Player に照準
+      cameraTargetPosition.y -= 5;
+      cameraTargetPosition.add(forwardDir.multiplyScalar(15));
+
+      // cameraTarget に照準
+      cameraTargetPosition.add(forwardDir.multiplyScalar(10));
 
       setLeapCameraTarget(cameraTargetPosition);
     }
@@ -276,14 +296,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const handleZoomOut = () => {
     setIsZoomIn(false);
     setIsPlayerFocus(true);
-
-    setLeapCamera(
-      new THREE.Vector3(
-        position.x, // prettier-ignore
-        position.y + 10,
-        position.z + 27,
-      ),
-    );
   };
 
   return (
@@ -294,8 +306,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           scale={1.1}
           onPointerDown={handlePointerDown}
           onPointerUp={handleZoomIn}
-
-          // onClick={handleZoomIn} // prettier-ignore
         >
           {/* Bottom */}
           <mesh
