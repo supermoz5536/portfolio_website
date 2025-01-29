@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import skySphereVertex from "./shaders/skySphere/vertex.glsl";
-import skySphereFragment from "./shaders/skySphere/fragment.glsl";
+import skySphereVertex from "./shaders/earthSphere/vertex.glsl";
+import skySphereFragment from "./shaders/earthSphere/fragment.glsl";
 
-export function SkySphereMaterial() {
+export function EarthSphereMaterial() {
   const material = new THREE.ShaderMaterial({
     uniforms: {
       // 大気（空）のグラデーションを制御するために使う

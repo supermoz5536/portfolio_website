@@ -1,14 +1,15 @@
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import backGroundVertex from "./Materials/shaders/skyBackground/vertex.glsl";
-import backGroundFragment from "./Materials/shaders/skyBackground/fragment.glsl";
-import { SkySphereMaterial } from "./Materials/SkySphereMaterial";
+import backGroundVertex from "./Materials/shaders/earthBackground/vertex.glsl";
+import backGroundFragment from "./Materials/shaders/earthBackground/fragment.glsl";
+import { EarthSphereMaterial } from "./Materials/EarthSphereMaterial";
 import { getGui } from "../../util/lil-gui";
 import { vec3 } from "three/webgpu";
 import { Point } from "@react-three/drei";
 import { StarsMaterial } from "./Materials/StarsMaterial";
 import ThreePlayer from "../../../../store/three_player_store";
+import { SunMaterial } from "./Materials/SunMaterial";
 
 type CommonProps = {
   sunPosition: THREE.Vector3;
@@ -231,7 +232,7 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
 
 export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   const geometryRef = useRef<any>(new THREE.SphereGeometry(1000, 128, 64));
-  const materialRef = useRef<any>(SkySphereMaterial());
+  const materialRef = useRef<any>(EarthSphereMaterial());
   const geometry = geometryRef.current;
   const material = materialRef.current;
 
@@ -409,12 +410,16 @@ export function Stars({ sunPosition }: StartsProps) {
 
 export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
   const sunRef = useRef<any>();
+  const materialRef = useRef<any>(SunMaterial());
+
   const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
-    // 後ほどlerp処理に変更
     if (sunRef.current && sunPosition) {
       setPosition(sunPosition);
+      materialRef.current.uniforms.uSunPosition.value = sunPosition;
+      console.log("sunPosition.y", sunPosition.y);
+
       sunRef.current.lookAt(playerPosition);
     }
   }, [sunPosition, playerPosition]);
@@ -424,7 +429,7 @@ export function Sun({ sunPosition, playerPosition }: SunPositionProps) {
       <mesh
         ref={sunRef}
         geometry={sunGeometry}
-        material={sunMaterial}
+        material={materialRef.current}
         position={position}
       />
       ;
@@ -475,7 +480,7 @@ export function Earth() {
             currentPosition.z / endPosition.z) / 2; // prettier-ignore
 
         setPlayerPosition(currentPosition);
-        // setPlayerMoveRatio(playerMoveRatio);
+        setPlayerMoveRatio(playerMoveRatio);
       },
     );
 

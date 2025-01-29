@@ -28,7 +28,7 @@ const showcaseBodyMaterial = new THREE.MeshStandardMaterial({
 const showcaseSheetMaterial = new THREE.MeshStandardMaterial({
   color: "#f1f1f1",
 });
-const showcaseGlassMaterial = new THREE.MeshPhysicalMaterial({
+const glassMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0,
   roughness: 0,
   transmission: 1,
@@ -38,6 +38,18 @@ const showcaseGlassMaterial = new THREE.MeshPhysicalMaterial({
   transparent: true, // 透明を有効化
   color: 0xffffff, // 完全な白
   depthWrite: false,
+});
+
+const glassMaterialFloor10 = new THREE.MeshPhysicalMaterial({
+  metalness: 0,
+  roughness: 0,
+  transmission: 1,
+  ior: 1.62,
+  thickness: 0.001,
+  opacity: 0.95, // 透明度を強調
+  transparent: true, // 透明を有効化
+  color: 0xffffff, // 完全な白
+  depthWrite: true,
 });
 
 const showcaseComponents: any = {
@@ -299,7 +311,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           {/* Body Left */}
           <mesh
             geometry={boxGeometry}
-            material={showcaseGlassMaterial}
+            material={index == 10 ? glassMaterialFloor10 : glassMaterial}
             position={[-1.95, 3, 0]}
             scale={[0.1, 4, 4]}
           />
@@ -307,7 +319,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           {/* Body Right */}
           <mesh
             geometry={boxGeometry}
-            material={showcaseGlassMaterial}
+            material={index == 10 ? glassMaterialFloor10 : glassMaterial}
             position={[1.95, 3, 0]}
             scale={[0.1, 4, 4]}
           />
@@ -315,7 +327,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           {/* Body Forward */}
           <mesh
             geometry={boxGeometry}
-            material={showcaseGlassMaterial}
+            material={index == 10 ? glassMaterialFloor10 : glassMaterial}
             position={[0, 3, -1.95]}
             rotation={[0, Math.PI / 2, 0]}
             scale={[0.1, 4, 4]}
