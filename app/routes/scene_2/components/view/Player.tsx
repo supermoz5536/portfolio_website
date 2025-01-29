@@ -13,7 +13,7 @@ export function Player() {
   const meshRef: any = useRef();
 
   const [smoothCameraPosition, setSmoothCameraPosition] = useState(
-    new THREE.Vector3(0, 0, 50),
+    new THREE.Vector3(0, 4, 8),
   );
   const [smoothCameraTarget, setSmoothCameraTarget] = useState(
     new THREE.Vector3(),
@@ -62,7 +62,7 @@ export function Player() {
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(0, 500, 500));
+        setSmoothCameraPosition(new THREE.Vector3(0, 4, 8));
         setIsActicated(isActivated);
       },
     );
@@ -139,8 +139,8 @@ export function Player() {
       setSmoothCameraPosition(
         new THREE.Vector3(
           rigidRef.current.translation().x,
-          rigidRef.current.translation().y,
-          rigidRef.current.translation().z + 50,
+          rigidRef.current.translation().y + 4,
+          rigidRef.current.translation().z + 8,
         ),
       );
 

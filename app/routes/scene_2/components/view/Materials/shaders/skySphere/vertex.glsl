@@ -61,7 +61,7 @@ gl_Position = projectedPosition;
 
     //「大気が厚い（＝エレベーション値が大きい）場合は、
     // 中央からのわずかな高さのずれでも色の変化が緩やかになるように調整する」
-    float horizonIntensity = (uv.y - 0.5) / uAtmosphereElevation;
+    float horizonIntensity = (uv.y - 0.465) / uAtmosphereElevation;
 
     // 計算で得た「中央からの高さのずれ」に基づく値（horizonIntensity）を、
     // 1.0から引いています。

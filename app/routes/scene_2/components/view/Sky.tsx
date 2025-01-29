@@ -18,7 +18,10 @@ type CommonProps = {
 type SphereProps = CommonProps;
 type UseCustomRenderProps = CommonProps;
 
-type BackGroundProps = { texture: any };
+type BackGroundProps = {
+  textureSky: any;
+  textureGround: any;
+};
 type GetSunPositionProps = { playerMoveRatio: number };
 type StartsProps = { sunPosition: THREE.Vector3 };
 type SunPositionProps = {
@@ -37,14 +40,59 @@ const sunMaterial = new THREE.MeshBasicMaterial({
   blending: THREE.AdditiveBlending, // 加算ブレンドを適用
 });
 
-export function useCustomRender({
+export function useCustomRenderSky({
   sunPosition,
   playerMoveRatio,
 }: UseCustomRenderProps) {
   const state = useThree();
   const customRender = useRef<any>({});
   const sphere = Sphere({ sunPosition, playerMoveRatio });
-  const ground = SyGround();
+
+  useEffect(() => {
+    /**
+     * Setup Custom Render
+     */
+    customRender.current.scene = new THREE.Scene();
+
+    customRender.current.camera = state.camera.clone();
+    customRender.current.camera.quaternion.copy(state.camera.quaternion);
+    customRender.current.camera.position.copy(state.camera.position);
+
+    customRender.current.resolutionRatio = 0.1;
+    customRender.current.renderTarget = new THREE.RenderTarget(
+      window.innerWidth * customRender.current.resolutionRatio,
+      window.innerHeight * customRender.current.resolutionRatio,
+      // Options
+      //    generateMipmaps: 遠くのオブジェクトがぼやけるように自動で解像度を落とす
+      //    パフォーマンス最適化のために無効化
+      { generateMipmaps: false },
+    );
+
+    customRender.current.texture = customRender.current.renderTarget.texture;
+
+    customRender.current.scene.add(sphere);
+  }, []);
+
+  useFrame(() => {
+    // cunstomRenderを同じ視点で描画させるため、通常カメラと回転角を同期
+    customRender.current.camera.quaternion.copy(state.camera.quaternion);
+    customRender.current.camera.position.copy(state.camera.position);
+
+    // レンダーターゲットを解像度を下げた customRender に設定
+    state.gl.setRenderTarget(customRender.current.renderTarget);
+    // レンダーのセットアップ
+    state.gl.render(customRender.current.scene, customRender.current.camera);
+    // 通常のレンダーに設定を切り替え（さもないと通常のプレイ画面が描画されない）
+    state.gl.setRenderTarget(null);
+  });
+
+  return customRender.current;
+}
+
+export function useCustomRenderGround() {
+  const state = useThree();
+  const customRender = useRef<any>({});
+  const ground = Ground();
 
   useEffect(() => {
     /**
@@ -68,7 +116,6 @@ export function useCustomRender({
 
     customRender.current.texture = customRender.current.renderTarget.texture;
 
-    customRender.current.scene.add(sphere);
     customRender.current.scene.add(ground);
   }, []);
 
@@ -103,12 +150,13 @@ export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
   return sunPosition;
 }
 
-export function Background({ texture }: BackGroundProps) {
+export function Background({ textureSky, textureGround }: BackGroundProps) {
   const backGroundRef = useRef<any>();
   const materialRef = useRef<any>(
     new THREE.ShaderMaterial({
       uniforms: {
-        uTexture: { value: null },
+        uTextureSky: { value: null },
+        uTextureGround: { value: null },
       },
       vertexShader: backGroundVertex,
       fragmentShader: backGroundFragment,
@@ -124,9 +172,11 @@ export function Background({ texture }: BackGroundProps) {
   useEffect(() => {
     setIsMounted(true);
     if (backGroundRef.current) {
-      backGroundRef.current.material.uniforms.uTexture.value = texture;
+      backGroundRef.current.material.uniforms.uTextureSky.value = textureSky;
+      backGroundRef.current.material.uniforms.uTextureGround.value =
+        textureGround;
     }
-  }, [texture]);
+  }, [textureSky, textureGround]);
 
   useFrame(() => {
     // パースペクティブカメラかどうかチェック
@@ -136,7 +186,7 @@ export function Background({ texture }: BackGroundProps) {
     ) {
       // 三角関数で計算するためにfovを度数からラジアンに変換
       const fovInRadian = (state.camera.fov * Math.PI) / 180;
-      const offset = 0.125;
+      const offset = 0.15;
 
       // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
       const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ
@@ -207,29 +257,44 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
      * lil-gui
      */
     if (gui) {
+      const controller1 =
       gui
       .add(material.uniforms.uSunBaseIntensityMultiplier, "value", 0, 1, 0.001)
       .name("uSunBaseIntensityMultiplier"); // prettier-ignore
 
+      const controller2 =
       gui
         .add(material.uniforms.uSunLayerIntensityMultiplier, "value", 0, 1, 0.001)
         .name("uSunLayerIntensityMultiplier"); // prettier-ignore
 
+      const controller3 =
       gui
         .add(material.uniforms.uAtomAngleIntensityMultiplier, "value", 0, 1, 0.001)
         .name("uAtomAngleIntensityMultiplier"); // prettier-ignore
 
+      const controller4 =
       gui
         .add(material.uniforms.uAtomElevationIntensityMultiplier, "value", 0, 1, 0.001) 
         .name("uAtomElevationIntensityMultiplier"); // prettier-ignore
 
+      const controller5 =
       gui
         .add(material.uniforms.uAtomDayCycleIntensityMultiplier, "value", 0, 1, 0.001) 
         .name("uAtomDayCycleIntensityMultiplier"); // prettier-ignore
 
+      const controller6 =
       gui
         .add(material.uniforms.uDayCycleProgress, "value", 0, 1, 0.001)
         .name("uDayCycleProgress"); // prettier-ignore
+
+      return () => {
+        controller1.destroy();
+        controller2.destroy();
+        controller3.destroy();
+        controller4.destroy();
+        controller5.destroy();
+        controller6.destroy();
+      };
     }
   }, []);
 
@@ -245,18 +310,21 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   return mesh;
 }
 
-export function SyGround() {
+export function Ground() {
   const textureLoader = new THREE.TextureLoader();
   const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+
   const mesh = new THREE.Mesh(
-    new THREE.CircleGeometry(1000, 124),
+    new THREE.CircleGeometry(4000),
     new THREE.MeshBasicMaterial({
       map: groundTexture,
       side: THREE.DoubleSide,
     }),
   );
-  mesh.position.set(0, -200, 0);
+
+  mesh.position.set(0, -500, 0);
   mesh.rotation.set(-Math.PI / 2, 0, 0);
+
   return mesh;
 }
 
@@ -368,26 +436,32 @@ export function Sky() {
   const endPosition = new THREE.Vector3(128, 0, 192);
   const gui = getGui();
 
-  const [bgTexture, setBgTexture] = useState();
   const [playerPosition, setPlayerPosition] = useState(new THREE.Vector3());
   const [playerMoveRatio, setPlayerMoveRatio] = useState(0);
+
   const [sunPosition, setSunPosition] = useState(new THREE.Vector3());
+
+  const [bgTextureSky, setBgTextureSky] = useState();
+  const [bgTextureGround, setBgTextureGround] = useState();
 
   /**
    * Setup Custom Render
    */
 
-  const customRender = useCustomRender({
+  const customRenderSky = useCustomRenderSky({
     sunPosition: sunPosition,
     playerMoveRatio: playerMoveRatio,
   });
 
+  const customRenderGround = useCustomRenderGround();
+
   useEffect(() => {
     /**
-     * Texture
+     * Setup Texture
      */
 
-    setBgTexture(customRender.texture);
+    setBgTextureSky(customRenderSky.texture);
+    setBgTextureGround(customRenderGround.texture);
 
     /*
      * Player Position
@@ -401,7 +475,7 @@ export function Sky() {
             currentPosition.z / endPosition.z) / 2; // prettier-ignore
 
         setPlayerPosition(currentPosition);
-        setPlayerMoveRatio(playerMoveRatio);
+        // setPlayerMoveRatio(playerMoveRatio);
       },
     );
 
@@ -438,7 +512,7 @@ export function Sky() {
 
   return (
     <>
-      <Background texture={bgTexture} />
+      <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
       <Stars sunPosition={sunPosition} />
       <Sun sunPosition={sunPosition} playerPosition={playerPosition} />
     </>
