@@ -66,6 +66,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
   const state = useThree();
 
+  const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -99,6 +100,10 @@ export function ShowCase({ position, index }: ShowCaseProps) {
         if (isPlayerFocused == true) handleZoomOut();
       },
     );
+
+    document.addEventListener("mouseup", () => setIsDown(false));
+    document.addEventListener("touchend", () => setIsDown(false));
+    document.addEventListener("touchcancel", () => setIsDown(false));
 
     /**
      * Device Setup
@@ -145,6 +150,9 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     // };
     return () => {
       unsubscribeIsPlayerFocused();
+      document.removeEventListener("mouseup", () => setIsDown(false));
+      document.removeEventListener("touchend", () => setIsDown(false));
+      document.removeEventListener("touchcancel", () => setIsDown(false));
     };
   }, []);
 
@@ -232,8 +240,16 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     }
   });
 
+  const handlePointerDown = () => {
+    setIsDown(true);
+  };
+
   const handleZoomIn = () => {
-    if (isZoomIn == false) {
+    if (isDown && isZoomIn == false) {
+      setIsDown(false);
+      setIsPlayerFocus(false);
+      setIsZoomIn(true);
+
       /**
        * Update to Current Camera Position
        */
@@ -254,9 +270,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
       cameraTargetPosition.z -= 4.25;
 
       setLeapCameraTarget(cameraTargetPosition);
-
-      setIsPlayerFocus(false);
-      setIsZoomIn(true);
     }
   };
 
@@ -279,10 +292,10 @@ export function ShowCase({ position, index }: ShowCaseProps) {
         {/* ShowCase */}
         <group
           scale={1.1}
-          onClick={handleZoomIn}
-          // onDoubleClick={handleZoomOut}
+          onPointerDown={handlePointerDown}
           onPointerUp={handleZoomIn}
-          // onContextMenu={handleZoomOut}
+
+          // onClick={handleZoomIn} // prettier-ignore
         >
           {/* Bottom */}
           <mesh

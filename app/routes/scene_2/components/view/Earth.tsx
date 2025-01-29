@@ -152,12 +152,14 @@ export function getSunPosition({ playerMoveRatio }: GetSunPositionProps) {
 }
 
 export function Background({ textureSky, textureGround }: BackGroundProps) {
+  const state = useThree();
   const backGroundRef = useRef<any>();
   const materialRef = useRef<any>(
     new THREE.ShaderMaterial({
       uniforms: {
         uTextureSky: { value: null },
         uTextureGround: { value: null },
+        uIsMobile: { value: true },
       },
       vertexShader: backGroundVertex,
       fragmentShader: backGroundFragment,
@@ -168,14 +170,13 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const state = useThree();
-
   useEffect(() => {
     setIsMounted(true);
     if (backGroundRef.current) {
       backGroundRef.current.material.uniforms.uTextureSky.value = textureSky;
-      backGroundRef.current.material.uniforms.uTextureGround.value =
-        textureGround;
+      backGroundRef.current.material.uniforms.uTextureGround.value = textureGround; // prettier-ignore
+      backGroundRef.current.material.uniforms.uIsMobile.value =
+        window.innerWidth < 500 ? true : false;
     }
   }, [textureSky, textureGround]);
 

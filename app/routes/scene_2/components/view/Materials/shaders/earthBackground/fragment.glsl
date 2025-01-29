@@ -1,5 +1,6 @@
 uniform sampler2D uTextureSky;
 uniform sampler2D uTextureGround;
+uniform bool uIsMobile;
 
 varying vec2 vUv;
 
@@ -8,10 +9,9 @@ void main () {
     vec4 colorGround = texture2D(uTextureGround, vUv);
     float lowStep = 0.525;
 
-    // x軸中央から両サイドの離れるほど、gradientYの適用範囲が下降
-    // 2.0: 指数関数的傾斜の生成
-    // 0.1: Multiplier
-    lowStep -= pow(abs(vUv.x - 0.5), 2.0) * 0.175;
+    float holizontalCurveMultiplier = uIsMobile ? 0.005 : 0.175;
+
+    lowStep -= pow(abs(vUv.x - 0.5), 2.0) * holizontalCurveMultiplier;
     
     // lowStepから + 0.05の範囲でグラデーション
     // x軸がサイドに広がるにつれて、グラデーション領域が下降

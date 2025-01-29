@@ -8,8 +8,6 @@ void main () {
     float sunHight = uSunPosition.y;
     float groundHight = -80.0;
 
-    // float sunOpacity = sunHight > groundHight ? 1.0 : 0.0; 
-
     float sunOpacity = smoothstep(groundHight, groundHight + 20.0, sunHight);
 
     float alpha = mix(0.0, 1.0, sunOpacity);
