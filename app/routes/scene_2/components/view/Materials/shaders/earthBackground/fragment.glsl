@@ -1,13 +1,14 @@
 uniform sampler2D uTextureSky;
 uniform sampler2D uTextureGround;
 uniform bool uIsMobile;
+uniform float uLowStep;
 
 varying vec2 vUv;
 
 void main () {
     vec4 colorSky = texture2D(uTextureSky, vUv);
     vec4 colorGround = texture2D(uTextureGround, vUv);
-    float lowStep = 0.525;
+    float lowStep = uLowStep;
 
     float holizontalCurveMultiplier = uIsMobile ? 0.005 : 0.175;
 

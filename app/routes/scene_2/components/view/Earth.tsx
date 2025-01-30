@@ -160,6 +160,7 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
         uTextureSky: { value: null },
         uTextureGround: { value: null },
         uIsMobile: { value: true },
+        uLowStep: { value: 0.5 },
       },
       vertexShader: backGroundVertex,
       fragmentShader: backGroundFragment,
@@ -179,6 +180,22 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
         window.innerWidth < 500 ? true : false;
     }
   }, [textureSky, textureGround]);
+
+  useFrame(() => {
+    const Euler = new THREE.Euler().setFromQuaternion(
+      state.camera.quaternion,
+      "YXZ",
+    );
+    const angleX = Euler.x;
+    const baseLowStep = 0.5;
+    const angleYRatio = angleX / Math.PI; // [-0.5 - 0.5];
+    const adjustedLowStep = baseLowStep - angleYRatio;
+
+    backGroundRef.current.material.uniforms.uLowStep.value = adjustedLowStep // prettier-ignore
+
+    // const test = angleX + 0.19739555984989393;
+    // console.log("test", test);
+  });
 
   useFrame(() => {
     // パースペクティブカメラかどうかチェック

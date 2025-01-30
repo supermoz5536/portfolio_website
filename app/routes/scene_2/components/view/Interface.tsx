@@ -20,6 +20,7 @@ export function MovementPad() {
   let regionData: any = {};
 
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
+
   const setIsPlayerMoved = ThreePlayerStore(
     (state: any) => state.setIsPlayerMoved,
   );
@@ -103,23 +104,28 @@ export function MovementPad() {
 
     const handleMouseDown = (event: MouseEvent) => {
       if (isActicated) {
-        setIsTouched(true);
-
-        // Re Position Pad
-        regionRef.current.style.opacity = 1;
-        regionRef.current.style.transform = "scale(1.0)";
-
-        const scene2Element = document.getElementById("scene2");
-        padRef.current.style.top =
-          event.pageY - scene2Element!.offsetLeft + "px";
-        padRef.current.style.left = event.pageX + "px";
-
-        // Re Calculate RegionData and HandleData
-        alignAndConfigPad();
-
-        update(event.pageX, event.pageY);
       }
     };
+
+    // const handleMouseDown = (event: MouseEvent) => {
+    //   if (isActicated) {
+    //     setIsTouched(true);
+
+    //     // Re Position Pad
+    //     regionRef.current.style.opacity = 1;
+    //     regionRef.current.style.transform = "scale(1.0)";
+
+    //     const scene2Element = document.getElementById("scene2");
+    //     padRef.current.style.top =
+    //       event.pageY - scene2Element!.offsetLeft + "px";
+    //     padRef.current.style.left = event.pageX + "px";
+
+    //     // Re Calculate RegionData and HandleData
+    //     alignAndConfigPad();
+
+    //     update(event.pageX, event.pageY);
+    //   }
+    // };
 
     const handleMouseMove = (event: MouseEvent) => {
       setIsTouched((prev) => {
