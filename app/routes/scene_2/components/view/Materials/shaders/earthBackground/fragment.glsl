@@ -21,3 +21,43 @@ void main () {
 
     gl_FragColor = vec4(finalColor, 1.0);
 }
+
+
+
+
+
+// uniform sampler2D uTextureSky;
+// uniform sampler2D uTextureGround;
+// uniform bool uIsMobile;
+
+// varying vec2 vUv;
+
+// void main () {
+//     vec4 colorSky = texture2D(uTextureSky, vUv);
+//     vec4 colorGround = texture2D(uTextureGround, vUv);
+    
+//     // 上接ピクセルのalpha値をサンプリング
+//     float alphaUp = texture2D(uTextureGround, vUv + vec2(0.0, 0.003)).a;
+
+//     float gradientY;
+
+//     // Groundを描画
+//     if (colorGround.a == 1.0) {
+//       gradientY = 1.0;
+
+//     // Skyを描画
+//     } else if (colorGround.a == 0.0) {
+//       gradientY = 0.0;
+//     } 
+    
+//     // 境界のぼかし描画
+//     if (alphaUp == 0.0 && colorGround.a == 1.0) {
+//         gradientY = smoothstep(vUv.y - 0.03, vUv.y + 0.03, vUv.y);
+//     }
+
+//     vec3 finalColor = mix(colorSky.rgb, colorGround.rgb, gradientY);
+
+//     gl_FragColor = vec4(finalColor, 1.0);
+// }
+
+
