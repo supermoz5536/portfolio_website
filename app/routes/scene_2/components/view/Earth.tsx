@@ -182,50 +182,53 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
   }, [textureSky, textureGround]);
 
   useFrame(() => {
-    const Euler = new THREE.Euler().setFromQuaternion(
-      state.camera.quaternion,
-      "YXZ",
-    );
-    const angleX = Euler.x;
-    const baseLowStep = 0.5;
-    const angleYRatio = angleX / Math.PI; // [-0.5 - 0.5];
-    const adjustedLowStep = baseLowStep - angleYRatio;
-
-    backGroundRef.current.material.uniforms.uLowStep.value = adjustedLowStep // prettier-ignore
-
-    // const test = angleX + 0.19739555984989393;
-    // console.log("test", test);
-  });
-
-  useFrame(() => {
-    // パースペクティブカメラかどうかチェック
-    if (
-      state.camera instanceof THREE.PerspectiveCamera &&
-      backGroundRef.current
-    ) {
-      // 三角関数で計算するためにfovを度数からラジアンに変換
-      const fovInRadian = (state.camera.fov * Math.PI) / 180;
-      const offset = 0.15;
-
-      // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
-      const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ
-      const planeWidth = planeHeight * state.camera.aspect;
-
-      // PlaneGeometry(1,1) を基準に、画面サイズに一致するよう調整
-      backGroundRef.current.scale.set(planeWidth, planeHeight, 1);
-
-      // Plane をカメラ前方のオフセット後の位置に移動
-      backGroundRef.current.position.copy(state.camera.position);
-      const normalizedDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
+    if (backGroundRef.current) {
+      /**
+       * Set LowStep
+       */
+      const Euler = new THREE.Euler().setFromQuaternion(
         state.camera.quaternion,
+        "YXZ",
       );
-      backGroundRef.current.position.addScaledVector(
-        normalizedDirection,
-        offset,
-      );
+      const angleX = Euler.x;
+      const initGap = 0.19739555984989393;
+      const initOffset = 0.01;
+      const adjustedAngleX = angleX + initGap + initOffset;
+      const maxAngle = 0.8257140905678528;
+      const adjustedOffset = ((adjustedAngleX * 2.125) / maxAngle) * 0.5; // [0.0 - 0.5]
+      const adjustedLowStep = 0.5 - adjustedOffset; // [0.5 - 0.0]
 
-      // カメラの向きに合わせて回転を同期
-      backGroundRef.current.quaternion.copy(state.camera.quaternion);
+      backGroundRef.current.material.uniforms.uLowStep.value = adjustedLowStep // prettier-ignore
+
+      /**
+       * Set Background
+       */
+
+      if (state.camera instanceof THREE.PerspectiveCamera) {
+        // 三角関数で計算するためにfovを度数からラジアンに変換
+        const fovInRadian = (state.camera.fov * Math.PI) / 180;
+        const offset = 0.15;
+
+        // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
+        const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ
+        const planeWidth = planeHeight * state.camera.aspect;
+
+        // PlaneGeometry(1,1) を基準に、画面サイズに一致するよう調整
+        backGroundRef.current.scale.set(planeWidth, planeHeight, 1);
+
+        // Plane をカメラ前方のオフセット後の位置に移動
+        backGroundRef.current.position.copy(state.camera.position);
+        const normalizedDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
+          state.camera.quaternion,
+        );
+        backGroundRef.current.position.addScaledVector(
+          normalizedDirection,
+          offset,
+        );
+
+        // カメラの向きに合わせて回転を同期
+        backGroundRef.current.quaternion.copy(state.camera.quaternion);
+      }
     }
   });
 
@@ -241,7 +244,7 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
           // 奥行きという基準がなくなり、完全に配置順によってのみ前後関係が決定され
           // 配置された瞬間に1番手前に描画されるので
           // 背景ば一番最初に配置されるよう順序指定する必要がある
-          renderOrder={-2}
+          renderOrder={-1}
         />
       )}
     </>

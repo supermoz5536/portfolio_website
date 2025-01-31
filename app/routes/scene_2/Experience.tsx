@@ -71,8 +71,8 @@ export default function Experience() {
       /> */}
       <OrbitControls
         ref={orbitTargetRef}
-        maxPolarAngle={(3 * Math.PI) / 4} // Above Limit
-        minPolarAngle={Math.PI / 2.5} // Below Limit
+        maxPolarAngle={Math.PI * 0.7} // Above Limit
+        minPolarAngle={Math.PI * 0.4} // Below Limit
       />
       <Physics>
         <EnvironmentLights />

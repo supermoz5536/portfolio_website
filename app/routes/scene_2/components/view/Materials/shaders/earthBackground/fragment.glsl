@@ -10,7 +10,7 @@ void main () {
     vec4 colorGround = texture2D(uTextureGround, vUv);
     float lowStep = uLowStep;
 
-    float holizontalCurveMultiplier = uIsMobile ? 0.005 : 0.175;
+    float holizontalCurveMultiplier = uIsMobile ? 0.005 : 0.1;
 
     lowStep -= pow(abs(vUv.x - 0.5), 2.0) * holizontalCurveMultiplier;
     
