@@ -12,6 +12,7 @@ import {
 import { getGui } from "../../util/lil-gui";
 import { useSystemStore } from "~/store/system_store";
 import ThreePlayerStore from "../../../../store/three_player_store";
+import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 
@@ -93,6 +94,10 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const currentPosition = ThreePlayerStore(
     (state: any) => state.currentPosition,
+  );
+
+  const setIsContentSelectedMouseDown = ThreeContentsStore(
+    (state: any) => state.setIsContentSelectedMouseDown,
   );
 
   useEffect(() => {
@@ -252,11 +257,13 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const handlePointerDown = () => {
     setIsDown(true);
+    setIsContentSelectedMouseDown(true);
   };
 
   const handleZoomIn = () => {
     if (isDown && isZoomIn == false) {
       setIsDown(false);
+      setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);
       setIsZoomIn(true);
 

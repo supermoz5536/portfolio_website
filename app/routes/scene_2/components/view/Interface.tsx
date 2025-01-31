@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import ThreeInterfaceStore from "../../../../store/three_interface_store";
 import { useSystemStore } from "../../../../store/system_store";
 import ThreePlayerStore from "../../../../store/three_player_store";
+import ThreeContentsStore from "../../../../store/three_contents_store";
 
 let isFirstTry = true;
 
@@ -12,6 +13,9 @@ export function MovementPad() {
   const padRef = useRef<any>();
   const regionRef = useRef<any>();
   const handleRef = useRef<any>();
+
+  const isContentSelectedMouseDownRef = useRef<any>(false);
+  const isPlayerFocusedRef = useRef<any>(true);
 
   const [isActicated, setIsActicated] = useState(false);
   const [updateRepeatTimeout, setUpdateRepeatTimeout] = useState<any>();
@@ -23,6 +27,14 @@ export function MovementPad() {
 
   const setIsPlayerMoved = ThreePlayerStore(
     (state: any) => state.setIsPlayerMoved,
+  );
+
+  const setIsPlayerFocus = useSystemStore(
+    (state: any) => state.setIsPlayerFocus,
+  );
+
+  const setIsContentSelectedMouseDown = ThreeContentsStore(
+    (state: any) => state.setIsContentSelectedMouseDown,
   );
 
   useEffect(() => {
@@ -103,42 +115,48 @@ export function MovementPad() {
      */
 
     const handleMouseDown = (event: MouseEvent) => {
-      if (isActicated) {
-      }
-    };
-
-    // const handleMouseDown = (event: MouseEvent) => {
-    //   if (isActicated) {
-    //     setIsTouched(true);
-
-    //     // Re Position Pad
-    //     regionRef.current.style.opacity = 1;
-    //     regionRef.current.style.transform = "scale(1.0)";
-
-    //     const scene2Element = document.getElementById("scene2");
-    //     padRef.current.style.top =
-    //       event.pageY - scene2Element!.offsetLeft + "px";
-    //     padRef.current.style.left = event.pageX + "px";
-
-    //     // Re Calculate RegionData and HandleData
-    //     alignAndConfigPad();
-
-    //     update(event.pageX, event.pageY);
-    //   }
-    // };
-
-    const handleMouseMove = (event: MouseEvent) => {
-      setIsTouched((prev) => {
-        if (prev) {
-          update(event.pageX, event.pageY);
+      setIsActicated((prev) => {
+        if (prev && !isContentSelectedMouseDownRef.current) {
+          isPlayerFocusedRef.current = false;
+          setIsPlayerFocus(false);
         }
         return prev;
       });
     };
 
+    const handleMouseMove = (event: MouseEvent) => {};
+
     const handleMouseUp = (event: MouseEvent) => {
-      setIsTouched(false);
-      resetHandlePosition();
+      // Contents に mouseDown した際に
+      // mouseUp の箇所が Contents 上か否かで
+      // playerFocus の更新種別を分岐
+
+      // mouseDown: Contents上
+      // mouseUp: Content外
+      if (isContentSelectedMouseDownRef.current) {
+        isPlayerFocusedRef.current = true;
+        setIsPlayerFocus(true);
+
+        // mouseDown: Contents上
+        // mouseUp: Content上
+      } else if (
+        !isContentSelectedMouseDownRef.current &&
+        isPlayerFocusedRef.current == true
+      ) {
+        isPlayerFocusedRef.current = false;
+        setIsPlayerFocus(false);
+
+        // mouseDown: Contents外
+        // mouseUp: Content外
+      } else if (
+        !isContentSelectedMouseDownRef.current &&
+        isPlayerFocusedRef.current == false
+      ) {
+        isPlayerFocusedRef.current = true;
+        setIsPlayerFocus(true);
+      }
+
+      setIsContentSelectedMouseDown(false);
     };
 
     /**
@@ -157,9 +175,19 @@ export function MovementPad() {
      * System
      */
     const unsubscribeSystemStore = useSystemStore.subscribe(
-      (state: any) => state.isActivated,
+      (state: any) => ({
+        isActivated: state.isActivated,
+        isPlayerFocused: state.isPlayerFocused,
+      }),
       (value) => {
-        setIsActicated(value);
+        setIsActicated(value.isActivated);
+      },
+    );
+
+    const unsubscribeContentsStore = ThreeContentsStore.subscribe(
+      (state: any) => state.isContentSelectedMouseDown,
+      (value) => {
+        isContentSelectedMouseDownRef.current = value;
       },
     );
 
@@ -173,6 +201,7 @@ export function MovementPad() {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
       unsubscribeSystemStore();
+      unsubscribeContentsStore();
     };
   }, []);
 

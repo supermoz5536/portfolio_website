@@ -67,7 +67,7 @@ export function Player() {
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(0, 4, 8));
+        setSmoothCameraPosition(new THREE.Vector3(0, 4, 800));
         setIsActicated(isActivated);
       },
     );
@@ -282,28 +282,3 @@ export function Player() {
     </>
   );
 }
-
-/**
- * Shadow Control
- */
-// const rayOrigin = {
-//   x: playerPosition.x,
-//   y: playerPosition.y,
-//   z: playerPosition.z,
-// };
-
-// rayOrigin.y -= 1;
-
-// const direction = { x: 0, y: -1, z: 0 };
-// const ray = new rapier.Ray(rayOrigin, direction);
-// const hit = world.castRay(ray, 10, true);
-
-// if (hit && hit?.timeOfImpact < 0.2) {
-//   if (hit && hit.collider.parent() && hit.collider.parent()?.userData) {
-//     const rigidBodyUserData: any = hit.collider.parent()?.userData;
-//     if (rigidBodyUserData.key == "floor") {
-//     } else {
-//     }
-//   } else {
-//   }
-// }

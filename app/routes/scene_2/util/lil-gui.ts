@@ -35,7 +35,7 @@ export const getGui = (): GUI | null => {
     wavesFolder = gui.addFolder("waves");
   }
 
-  // gui.hide();
+  gui.hide();
   // gui.close();
   return gui;
   // return null;
