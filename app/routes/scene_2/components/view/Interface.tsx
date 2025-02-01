@@ -157,7 +157,7 @@ export function MovementPad() {
     };
 
     /**
-     * Add Listemers
+     * Add Interface Listemers
      */
     document.addEventListener("resize", alignAndConfigPad);
     document.addEventListener("touchstart", handleTouchStart);
@@ -169,8 +169,9 @@ export function MovementPad() {
     document.addEventListener("mouseup", handleMouseUp);
 
     /**
-     * System
+     * Add Store Listeners
      */
+
     const unsubscribeSystemStore = useSystemStore.subscribe(
       (state: any) => ({
         isActivated: state.isActivated,

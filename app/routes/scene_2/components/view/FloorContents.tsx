@@ -9,6 +9,7 @@ import { Waves } from "./Waves";
 import { Question } from "./Question";
 import { PlayerShadow } from "./PlayerShadow";
 import { Fireflies } from "./Fireflies";
+import { StoneTablet } from "./StoneTablet";
 
 type FloorContentsProps = {
   index: number;
@@ -35,10 +36,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
   );
-
-  // useLayoutEffect(() => {
-  //   if (playerShadowRef.current) setPlayerShadowClipping(currentFloor);
-  // }, [index, currentFloor]);
 
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
@@ -92,6 +89,9 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* Empty Content */}
             {displayedQuestion.includes(index) && <Question />}
 
+            {/* StoneTablet */}
+            <StoneTablet position={adjustedPosition} index={index} />
+
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (
               <>
@@ -127,6 +127,10 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     </>
   );
 }
+
+// useLayoutEffect(() => {
+//   if (playerShadowRef.current) setPlayerShadowClipping(currentFloor);
+// }, [index, currentFloor]);
 
 // const playerShadowMaterial = new THREE.MeshStandardMaterial({
 //   color: "black",
