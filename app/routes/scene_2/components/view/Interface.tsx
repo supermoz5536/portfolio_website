@@ -16,17 +16,16 @@ export function MovementPad() {
 
   const isContentSelectedMouseDownRef = useRef<any>(false);
   const isPlayerFocusedRef = useRef<any>(true);
-  const isNoneSelectedRef = useRef<any>(false);
+  const isNoneSelectedMouseDownRef = useRef<any>(false);
   const isActicatedRef = useRef<any>(false);
-  const isTouchedRef = useRef<any>(false);
-
-  const [updateRepeatTimeout, setUpdateRepeatTimeout] = useState<any>();
+  const isMoveStartedRef = useRef<any>(false);
+  const touchStartTimeoutRef = useRef<any>();
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
   const setIsPlayerMoved = ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
-  const setIsNoneSelected = ThreeContentsStore((state: any) => state.setIsNoneSelected); // prettier-ignore
+  const setIsNoneSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsNoneSelectedMouseDown); // prettier-ignore
 
   let regionData: any = {};
 
@@ -50,8 +49,6 @@ export function MovementPad() {
           return;
         }
 
-        isTouchedRef.current = true;
-
         /**
          * Normal Control
          *
@@ -66,19 +63,33 @@ export function MovementPad() {
          * 0.3秒経過したら、コールバックで通常の handleTouchStartの中身を実行
          */
 
-        // Re Position Pad
-        regionRef.current.style.opacity = 1;
-        regionRef.current.style.transform = "scale(1.0)";
+        clearTimeout(touchStartTimeoutRef.current);
 
-        const scene2Element = document.getElementById("scene2");
-        padRef.current.style.top =
-          event.touches[0].pageY - scene2Element!.offsetLeft + "px";
-        padRef.current.style.left = event.touches[0].pageX + "px";
+        if (!isContentSelectedMouseDownRef.current) {
+          isNoneSelectedMouseDownRef.current = true;
+          setIsNoneSelectedMouseDown(true);
+          console.log("0");
+        }
 
-        // Re Calculate RegionData and HandleData
-        alignAndConfigPad();
+        touchStartTimeoutRef.current = setTimeout(() => {
+          isMoveStartedRef.current = true;
 
-        update(event.touches[0].pageX, event.touches[0].pageY);
+          // Re Position Pad
+          regionRef.current.style.opacity = 1;
+          regionRef.current.style.transform = "scale(1.0)";
+
+          const scene2Element = document.getElementById("scene2");
+          padRef.current.style.top =
+            event.touches[0].pageY - scene2Element!.offsetLeft + "px";
+          padRef.current.style.left = event.touches[0].pageX + "px";
+
+          // Re Calculate RegionData and HandleData
+          alignAndConfigPad();
+
+          update(event.touches[0].pageX, event.touches[0].pageY);
+
+          touchStartTimeoutRef.current = undefined;
+        }, 200);
       }
     };
 
@@ -86,7 +97,7 @@ export function MovementPad() {
       // scene2 の Three のシーン操作以外の
       // 入力を除外するための分岐
       if (isActicatedRef.current) {
-        if (isTouchedRef.current) {
+        if (isMoveStartedRef.current) {
           // Close Guide Window for the first time.
           if (isFirstTry) {
             isFirstTry = false;
@@ -102,8 +113,57 @@ export function MovementPad() {
     };
 
     const handleTouchEndAndCancel = () => {
-      isTouchedRef.current = false;
+      isMoveStartedRef.current = false;
       resetHandlePosition();
+
+      console.log("a");
+
+      // Timeout の Ref が破棄されてるかどうかで分岐を判断
+      // 既に破棄されてる場合、move を意味するので
+      // playerFocusは維持、
+      if (!touchStartTimeoutRef.current) {
+        console.log("b");
+        isPlayerFocusedRef.current = true;
+        isNoneSelectedMouseDownRef.current = false;
+        setIsPlayerFocus(true);
+        setIsNoneSelectedMouseDown(false);
+
+        setIsContentSelectedMouseDown(false);
+        return;
+      }
+
+      console.log("c");
+
+      // 破棄されてない場合、300ms 以下のタップを意味するので、
+      // 破棄した後に、タップの開始位置と終了位置に応じて分岐
+      clearTimeout(touchStartTimeoutRef.current);
+
+      // tapDown: Contents上
+      // tapEnd: Content上
+      if (
+        !isNoneSelectedMouseDownRef.current &&
+        !isContentSelectedMouseDownRef.current
+      ) {
+        console.log("d");
+        isPlayerFocusedRef.current = false;
+        isNoneSelectedMouseDownRef.current = false;
+        setIsPlayerFocus(false);
+        setIsNoneSelectedMouseDown(false);
+
+        setIsContentSelectedMouseDown(false);
+      }
+
+      // tapDown: Contents外
+      // tapEnd: Content外
+      else if (
+        isNoneSelectedMouseDownRef.current &&
+        !isContentSelectedMouseDownRef.current
+      ) {
+        console.log("e");
+        isNoneSelectedMouseDownRef.current = false;
+        setIsNoneSelectedMouseDown(false);
+        setIsContentSelectedMouseDown(false);
+      }
     };
 
     /**
@@ -113,13 +173,11 @@ export function MovementPad() {
     const handleMouseDown = (event: MouseEvent) => {
       if (isActicatedRef.current && !isContentSelectedMouseDownRef.current) {
         isPlayerFocusedRef.current = false;
-        isNoneSelectedRef.current = true;
+        isNoneSelectedMouseDownRef.current = true;
         setIsPlayerFocus(false);
-        setIsNoneSelected(true);
+        setIsNoneSelectedMouseDown(true);
       }
     };
-
-    const handleMouseMove = (event: MouseEvent) => {};
 
     const handleMouseUp = (event: MouseEvent) => {
       // Contents に mouseDown した際に
@@ -148,9 +206,9 @@ export function MovementPad() {
         isPlayerFocusedRef.current == false
       ) {
         isPlayerFocusedRef.current = true;
-        isNoneSelectedRef.current = false;
+        isNoneSelectedMouseDownRef.current = false;
         setIsPlayerFocus(true);
-        setIsNoneSelected(false);
+        setIsNoneSelectedMouseDown(false);
       }
 
       setIsContentSelectedMouseDown(false);
@@ -164,9 +222,8 @@ export function MovementPad() {
     document.addEventListener("touchmove", handleTouchMove);
     document.addEventListener("touchend", handleTouchEndAndCancel);
     document.addEventListener("touchcancel", handleTouchEndAndCancel);
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    // document.addEventListener("mousedown", handleMouseDown);
+    // document.addEventListener("mouseup", handleMouseUp);
 
     /**
      * Add Store Listeners
@@ -195,9 +252,8 @@ export function MovementPad() {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEndAndCancel);
       document.removeEventListener("touchcancel", handleTouchEndAndCancel);
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      // document.removeEventListener("mousedown", handleMouseDown);
+      // document.removeEventListener("mouseup", handleMouseUp);
       unsubscribeSystemStore();
       unsubscribeContentsStore();
     };
@@ -248,15 +304,6 @@ export function MovementPad() {
     // その場合グローバル座標からローカルの基準座標をマイナスすれば良い
     let newTop = pageY - regionData.globalOffset.top;
     let newLeft = pageX - regionData.localOffset.left;
-
-    console.log("pageX", pageX);
-    console.log("pageY", pageY);
-
-    console.log("regionData.localOffset.top", regionData.localOffset.top);
-    console.log("regionData.localOffset.Left", regionData.localOffset.left);
-
-    console.log("newTop", newTop);
-    console.log("newLeft", newLeft);
 
     // Math.pow() を使って、ハンドルの移動先 (newLeft, newTop) から
     // ジョイスティックの中心 (centerX, centerY) までの 距離の二乗 の値を
@@ -320,8 +367,6 @@ export function MovementPad() {
   }
 
   function resetHandlePosition() {
-    if (updateRepeatTimeout) clearTimeout(updateRepeatTimeout);
-
     /* Reset UI */
     regionRef.current.style.opacity = 0;
     regionRef.current.style.transform = "scale(0.0)";

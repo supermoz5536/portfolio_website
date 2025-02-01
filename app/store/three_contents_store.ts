@@ -6,16 +6,16 @@ export default create(
   subscribeWithSelector((set) => {
     return {
       isContentSelectedMouseDown: false,
-      isNoneSelected: false,
+      isNoneSelectedMouseDown: false,
 
       setIsContentSelectedMouseDown: (selected: boolean) => {
         set((state: any) => {
           return { isContentSelectedMouseDown: selected };
         });
       },
-      setIsNoneSelected: (selected: boolean) => {
+      setIsNoneSelectedMouseDown: (selected: boolean) => {
         set((state: any) => {
-          return { isNoneSelected: selected };
+          return { isNoneSelectedMouseDown: selected };
         });
       },
     };
