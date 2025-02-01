@@ -90,7 +90,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {displayedQuestion.includes(index) && <Question />}
 
             {/* StoneTablet */}
-            <StoneTablet position={adjustedPosition} index={index} />
+            <StoneTablet position={adjustedPosition} />
 
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (
