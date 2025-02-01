@@ -17,18 +17,18 @@ export function MovementPad() {
   const isContentSelectedMouseDownRef = useRef<any>(false);
   const isPlayerFocusedRef = useRef<any>(true);
   const isNoneSelectedRef = useRef<any>(false);
+  const isActicatedRef = useRef<any>(false);
+  const isTouchedRef = useRef<any>(false);
 
-  const [isActicated, setIsActicated] = useState(false);
   const [updateRepeatTimeout, setUpdateRepeatTimeout] = useState<any>();
-  const [isTouched, setIsTouched] = useState<boolean>(false);
-
-  let regionData: any = {};
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
   const setIsPlayerMoved = ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
   const setIsNoneSelected = ThreeContentsStore((state: any) => state.setIsNoneSelected); // prettier-ignore
+
+  let regionData: any = {};
 
   useEffect(() => {
     /**
@@ -42,64 +42,50 @@ export function MovementPad() {
      */
 
     const handleTouchStart = (event: TouchEvent) => {
-      // stale closure の問題を避けるため
-      // 更新関数の引数で最新の状態を取得する記述
-      setIsActicated((prev) => {
-        if (prev) {
-          // For closing Guide Window
-          if (isFirstTry) {
-            isFirstTry = false;
-            setIsPlayerMoved(true);
-            return prev;
-          }
-
-          setIsTouched(true);
-
-          // Re Position Pad
-          regionRef.current.style.opacity = 1;
-          regionRef.current.style.transform = "scale(1.0)";
-
-          const scene2Element = document.getElementById("scene2");
-          padRef.current.style.top =
-            event.touches[0].pageY - scene2Element!.offsetLeft + "px";
-          padRef.current.style.left = event.touches[0].pageX + "px";
-
-          // Re Calculate RegionData and HandleData
-          alignAndConfigPad();
-
-          update(event.touches[0].pageX, event.touches[0].pageY);
+      if (isActicatedRef.current) {
+        // For closing Guide Window
+        if (isFirstTry) {
+          isFirstTry = false;
+          setIsPlayerMoved(true);
+          return;
         }
 
-        return prev;
-      });
+        isTouchedRef.current = true;
+
+        // Re Position Pad
+        regionRef.current.style.opacity = 1;
+        regionRef.current.style.transform = "scale(1.0)";
+
+        const scene2Element = document.getElementById("scene2");
+        padRef.current.style.top =
+          event.touches[0].pageY - scene2Element!.offsetLeft + "px";
+        padRef.current.style.left = event.touches[0].pageX + "px";
+
+        // Re Calculate RegionData and HandleData
+        alignAndConfigPad();
+
+        update(event.touches[0].pageX, event.touches[0].pageY);
+      }
     };
 
     const handleTouchMove = (event: TouchEvent) => {
       // scene2 の Three のシーン操作以外の
       // 入力を除外するための分岐
-      setIsActicated((prev) => {
-        if (prev) {
-          setIsTouched((prev) => {
-            // Close Guide Window for the first time.
-            if (isFirstTry) {
-              isFirstTry = false;
-              setIsPlayerMoved(true);
-              return prev;
-            }
-
-            if (prev) {
-              update(event.touches[0].pageX, event.touches[0].pageY);
-            }
-            return prev;
-          });
+      if (isActicatedRef.current) {
+        if (isTouchedRef.current) {
+          // Close Guide Window for the first time.
+          if (isFirstTry) {
+            isFirstTry = false;
+            setIsPlayerMoved(true);
+            return;
+          }
+          update(event.touches[0].pageX, event.touches[0].pageY);
         }
-
-        return prev;
-      });
+      }
     };
 
     const handleTouchEndAndCancel = () => {
-      setIsTouched(false);
+      isTouchedRef.current = false;
       resetHandlePosition();
     };
 
@@ -108,15 +94,12 @@ export function MovementPad() {
      */
 
     const handleMouseDown = (event: MouseEvent) => {
-      setIsActicated((prev) => {
-        if (prev && !isContentSelectedMouseDownRef.current) {
-          isPlayerFocusedRef.current = false;
-          isNoneSelectedRef.current = true;
-          setIsPlayerFocus(false);
-          setIsNoneSelected(true);
-        }
-        return prev;
-      });
+      if (isActicatedRef.current && !isContentSelectedMouseDownRef.current) {
+        isPlayerFocusedRef.current = false;
+        isNoneSelectedRef.current = true;
+        setIsPlayerFocus(false);
+        setIsNoneSelected(true);
+      }
     };
 
     const handleMouseMove = (event: MouseEvent) => {};
@@ -178,7 +161,7 @@ export function MovementPad() {
         isPlayerFocused: state.isPlayerFocused,
       }),
       (value) => {
-        setIsActicated(value.isActivated);
+        isActicatedRef.current = value.isActivated;
       },
     );
 
