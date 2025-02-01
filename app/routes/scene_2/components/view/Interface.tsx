@@ -52,6 +52,20 @@ export function MovementPad() {
 
         isTouchedRef.current = true;
 
+        /**
+         * Normal Control
+         *
+         * 0.3secのタイマーをセット
+         * 0.3secのpad起動の猶予を持たせる
+         *
+         * 0.3秒以内に指が離れたら
+         * handleStopAndCancel内でタイマーを破棄し
+         * その上、if (isContentSelectedMouseDownRef) なら
+         * obj選択なので、handleStopAndCancel で playerFocus を解除
+         *
+         * 0.3秒経過したら、コールバックで通常の handleTouchStartの中身を実行
+         */
+
         // Re Position Pad
         regionRef.current.style.opacity = 1;
         regionRef.current.style.transform = "scale(1.0)";
@@ -79,7 +93,10 @@ export function MovementPad() {
             setIsPlayerMoved(true);
             return;
           }
-          update(event.touches[0].pageX, event.touches[0].pageY);
+
+          if (event.touches.length == 1) {
+            update(event.touches[0].pageX, event.touches[0].pageY);
+          }
         }
       }
     };

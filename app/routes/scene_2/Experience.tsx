@@ -74,7 +74,6 @@ export default function Experience() {
         ref={orbitTargetRef}
         maxPolarAngle={Math.PI * 0.7} // Above Limit
         minPolarAngle={Math.PI * 0.4} // Below Limit
-        touches={{ TWO: THREE.TOUCH.ROTATE }}
       />
       <Physics debug>
         <EnvironmentLights />
