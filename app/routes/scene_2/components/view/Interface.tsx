@@ -16,6 +16,7 @@ export function MovementPad() {
 
   const isContentSelectedMouseDownRef = useRef<any>(false);
   const isPlayerFocusedRef = useRef<any>(true);
+  const isNoneSelectedRef = useRef<any>(false);
 
   const [isActicated, setIsActicated] = useState(false);
   const [updateRepeatTimeout, setUpdateRepeatTimeout] = useState<any>();
@@ -23,19 +24,11 @@ export function MovementPad() {
 
   let regionData: any = {};
 
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
-
-  const setIsPlayerMoved = ThreePlayerStore(
-    (state: any) => state.setIsPlayerMoved,
-  );
-
-  const setIsPlayerFocus = useSystemStore(
-    (state: any) => state.setIsPlayerFocus,
-  );
-
-  const setIsContentSelectedMouseDown = ThreeContentsStore(
-    (state: any) => state.setIsContentSelectedMouseDown,
-  );
+  const setIsPlayerMoved = ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
+  const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
+  const setIsNoneSelected = ThreeContentsStore((state: any) => state.setIsNoneSelected); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -118,7 +111,9 @@ export function MovementPad() {
       setIsActicated((prev) => {
         if (prev && !isContentSelectedMouseDownRef.current) {
           isPlayerFocusedRef.current = false;
+          isNoneSelectedRef.current = true;
           setIsPlayerFocus(false);
+          setIsNoneSelected(true);
         }
         return prev;
       });
@@ -153,7 +148,9 @@ export function MovementPad() {
         isPlayerFocusedRef.current == false
       ) {
         isPlayerFocusedRef.current = true;
+        isNoneSelectedRef.current = false;
         setIsPlayerFocus(true);
+        setIsNoneSelected(false);
       }
 
       setIsContentSelectedMouseDown(false);

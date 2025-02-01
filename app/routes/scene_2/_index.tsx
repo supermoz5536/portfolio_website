@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/three_player_store";
+import ThreeContents from "../../store/three_contents_store";
 
 export default function Scene2() {
   const { isActivated, setIsActivated } = useSystemStore();
@@ -18,6 +19,7 @@ export default function Scene2() {
   const [isGuidOn, setIsGuideOn] = useState(true);
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
+  const [isNoneSelected, setIsNoneSelected] = useState(false);
 
   const activateOn = () => {
     setIsActivated(true);
@@ -73,6 +75,12 @@ export default function Scene2() {
       },
     );
 
+    const unsubscribeContents = ThreeContents.subscribe(
+      (state: any) => state.isNoneSelected,
+      (value) => {
+        setIsNoneSelected(value);
+      },
+    );
     /**
      * Resize
      */
@@ -273,7 +281,7 @@ export default function Scene2() {
                   </Button>
                 </AnimateIn>
 
-                {isPlayerFocused == false && (
+                {!isPlayerFocused && !isNoneSelected && (
                   <Button onClick={() => setIsPlayerFocus(true)}>
                     <div className="absolute flex justify-center items-center top-[90%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
                       <LuChevronDown className="h-10 w-10 text-gray-700 bounce-animation" />
