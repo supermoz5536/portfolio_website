@@ -23,7 +23,7 @@ export function MovementPad() {
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
-  const setIsPlayerMoved = ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
+  const setIsPlayerFirstMoved = ThreePlayerStore((state: any) => state.setIsPlayerFirstMoved); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
   const setIsNoneSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsNoneSelectedMouseDown); // prettier-ignore
 
@@ -45,7 +45,7 @@ export function MovementPad() {
         // For closing Guide Window
         if (isFirstTry) {
           isFirstTry = false;
-          setIsPlayerMoved(true);
+          setIsPlayerFirstMoved(true);
           return;
         }
 
@@ -101,7 +101,7 @@ export function MovementPad() {
           // Close Guide Window for the first time.
           if (isFirstTry) {
             isFirstTry = false;
-            setIsPlayerMoved(true);
+            setIsPlayerFirstMoved(true);
             return;
           }
 

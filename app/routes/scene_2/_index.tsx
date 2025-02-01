@@ -62,7 +62,7 @@ export default function Scene2() {
 
     // 入力を確認して非表示
     const unsubscribePlayer = ThreePlayer.subscribe(
-      (state: any) => state.isPlayerMoved,
+      (state: any) => state.isPlayerFirstMoved,
       (value: any) => {
         if (value) {
           // フェードアウト

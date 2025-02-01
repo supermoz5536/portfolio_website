@@ -5,14 +5,14 @@ import * as THREE from "three";
 export default create(
   subscribeWithSelector((set) => {
     return {
-      isPlayerMoved: false,
+      isPlayerFirstMoved: false,
       currentPosition: new THREE.Vector3(0, 0, 0),
       currentFloorNum: 0,
 
-      setIsPlayerMoved: (moved: boolean) => {
+      setIsPlayerFirstMoved: (moved: boolean) => {
         set((state: any) => {
-          if (state.isPlayerMoved == false) {
-            return { isPlayerMoved: true };
+          if (state.isPlayerFirstMoved == false) {
+            return { isPlayerFirstMoved: true };
           }
           return {};
         });

@@ -37,8 +37,8 @@ export function Player() {
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
 
-  const setIsPlayerMoved = 
-    ThreePlayerStore((state: any) => state.setIsPlayerMoved); // prettier-ignore
+  const setIsPlayerFirstMoved = 
+    ThreePlayerStore((state: any) => state.setIsPlayerFirstMoved); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -220,7 +220,7 @@ export function Player() {
 
       // Hide the guide when player starts moving
       if (impulse.x != 0 || impulse.y != 0 || impulse.z != 0) {
-        setIsPlayerMoved(true);
+        setIsPlayerFirstMoved(true);
       }
 
       // Opacity
