@@ -15,6 +15,7 @@ import ThreePlayerStore from "../../../../store/three_player_store";
 import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
+import ThreeInterfaceStore from "../../../../store/three_interface_store";
 
 type ShowCaseProps = {
   position: THREE.Vector3;
@@ -71,6 +72,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -109,6 +111,13 @@ export function ShowCase({ position, index }: ShowCaseProps) {
       (state: any) => state.isPlayerFocused,
       (isPlayerFocused) => {
         if (isPlayerFocused == true) handleZoomOut();
+      },
+    );
+
+    const unsubscribeIsTouchMoveOn = ThreeInterfaceStore.subscribe(
+      (state: any) => state.isTouchMoveOn,
+      (value) => {
+        setIsTouchMoveOn(value);
       },
     );
 
@@ -256,12 +265,15 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   });
 
   const handlePointerDown = () => {
+    console.log("handlePointerDown トリガー");
     setIsDown(true);
     setIsContentSelectedMouseDown(true);
   };
 
   const handleZoomIn = () => {
-    if (isDown && isZoomIn == false) {
+    console.log("handleZoomIn分岐外 isTouchMoveOn =", isTouchMoveOn);
+    if (isDown && !isZoomIn && !isTouchMoveOn) {
+      console.log("handleZoomIn分岐内");
       setIsDown(false);
       setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);

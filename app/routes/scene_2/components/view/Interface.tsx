@@ -13,21 +13,29 @@ export function MovementPad() {
   const padRef = useRef<any>();
   const regionRef = useRef<any>();
   const handleRef = useRef<any>();
+  let regionData: any = {};
+
+  /**
+   * Local State
+   */
 
   const isContentSelectedMouseDownRef = useRef<any>(false);
   const isPlayerFocusedRef = useRef<any>(true);
   const isNoneSelectedMouseDownRef = useRef<any>(false);
   const isActicatedRef = useRef<any>(false);
-  const isMoveStartedRef = useRef<any>(false);
+  const isTouchMoveOnRef = useRef<any>(false);
   const touchStartTimeoutRef = useRef<any>();
 
+  /**
+   * Store Updater
+   */
+
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
-  const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta);
   const setIsPlayerFirstMoved = ThreePlayerStore((state: any) => state.setIsPlayerFirstMoved); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
   const setIsNoneSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsNoneSelectedMouseDown); // prettier-ignore
-
-  let regionData: any = {};
+  const setMoveDelta = ThreeInterfaceStore((state: any) => state.setMoveDelta); // prettier-ignore
+  const setIsTouchMoveOn = ThreeInterfaceStore((state: any) => state.setIsTouchMoveOn); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -64,6 +72,9 @@ export function MovementPad() {
          */
 
         clearTimeout(touchStartTimeoutRef.current);
+        touchStartTimeoutRef.current = undefined;
+
+        // 空領域をタップした場合
 
         if (!isContentSelectedMouseDownRef.current) {
           isNoneSelectedMouseDownRef.current = true;
@@ -72,8 +83,6 @@ export function MovementPad() {
         }
 
         touchStartTimeoutRef.current = setTimeout(() => {
-          isMoveStartedRef.current = true;
-
           // Re Position Pad
           regionRef.current.style.opacity = 1;
           regionRef.current.style.transform = "scale(1.0)";
@@ -88,47 +97,67 @@ export function MovementPad() {
 
           update(event.touches[0].pageX, event.touches[0].pageY);
 
+          clearTimeout(touchStartTimeoutRef.current);
           touchStartTimeoutRef.current = undefined;
         }, 200);
       }
     };
 
     const handleTouchMove = (event: TouchEvent) => {
-      // scene2 の Three のシーン操作以外の
-      // 入力を除外するための分岐
+      // scene2 の Three のシーン操作以外の入力を除外
       if (isActicatedRef.current) {
-        if (isMoveStartedRef.current) {
-          // Close Guide Window for the first time.
-          if (isFirstTry) {
-            isFirstTry = false;
-            setIsPlayerFirstMoved(true);
-            return;
-          }
-
-          if (event.touches.length == 1) {
-            update(event.touches[0].pageX, event.touches[0].pageY);
-          }
+        // Close Guide Window for the first time.
+        if (isFirstTry) {
+          isFirstTry = false;
+          setIsPlayerFirstMoved(true);
+          return;
         }
+
+        isTouchMoveOnRef.current = true;
+        setIsTouchMoveOn(true);
+
+        update(event.touches[0].pageX, event.touches[0].pageY);
       }
     };
 
     const handleTouchEndAndCancel = () => {
-      isMoveStartedRef.current = false;
       resetHandlePosition();
 
       console.log("a");
 
-      // Timeout の Ref が破棄されてるかどうかで分岐を判断
-      // 既に破棄されてる場合、move を意味するので
-      // playerFocusは維持、
-      if (!touchStartTimeoutRef.current) {
-        console.log("b");
-        isPlayerFocusedRef.current = true;
+      // Timeout が破棄されてるなら move を意味する
+
+      // tapDown: Contents上
+      // tapEnd: Content上
+      if (
+        !touchStartTimeoutRef.current &&
+        !isNoneSelectedMouseDownRef.current
+      ) {
+        console.log("b1");
+
+        isTouchMoveOnRef.current = false;
+        setIsTouchMoveOn(false);
+
+        setIsContentSelectedMouseDown(false);
+
+        return;
+
+        // tapDown: Contents上
+        // tapEnd: Content外 (setIsContentSelectedMouseDownの初期化が必要)
+      } else if (
+        !touchStartTimeoutRef.current &&
+        isNoneSelectedMouseDownRef.current
+      ) {
+        console.log("b2");
+
+        isTouchMoveOnRef.current = false;
+        setIsTouchMoveOn(false);
+
         isNoneSelectedMouseDownRef.current = false;
-        setIsPlayerFocus(true);
         setIsNoneSelectedMouseDown(false);
 
         setIsContentSelectedMouseDown(false);
+
         return;
       }
 
@@ -137,17 +166,16 @@ export function MovementPad() {
       // 破棄されてない場合、300ms 以下のタップを意味するので、
       // 破棄した後に、タップの開始位置と終了位置に応じて分岐
       clearTimeout(touchStartTimeoutRef.current);
+      touchStartTimeoutRef.current = undefined;
 
       // tapDown: Contents上
       // tapEnd: Content上
-      if (
-        !isNoneSelectedMouseDownRef.current &&
-        !isContentSelectedMouseDownRef.current
-      ) {
+      if (!isNoneSelectedMouseDownRef.current) {
         console.log("d");
         isPlayerFocusedRef.current = false;
-        isNoneSelectedMouseDownRef.current = false;
         setIsPlayerFocus(false);
+
+        isNoneSelectedMouseDownRef.current = false;
         setIsNoneSelectedMouseDown(false);
 
         setIsContentSelectedMouseDown(false);
@@ -155,15 +183,17 @@ export function MovementPad() {
 
       // tapDown: Contents外
       // tapEnd: Content外
-      else if (
-        isNoneSelectedMouseDownRef.current &&
-        !isContentSelectedMouseDownRef.current
-      ) {
+      else if (isNoneSelectedMouseDownRef.current) {
         console.log("e");
         isNoneSelectedMouseDownRef.current = false;
         setIsNoneSelectedMouseDown(false);
+
         setIsContentSelectedMouseDown(false);
       }
+    };
+
+    const handleContextMenu = (e: Event) => {
+      e.preventDefault();
     };
 
     /**
@@ -222,6 +252,7 @@ export function MovementPad() {
     document.addEventListener("touchmove", handleTouchMove);
     document.addEventListener("touchend", handleTouchEndAndCancel);
     document.addEventListener("touchcancel", handleTouchEndAndCancel);
+    document.addEventListener("contextmenu", handleContextMenu);
     // document.addEventListener("mousedown", handleMouseDown);
     // document.addEventListener("mouseup", handleMouseUp);
 
@@ -252,6 +283,7 @@ export function MovementPad() {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEndAndCancel);
       document.removeEventListener("touchcancel", handleTouchEndAndCancel);
+      document.removeEventListener("contextmenu", handleContextMenu);
       // document.removeEventListener("mousedown", handleMouseDown);
       // document.removeEventListener("mouseup", handleMouseUp);
       unsubscribeSystemStore();
