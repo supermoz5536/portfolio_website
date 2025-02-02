@@ -25,6 +25,7 @@ export function MovementPad() {
   const isActicatedRef = useRef<any>(false);
   const isTouchMoveOnRef = useRef<any>(false);
   const touchStartTimeoutRef = useRef<any>();
+  const isOrbitControlMobileRef = useRef<any>(false);
 
   /**
    * Store Updater
@@ -56,6 +57,8 @@ export function MovementPad() {
           setIsPlayerFirstMoved(true);
           return;
         }
+
+        if (isOrbitControlMobileRef.current) return;
 
         /**
          * Normal Control
@@ -289,6 +292,13 @@ export function MovementPad() {
       },
     );
 
+    const unsubscribeIsOrbitControlMobile = useSystemStore.subscribe(
+      (state: any) => state.isOrbitControlMobile,
+      (value) => {
+        isOrbitControlMobileRef.current = value;
+      },
+    );
+
     return () => {
       document.removeEventListener("resize", alignAndConfigPad);
       document.removeEventListener("touchstart", handleTouchStart);
@@ -300,6 +310,7 @@ export function MovementPad() {
       // document.removeEventListener("mouseup", handleMouseUp);
       unsubscribeSystemStore();
       unsubscribeContentsStore();
+      unsubscribeIsOrbitControlMobile();
     };
   }, []);
 

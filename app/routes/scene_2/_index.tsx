@@ -117,6 +117,7 @@ export default function Scene2() {
       unsubscribePlayer();
       unsubscribeIsPlayerFocused();
       unsubscribeContents();
+      unsubscribeIsOrbitControlMobile();
       window.removeEventListener("resize", activateOff);
     };
   }, []);
