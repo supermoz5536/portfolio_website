@@ -75,6 +75,7 @@ export default function Experience() {
         maxPolarAngle={Math.PI * 0.7} // Above Limit
         minPolarAngle={Math.PI * 0.4} // Below Limit
       />
+
       <Physics debug>
         <EnvironmentLights />
         <Player />

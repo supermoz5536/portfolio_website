@@ -174,6 +174,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     // };
     return () => {
       unsubscribeIsPlayerFocused();
+      unsubscribeIsTouchMoveOn();
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
@@ -265,15 +266,13 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   });
 
   const handlePointerDown = () => {
-    console.log("handlePointerDown トリガー");
+    console.log("Showcase");
     setIsDown(true);
     setIsContentSelectedMouseDown(true);
   };
 
   const handleZoomIn = () => {
-    console.log("handleZoomIn分岐外 isTouchMoveOn =", isTouchMoveOn);
     if (isDown && !isZoomIn && !isTouchMoveOn) {
-      console.log("handleZoomIn分岐内");
       setIsDown(false);
       setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);

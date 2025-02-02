@@ -60,15 +60,11 @@ export function MovementPad() {
         /**
          * Normal Control
          *
-         * 0.3secのタイマーをセット
-         * 0.3secのpad起動の猶予を持たせる
+         * 0.3sec の timeout を設定し
+         * その obj の有無で分岐を制御
          *
-         * 0.3秒以内に指が離れたら
-         * handleStopAndCancel内でタイマーを破棄し
-         * その上、if (isContentSelectedMouseDownRef) なら
-         * obj選択なので、handleStopAndCancel で playerFocus を解除
-         *
-         * 0.3秒経過したら、コールバックで通常の handleTouchStartの中身を実行
+         * 0.3秒以内に指が離れたら tap
+         * 0.3秒経過したら、move
          */
 
         clearTimeout(touchStartTimeoutRef.current);
@@ -79,10 +75,12 @@ export function MovementPad() {
         if (!isContentSelectedMouseDownRef.current) {
           isNoneSelectedMouseDownRef.current = true;
           setIsNoneSelectedMouseDown(true);
-          console.log("0");
         }
 
         touchStartTimeoutRef.current = setTimeout(() => {
+          isTouchMoveOnRef.current = true;
+          setIsTouchMoveOn(true);
+
           // Re Position Pad
           regionRef.current.style.opacity = 1;
           regionRef.current.style.transform = "scale(1.0)";
@@ -99,13 +97,18 @@ export function MovementPad() {
 
           clearTimeout(touchStartTimeoutRef.current);
           touchStartTimeoutRef.current = undefined;
-        }, 200);
+        }, 150);
       }
     };
 
     const handleTouchMove = (event: TouchEvent) => {
       // scene2 の Three のシーン操作以外の入力を除外
       if (isActicatedRef.current) {
+        // tapDown - tapMove - tapEnd がコンテンツ上で完結してる場合
+        // 後続の tapDown で DOM の movementPad（上地） が妨害して
+        // Canvas(下地) の Showcase にタップイベントが伝搬しない不具合があるので
+        // handleTouchDown（タップイベントの伝搬） が完了するまで
+        // pointerEvents == none　にしておく
         if (padRef.current && padRef.current.style.pointerEvents === "none") {
           padRef.current.style.pointerEvents = "auto";
         }
@@ -117,19 +120,18 @@ export function MovementPad() {
           return;
         }
 
-        isTouchMoveOnRef.current = true;
-        setIsTouchMoveOn(true);
-
-        update(event.touches[0].pageX, event.touches[0].pageY);
+        if (isTouchMoveOnRef.current) {
+          update(event.touches[0].pageX, event.touches[0].pageY);
+        }
       }
     };
 
     const handleTouchEndAndCancel = () => {
       resetHandlePosition();
 
-      console.log("a");
-
-      // Timeout が破棄されてるなら move を意味する
+      /**
+       * move 時の分岐
+       */
 
       // tapDown: Contents上
       // tapEnd: Content上
@@ -137,14 +139,15 @@ export function MovementPad() {
         !touchStartTimeoutRef.current &&
         !isNoneSelectedMouseDownRef.current
       ) {
-        console.log("b1");
-
         isTouchMoveOnRef.current = false;
         setIsTouchMoveOn(false);
 
         setIsContentSelectedMouseDown(false);
 
-        // ★ MovementPadのpointer-eventsを無効化
+        // MovementPad 側の「ドラッグ継続状態」が
+        // フラグのリセットだけでは解除できず
+        // 後続のコンテンツタップのイベントを奪ってしまうので
+        // pointerEvents = "none" に設定
         if (padRef.current) {
           padRef.current.style.pointerEvents = "none";
         }
@@ -157,8 +160,6 @@ export function MovementPad() {
         !touchStartTimeoutRef.current &&
         isNoneSelectedMouseDownRef.current
       ) {
-        console.log("b2");
-
         isTouchMoveOnRef.current = false;
         setIsTouchMoveOn(false);
 
@@ -167,7 +168,6 @@ export function MovementPad() {
 
         setIsContentSelectedMouseDown(false);
 
-        // ★ MovementPadのpointer-eventsを無効化
         if (padRef.current) {
           padRef.current.style.pointerEvents = "none";
         }
@@ -175,17 +175,16 @@ export function MovementPad() {
         return;
       }
 
-      console.log("c");
+      /**
+       * タップ時の分岐
+       */
 
-      // 破棄されてない場合、300ms 以下のタップを意味するので、
-      // 破棄した後に、タップの開始位置と終了位置に応じて分岐
       clearTimeout(touchStartTimeoutRef.current);
       touchStartTimeoutRef.current = undefined;
 
       // tapDown: Contents上
       // tapEnd: Content上
       if (!isNoneSelectedMouseDownRef.current) {
-        console.log("d");
         isPlayerFocusedRef.current = false;
         setIsPlayerFocus(false);
 
@@ -198,7 +197,6 @@ export function MovementPad() {
       // tapDown: Contents外
       // tapEnd: Content外
       else if (isNoneSelectedMouseDownRef.current) {
-        console.log("e");
         isNoneSelectedMouseDownRef.current = false;
         setIsNoneSelectedMouseDown(false);
 
@@ -260,7 +258,7 @@ export function MovementPad() {
 
     /**
      * Add Interface Listemers
-     */
+    //  */
     document.addEventListener("resize", alignAndConfigPad);
     document.addEventListener("touchstart", handleTouchStart);
     document.addEventListener("touchmove", handleTouchMove);

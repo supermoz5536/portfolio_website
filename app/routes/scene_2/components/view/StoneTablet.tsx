@@ -5,6 +5,7 @@ import ThreePlayerStore from "../../../../store/three_player_store";
 import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
+import ThreeInterfaceStore from "../../../../store/three_interface_store";
 
 type StoneTabletProps = {
   position: THREE.Vector3;
@@ -20,6 +21,7 @@ export function StoneTablet({ position }: StoneTabletProps) {
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -49,6 +51,13 @@ export function StoneTablet({ position }: StoneTabletProps) {
       },
     );
 
+    const unsubscribeIsTouchMoveOn = ThreeInterfaceStore.subscribe(
+      (state: any) => state.isTouchMoveOn,
+      (value) => {
+        setIsTouchMoveOn(value);
+      },
+    );
+
     const handleMouseUp = () => setIsDown(false);
     const handleTouchEnd = () => setIsDown(false);
     const handleTouchCancel = () => setIsDown(false);
@@ -68,6 +77,7 @@ export function StoneTablet({ position }: StoneTabletProps) {
 
     return () => {
       unsubscribeIsPlayerFocused();
+      unsubscribeIsTouchMoveOn();
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
@@ -125,9 +135,9 @@ export function StoneTablet({ position }: StoneTabletProps) {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        position.x - 0, // prettier-ignore
-        position.y + 6.5,
-        position.z + 8.5,
+        position.x + 2, // prettier-ignore
+        position.y + 4,
+        position.z - 2,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -143,9 +153,9 @@ export function StoneTablet({ position }: StoneTabletProps) {
        */
 
       const endCameratarget = new THREE.Vector3(
-        position.x + 0, // prettier-ignore
-        position.y + 1,
-        position.z - 2.5,
+        position.x + 12, // prettier-ignore
+        position.y + 3,
+        position.z - 12,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
@@ -159,12 +169,13 @@ export function StoneTablet({ position }: StoneTabletProps) {
   });
 
   const handlePointerDown = () => {
+    console.log("stoneTablet");
     setIsDown(true);
     setIsContentSelectedMouseDown(true);
   };
 
   const handleZoomIn = () => {
-    if (isDown && isZoomIn == false) {
+    if (isDown && !isZoomIn && !isTouchMoveOn) {
       setIsDown(false);
       setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);
