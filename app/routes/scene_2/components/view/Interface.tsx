@@ -268,8 +268,8 @@ export function MovementPad() {
     document.addEventListener("touchend", handleTouchEndAndCancel);
     document.addEventListener("touchcancel", handleTouchEndAndCancel);
     document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mouseup", handleMouseUp);
+    // document.addEventListener("mousedown", handleMouseDown);
+    // document.addEventListener("mouseup", handleMouseUp);
 
     /**
      * Add Store Listeners
@@ -306,8 +306,8 @@ export function MovementPad() {
       document.removeEventListener("touchend", handleTouchEndAndCancel);
       document.removeEventListener("touchcancel", handleTouchEndAndCancel);
       document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mouseup", handleMouseUp);
+      // document.removeEventListener("mousedown", handleMouseDown);
+      // document.removeEventListener("mouseup", handleMouseUp);
       unsubscribeSystemStore();
       unsubscribeContentsStore();
       unsubscribeIsOrbitControlMobile();

@@ -22,8 +22,7 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 export function Tower() {
-  const centerAxisPosition = new THREE.Vector3(81, towerHeight / 2, -42);
-
+  // const belowPosition = new THREE.Vector3(81, towerHeight / 2, -42);
   const belowPosition = new THREE.Vector3(61, -towerHeight / 3 - 10, -62);
   const state = useThree();
 
@@ -38,17 +37,17 @@ export function Tower() {
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
-      centerAxisPosition.x, // prettier-ignore
-      centerAxisPosition.y + 10,
-      centerAxisPosition.z + 27,
+      belowPosition.x, // prettier-ignore
+      belowPosition.y + 10,
+      belowPosition.z + 27,
     ),
   );
 
   const [lerpCameraTarget, setLeapCameraTarget] = useState(
     new THREE.Vector3(
-      centerAxisPosition.x, // prettier-ignore
-      centerAxisPosition.y,
-      centerAxisPosition.z - 4.25,
+      belowPosition.x, // prettier-ignore
+      belowPosition.y,
+      belowPosition.z - 4.25,
     ),
   );
 
@@ -99,9 +98,9 @@ export function Tower() {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        centerAxisPosition.x - 100, // prettier-ignore
-        centerAxisPosition.y + 20,
-        centerAxisPosition.z + 145,
+        belowPosition.x - 40, // prettier-ignore
+        belowPosition.y + 40,
+        belowPosition.z + 85,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -117,9 +116,9 @@ export function Tower() {
        */
 
       const endCameratarget = new THREE.Vector3(
-        centerAxisPosition.x, // prettier-ignore
-        centerAxisPosition.y - 5,
-        centerAxisPosition.z,
+        belowPosition.x, // prettier-ignore
+        belowPosition.y + 20,
+        belowPosition.z,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
@@ -140,9 +139,9 @@ export function Tower() {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        centerAxisPosition.x - 100, // prettier-ignore
-        centerAxisPosition.y + 20,
-        centerAxisPosition.z + 180,
+        belowPosition.x - 45, // prettier-ignore
+        belowPosition.y + 45,
+        belowPosition.z + 120,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -158,9 +157,9 @@ export function Tower() {
        */
 
       const endCameratarget = new THREE.Vector3(
-        centerAxisPosition.x, // prettier-ignore
-        centerAxisPosition.y - 20,
-        centerAxisPosition.z,
+        belowPosition.x, // prettier-ignore
+        belowPosition.y + 15,
+        belowPosition.z,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
