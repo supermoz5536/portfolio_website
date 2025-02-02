@@ -106,6 +106,10 @@ export function MovementPad() {
     const handleTouchMove = (event: TouchEvent) => {
       // scene2 の Three のシーン操作以外の入力を除外
       if (isActicatedRef.current) {
+        if (padRef.current && padRef.current.style.pointerEvents === "none") {
+          padRef.current.style.pointerEvents = "auto";
+        }
+
         // Close Guide Window for the first time.
         if (isFirstTry) {
           isFirstTry = false;
@@ -140,6 +144,11 @@ export function MovementPad() {
 
         setIsContentSelectedMouseDown(false);
 
+        // ★ MovementPadのpointer-eventsを無効化
+        if (padRef.current) {
+          padRef.current.style.pointerEvents = "none";
+        }
+
         return;
 
         // tapDown: Contents上
@@ -157,6 +166,11 @@ export function MovementPad() {
         setIsNoneSelectedMouseDown(false);
 
         setIsContentSelectedMouseDown(false);
+
+        // ★ MovementPadのpointer-eventsを無効化
+        if (padRef.current) {
+          padRef.current.style.pointerEvents = "none";
+        }
 
         return;
       }
