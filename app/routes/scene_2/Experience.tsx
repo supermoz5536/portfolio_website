@@ -13,11 +13,36 @@ import { Tower } from "./Components/view/Tower";
 
 export default function Experience() {
   const threeState = useThree();
-  const tempRef = useRef(new THREE.Vector3());
+
   const playerPositionRef = useRef(new THREE.Vector3());
-  const orbitTargetRef: any = useRef();
+  const orbitControlRef: any = useRef();
+  const tempRef = useRef(new THREE.Vector3());
+  const isMobileRef = useRef(true);
+  const isOrbitControlMobileRef = useRef(false);
+
+  const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
 
   useEffect(() => {
+    /**
+     * Initialize OrbitControl Angle
+     */
+
+    if (orbitControlRef.current) {
+      if (window.innerWidth < 500) isMobileRef.current = true;
+      if (window.innerWidth >= 500) isMobileRef.current = false;
+
+      orbitControlRef.current.maxPolarAngle = isMobileRef.current
+        ? Math.PI
+        : Math.PI * 0.7;
+
+      orbitControlRef.current.minPolarAngle = isMobileRef.current
+        ? 0
+        : Math.PI * 0.4;
+    }
+
+    /**
+     * Get Camera Direction on Orbit Mode
+     */
     const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
       (state: any) => state.currentPosition,
       (value) => {
@@ -26,7 +51,7 @@ export default function Experience() {
       },
     );
 
-    const unsubscribeSystemStore = useSystemStore.subscribe(
+    const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
       (state) => state.isPlayerFocused,
       (value) => {
         if (!value) {
@@ -42,24 +67,42 @@ export default function Experience() {
           tempRef.current.copy(threeState.camera.position);
           tempRef.current.add(forwardDir.clone().multiplyScalar(2));
           tempRef.current.y += 0.2525;
-          orbitTargetRef.current.target = tempRef.current;
+          orbitControlRef.current.target = tempRef.current;
+        }
+      },
+    );
+
+    /**
+     * Toggle Orbit Mode on Mobile
+     */
+    const unsubscribeIsOrbitControlMobile = useSystemStore.subscribe(
+      (state) => state.isOrbitControlMobile,
+      (value) => {
+        isOrbitControlMobileRef.current = value;
+
+        // モバイルのOrbitControlモードがON
+        if (isMobileRef.current && isOrbitControlMobileRef.current) {
+          orbitControlRef.current.maxPolarAngle = Math.PI * 0.7;
+          orbitControlRef.current.minPolarAngle = Math.PI * 0.4;
+
+          setIsPlayerFocus(false);
+
+          // モバイルのOrbitControlモードがOFF
+        } else if (isMobileRef.current && !isOrbitControlMobileRef.current) {
+          orbitControlRef.current.maxPolarAngle = Math.PI;
+          orbitControlRef.current.minPolarAngle = 0;
+
+          setIsPlayerFocus(true);
         }
       },
     );
 
     return () => {
       unsubscribePlayerPosition();
-      unsubscribeSystemStore();
+      unsubscribeIsPlayerFocused();
+      unsubscribeIsOrbitControlMobile();
     };
   }, []);
-
-  // useFrame(() => {
-  //   const cameraPosition = state.camera.position.clone();
-  //   cameraPosition.z -= 50;
-  //   setOrbitTaget(cameraPosition);
-
-  //   state.camera;
-  // });
 
   return (
     <>
@@ -71,12 +114,12 @@ export default function Experience() {
         args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
       /> */}
       <OrbitControls
-        ref={orbitTargetRef}
-        maxPolarAngle={Math.PI * 0.7} // Above Limit
-        minPolarAngle={Math.PI * 0.4} // Below Limit
+        ref={orbitControlRef}
+        maxPolarAngle={Math.PI}
+        minPolarAngle={0}
       />
 
-      <Physics debug>
+      <Physics>
         <EnvironmentLights />
         <Player />
         <Floors />

@@ -169,7 +169,6 @@ export function StoneTablet({ position }: StoneTabletProps) {
   });
 
   const handlePointerDown = () => {
-    console.log("stoneTablet");
     setIsDown(true);
     setIsContentSelectedMouseDown(true);
   };

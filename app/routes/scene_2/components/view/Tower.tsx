@@ -31,6 +31,7 @@ export function Tower() {
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -136,9 +137,9 @@ export function Tower() {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        centerAxisPosition.x - 0, // prettier-ignore
-        centerAxisPosition.y + 6.5,
-        centerAxisPosition.z + 8.5,
+        centerAxisPosition.x - 100, // prettier-ignore
+        centerAxisPosition.y + 20,
+        centerAxisPosition.z + 180,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -154,9 +155,9 @@ export function Tower() {
        */
 
       const endCameratarget = new THREE.Vector3(
-        centerAxisPosition.x + 0, // prettier-ignore
-        centerAxisPosition.y + 1,
-        centerAxisPosition.z - 2.5,
+        centerAxisPosition.x, // prettier-ignore
+        centerAxisPosition.y - 20,
+        centerAxisPosition.z,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
@@ -175,7 +176,7 @@ export function Tower() {
   };
 
   const handleZoomIn = () => {
-    if (isDown && isZoomIn == false) {
+    if (isDown && !isZoomIn && !isTouchMoveOn) {
       setIsDown(false);
       setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);

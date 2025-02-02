@@ -10,6 +10,7 @@ import { AnimateInBlock } from "~/components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/three_player_store";
 import ThreeContents from "../../store/three_contents_store";
+import { MdOutlineCameraswitch } from "react-icons/md";
 
 export default function Scene2() {
   const { isActivated, setIsActivated } = useSystemStore();
@@ -20,6 +21,10 @@ export default function Scene2() {
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [isNoneSelected, setIsNoneSelected] = useState(false);
+  const [isOrbitControlMobile, setIsOrbitControlMobile] = useState(false);
+
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
 
   const activateOn = () => {
     setIsActivated(true);
@@ -31,9 +36,18 @@ export default function Scene2() {
     setIsPlayerFocus(true);
   };
 
-  const setIsPlayerFocus = useSystemStore(
-    (state: any) => state.setIsPlayerFocus,
-  );
+  const toggleOrbitControl = () => {
+    toggleIsOrbitControlMobile();
+  };
+
+  const handleHome = () => {
+    if (isOrbitControlMobile) {
+      setIsOrbitControlMobile(false);
+      toggleIsOrbitControlMobile();
+    }
+
+    setIsPlayerFocus(true);
+  };
 
   useEffect(() => {
     /*
@@ -75,23 +89,35 @@ export default function Scene2() {
       },
     );
 
+    /**
+     * Button Control
+     */
+
     const unsubscribeContents = ThreeContents.subscribe(
       (state: any) => state.isNoneSelected,
       (value) => {
         setIsNoneSelected(value);
       },
     );
+
+    const unsubscribeIsOrbitControlMobile = useSystemStore.subscribe(
+      (state: any) => state.isOrbitControlMobile,
+      (value) => {
+        setIsOrbitControlMobile(value);
+      },
+    );
+
     /**
      * Resize
      */
 
-    window.addEventListener("resize", () => {
-      activateOff();
-    });
+    window.addEventListener("resize", activateOff);
 
     return () => {
       unsubscribePlayer();
       unsubscribeIsPlayerFocused();
+      unsubscribeContents();
+      window.removeEventListener("resize", activateOff);
     };
   }, []);
 
@@ -271,6 +297,7 @@ export default function Scene2() {
             {/* Game Playing */}
             {!isGuidOn && (
               <>
+                {/* Close Button */}
                 <AnimateIn>
                   <Button
                     id="svg"
@@ -281,8 +308,22 @@ export default function Scene2() {
                   </Button>
                 </AnimateIn>
 
+                {/* OrbitControl Button */}
+                {isMobile && !isOrbitControlMobile && (
+                  <AnimateIn>
+                    <Button
+                      id="svg"
+                      className="absolute mt-5 mr-5 top-[4.5%] left-[10%]"
+                      onClick={() => toggleOrbitControl()}
+                    >
+                      <MdOutlineCameraswitch className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
+                    </Button>
+                  </AnimateIn>
+                )}
+
+                {/* Home Button */}
                 {!isPlayerFocused && !isNoneSelected && (
-                  <Button onClick={() => setIsPlayerFocus(true)}>
+                  <Button onClick={handleHome}>
                     <div className="absolute flex justify-center items-center top-[90%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
                       <LuChevronDown className="h-10 w-10 text-gray-700 bounce-animation" />
                     </div>

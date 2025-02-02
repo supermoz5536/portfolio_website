@@ -4,8 +4,10 @@ import { subscribeWithSelector } from "zustand/middleware";
 type SystemStore = {
   isActivated: boolean;
   isPlayerFocused: boolean;
+  isOrbitControlMobile: boolean;
   setIsActivated: (newState: boolean) => void;
   setIsPlayerFocus: (newState: boolean) => void;
+  toggleIsOrbitControlMobile: (newState: boolean) => void;
 };
 
 export const useSystemStore = create<SystemStore>()(
@@ -13,6 +15,7 @@ export const useSystemStore = create<SystemStore>()(
     return {
       isActivated: false,
       isPlayerFocused: true,
+      isOrbitControlMobile: false,
 
       setIsActivated: (newState: boolean) => {
         set((state: any) => {
@@ -23,6 +26,12 @@ export const useSystemStore = create<SystemStore>()(
       setIsPlayerFocus: (newState: boolean) => {
         set((state: any) => {
           return { isPlayerFocused: newState };
+        });
+      },
+
+      toggleIsOrbitControlMobile: (newState: boolean) => {
+        set((state: any) => {
+          return { isOrbitControlMobile: !state.isOrbitControlMobile };
         });
       },
     };

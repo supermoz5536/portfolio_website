@@ -266,7 +266,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   });
 
   const handlePointerDown = () => {
-    console.log("Showcase");
     setIsDown(true);
     setIsContentSelectedMouseDown(true);
   };
