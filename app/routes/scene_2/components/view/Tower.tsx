@@ -6,7 +6,8 @@ import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 
-const towerGeometry = new THREE.ConeGeometry(40, 120, 32);
+const towerHeight = 40;
+const towerGeometry = new THREE.ConeGeometry(25, 40, 4);
 
 const glassMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0,
@@ -21,7 +22,9 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 export function Tower() {
-  const centerAxisPosition = new THREE.Vector3(81, 30, -42);
+  const centerAxisPosition = new THREE.Vector3(81, towerHeight / 2, -42);
+
+  const belowPosition = new THREE.Vector3(61, -towerHeight / 3 - 10, -62);
   const state = useThree();
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
@@ -217,14 +220,13 @@ export function Tower() {
   };
 
   return (
-    <>
-      <mesh
-        onPointerDown={handlePointerDown}
-        onPointerUp={handleZoomIn}
-        geometry={towerGeometry}
-        material={glassMaterial}
-        position={centerAxisPosition}
-      />
-    </>
+    <mesh
+      onPointerDown={handlePointerDown}
+      onPointerUp={handleZoomIn}
+      geometry={towerGeometry}
+      material={glassMaterial}
+      position={belowPosition}
+      rotation={[Math.PI, -Math.PI * 0.2, 0]}
+    />
   );
 }
