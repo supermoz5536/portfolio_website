@@ -84,6 +84,7 @@ export default function Experience() {
         if (isMobileRef.current && isOrbitControlMobileRef.current) {
           orbitControlRef.current.maxPolarAngle = Math.PI * 0.7;
           orbitControlRef.current.minPolarAngle = Math.PI * 0.4;
+          orbitControlRef.current.enabled = true;
 
           setIsPlayerFocus(false);
 
@@ -91,6 +92,7 @@ export default function Experience() {
         } else if (isMobileRef.current && !isOrbitControlMobileRef.current) {
           orbitControlRef.current.maxPolarAngle = Math.PI;
           orbitControlRef.current.minPolarAngle = 0;
+          orbitControlRef.current.enabled = false;
 
           setIsPlayerFocus(true);
         }
@@ -117,6 +119,7 @@ export default function Experience() {
         ref={orbitControlRef}
         maxPolarAngle={Math.PI}
         minPolarAngle={0}
+        enabled={false}
       />
 
       <Physics>

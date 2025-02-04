@@ -104,10 +104,10 @@ export function StoneTabletView() {
             <div className="flex flex-col justify-center items-center mt-10">
               {isVisHeader ? (
                 <AnimateIn>
-                  <p className={isMobile ? "text-2xl" : "text-4xl"}>
+                  <p className={isMobile ? "text-white text-2xl" : "text-4xl"}>
                     {getObj(selectedIndex).header1}
                   </p>
-                  <p className={isMobile ? "text-2xl" : "text-4xl"}>
+                  <p className={isMobile ? "text-white text-2xl" : "text-4xl"}>
                     {getObj(selectedIndex).header2}
                   </p>
                 </AnimateIn>
@@ -128,7 +128,7 @@ export function StoneTabletView() {
             >
               {isVisText1 && (
                 <AnimateIn>
-                  <p className={isMobile ? "text-lg" : "text-2xl"}>
+                  <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
                     {getObj(selectedIndex).text1}
                   </p>
                 </AnimateIn>
@@ -137,7 +137,7 @@ export function StoneTabletView() {
               <div className="mt-7">
                 {isVisText2 && (
                   <AnimateIn>
-                    <p className={isMobile ? "text-lg" : "text-2xl"}>
+                    <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
                       {getObj(selectedIndex).text2}
                     </p>
                   </AnimateIn>
@@ -147,7 +147,7 @@ export function StoneTabletView() {
               <div className="mt-7">
                 {isVisText3 && (
                   <AnimateIn>
-                    <p className={isMobile ? "text-lg" : "text-2xl"}>
+                    <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
                       {getObj(selectedIndex).text3}
                     </p>
                   </AnimateIn>
