@@ -9,14 +9,24 @@ import ThreeInterfaceStore from "../../../../store/three_interface_store";
 
 type StoneTabletProps = {
   position: THREE.Vector3;
+  index: number;
 };
 
-export function StoneTablet({ position }: StoneTabletProps) {
+const stoneTabletGeometry = new THREE.BoxGeometry(3.5, 5, 0.5);
+const stoneTabletMaterial = new THREE.MeshStandardMaterial({
+  color: "gray",
+  side: THREE.DoubleSide,
+  metalness: 0,
+  roughness: 1,
+});
+
+export function StoneTablet({ position, index }: StoneTabletProps) {
   const state = useThree();
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
+  const setStoneTabletStore = ThreeContentsStore((state: any) => state.setStoneTabletStore); // prettier-ignore
 
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
@@ -179,6 +189,7 @@ export function StoneTablet({ position }: StoneTabletProps) {
       setIsContentSelectedMouseDown(false);
       setIsPlayerFocus(false);
       setIsZoomIn(true);
+      setStoneTabletStore(true, index);
 
       /**
        * Update to Current Camera Position
@@ -210,6 +221,7 @@ export function StoneTablet({ position }: StoneTabletProps) {
   };
 
   const handleZoomOut = () => {
+    setStoneTabletStore(false, index);
     setIsZoomIn(false);
     setIsPlayerFocus(true);
   };
@@ -223,13 +235,8 @@ export function StoneTablet({ position }: StoneTabletProps) {
           onPointerUp={handleZoomIn}
         >
           <mesh
-            geometry={new THREE.BoxGeometry(3.5, 5, 0.5)}
-            material={
-              new THREE.MeshStandardMaterial({
-                color: "gray",
-                side: THREE.DoubleSide,
-              })
-            }
+            geometry={stoneTabletGeometry}
+            material={stoneTabletMaterial}
             position={[9, 2.5, -9]}
             rotation={[0, -Math.PI / 4, 0]}
           />

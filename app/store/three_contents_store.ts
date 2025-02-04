@@ -7,15 +7,27 @@ export default create(
     return {
       isContentSelectedMouseDown: false,
       isNoneSelectedMouseDown: false,
+      isStoneTabletSelected: false,
+      selectedStoneTabletIndex: 0,
 
-      setIsContentSelectedMouseDown: (selected: boolean) => {
+      setIsContentSelectedMouseDown: (newState: boolean) => {
         set((state: any) => {
-          return { isContentSelectedMouseDown: selected };
+          return { isContentSelectedMouseDown: newState };
         });
       },
-      setIsNoneSelectedMouseDown: (selected: boolean) => {
+
+      setIsNoneSelectedMouseDown: (newState: boolean) => {
         set((state: any) => {
-          return { isNoneSelectedMouseDown: selected };
+          return { isNoneSelectedMouseDown: newState };
+        });
+      },
+
+      setStoneTabletStore: (isSelected: boolean, newIndex: number) => {
+        set((state: any) => {
+          return {
+            isStoneTabletSelected: isSelected,
+            selectedStoneTabletIndex: newIndex,
+          };
         });
       },
     };
