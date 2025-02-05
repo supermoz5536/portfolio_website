@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useSystemStore from "../../../../store/three_contents_store";
 import ThreeContentsStore from "../../../../store/three_contents_store";
 import { AnimateIn } from "~/components/animate_in";
+import { AnimateInBlock } from "~/components/animate_in_block";
 
 export function StoneTabletView() {
   const [isViewOn, setIsViewOn] = useState(false);
@@ -103,18 +104,20 @@ export function StoneTabletView() {
               {/* Container Header */}
               <div className="flex flex-col justify-center items-center mt-10">
                 {isVisHeader ? (
-                  <AnimateIn>
+                  <AnimateInBlock>
                     <p
+                      id="tablet"
                       className={isMobile ? "text-white text-2xl" : "text-4xl"}
                     >
                       {getObj(selectedIndex).header1}
                     </p>
                     <p
+                      id="tablet"
                       className={isMobile ? "text-white text-2xl" : "text-4xl"}
                     >
                       {getObj(selectedIndex).header2}
                     </p>
-                  </AnimateIn>
+                  </AnimateInBlock>
                 ) : (
                   <>
                     <p> &nbsp; </p>
@@ -132,7 +135,10 @@ export function StoneTabletView() {
               >
                 {isVisText1 && (
                   <AnimateIn rootMarginBottom={0}>
-                    <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
+                    <p
+                      id="tablet"
+                      className={isMobile ? "text-white text-lg" : "text-2xl"}
+                    >
                       {getObj(selectedIndex).text1}
                     </p>
                   </AnimateIn>
@@ -142,6 +148,7 @@ export function StoneTabletView() {
                   {isVisText2 && (
                     <AnimateIn rootMarginBottom={0}>
                       <p
+                        id="tablet"
                         className={isMobile ? "text-white text-lg" : "text-2xl"}
                       >
                         {getObj(selectedIndex).text2}
@@ -154,6 +161,7 @@ export function StoneTabletView() {
                   {isVisText3 && (
                     <AnimateIn rootMarginBottom={0}>
                       <p
+                        id="tablet"
                         className={isMobile ? "text-white text-lg" : "text-2xl"}
                       >
                         {getObj(selectedIndex).text3}

@@ -78,8 +78,8 @@ export const AnimateInBlock = ({ children }: AnimateInProps) => {
           /* buttonの場合 */
           if (id == "button") animateClassName = "animate-scale-in-hor-center";
           /* 下からのフェードインの場合 */
-          if (id == "fade-in-bottom")
-            animateClassName = "animate-fade-in-bottom";
+          if (id == "fade-in-bottom") animateClassName = "animate-fade-in-bottom"; // prettier-ignore
+          if (id == "tablet") animateClassName = "animate-text-focus-in";
 
           /**
            * アニメーションする要素のみに以下を設定

@@ -71,6 +71,7 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
         if (id == "button") animateClassName = "animate-scale-in-hor-center";
         /* 下からのフェードインの場合 */
         if (id == "fade-in-bottom") animateClassName = "animate-fade-in-bottom";
+        if (id == "tablet") animateClassName = "animate-text-focus-in";
 
         /* アニメーションする要素のみに動的なCSSクラスを設定 */
         if (animateClassName != null) {

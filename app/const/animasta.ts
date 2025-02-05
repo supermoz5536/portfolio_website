@@ -23,6 +23,9 @@ export const animista = {
     /* button */
     "scale-in-hor-center":
       "scale-in-hor-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+    /* tablet */
+    "text-focus-in":
+      "text-focus-in 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)    both",
   },
 
   keyframes: {
@@ -134,6 +137,17 @@ export const animista = {
       },
       to: {
         transform: "scaleX(1)",
+        opacity: "1",
+      },
+    },
+    /* tablet */
+    "text-focus-in": {
+      "0%": {
+        filter: "blur(12px)",
+        opacity: "0",
+      },
+      to: {
+        filter: "blur(0)",
         opacity: "1",
       },
     },
