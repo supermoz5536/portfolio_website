@@ -132,7 +132,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
       const endPositionCamera = new THREE.Vector3(
         position.x + 6, // prettier-ignore
         position.y + 3,
-        position.z - 6,
+        position.z - 4,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -149,8 +149,8 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
 
       const endCameratarget = new THREE.Vector3(
         position.x + 12, // prettier-ignore
-        position.y + 3,
-        position.z - 12,
+        position.y + 1.5,
+        position.z - 14,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
@@ -171,9 +171,9 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        position.x + 2.5, // prettier-ignore
-        position.y + 6,
-        position.z - 2.5,
+        position.x + 4.5, // prettier-ignore
+        position.y + 7.5,
+        position.z - 1.5,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -190,8 +190,8 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
 
       const endCameratarget = new THREE.Vector3(
         position.x + 12, // prettier-ignore
-        position.y + 1,
-        position.z - 12,
+        position.y - 2,
+        position.z - 14.25,
       );
 
       lerpCameraTarget.lerp(endCameratarget, 5 * delta);
@@ -260,8 +260,9 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
           scale={1.75}
           onPointerDown={handlePointerDown}
           onPointerUp={handleZoomIn}
-          position={[9, 2.6, -9]}
-          rotation={[0, -Math.PI / 1.3, 0]}
+          position={[8.75, 2, -8.75]}
+          rotation={[0, -Math.PI / 1.5, 0]}
+          // rotation={[0, -Math.PI / 1.325, 0]}
         />
       )}
     </>
