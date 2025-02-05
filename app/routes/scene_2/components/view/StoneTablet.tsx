@@ -145,9 +145,9 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
        * Position Camera
        */
       const endPositionCamera = new THREE.Vector3(
-        position.x + 2, // prettier-ignore
-        position.y + 4,
-        position.z - 2,
+        position.x + 2.5, // prettier-ignore
+        position.y + 6,
+        position.z - 2.5,
       );
 
       lerpCamera.lerp(endPositionCamera, 5 * delta);
@@ -164,7 +164,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
 
       const endCameratarget = new THREE.Vector3(
         position.x + 12, // prettier-ignore
-        position.y + 3,
+        position.y + 1,
         position.z - 12,
       );
 

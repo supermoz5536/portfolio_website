@@ -91,71 +91,88 @@ export function StoneTabletView() {
   return (
     <>
       {isViewOn && (
-        <div
-          className={
-            "absolute py-32 justify-center items-center top-[0%] left-[0%] h-full w-full bg-black pointer-events-none transform transition-opacity duration-500 " +
-            (isVisBg ? "opacity-50 " : "opacity-0 ") +
-            (isMobile ? "px-2" : "px-10")
-          }
-        >
-          {/* Container */}
-          <div className="flex flex-col justify-start items-center h-full w-full">
-            {/* Container Header */}
-            <div className="flex flex-col justify-center items-center mt-10">
-              {isVisHeader ? (
-                <AnimateIn>
-                  <p className={isMobile ? "text-white text-2xl" : "text-4xl"}>
-                    {getObj(selectedIndex).header1}
-                  </p>
-                  <p className={isMobile ? "text-white text-2xl" : "text-4xl"}>
-                    {getObj(selectedIndex).header2}
-                  </p>
-                </AnimateIn>
-              ) : (
-                <>
-                  <p> &nbsp; </p>
-                  <p> &nbsp; </p>
-                </>
-              )}
-            </div>
-
-            {/* Container Texts */}
-            <div
-              className={
-                "flex flex-col justify-start items-start h-full mt-10 " +
-                (isMobile ? "w-[90%]" : "w-[50%]")
-              }
-            >
-              {isVisText1 && (
-                <AnimateIn>
-                  <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
-                    {getObj(selectedIndex).text1}
-                  </p>
-                </AnimateIn>
-              )}
-
-              <div className="mt-7">
-                {isVisText2 && (
+        <>
+          <div
+            className={
+              "absolute py-32 justify-center items-center top-[0%] left-[0%] z-10 h-full w-full pointer-events-none " +
+              (isMobile ? "px-2" : "px-10")
+            }
+          >
+            {/* Container */}
+            <div className="flex flex-col justify-start items-center z-10 h-full w-full">
+              {/* Container Header */}
+              <div className="flex flex-col justify-center items-center mt-10">
+                {isVisHeader ? (
                   <AnimateIn>
-                    <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
-                      {getObj(selectedIndex).text2}
+                    <p
+                      className={isMobile ? "text-white text-2xl" : "text-4xl"}
+                    >
+                      {getObj(selectedIndex).header1}
+                    </p>
+                    <p
+                      className={isMobile ? "text-white text-2xl" : "text-4xl"}
+                    >
+                      {getObj(selectedIndex).header2}
                     </p>
                   </AnimateIn>
+                ) : (
+                  <>
+                    <p> &nbsp; </p>
+                    <p> &nbsp; </p>
+                  </>
                 )}
               </div>
 
-              <div className="mt-7">
-                {isVisText3 && (
-                  <AnimateIn>
+              {/* Container Texts */}
+              <div
+                className={
+                  "flex flex-col justify-start items-start h-full mt-10 " +
+                  (isMobile ? "w-[90%]" : "w-[50%]")
+                }
+              >
+                {isVisText1 && (
+                  <AnimateIn rootMarginBottom={0}>
                     <p className={isMobile ? "text-white text-lg" : "text-2xl"}>
-                      {getObj(selectedIndex).text3}
+                      {getObj(selectedIndex).text1}
                     </p>
                   </AnimateIn>
                 )}
+
+                <div className="mt-7">
+                  {isVisText2 && (
+                    <AnimateIn rootMarginBottom={0}>
+                      <p
+                        className={isMobile ? "text-white text-lg" : "text-2xl"}
+                      >
+                        {getObj(selectedIndex).text2}
+                      </p>
+                    </AnimateIn>
+                  )}
+                </div>
+
+                <div className="mt-7">
+                  {isVisText3 && (
+                    <AnimateIn rootMarginBottom={0}>
+                      <p
+                        className={isMobile ? "text-white text-lg" : "text-2xl"}
+                      >
+                        {getObj(selectedIndex).text3}
+                      </p>
+                    </AnimateIn>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* bg */}
+          <div
+            className={
+              "absolute top-[0%] left-[0%] h-full w-full z-0 bg-black pointer-events-none transform transition-opacity duration-500 " +
+              (isVisBg ? "opacity-60 " : "opacity-0 ")
+            }
+          />
+        </>
       )}
     </>
   );

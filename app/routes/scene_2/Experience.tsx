@@ -1,3 +1,7 @@
+/// デスクトップにおいて、
+/// コンテンツにZoomIn時にOrbitControlをOFFにしないと
+/// 背景が暗くなる不具合が発生する
+
 import { OrbitControls, PointerLockControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Player } from "./Components/view/Player";
@@ -24,20 +28,18 @@ export default function Experience() {
 
   useEffect(() => {
     /**
-     * Initialize OrbitControl Angle
+     * Device Setup
      */
 
-    if (orbitControlRef.current) {
-      if (window.innerWidth < 500) isMobileRef.current = true;
-      if (window.innerWidth >= 500) isMobileRef.current = false;
-
-      orbitControlRef.current.maxPolarAngle = isMobileRef.current
-        ? Math.PI
-        : Math.PI * 0.7;
-
-      orbitControlRef.current.minPolarAngle = isMobileRef.current
-        ? 0
-        : Math.PI * 0.4;
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) {
+        isMobileRef.current = true;
+        orbitControlRef.current.enabled = false;
+      }
+      if (window.innerWidth >= 500) {
+        isMobileRef.current = false;
+        orbitControlRef.current.enabled = true;
+      }
     }
 
     /**
@@ -46,7 +48,6 @@ export default function Experience() {
     const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
       (state: any) => state.currentPosition,
       (value) => {
-        // setPlayerPosition(value);
         playerPositionRef.current = value;
       },
     );
@@ -82,18 +83,12 @@ export default function Experience() {
 
         // モバイルのOrbitControlモードがON
         if (isMobileRef.current && isOrbitControlMobileRef.current) {
-          orbitControlRef.current.maxPolarAngle = Math.PI * 0.7;
-          orbitControlRef.current.minPolarAngle = Math.PI * 0.4;
           orbitControlRef.current.enabled = true;
-
           setIsPlayerFocus(false);
 
           // モバイルのOrbitControlモードがOFF
         } else if (isMobileRef.current && !isOrbitControlMobileRef.current) {
-          orbitControlRef.current.maxPolarAngle = Math.PI;
-          orbitControlRef.current.minPolarAngle = 0;
           orbitControlRef.current.enabled = false;
-
           setIsPlayerFocus(true);
         }
       },
@@ -117,9 +112,8 @@ export default function Experience() {
       /> */}
       <OrbitControls
         ref={orbitControlRef}
-        maxPolarAngle={Math.PI}
-        minPolarAngle={0}
-        enabled={false}
+        maxPolarAngle={Math.PI * 0.7}
+        minPolarAngle={Math.PI * 0.4}
       />
 
       <Physics>

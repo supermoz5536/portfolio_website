@@ -207,7 +207,8 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
       if (state.camera instanceof THREE.PerspectiveCamera) {
         // 三角関数で計算するためにfovを度数からラジアンに変換
         const fovInRadian = (state.camera.fov * Math.PI) / 180;
-        const offset = 0.15;
+        // ZoomIn時に距離の余裕がないとカメラの移動に間に合わず衝突する
+        const offset = 40;
 
         // カメラからプレーンまでオフセットしたときの画面高さ・幅を計算
         const planeHeight = 2 * offset * Math.tan(fovInRadian / 2); // (高さ) =(底辺) x tanθ

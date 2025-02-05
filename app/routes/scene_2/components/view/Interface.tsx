@@ -26,6 +26,7 @@ export function MovementPad() {
   const isTouchMoveOnRef = useRef<any>(false);
   const touchStartTimeoutRef = useRef<any>();
   const isOrbitControlMobileRef = useRef<any>(false);
+  const isMobileRef = useRef(true);
 
   /**
    * Store Updater
@@ -39,6 +40,15 @@ export function MovementPad() {
   const setIsTouchMoveOn = ThreeInterfaceStore((state: any) => state.setIsTouchMoveOn); // prettier-ignore
 
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) isMobileRef.current = true;
+      if (window.innerWidth >= 500) isMobileRef.current = false;
+    }
+
     /**
      * Setup values
      */
@@ -268,8 +278,11 @@ export function MovementPad() {
     document.addEventListener("touchend", handleTouchEndAndCancel);
     document.addEventListener("touchcancel", handleTouchEndAndCancel);
     document.addEventListener("contextmenu", handleContextMenu);
-    // document.addEventListener("mousedown", handleMouseDown);
-    // document.addEventListener("mouseup", handleMouseUp);
+
+    if (!isMobileRef.current) {
+      document.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
 
     /**
      * Add Store Listeners
@@ -306,8 +319,12 @@ export function MovementPad() {
       document.removeEventListener("touchend", handleTouchEndAndCancel);
       document.removeEventListener("touchcancel", handleTouchEndAndCancel);
       document.removeEventListener("contextmenu", handleContextMenu);
-      // document.removeEventListener("mousedown", handleMouseDown);
-      // document.removeEventListener("mouseup", handleMouseUp);
+
+      if (!isMobileRef.current) {
+        document.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mouseup", handleMouseUp);
+      }
+
       unsubscribeSystemStore();
       unsubscribeContentsStore();
       unsubscribeIsOrbitControlMobile();
