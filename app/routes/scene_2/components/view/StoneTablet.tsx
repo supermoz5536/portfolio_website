@@ -260,10 +260,8 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
           scale={1.75}
           onPointerDown={handlePointerDown}
           onPointerUp={handleZoomIn}
-          // geometry={stoneTabletGeometry}
-          // material={stoneTabletMaterial}
           position={[9, 2.6, -9]}
-          rotation={[0, Math.PI * 1.2, 0]}
+          rotation={[0, -Math.PI / 1.3, 0]}
         />
       )}
     </>
