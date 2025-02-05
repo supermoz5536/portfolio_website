@@ -28,5 +28,9 @@ export function Question() {
     });
   }, []);
 
-  return <>{scene && <primitive object={scene} position={[0, 2, 0]} />}</>;
+  return (
+    <>
+      {scene && <primitive object={scene} position={[0, 3, 0]} scale={0.7} />}
+    </>
+  );
 }
