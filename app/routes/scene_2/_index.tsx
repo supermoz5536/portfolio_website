@@ -247,12 +247,12 @@ export default function Scene2() {
                         <p>How to Play</p>
                       </div>
 
-                      <span className="mb-10 z-10 text-4xl text-white ">
+                      <span className="mb-10 z-10 text-[1.6rem] text-center text-white ">
                         Drag on touchpad!
                       </span>
 
                       <span className="mt-5 mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        Try clicking obejests!
+                        Try clicking objects!
                       </span>
                       <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                         You can find something interesting.

@@ -56,6 +56,6 @@ void main() {
     float arrowShape = max(shaft, head);
     
     // 最終的な表示色（ここでは赤色）と、alpha に arrowShape を利用
-    vec3 arrowColor = vec3(1.0, 0.0, 0.0);
+    vec3 arrowColor = vec3(1.0, 1.0, 1.0);
     gl_FragColor = vec4(arrowColor, arrowShape);
 }

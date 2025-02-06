@@ -100,10 +100,46 @@ export function MidPlane() {
   );
 }
 
-export function Tower() {
+export function BottomCone() {
   const bottomHeight = 40;
   const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
 
+  return (
+    <>
+      <mesh
+        geometry={bottomConeGeometry}
+        material={glassMaterial}
+        position={bottomConePosition}
+        rotation={[Math.PI, -Math.PI * 0.2, 0]}
+      />
+    </>
+  );
+}
+
+export function InsideCone() {
+  const bottomHeight = 40;
+  const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+
+  return (
+    <>
+      <mesh
+        geometry={bottomConeGeometry}
+        material={
+          new THREE.MeshStandardMaterial({
+            color: "#90EE90",
+            transparent: true,
+            opacity: 0.4,
+          })
+        }
+        position={bottomConePosition}
+        rotation={[Math.PI, -Math.PI * 0.2, 0]}
+        scale={0.925}
+      />
+    </>
+  );
+}
+
+export function Tower() {
   const state = useThree();
   const cameraBasePosition = new THREE.Vector3(61, -23, -62);
   const floorsCol0 = [0, 1, 2];
@@ -158,29 +194,28 @@ export function Tower() {
     const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
       (state: any) => state.isPlayerFocused,
       (value) => {
-        console.log("a", value);
-        if (value.isPlayerFocused == true) handleZoomOut();
+        if (value == true) handleZoomOut();
       },
     );
 
-    // const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
-    //   (state: any) => state.currentFloorNum,
-    //   (value) => {
-    //     if (floorsCol0.includes(value)) {
-    //       setNormHeight(5);
-    //       setNormWidth(40);
-    //     } else if (floorsCol1.includes(value)) {
-    //       setNormHeight(15);
-    //       setNormWidth(30);
-    //     } else if (floorsCol2.includes(value)) {
-    //       setNormHeight(25);
-    //       setNormWidth(20);
-    //     } else if (floorsCol3.includes(value)) {
-    //       setNormHeight(35);
-    //       setNormWidth(10);
-    //     }
-    //   },
-    // );
+    const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
+      (state: any) => state.currentFloorNum,
+      (value) => {
+        if (floorsCol0.includes(value)) {
+          setNormHeight(5);
+          setNormWidth(40);
+        } else if (floorsCol1.includes(value)) {
+          setNormHeight(15);
+          setNormWidth(30);
+        } else if (floorsCol2.includes(value)) {
+          setNormHeight(25);
+          setNormWidth(20);
+        } else if (floorsCol3.includes(value)) {
+          setNormHeight(35);
+          setNormWidth(10);
+        }
+      },
+    );
 
     //該当コンテンツ外でマウス/タップがキャンセルされた際の初期化
     const handleMouseUp = () => setIsDown(false);
@@ -193,7 +228,7 @@ export function Tower() {
 
     return () => {
       unsubscribeIsPlayerFocused();
-      // unsubscribeCurrentFloorNum();
+      unsubscribeCurrentFloorNum();
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
@@ -331,22 +366,15 @@ export function Tower() {
   };
 
   return (
-    <>
-      {/* <group position={[0, -2.5, 0]}>
+    <group onPointerDown={handlePointerDown} onPointerUp={handleZoomIn}>
+      <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
         <ArrowPlane normWidth={normWidth} normHeight={normHeight} />
       </group>
-      <MidPlane /> */}
 
-      {/* Bottom Cone */}
-      <mesh
-        onPointerDown={handlePointerDown}
-        onPointerUp={handleZoomIn}
-        geometry={bottomConeGeometry}
-        material={glassMaterial}
-        position={bottomConePosition}
-        rotation={[Math.PI, -Math.PI * 0.2, 0]}
-      />
-    </>
+      <MidPlane />
+      <BottomCone />
+      <InsideCone />
+    </group>
   );
 }
