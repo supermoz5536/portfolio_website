@@ -5,7 +5,6 @@ import ThreePlayerStore from "../../../../store/three_player_store";
 import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
-import { shallow } from "zustand/shallow";
 import { ArrowPlaneMaterial } from "./Materials/ArrowPlaneMaterial";
 
 type CommonProps = {
@@ -28,14 +27,6 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
   color: 0xffffff, // 完全な白
   depthWrite: false,
 });
-
-/**
- * Debug Material
- */
-
-// const glassMaterial = new THREE.MeshStandardMaterial({
-//   color: "yellow",
-// });
 
 export function TopCircle({ normWidth, normHeight }: CommonProps) {
   return (
@@ -109,23 +100,10 @@ export function MidPlane() {
   );
 }
 
-export function BottomCone() {
+export function Tower() {
   const bottomHeight = 40;
   const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
 
-  return (
-    <>
-      <mesh
-        geometry={bottomConeGeometry}
-        material={glassMaterial}
-        position={bottomConePosition}
-        rotation={[Math.PI, -Math.PI * 0.2, 0]}
-      />
-    </>
-  );
-}
-
-export function Tower() {
   const state = useThree();
   const cameraBasePosition = new THREE.Vector3(61, -23, -62);
   const floorsCol0 = [0, 1, 2];
@@ -180,28 +158,29 @@ export function Tower() {
     const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
       (state: any) => state.isPlayerFocused,
       (value) => {
+        console.log("a", value);
         if (value.isPlayerFocused == true) handleZoomOut();
       },
     );
 
-    const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
-      (state: any) => state.currentFloorNum,
-      (value) => {
-        if (floorsCol0.includes(value)) {
-          setNormHeight(5);
-          setNormWidth(40);
-        } else if (floorsCol1.includes(value)) {
-          setNormHeight(15);
-          setNormWidth(30);
-        } else if (floorsCol2.includes(value)) {
-          setNormHeight(25);
-          setNormWidth(20);
-        } else if (floorsCol3.includes(value)) {
-          setNormHeight(35);
-          setNormWidth(10);
-        }
-      },
-    );
+    // const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
+    //   (state: any) => state.currentFloorNum,
+    //   (value) => {
+    //     if (floorsCol0.includes(value)) {
+    //       setNormHeight(5);
+    //       setNormWidth(40);
+    //     } else if (floorsCol1.includes(value)) {
+    //       setNormHeight(15);
+    //       setNormWidth(30);
+    //     } else if (floorsCol2.includes(value)) {
+    //       setNormHeight(25);
+    //       setNormWidth(20);
+    //     } else if (floorsCol3.includes(value)) {
+    //       setNormHeight(35);
+    //       setNormWidth(10);
+    //     }
+    //   },
+    // );
 
     //該当コンテンツ外でマウス/タップがキャンセルされた際の初期化
     const handleMouseUp = () => setIsDown(false);
@@ -214,7 +193,7 @@ export function Tower() {
 
     return () => {
       unsubscribeIsPlayerFocused();
-      unsubscribeCurrentFloorNum();
+      // unsubscribeCurrentFloorNum();
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
@@ -352,13 +331,22 @@ export function Tower() {
   };
 
   return (
-    <group onPointerDown={handlePointerDown} onPointerUp={handleZoomIn}>
-      <group position={[0, -2.5, 0]}>
+    <>
+      {/* <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
         <ArrowPlane normWidth={normWidth} normHeight={normHeight} />
       </group>
-      <MidPlane />
-      <BottomCone />
-    </group>
+      <MidPlane /> */}
+
+      {/* Bottom Cone */}
+      <mesh
+        onPointerDown={handlePointerDown}
+        onPointerUp={handleZoomIn}
+        geometry={bottomConeGeometry}
+        material={glassMaterial}
+        position={bottomConePosition}
+        rotation={[Math.PI, -Math.PI * 0.2, 0]}
+      />
+    </>
   );
 }
