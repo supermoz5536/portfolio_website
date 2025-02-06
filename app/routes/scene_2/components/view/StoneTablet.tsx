@@ -66,7 +66,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
      * Importing Model
      */
 
-    gltfLoader.load("/asset/model/stoneTablet.glb", (gltf: any) => {
+    gltfLoader.load("/asset/model/stoneTablet7.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -260,9 +260,8 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
           scale={1.75}
           onPointerDown={handlePointerDown}
           onPointerUp={handleZoomIn}
-          position={[8.75, 2, -8.75]}
+          position={[8.75, 1.75, -8.75]}
           rotation={[0, -Math.PI / 1.5, 0]}
-          // rotation={[0, -Math.PI / 1.325, 0]}
         />
       )}
     </>
