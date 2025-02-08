@@ -252,7 +252,7 @@ export default function Scene2() {
                       </span>
 
                       <span className="mt-5 mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        Try clicking objects!
+                        Try tapping the objects!
                       </span>
                       <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                         You can find something interesting.

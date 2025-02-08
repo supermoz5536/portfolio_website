@@ -6,6 +6,7 @@ import ThreeContentsStore from "../../../../store/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 import { ArrowPlaneMaterial } from "./Materials/ArrowPlaneMaterial";
+import { TopCirclePulseMaterial } from "./Materials/TopCirclePulseMaterial";
 
 type CommonProps = {
   normWidth: number;
@@ -34,15 +35,35 @@ export function TopCircle({ normWidth, normHeight }: CommonProps) {
       <mesh
         geometry={circleGeometry}
         material={
-          new THREE.MeshStandardMaterial({
+          new THREE.MeshBasicMaterial({
             color: "blue",
             transparent: true,
-            opacity: 0.4,
-            side: THREE.DoubleSide,
+            opacity: 0.35,
           })
         }
         position={[61, normHeight, -62]}
         rotation={[-Math.PI / 2, 0, 0]}
+        scale={[normWidth, normWidth, 1]}
+      />
+    </>
+  );
+}
+
+export function TopCirclePulse({ normWidth, normHeight }: CommonProps) {
+  const material = TopCirclePulseMaterial();
+
+  useFrame((state) => {
+    const elapseTime = state.clock.elapsedTime;
+    material.uniforms.uTime.value = elapseTime;
+  });
+
+  return (
+    <>
+      <mesh
+        geometry={circleGeometry}
+        material={material}
+        position={[61, normHeight + 0.01, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
         scale={[normWidth, normWidth, 1]}
       />
     </>
@@ -85,10 +106,10 @@ export function MidPlane() {
       <mesh
         geometry={planeGeometry}
         material={
-          new THREE.MeshStandardMaterial({
+          new THREE.MeshBasicMaterial({
             color: "red",
             transparent: true,
-            opacity: 0.4,
+            opacity: 0.375,
             side: THREE.DoubleSide,
           })
         }
@@ -133,7 +154,7 @@ export function InsideCone() {
         }
         position={bottomConePosition}
         rotation={[Math.PI, -Math.PI * 0.2, 0]}
-        scale={0.925}
+        scale={0.825}
       />
     </>
   );
@@ -159,7 +180,7 @@ export function Tower() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [normWidth, setNormWidth] = useState(40);
-  const [normHeight, setNormHeight] = useState(5);
+  const [normHeight, setNormHeight] = useState(10);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -202,16 +223,16 @@ export function Tower() {
       (state: any) => state.currentFloorNum,
       (value) => {
         if (floorsCol0.includes(value)) {
-          setNormHeight(5);
+          setNormHeight(10);
           setNormWidth(40);
         } else if (floorsCol1.includes(value)) {
-          setNormHeight(15);
+          setNormHeight(20);
           setNormWidth(30);
         } else if (floorsCol2.includes(value)) {
-          setNormHeight(25);
+          setNormHeight(30);
           setNormWidth(20);
         } else if (floorsCol3.includes(value)) {
-          setNormHeight(35);
+          setNormHeight(40);
           setNormWidth(10);
         }
       },
@@ -366,9 +387,14 @@ export function Tower() {
   };
 
   return (
-    <group onPointerDown={handlePointerDown} onPointerUp={handleZoomIn}>
+    <group
+      onPointerDown={handlePointerDown}
+      onPointerUp={handleZoomIn}
+      position={[0, -12.5, 0]}
+    >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
+        <TopCirclePulse normWidth={normWidth} normHeight={normHeight} />
         <ArrowPlane normWidth={normWidth} normHeight={normHeight} />
       </group>
 
