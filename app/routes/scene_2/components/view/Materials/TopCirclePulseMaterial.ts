@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import topCircleVertex from "./shaders/topCircle/vertex.glsl";
-import topCircleFragment from "./shaders/topCircle/fragment.glsl";
+import topCircleVertex from "./shaders/topCirclePulse/vertex.glsl";
+import topCircleFragment from "./shaders/topCirclePulse/fragment.glsl";
 
 export function TopCirclePulseMaterial() {
   const material = new THREE.ShaderMaterial({

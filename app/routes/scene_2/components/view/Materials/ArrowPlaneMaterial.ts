@@ -4,7 +4,9 @@ import arrowPlaneFragment from "./shaders/arrowPlane/fragment.glsl";
 
 export function ArrowPlaneMaterial() {
   const material = new THREE.ShaderMaterial({
-    uniforms: {},
+    uniforms: {
+      uTime: { value: 0.0 },
+    },
     vertexShader: arrowPlaneVertex,
     fragmentShader: arrowPlaneFragment,
     transparent: true,

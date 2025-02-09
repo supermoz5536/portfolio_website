@@ -63,7 +63,7 @@ export function TopCirclePulse({ normWidth, normHeight }: CommonProps) {
         geometry={circleGeometry}
         material={material}
         position={[61, normHeight + 0.01, -62]}
-        rotation={[-Math.PI / 2, 0, Math.PI]}
+        rotation={[-Math.PI / 2, 0, 0]}
         scale={[normWidth, normWidth, 1]}
       />
     </>
@@ -73,13 +73,16 @@ export function TopCirclePulse({ normWidth, normHeight }: CommonProps) {
 export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
   const arrowPlaneRef = useRef<any>();
   const lookAtTagetRef = useRef<any>(new THREE.Vector3());
-  const state = useThree();
-  const arrowPlaneMaterial = ArrowPlaneMaterial();
+  const threeState = useThree();
+  const material = ArrowPlaneMaterial();
 
-  useFrame(() => {
+  useFrame((state) => {
+    const elapseTime = state.clock.elapsedTime;
+    material.uniforms.uTime.value = elapseTime;
+
     if (arrowPlaneRef.current) {
       // Set target
-      lookAtTagetRef.current.copy(state.camera.position);
+      lookAtTagetRef.current.copy(threeState.camera.position);
       lookAtTagetRef.current.y = 0;
 
       // Apply target
@@ -92,7 +95,7 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
       <mesh
         ref={arrowPlaneRef}
         geometry={planeGeometry}
-        material={arrowPlaneMaterial}
+        material={material}
         position={[61, normHeight / 2, -62]}
         scale={[normWidth, normHeight, 1]}
       />

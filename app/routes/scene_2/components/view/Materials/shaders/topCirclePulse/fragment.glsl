@@ -38,13 +38,14 @@ void main() {
         B = vec2(0.0, getRandom(vec2(randomResult, randomResult)));
     }
 
-    vec2 BA = B - A; // A → B のベクトル
-    
-    // 点 p を A→B の直線上に射影して、進行度 t1 (0～1) を求める
-    // |p-A| * |BA| * cos(θ) / |BA|^2 * cos(θ) => |p-A| * cos(θ) / |BA|
-    float t1 = dot(p - A, BA) / dot(BA, BA);
+    float distanceBetAB = distance(A, B);
+    vec2 normDir = normalize(B - A);
+    float distanceAlong = dot(p - A, normDir);
+
+    float t1 = distanceAlong / distanceBetAB;
+
     // offset を計算して A に加える
-    vec2 proj = A + t1 * BA;
+    vec2 proj = A + t1 * (B - A);
     // 点 p とその射影点との距離を dLine とする
     float dLine = length(p - proj);
 
