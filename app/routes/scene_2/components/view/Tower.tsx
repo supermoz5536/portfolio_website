@@ -7,11 +7,21 @@ import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 import { ArrowPlaneMaterial } from "./Materials/ArrowPlaneMaterial";
 import { TopCirclePulseMaterial } from "./Materials/TopCirclePulseMaterial";
+import { InsideConeMaterial } from "./Materials/InsideConeMaterial";
 
 type CommonProps = {
   normWidth: number;
   normHeight: number;
 };
+
+const floorsRow0 = [0, 1, 2];
+const floorsRow1 = [3, 4, 5];
+const floorsRow2 = [6, 7, 8];
+const floorsRow3 = [9, 10, 11];
+
+const floorsCol0 = [0, 3, 6, 9];
+const floorsCol1 = [1, 4, 7, 10];
+const floorsCol2 = [2, 5, 8, 11];
 
 const circleGeometry = new THREE.CircleGeometry(0.5, 32);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
@@ -143,21 +153,22 @@ export function BottomCone() {
 export function InsideCone() {
   const bottomHeight = 40;
   const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+  const material = InsideConeMaterial();
+
+  useFrame((state) => {
+    const elapsedTime = state.clock.elapsedTime;
+    material.uniforms.uTime.value = elapsedTime;
+  });
 
   return (
     <>
       <mesh
         geometry={bottomConeGeometry}
-        material={
-          new THREE.MeshStandardMaterial({
-            color: "#90EE90",
-            transparent: true,
-            opacity: 0.4,
-          })
-        }
+        material={material}
         position={bottomConePosition}
         rotation={[Math.PI, -Math.PI * 0.2, 0]}
-        scale={0.825}
+        scale={0.8}
+        receiveShadow
       />
     </>
   );
@@ -166,13 +177,6 @@ export function InsideCone() {
 export function Tower() {
   const state = useThree();
   const cameraBasePosition = new THREE.Vector3(61, -23, -62);
-  const floorsCol0 = [0, 1, 2];
-  const floorsCol1 = [3, 4, 5];
-  const floorsCol2 = [6, 7, 8];
-  const floorsCol3 = [9, 10, 11];
-
-  // 奥４列ごとの normwidth normheightを設定
-  // 右３列は、緑の責務なので必要ない
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
@@ -183,7 +187,7 @@ export function Tower() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [normWidth, setNormWidth] = useState(40);
-  const [normHeight, setNormHeight] = useState(10);
+  const [normHeight, setNormHeight] = useState(5);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -225,17 +229,17 @@ export function Tower() {
     const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
-        if (floorsCol0.includes(value)) {
-          setNormHeight(10);
+        if (floorsRow0.includes(value)) {
+          setNormHeight(5);
           setNormWidth(40);
-        } else if (floorsCol1.includes(value)) {
-          setNormHeight(20);
+        } else if (floorsRow1.includes(value)) {
+          setNormHeight(15);
           setNormWidth(30);
-        } else if (floorsCol2.includes(value)) {
-          setNormHeight(30);
+        } else if (floorsRow2.includes(value)) {
+          setNormHeight(25);
           setNormWidth(20);
-        } else if (floorsCol3.includes(value)) {
-          setNormHeight(40);
+        } else if (floorsRow3.includes(value)) {
+          setNormHeight(35);
           setNormWidth(10);
         }
       },

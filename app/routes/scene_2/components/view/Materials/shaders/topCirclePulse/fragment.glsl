@@ -21,8 +21,6 @@ void main() {
     * Pulse
     */
 
-   
-
     float period = 1.5;
     float cycle = floor(uTime / period);
 
@@ -39,7 +37,7 @@ void main() {
     vec2 B = originBasedB + vec2(0.5); 
    
    /**
-   * Progress Rate (t1) 
+   * Progress Rate (t1), vDistance
    */
 
     float distanceBetAB = distance(A, B);
@@ -56,9 +54,14 @@ void main() {
     /**
     * LowStep Rate (t2)
     */
+    
     float t2 = pow(mod(uTime, period) / period, 12.0);
 
     float baseLowStep = sin(Math_PI / 2.0 * t2) - 0.15; 
+
+    /**
+    * Set Hieght and Width
+    */
 
     float pulseHeight = 
         smoothstep(baseLowStep, baseLowStep + 0.15, t1) *  // 先頭
