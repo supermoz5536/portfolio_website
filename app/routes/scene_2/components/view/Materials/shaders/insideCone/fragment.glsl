@@ -118,7 +118,7 @@ void main() {
     */
 
     float fadeTime1st = 1.75;
-    float waitTime1st = 2.0;
+    float waitTime1st = 2.5;
     float fadeTime2nd = 1.75;
     float waitTime2nd = 0.5;
 

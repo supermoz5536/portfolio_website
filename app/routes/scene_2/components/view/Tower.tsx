@@ -10,6 +10,7 @@ import { TopCirclePulseMaterial } from "./Materials/TopCirclePulseMaterial";
 import { InsideConeMaterial } from "./Materials/InsideConeMaterial";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { FresnelConeMaterial } from "./Materials/FresnelConeMaterial";
 
 type CommonProps = {
   normWidth: number;
@@ -229,6 +230,30 @@ export function InsideCone() {
         position={bottomConePosition}
         rotation={[Math.PI, -Math.PI * 0.2, 0]}
         scale={0.8}
+        receiveShadow
+      />
+    </>
+  );
+}
+
+export function FresnelCone() {
+  const bottomHeight = 40;
+  const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+  const material = FresnelConeMaterial();
+
+  useFrame((state) => {
+    const elapsedTime = state.clock.elapsedTime;
+    material.uniforms.uTime.value = elapsedTime;
+  });
+
+  return (
+    <>
+      <mesh
+        geometry={bottomConeGeometry}
+        material={material}
+        position={bottomConePosition}
+        rotation={[Math.PI, -Math.PI * 0.2, 0]}
+        scale={0.8001}
         receiveShadow
       />
     </>
@@ -468,6 +493,7 @@ export function Tower() {
 
       <MidPlane />
       <BottomCone />
+      <FresnelCone />
       <InsideCone />
     </group>
   );
