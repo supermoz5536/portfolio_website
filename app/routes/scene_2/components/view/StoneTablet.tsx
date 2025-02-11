@@ -15,17 +15,10 @@ type StoneTabletProps = {
   index: number;
 };
 
-const stoneTabletGeometry = new THREE.BoxGeometry(3.5, 5, 0.5);
-const stoneTabletMaterial = new THREE.MeshStandardMaterial({
-  color: "gray",
-  side: THREE.DoubleSide,
-  metalness: 0,
-  roughness: 1,
-});
-
 /**
  * Loader
  */
+
 const gltfLoader: any = new GLTFLoader();
 const dracoLoader: any = new DRACOLoader();
 dracoLoader.setDecoderPath("/draco/");
@@ -66,7 +59,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
      * Importing Model
      */
 
-    gltfLoader.load("/asset/model/stoneTablet7.glb", (gltf: any) => {
+    gltfLoader.load("/asset/model/stoneTablet.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
         if (child.isMesh) {
           child.castShadow = true;

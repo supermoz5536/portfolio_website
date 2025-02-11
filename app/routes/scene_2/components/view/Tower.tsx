@@ -8,6 +8,8 @@ import { useThree } from "@react-three/fiber";
 import { ArrowPlaneMaterial } from "./Materials/ArrowPlaneMaterial";
 import { TopCirclePulseMaterial } from "./Materials/TopCirclePulseMaterial";
 import { InsideConeMaterial } from "./Materials/InsideConeMaterial";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 type CommonProps = {
   normWidth: number;
@@ -23,9 +25,14 @@ const floorsCol0 = [0, 3, 6, 9];
 const floorsCol1 = [1, 4, 7, 10];
 const floorsCol2 = [2, 5, 8, 11];
 
+/**
+ * Geometry and Material
+ */
+
 const circleGeometry = new THREE.CircleGeometry(0.5, 32);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
-const bottomConeGeometry = new THREE.ConeGeometry(25, 40, 4); // 第一引数は、内接円の半径
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+const bottomConeGeometry = new THREE.ConeGeometry(25, 40, 4); // 第一引数は、外接円の半径
 
 const glassMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0,
@@ -39,6 +46,15 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
   depthWrite: false,
 });
 
+/**
+ * Loader
+ */
+
+const gltfLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco/");
+gltfLoader.setDRACOLoader(dracoLoader);
+
 export function TopCircle({ normWidth, normHeight }: CommonProps) {
   return (
     <>
@@ -49,6 +65,7 @@ export function TopCircle({ normWidth, normHeight }: CommonProps) {
             color: "blue",
             transparent: true,
             opacity: 0.35,
+            blending: THREE.AdditiveBlending,
           })
         }
         position={[61, normHeight, -62]}
@@ -114,21 +131,65 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
 }
 
 export function MidPlane() {
+  const [scene, setScene] = useState();
+  const mixerRef = useRef<any>();
+
+  useEffect(() => {
+    gltfLoader.load("/asset/model/midPlane.glb", (gltf: any) => {
+      gltf.scene.traverse((child: any) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.recieveShadow = true;
+        }
+        setScene(gltf.scene);
+      });
+
+      // glTF にアニメーションが含まれている場合の処理
+      if (gltf.animations && gltf.animations.length > 0) {
+        // AnimationMixer を gltf.scene を対象に作成し、mixerRef.current に保持する
+        mixerRef.current = new THREE.AnimationMixer(gltf.scene);
+        // glTF に含まれるすべての AnimationClip をループ処理で Action として登録し再生開始する
+        // アニメーションクリップという生のアニメーション情報を
+        // clipActionメソッドで、AnimationMixerクラスのミキサーが扱えるよう変換して再生￥
+        gltf.animations.forEach((clip: any) => {
+          const action = mixerRef.current.clipAction(clip);
+          action.play();
+        });
+      }
+    });
+  }, []);
+
+  useFrame((state, delta) => {
+    if (mixerRef.current) {
+      // update(): 引数の数値ごとにミキサー内のアニメーションを更新
+      mixerRef.current.update(delta);
+    }
+  });
+
   return (
     <>
+      {scene && (
+        <primitive
+          object={scene}
+          position={[61, -3.25, -62]}
+          rotation={[0, Math.PI * 0.2 - Math.PI / 4, 0]}
+        />
+      )}
+
       <mesh
-        geometry={planeGeometry}
+        geometry={boxGeometry}
         material={
           new THREE.MeshBasicMaterial({
             color: "red",
             transparent: true,
-            opacity: 0.375,
+            opacity: 0.3,
             side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
           })
         }
-        position={[61, -3.25, -62]}
+        position={[61, -3.25 - 0.325, -62]}
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
-        scale={[35.5, 35.5, 1]}
+        scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
     </>
   );
@@ -187,7 +248,7 @@ export function Tower() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [normWidth, setNormWidth] = useState(40);
-  const [normHeight, setNormHeight] = useState(5);
+  const [normHeight, setNormHeight] = useState(10);
 
   const [lerpCamera, setLeapCamera] = useState(
     new THREE.Vector3(
@@ -230,16 +291,16 @@ export function Tower() {
       (state: any) => state.currentFloorNum,
       (value) => {
         if (floorsRow0.includes(value)) {
-          setNormHeight(5);
+          setNormHeight(10);
           setNormWidth(40);
         } else if (floorsRow1.includes(value)) {
-          setNormHeight(15);
+          setNormHeight(20);
           setNormWidth(30);
         } else if (floorsRow2.includes(value)) {
-          setNormHeight(25);
+          setNormHeight(30);
           setNormWidth(20);
         } else if (floorsRow3.includes(value)) {
-          setNormHeight(35);
+          setNormHeight(40);
           setNormWidth(10);
         }
       },

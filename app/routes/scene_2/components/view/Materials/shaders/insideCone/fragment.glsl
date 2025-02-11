@@ -99,7 +99,7 @@ void main() {
 
     // 数字が大きいと、ノイズのパターンは細かく（高周波）なります。
     // 数字が小さいと、ノイズの変化は緩やか（低周波）になります。
-    float colorStrength = cnoise(vec3(vUv * 7.5, uTime * 0.7));
+    float colorStrength = cnoise(vec3(vUv * 7.5, uTime * 1.1));
     
     // steo(): グラデーション部分の値が 0 or 1 に変換されて色味の変化が明瞭化
     // 0.8: multiplier

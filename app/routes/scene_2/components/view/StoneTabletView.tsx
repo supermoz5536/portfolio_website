@@ -187,20 +187,20 @@ export function StoneTabletView() {
 }
 
 const viewObjects: any = {
-  // 0: {
-  //   header1: "God Does Not Exist,",
-  //   header2: "the one standing there says,",
-  //   text1: "The expansion of the sense of absolute justice.",
-  //   text2: "Ontological self-Destruction.",
-  //   text3: "Restriction within a certain social identity due to a singular and narrow perspective.", // prettier-ignore
-  // },
   0: {
-    header1: "Sanple Text",
-    header2: "Sanple Text",
-    text1: "Sanple Text ",
-    text2: "Sanple Text Sanple Text",
-    text3: "Sanple Text Sanple Text Sanple Text",
+    header1: "God Does Not Exist,",
+    header2: "the one standing there says.",
+    text1: "The expansion of the sense of absolute justice.",
+    text2: "Ontological self-Destruction.",
+    text3: "Restriction within a certain social identity due to a singular and narrow perspective.", // prettier-ignore
   },
+  // 0: {
+  //   header1: "Sanple Text",
+  //   header2: "Sanple Text",
+  //   text1: "Sanple Text ",
+  //   text2: "Sanple Text Sanple Text",
+  //   text3: "Sanple Text Sanple Text Sanple Text",
+  // },
   3: {
     header1: "Monotheism",
     header2: "Fixed-Do Style",

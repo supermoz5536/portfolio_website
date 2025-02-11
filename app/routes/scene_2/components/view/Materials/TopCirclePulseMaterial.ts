@@ -10,6 +10,7 @@ export function TopCirclePulseMaterial() {
     vertexShader: topCircleVertex,
     fragmentShader: topCircleFragment,
     transparent: true,
+    blending: THREE.AdditiveBlending,
   });
 
   return material;
