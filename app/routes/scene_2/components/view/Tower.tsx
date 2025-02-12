@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSystemStore } from "~/store/system_store";
 import ThreePlayerStore from "../../../../store/three_player_store";
 import ThreeContentsStore from "../../../../store/three_contents_store";
@@ -32,6 +32,7 @@ const floorsCol2 = [2, 5, 8, 11];
 
 const circleGeometry = new THREE.CircleGeometry(0.5, 32);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const midPlaneGeometry = new THREE.PlaneGeometry(1, 1, 50, 50);
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const bottomConeGeometry = new THREE.ConeGeometry(25, 40, 4); // 第一引数は、外接円の半径
 
@@ -135,6 +136,87 @@ export function MidPlane() {
   const [scene, setScene] = useState();
   const mixerRef = useRef<any>();
 
+  const waveMaterial: any = useMemo(() => {
+    const waveMaterial = new THREE.MeshStandardMaterial({
+      color: "blue",
+      transparent: true,
+      opacity: 0.7,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+    });
+
+    waveMaterial.onBeforeCompile = (shader) => {
+      // -- shader へのアクセスに userDataを 経由する理由 --
+      // Three.js の標準マテリアルは、
+      // 内部的にシェーダーコードをコンパイルして利用するため、
+      // onBeforeCompile 内で生成された shader オブジェクトは
+      // マテリアル外部へは公開されない仕様のため
+      shader.uniforms.uTime = { value: 0.0 };
+      waveMaterial.userData.shader = shader;
+
+      // shader でのグローバルな値の宣言
+      shader.vertexShader = shader.vertexShader.replace(
+        "#include <common>",
+        `#include <common>
+        
+        uniform float uTime;
+        `,
+      );
+
+      // shader > vertexShader のコードを置換・拡張する処理
+      shader.vertexShader = shader.vertexShader.replace(
+        "#include <begin_vertex>",
+        `
+          #include <begin_vertex>
+
+          float Math_PI = 3.141592653589793238462643383279502884197;
+          
+
+        /**
+        * Distance
+        */
+
+        float period = 2.0;
+
+        // 周期 period における進捗率 [0.0 => 1.0]
+        float t = mod(uTime, period) / period;
+
+        float r = t * sqrt(2.0) / 2.0; // [0.0 => (√2 / 2)]
+
+        vec2 A = vec2(0.5); // uv中心
+        vec2 B = uv.xy; // uv頂点座標
+
+        float AB = distance(A, B);
+        float d = 0.0; // 「uv頂点座標」と「それに最も近い円周上の頂点」との距離
+
+        if (AB < r) {
+            d = r - AB;
+        } else if (AB == r) {
+            d = 0.0;
+        } else if (AB > r) {
+            d = AB - r;
+        }
+
+        /**
+        * Apply Intensity
+        */
+
+        // dは0から大きくなるほど波が小さくなる
+        // d[0.0 - 0.1]で波があるとすると
+        // 同区間で[1.0 - 0.0] の波の高さのIntensityが適当
+        float waveHeightIntensity = 1.0 - smoothstep(0.0, 0.05, d);
+
+        // 中心から遠ざかるほど指数関数的に減少
+        waveHeightIntensity *= 1.0 / r;
+
+        transformed.z -= waveHeightIntensity * 0.21;
+        `,
+      );
+    };
+
+    return waveMaterial;
+  }, []);
+
   useEffect(() => {
     gltfLoader.load("/asset/model/midPlane.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
@@ -161,22 +243,25 @@ export function MidPlane() {
   }, []);
 
   useFrame((state, delta) => {
-    if (mixerRef.current) {
-      // update(): 引数の数値ごとにミキサー内のアニメーションを更新
-      mixerRef.current.update(delta);
+    if (mixerRef.current) mixerRef.current.update(delta);
+    if (waveMaterial.userData.shader) {
+      waveMaterial.userData.shader.uniforms.uTime.value =
+        state.clock.elapsedTime;
     }
   });
 
   return (
     <>
-      {scene && (
-        <primitive
-          object={scene}
-          position={[61, -3.25, -62]}
-          rotation={[0, Math.PI * 0.2 - Math.PI / 4, 0]}
-        />
-      )}
-
+      {/* Wave Plane */}
+      <mesh
+        geometry={midPlaneGeometry}
+        material={waveMaterial}
+        // position={[61, -3.25 - 0.325, -62]}
+        position={[61, -3.5, -62]}
+        rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
+        scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
+      />
+      {/* Base Plane */}
       <mesh
         geometry={boxGeometry}
         material={
@@ -192,6 +277,14 @@ export function MidPlane() {
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
         scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
+      {/* Main Model */}
+      {scene && (
+        <primitive
+          object={scene}
+          position={[61, -3.25, -62]}
+          rotation={[0, Math.PI * 0.2 - Math.PI / 4, 0]}
+        />
+      )}
     </>
   );
 }

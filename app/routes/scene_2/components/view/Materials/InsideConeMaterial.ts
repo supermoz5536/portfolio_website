@@ -11,7 +11,6 @@ export function InsideConeMaterial() {
     vertexShader: insideConeVertex,
     fragmentShader: insideConeFragment,
     transparent: true,
-    // blending: THREE.AdditiveBlending,
   });
 
   return material;
