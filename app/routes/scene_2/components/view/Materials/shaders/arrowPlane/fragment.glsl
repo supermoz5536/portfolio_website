@@ -8,7 +8,7 @@ varying vec2 vUv;
 
 void main() {
     vec2 p = vUv;
-    float period = 1.3;
+    float period = 1.2;
 
     /**
     * Shaft
