@@ -148,7 +148,7 @@ export function MidPlane() {
     waveMaterial.onBeforeCompile = (shader) => {
       // -- shader へのアクセスに userDataを 経由する理由 --
       // Three.js の標準マテリアルは、
-      // 内部的にシェーダーコードをコンパイルして利用するため、
+      // 内部的にシェーダーコードをコンパイルして利用するため
       // onBeforeCompile 内で生成された shader オブジェクトは
       // マテリアル外部へは公開されない仕様のため
       shader.uniforms.uTime = { value: 0.0 };
