@@ -8,7 +8,7 @@ export default function Panel2() {
   return (
     <>
       <AnimateIn>
-        <div className="text-black bg-white min-h-[100vh]  h-auto w-full ">
+        <div className="text-black bg-white min-h-[100vh]  h-auto w-full overflow-hidden">
           {/* Responsible Width-Max-Break */}
           <div className="xl:flex flex-row justify-between xl-3:justify-center">
             {/* Header Max Wide */}

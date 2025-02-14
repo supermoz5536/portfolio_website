@@ -190,7 +190,7 @@ export default function Scene2() {
     <>
       <div
         id="scene2"
-        className="relative flex justify-center items-center h-[100vh] w-full"
+        className="relative flex justify-center items-center h-[100vh] w-full overflow-hidden"
       >
         {/* Three */}
         <div className="absolute top-0 left-0 h-[100vh] w-full z-0">

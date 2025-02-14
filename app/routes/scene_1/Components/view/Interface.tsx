@@ -98,9 +98,9 @@ export function MovementPad() {
           regionRef.current.style.opacity = 1;
           regionRef.current.style.transform = "scale(1.0)";
 
-          const scene2Element = document.getElementById("scene2");
+          const scene1Element = document.getElementById("scene1");
           padRef.current.style.top =
-            event.touches[0].pageY - scene2Element!.offsetLeft + "px";
+            event.touches[0].pageY - scene1Element!.offsetLeft + "px";
           padRef.current.style.left = event.touches[0].pageX + "px";
 
           // Re Calculate RegionData and HandleData
@@ -115,7 +115,7 @@ export function MovementPad() {
     };
 
     const handleTouchMove = (event: TouchEvent) => {
-      // scene2 の Three のシーン操作以外の入力を除外
+      // scene1 の Three のシーン操作以外の入力を除外
       if (isActicatedRef.current) {
         // tapDown - tapMove - tapEnd がコンテンツ上で完結してる場合
         // 後続の tapDown で DOM の movementPad（上地） が妨害して
@@ -341,7 +341,7 @@ export function MovementPad() {
       const computedStyle = window.getComputedStyle(regionRef.current);
       const borderWidth = parseFloat(computedStyle.borderLeftWidth);
 
-      const scene2Element = document.getElementById("scene2");
+      const scene1Element = document.getElementById("scene1");
 
       // ViewPort 左上(0, 0)が基準
       const regionRect = padRef.current.getBoundingClientRect();
@@ -359,7 +359,7 @@ export function MovementPad() {
           left: regionBodyOffsetLeft,
         },
         localOffset: {
-          top: regionBodyOffsetTop - scene2Element!.offsetTop, // #scene2(0, 0)との距離
+          top: regionBodyOffsetTop - scene1Element!.offsetTop, // #scene1(0, 0)との距離
           left: regionBodyOffsetLeft,
         },
         radius: regionRect.width / 2,
