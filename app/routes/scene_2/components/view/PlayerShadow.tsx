@@ -3,7 +3,7 @@ import playerShadowFragmentShader1 from "./Materials/shaders/playerShadow/fragme
 import playerShadowFragmentShader2 from "./Materials/shaders/playerShadow/fragment2.glsl";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import ThreePlayer from "../../../../store/three_player_store";
+import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { useFrame } from "@react-three/fiber";
 
 type PlayerShadowProps = {

@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { useEffect, useState } from "react";
-import { useSystemStore } from "~/store/system_store";
-import ThreePlayerStore from "../../../../store/three_player_store";
-import ThreeContentsStore from "../../../../store/three_contents_store";
+import { useSystemStore } from "~/store/scene2/system_store";
+import ThreePlayerStore from "../../../../store/scene2/three_player_store";
+import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
-import ThreeInterfaceStore from "../../../../store/three_interface_store";
+import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { Object3D } from "three";

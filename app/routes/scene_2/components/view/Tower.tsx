@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSystemStore } from "~/store/system_store";
-import ThreePlayerStore from "../../../../store/three_player_store";
-import ThreeContentsStore from "../../../../store/three_contents_store";
+import { useSystemStore } from "~/store/scene2/system_store";
+import ThreePlayerStore from "../../../../store/scene2/three_player_store";
+import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 import { ArrowPlaneMaterial } from "./Materials/ArrowPlaneMaterial";

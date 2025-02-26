@@ -11,8 +11,8 @@ import { Earth } from "./Components/view/Earth.js";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
-import { useSystemStore } from "~/store/system_store";
-import ThreePlayerStore from "../../store/three_player_store";
+import { useSystemStore } from "~/store/scene2/system_store";
+import ThreePlayerStore from "../../store/scene2/three_player_store";
 import { Tower } from "./Components/view/Tower";
 
 export default function Experience() {

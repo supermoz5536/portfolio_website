@@ -126,8 +126,8 @@ export default function Panel1() {
 
                   {/* Content 4 */}
                   <ContentBlock
-                    title="Inner World"
-                    subtitle="Steps to Evolution of Mind"
+                    title="Who?"
+                    subtitle="Steps to an Inner Universe."
                     medium="Web App"
                     number={4}
                   />

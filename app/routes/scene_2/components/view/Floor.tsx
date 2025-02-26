@@ -6,7 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { Object3D } from "three";
 import React from "react";
-import ThreePlayer from "../../../../store/three_player_store";
+import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { ShowCase } from "./ShowCase";
 import { FloorContents } from "./FloorContents";
 import { Bridge, BridgeRight } from "./Bridges";

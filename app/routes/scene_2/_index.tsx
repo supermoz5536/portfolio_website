@@ -2,14 +2,14 @@ import "./css/index.css";
 import { Button } from "@headlessui/react";
 import EntryPointThree from "./EntryPointThree";
 import { useStore } from "zustand";
-import { useSystemStore } from "~/store/system_store";
+import { useSystemStore } from "~/store/scene2/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { LuChevronDown } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
-import ThreePlayer from "../../store/three_player_store";
-import ThreeContents from "../../store/three_contents_store";
+import ThreePlayer from "../../store/scene2/three_player_store";
+import ThreeContents from "../../store/scene2/three_contents_store";
 import { MdOutlineCameraswitch } from "react-icons/md";
 
 export default function Scene2() {
