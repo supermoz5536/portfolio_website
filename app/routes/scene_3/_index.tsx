@@ -5,8 +5,12 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
+import { useEffect, useRef } from "react";
 
 export default function Scene3() {
+  const threeRef = useRef<any>(null);
+
+  const scrollProgress = useSystemStore((state) => state.scrollProgress);
   const setScrollProgress = 
     useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
 
@@ -40,6 +44,21 @@ export default function Scene3() {
     );
   }, []);
 
+  useEffect(() => {
+    // 例えば、scrollProgress が 0〜1 の範囲の場合、50% (0.5) 未満は100%、それ以降は線形補間で更新
+    let newClip;
+    if (scrollProgress < 0.3) {
+      newClip = "100%";
+    } else {
+      // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
+      newClip = `${(1 - (scrollProgress - 0.3) / 0.3) * 100}%`;
+    }
+    if (threeRef.current) {
+      console.log(newClip);
+      threeRef.current.style.setProperty("--clip-bottom", newClip);
+    }
+  }, [scrollProgress]);
+
   return (
     <>
       <div
@@ -47,7 +66,14 @@ export default function Scene3() {
         className="relative justify-center items-center h-[500vh] w-full"
       >
         {/* Three */}
-        <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
+        <div
+          ref={threeRef}
+          className="sticky top-0 left-0 h-[100vh] w-full z-0"
+          style={{
+            clipPath:
+              "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+          }}
+        >
           <EntryPointThree />
         </div>
 
