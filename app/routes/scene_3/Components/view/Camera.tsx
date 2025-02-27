@@ -1,6 +1,8 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { Vector3 } from "three";
+import * as THREE from "three";
 import { useSystemStore } from "~/store/scene3/system_store";
 
 export function Camera() {
@@ -10,6 +12,14 @@ export function Camera() {
   // size: 現在のcanvas描画領域(width, height)が格納
   const size = useThree((store) => store.size);
   const set = useThree((store) => store.set);
+
+  const cameraPpoints = [
+    new THREE.Vector3(210, 100, -190),
+    new THREE.Vector3(30, 70, -190),
+    new THREE.Vector3(-20, 10, 20),
+  ];
+
+  const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
 
   // デフォルトカメラとして登録
   useLayoutEffect(() => {
@@ -31,11 +41,21 @@ export function Camera() {
 
   useEffect(() => {
     if (cameraRef.current) {
+      console.log(scrollProgress);
+
+      const newPos = curve.getPoint(scrollProgress);
+
       cameraRef.current.position.set(
-        0 + (200 * scrollProgress), // prettier-ignore
-        20 + (200 * scrollProgress), // prettier-ignore
-        100 + (200 * scrollProgress), // prettier-ignore
+        newPos.x, // prettier-ignore
+        newPos.y, // prettier-ignore
+        newPos.z, // prettier-ignore
       );
+
+      // cameraRef.current.position.set(
+      //   0 + (200 * scrollProgress), // prettier-ignore
+      //   20 + (200 * scrollProgress), // prettier-ignore
+      //   100 + (200 * scrollProgress), // prettier-ignore
+      // );
     }
   }, [scrollProgress]);
 

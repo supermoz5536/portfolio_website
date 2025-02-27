@@ -28,7 +28,7 @@ export default function Scene3() {
         scrollTrigger: {
           trigger: "#scene3",
           start: "top top",
-          end: "bottom top",
+          end: "bottom bottom",
           scrub: 0.5,
           pin: false,
           onUpdate: (value) => {
@@ -44,7 +44,7 @@ export default function Scene3() {
     <>
       <div
         id="scene3"
-        className="relative justify-center items-center h-[300vh] w-full"
+        className="relative justify-center items-center h-[500vh] w-full"
       >
         {/* Three */}
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
@@ -66,7 +66,14 @@ export default function Scene3() {
           </AnimateInBlock>
 
           {/* 背景 */}
-          <div className="absolute top-0 left-0 h-full w-full bg-black opacity-35 z-[5]" />
+          {/* <div className="absolute top-0 left-0 h-full w-full bg-black opacity-35 z-[5]" /> */}
+          <div
+            className="absolute top-0 left-0 h-full w-full bg-black z-[5]"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.35)",
+              filter: "url(#custom-filter)",
+            }}
+          />
         </>
       </div>
     </>

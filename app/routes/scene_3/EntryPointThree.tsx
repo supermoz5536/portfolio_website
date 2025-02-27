@@ -32,8 +32,6 @@ const EntryPointThree = () => {
         >
           <Experience />
         </Canvas>
-        {/* <MovementPad /> */}
-        {/* <StoneTabletView /> */}
       </KeyboardControls>
     </>
   );

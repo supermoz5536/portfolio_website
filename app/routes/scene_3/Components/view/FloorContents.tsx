@@ -92,11 +92,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={index} />
 
+            <ShowCaseLight shadowLevel={0} index={index} />
+            <Fireflies index={index} />
+
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (
               <>
-                <ShowCaseLight shadowLevel={0} index={index} />
-                <Fireflies index={index} />
                 <PlayerShadow index={index} />
 
                 {/* Waves */}
