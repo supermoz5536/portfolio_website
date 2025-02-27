@@ -1,14 +1,15 @@
 import "./css/index.css";
-import EntryPointThree from "./EntryPointThree";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
 import { useEffect, useRef } from "react";
+import { CanvasNormal } from "./Components/view/CanvasNormal";
+import { CanvasOutline } from "./Components/view/CanvasOutline";
 
 export default function Scene3() {
-  const threeRef = useRef<any>(null);
+  const CanvasOutlineRef = useRef<any>(null);
 
   const scrollProgress = useSystemStore((state) => state.scrollProgress);
   const setScrollProgress = 
@@ -53,9 +54,8 @@ export default function Scene3() {
       // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
       newClip = `${(1 - (scrollProgress - 0.3) / 0.3) * 100}%`;
     }
-    if (threeRef.current) {
-      console.log(newClip);
-      threeRef.current.style.setProperty("--clip-bottom", newClip);
+    if (CanvasOutlineRef.current) {
+      CanvasOutlineRef.current.style.setProperty("--clip-bottom", newClip);
     }
   }, [scrollProgress]);
 
@@ -67,25 +67,30 @@ export default function Scene3() {
       >
         {/* Three */}
         <div
-          ref={threeRef}
-          className="sticky top-0 left-0 h-[100vh] w-full z-0"
+          ref={CanvasOutlineRef}
+          className="sticky top-0 left-0 h-[100vh] w-full z-10"
           style={{
             clipPath:
               "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
           }}
         >
-          <EntryPointThree />
+          <CanvasOutline />
+        </div>
+
+        {/* Three */}
+        <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
+          <CanvasNormal />
         </div>
 
         <>
           {/* 文字とボタンの配置管理するコンテナ */}
           <AnimateInBlock>
             <div className="flex flex-col justify-center items-center h-[80vh] w-[80vw] z-10">
-              <div className="mb-5 z-10 text-2xl text-white whitespace-nowrap">
+              <div className="mb-5 z-50 text-2xl text-white whitespace-nowrap">
                 <p>Journey through Creations</p>
               </div>
-              <span className="mb-5 z-10 text-7xl text-white ">Scene3</span>
-              <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+              <span className="mb-5 z-50 text-7xl text-white ">Scene3</span>
+              <span className="mb-5 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                 Steps to an Inner Universe.
               </span>
             </div>
@@ -94,7 +99,7 @@ export default function Scene3() {
           {/* 背景 */}
           {/* <div className="absolute top-0 left-0 h-full w-full bg-black opacity-35 z-[5]" /> */}
           <div
-            className="absolute top-0 left-0 h-full w-full bg-black z-[5]"
+            className="absolute top-0 left-0 h-full w-full bg-black z-30"
             style={{
               backgroundColor: "rgba(0, 0, 0, 0.35)",
               filter: "url(#custom-filter)",

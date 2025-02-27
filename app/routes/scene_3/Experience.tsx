@@ -19,7 +19,6 @@ export default function Experience() {
       <Camera />
       <Physics>
         <EnvironmentLights />
-        <Player />
         <Floors />
       </Physics>
       <Tower />
