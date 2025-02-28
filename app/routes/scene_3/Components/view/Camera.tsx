@@ -41,8 +41,6 @@ export function Camera() {
 
   useEffect(() => {
     if (cameraRef.current) {
-      console.log(scrollProgress);
-
       const newPos = curve.getPoint(scrollProgress);
 
       cameraRef.current.position.set(

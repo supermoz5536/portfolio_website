@@ -12,7 +12,6 @@ export const useSystemStore = create<SystemStore>()(
 
       setScrollProgress: (newState: number) => {
         set((state: any) => {
-          console.log(newState);
           return { scrollProgress: newState };
         });
       },

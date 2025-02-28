@@ -656,7 +656,6 @@ const MatterJs1 = ({ viewFlag, height, width }: MatterProps) => {
           (body) => body.id === 0,
         );
         if (strikerFetched) {
-          console.log("callback triggered");
           Matter.Body.setAngularVelocity(strikerFetched, strikerVelocityValue);
         }
       }
