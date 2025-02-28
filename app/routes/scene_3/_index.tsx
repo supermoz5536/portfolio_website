@@ -48,11 +48,11 @@ export default function Scene3() {
   useEffect(() => {
     // 例えば、scrollProgress が 0〜1 の範囲の場合、50% (0.5) 未満は100%、それ以降は線形補間で更新
     let newClip;
-    if (scrollProgress < 0.2) {
+    if (scrollProgress < 0.3) {
       newClip = "100%";
     } else {
       // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
-      newClip = `${(1 - (scrollProgress - 0.2) / 0.2) * 100}%`;
+      newClip = `${(1 - (scrollProgress - 0.3) / 0.3) * 100}%`;
     }
     if (CanvasOutlineRef.current) {
       CanvasOutlineRef.current.style.setProperty("--clip-bottom", newClip);

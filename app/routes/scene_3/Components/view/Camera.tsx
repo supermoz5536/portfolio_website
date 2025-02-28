@@ -14,8 +14,8 @@ export function Camera() {
   const set = useThree((store) => store.set);
 
   const cameraPpoints = [
-    new THREE.Vector3(210, 100, -190),
-    new THREE.Vector3(30, 70, -190),
+    new THREE.Vector3(210, 100, -240),
+    new THREE.Vector3(30, 70, -240),
     new THREE.Vector3(-20, 10, 20),
   ];
 
@@ -24,6 +24,7 @@ export function Camera() {
   // デフォルトカメラとして登録
   useLayoutEffect(() => {
     set({ camera: cameraRef.current });
+    cameraRef.current.layers.enable(0);
   }, []);
 
   // 初回マウント前にアスペクト比率を事前適用する必要がある

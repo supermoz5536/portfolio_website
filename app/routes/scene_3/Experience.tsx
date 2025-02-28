@@ -13,19 +13,7 @@ import { Camera } from "./Components/view/Camera.js";
 import * as THREE from "three";
 import { useEffect } from "react";
 
-type ExperienceType = {
-  outlineRef: React.MutableRefObject<any>;
-};
-
-export default function Experience({ outlineRef }: ExperienceType) {
-  useEffect(() => {
-    if (outlineRef && outlineRef.current) {
-      // Outline エフェクトで抽出するレイヤー (例: 10) に設定
-      outlineRef.current.layers.set(10);
-      console.log(outlineRef);
-    }
-  }, []);
-
+export default function Experience() {
   return (
     <>
       <color args={["#201919"]} attach="background" />
@@ -37,11 +25,6 @@ export default function Experience({ outlineRef }: ExperienceType) {
       </Physics>
       <Tower />
       <Earth />
-      <mesh
-        ref={outlineRef}
-        geometry={new THREE.BoxGeometry(50, 50, 50)}
-        material={new THREE.MeshStandardMaterial({ color: "red" })}
-      />
     </>
   );
 }
