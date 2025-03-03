@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import { RigidBody, vec3 } from "@react-three/rapier";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
-import { ShowCaseLight } from "./Lights";
+import { ShowCaseLight } from "./ShowCaseLight";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
 import { PlayerShadow } from "./PlayerShadow";
@@ -98,7 +98,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (
               <>
-                <PlayerShadow index={index} />
+                {/* <PlayerShadow index={index} /> */}
 
                 {/* Waves */}
                 {displayedGreenWave.includes(index) && <Waves flag={0} />}

@@ -261,7 +261,9 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   const mesh = new THREE.Mesh(geometry, material);
   const gui = getGui();
 
-  const rescaledPlayerMoveRatio = playerMoveRatio * 0.75 + 0.25;
+  const testRatio = 0.5;
+  const rescaledPlayerMoveRatio = testRatio * 0.75 + 0.25;
+  // const rescaledPlayerMoveRatio = playerMoveRatio * 0.75 + 0.25;
 
   useEffect(() => {
     /**

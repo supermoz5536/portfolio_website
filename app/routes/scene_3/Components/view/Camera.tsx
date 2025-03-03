@@ -1,12 +1,13 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import * as THREE from "three";
 import { useSystemStore } from "~/store/scene3/system_store";
 
 export function Camera() {
   const cameraRef = useRef<any>();
+  const three = useThree();
   const scrollProgress = useSystemStore((state) => state.scrollProgress);
 
   // size: 現在のcanvas描画領域(width, height)が格納
@@ -15,11 +16,17 @@ export function Camera() {
 
   const cameraPpoints = [
     new THREE.Vector3(210, 100, -240),
-    new THREE.Vector3(30, 70, -240),
-    new THREE.Vector3(-20, 10, 20),
+    new THREE.Vector3(100, 87, -230),
+    new THREE.Vector3(20, 73, -240),
+    new THREE.Vector3(-2, 48, -160),
+    new THREE.Vector3(15, 22.5, -60),
+    new THREE.Vector3(40, 1, 25),
+    new THREE.Vector3(-7, 4, 20),
   ];
 
   const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
+
+  const [isMobile, setIsMobile] = useState<boolean>();
 
   // デフォルトカメラとして登録
   useLayoutEffect(() => {
@@ -29,6 +36,15 @@ export function Camera() {
 
   // 初回マウント前にアスペクト比率を事前適用する必要がある
   useLayoutEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     if (cameraRef.current) {
       // canvas サイズ(width, height)の変更は
       // R3Fの仕様で camera の size に自動反映されるが
@@ -42,21 +58,20 @@ export function Camera() {
 
   useEffect(() => {
     if (cameraRef.current) {
-      const newPos = curve.getPoint(scrollProgress);
-
+      const newCameraPos = curve.getPoint(scrollProgress);
       cameraRef.current.position.set(
-        newPos.x, // prettier-ignore
-        newPos.y, // prettier-ignore
-        newPos.z, // prettier-ignore
+        newCameraPos.x, // prettier-ignore
+        newCameraPos.y, // prettier-ignore
+        newCameraPos.z, // prettier-ignore
       );
-
-      // cameraRef.current.position.set(
-      //   0 + (200 * scrollProgress), // prettier-ignore
-      //   20 + (200 * scrollProgress), // prettier-ignore
-      //   100 + (200 * scrollProgress), // prettier-ignore
-      // );
+      three.camera.lookAt(new THREE.Vector3());
+      if (scrollProgress > 0.925) {
+        isMobile
+          ? three.camera.lookAt(new THREE.Vector3(90, 30, -240))
+          : three.camera.lookAt(new THREE.Vector3(180, 30, -240));
+      }
     }
-  }, [scrollProgress]);
+  }, [scrollProgress, size]);
 
   return (
     <perspectiveCamera

@@ -217,7 +217,7 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
         color="#fff"
         intensity={lerpIntengityWithoutShadow}
         distance={15}
-        position={[-0.25, 5.3, 1.1]}
+        position={[index == 0 ? -1.8 : 0, 5, 0]}
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}

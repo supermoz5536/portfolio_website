@@ -13,21 +13,11 @@ import {
 } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ToneMappingMode, BlendFunction, GlitchMode } from "postprocessing";
+import { Resizer, KernelSize } from "postprocessing";
 import * as THREE from "three";
+import { OutLineCustom } from "./PostProcessing/Outline/Outline";
 
 export function CanvasOutline() {
-  const boxRef = useRef<THREE.Mesh>(null);
-  const [mesh, setMesh] = useState<THREE.Mesh | null>(null);
-
-  useEffect(() => {
-    if (boxRef.current) {
-      // ここでレイヤーを有効にしてもOK
-      boxRef.current.layers.enable(0);
-      // ステートにMeshをセットし、再レンダリングをトリガー
-      setMesh(boxRef.current);
-    }
-  }, [boxRef.current]);
-
   return (
     <>
       <Canvas
@@ -41,7 +31,6 @@ export function CanvasOutline() {
         gl={{
           localClippingEnabled: true,
           alpha: true,
-          toneMapping: THREE.NoToneMapping,
         }}
         camera={{
           fov: 45,
@@ -51,30 +40,9 @@ export function CanvasOutline() {
         }}
       >
         <Experience />
-        <mesh
-          ref={boxRef}
-          geometry={new THREE.BoxGeometry(25, 25, 25)}
-          material={
-            new THREE.MeshStandardMaterial({
-              color: "red",
-            })
-          }
-        />
-        {mesh && (
-          <>
-            <EffectComposer>
-              <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-              <Outline
-                selection={[mesh]}
-                selectionLayer={0}
-                edgeStrength={10}
-                visibleEdgeColor={0xffffff}
-                hiddenEdgeColor={0x00ffff}
-              />
-              <Bloom luminanceThreshold={1.0} mipmapBlur intensity={5.5} />
-            </EffectComposer>
-          </>
-        )}
+        <EffectComposer>
+          <OutLineCustom />
+        </EffectComposer>
       </Canvas>
     </>
   );
