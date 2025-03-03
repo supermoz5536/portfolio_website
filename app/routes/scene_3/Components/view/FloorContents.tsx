@@ -25,6 +25,7 @@ const transparentMaterial = new THREE.MeshStandardMaterial({
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
+const displayedShowcaseLight = [0, 3, 6, 9];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
@@ -92,8 +93,13 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={index} />
 
-            <ShowCaseLight shadowLevel={0} index={index} />
             <Fireflies index={index} />
+
+            {displayedShowcaseLight.includes(index) && (
+              <>
+                <ShowCaseLight shadowLevel={0} index={index} />
+              </>
+            )}
 
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (

@@ -363,7 +363,9 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           {/* Body Forward */}
           <mesh
             geometry={boxGeometry}
-            material={index == 0 ? glassMaterialFloor10 : glassMaterial}
+            material={
+              index == 0 || index == 9 ? glassMaterialFloor10 : glassMaterial
+            }
             position={[0, 3, -1.95]}
             rotation={[0, Math.PI / 2, 0]}
             scale={[0.1, 4, 4]}

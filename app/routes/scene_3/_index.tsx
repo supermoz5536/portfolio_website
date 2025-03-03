@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
 
@@ -14,6 +14,8 @@ export default function Scene3() {
   const scrollProgress = useSystemStore((state) => state.scrollProgress);
   const setScrollProgress = 
     useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
+
+  const [isMobile, setIsMobile] = useState<boolean>();
 
   /**
    * Scroll Progress
@@ -46,13 +48,22 @@ export default function Scene3() {
   }, []);
 
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     // 例えば、scrollProgress が 0〜1 の範囲の場合、50% (0.5) 未満は100%、それ以降は線形補間で更新
     let newClip;
-    if (scrollProgress < 0.2) {
+    if (scrollProgress < 0.235) {
       newClip = "100%";
     } else {
       // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
-      newClip = `${(1 - (scrollProgress - 0.2) / 0.2) * 100}%`;
+      newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
     }
     if (CanvasClipRef.current) {
       CanvasClipRef.current.style.setProperty("--clip-bottom", newClip);
@@ -114,12 +125,23 @@ export default function Scene3() {
           />
 
           {/* 背景レイヤー2 */}
-          <div
-            className="absolute top-[407.5vh] left-[45vw] h-[92.5vh] w-[55vw] z-10"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.55)",
-            }}
-          />
+          {isMobile && (
+            <div
+              className="absolute top-[407.5vh] left-0 h-[92.5vh] w-full z-10"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.55)",
+              }}
+            />
+          )}
+          {/* 背景レイヤー2 */}
+          {isMobile || (
+            <div
+              className="absolute top-[407.5vh] left-[45vw] h-[92.5vh] w-[55vw] z-10"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.55)",
+              }}
+            />
+          )}
         </>
       </div>
     </>
