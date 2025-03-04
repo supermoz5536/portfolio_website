@@ -15,11 +15,11 @@ export function Camera() {
   const set = useThree((store) => store.set);
 
   const cameraPpoints = [
-    new THREE.Vector3(210, 100, -240),
-    new THREE.Vector3(100, 87, -230),
-    new THREE.Vector3(20, 73, -240),
-    new THREE.Vector3(-2, 48, -160),
-    new THREE.Vector3(15, 22.5, -60),
+    new THREE.Vector3(165, 100, -240),
+    new THREE.Vector3(95, 87, -240),
+    new THREE.Vector3(25, 69, -240),
+    new THREE.Vector3(-5, 55.5, -185),
+    new THREE.Vector3(17.5, 21, -60),
     new THREE.Vector3(40, 1, 25),
     new THREE.Vector3(-7, 4, 20),
   ];
@@ -65,7 +65,7 @@ export function Camera() {
         newCameraPos.z, // prettier-ignore
       );
       three.camera.lookAt(new THREE.Vector3());
-      if (scrollProgress > 0.925) {
+      if (scrollProgress > 0.92) {
         isMobile
           ? three.camera.lookAt(new THREE.Vector3(90, 30, -240))
           : three.camera.lookAt(new THREE.Vector3(180, 30, -240));

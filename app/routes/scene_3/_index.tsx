@@ -74,7 +74,7 @@ export default function Scene3() {
     <>
       <div
         id="scene3"
-        className="relative justify-center items-center h-[500vh] w-full"
+        className="relative justify-center items-center h-[800vh] w-full"
       >
         {/* Three */}
         <div
@@ -94,20 +94,166 @@ export default function Scene3() {
         </div>
 
         <>
-          {/* 文字とボタンの配置管理するコンテナ */}
-          <AnimateInBlock>
-            <div className="absolute top-[10%] left-0 flex flex-col justify-start items-center h-[80vh] w-[80vw] z-40">
-              <div className="mb-5 z-50 text-2xl text-black whitespace-nowrap">
-                <p>Journey through Creations</p>
-              </div>
-              <span className="mb-5 z-50 text-7xl text-black ">Scene3</span>
-              <span className="mb-5 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                Steps to an Inner Universe.
-              </span>
-            </div>
-          </AnimateInBlock>
+          <div className="absolute top-0 left-0 h-[37%] w-full z-40">
+            <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
+              {/* Row1 */}
+              <AnimateInBlock rootMarginBottom={-40}>
+                <div className="absolute top-[10%] left-0 flex flex-col justify-start items-center h-full w-full">
+                  <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+                    {/* Row1-L */}
+                    <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                      <span className="mb-5 z-50 text-7xl text-black ">
+                        Scene3
+                      </span>
+                    </div>
 
-          {/* 背景レイヤー0 */}
+                    {/* Row1-R */}
+                    <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                      <span className="mb-5 z-50 text-4xl text-black ">
+                        Scene3
+                      </span>
+
+                      <div className="ml-6 flex flex-col justify-start items-start">
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AnimateInBlock>
+
+              {/* Row2 */}
+              <AnimateInBlock rootMarginBottom={-40}>
+                <div className="absolute top-[37%] left-0 flex flex-col justify-start items-center h-full w-full">
+                  <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+                    {/* Row1-L */}
+                    <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                      <span className="mb-5 z-50 text-7xl text-black ">
+                        Scene3
+                      </span>
+                    </div>
+
+                    {/* Row1-R */}
+                    <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                      <span className="mb-5 z-50 text-4xl text-black ">
+                        Scene3
+                      </span>
+
+                      <div className="ml-6 flex flex-col justify-start items-start">
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AnimateInBlock>
+
+              {/* Row3 */}
+              <AnimateInBlock rootMarginBottom={-40}>
+                <div className="absolute top-[64%] left-0 flex flex-col justify-start items-center h-full w-full">
+                  <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+                    {/* Row1-L */}
+                    <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                      <span className="mb-5 z-50 text-7xl text-black ">
+                        Scene3
+                      </span>
+                    </div>
+
+                    {/* Row1-R */}
+                    <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                      <span className="mb-5 z-50 text-4xl text-black ">
+                        Scene3
+                      </span>
+
+                      <div className="ml-6 flex flex-col justify-start items-start">
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                        <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                          - Steps to an Inner Universe.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AnimateInBlock>
+            </div>
+          </div>
+
+          {/* 背景レイヤー0
+           * ThreeCanvasのクリック阻害用レイヤー
+           */}
           <div
             className="absolute top-0 left-0 h-full w-full bg-black z-30"
             style={{
@@ -115,19 +261,23 @@ export default function Scene3() {
             }}
           />
 
-          {/* 背景レイヤー1 */}
+          {/* 背景レイヤー1
+           * 画面上部
+           */}
           <div
             className="absolute top-0 left-0 h-full w-full bg-black z-10"
             style={{
               backgroundColor: "rgba(0, 0, 0, 0.4)",
-              clipPath: "polygon(0 0, 100% 0, 100% 80%, 0 80%)",
+              clipPath: "polygon(0 0, 100% 0, 100% 87.5%, 0 87.5%)",
             }}
           />
 
-          {/* 背景レイヤー2 */}
+          {/* 背景レイヤー2
+           * 画面下部
+           */}
           {isMobile && (
             <div
-              className="absolute top-[407.5vh] left-0 h-[92.5vh] w-full z-10"
+              className="absolute top-[707.5vh] left-0 h-[92.5vh] w-full z-10"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.55)",
               }}
@@ -136,7 +286,7 @@ export default function Scene3() {
           {/* 背景レイヤー2 */}
           {isMobile || (
             <div
-              className="absolute top-[407.5vh] left-[45vw] h-[92.5vh] w-[55vw] z-10"
+              className="absolute top-[707.5vh] left-[45vw] h-[92.5vh] w-[55vw] z-10"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.55)",
               }}
