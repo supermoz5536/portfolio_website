@@ -270,7 +270,7 @@ export default function Scene3() {
               backgroundColor: "rgba(0, 0, 0, 0.4)",
               clipPath: "polygon(0 0, 100% 0, 100% 87.5%, 0 87.5%)",
             }}
-          />
+          ></div>
 
           {/* 背景レイヤー2
            * 画面下部
