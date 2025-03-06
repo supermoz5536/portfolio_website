@@ -41,6 +41,7 @@ export default function Scene3() {
           onUpdate: (value) => {
             const progressRate = value.progress;
             setScrollProgress(progressRate);
+            console.log(progressRate);
           },
         },
       },
@@ -77,6 +78,23 @@ export default function Scene3() {
         id="scene3"
         className="relative justify-center items-center h-[800vh] w-full"
       >
+        {/* 背景レイヤー0
+         * ThreeCanvasのクリック阻害用レイヤー
+         */}
+        <div className="absolute top-0 left-0 h-[87.5%] w-full z-30" />
+
+        {/* 背景レイヤー0.5
+         * カメラグィーン部の黒色の透過背景用
+         * Viewport単位での管理の方がシンプルかつ正確なので
+         * 文字の配置管理用のコンポーネントと別に用意
+         */}
+        <div
+          className="absolute top-0 left-0 h-[87.5%] w-full z-10"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+          }}
+        />
+
         {/* Three */}
         <div
           ref={canvasClipRef}
@@ -95,16 +113,11 @@ export default function Scene3() {
         </div>
 
         {/* 輪郭抽出部分のテキスト群のラッパー */}
-        <div
-          className="absolute top-0 left-0 h-[100%] w-full z-40"
-          style={{
-            backgroundColor: "rgba(0, 255, 0, 0.5)",
-          }}
-        >
+        <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
           <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
             {/* Row1 */}
             <AnimateInBlock rootMarginBottom={-50}>
-              <div className="absolute top-[5%] left-0 flex flex-col justify-start items-center h-full w-full">
+              <div className="absolute top-[5%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                   {/* Row1-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
@@ -155,7 +168,7 @@ export default function Scene3() {
 
             {/* Row2 */}
             <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[16%] left-0 flex flex-col justify-start items-center h-full w-full">
+              <div className="absolute top-[16%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                   {/* Row1-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
@@ -206,7 +219,7 @@ export default function Scene3() {
 
             {/* Row3 */}
             <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[27%] left-0 flex flex-col justify-start items-center h-full w-full">
+              <div className="absolute top-[27%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                   {/* Row1-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
@@ -254,68 +267,45 @@ export default function Scene3() {
                 </div>
               </div>
             </AnimateInBlock>
+
+            {/* Right Texts */}
+            <AnimateInBlock rootMarginBottom={-5}>
+              <div
+                id="button"
+                className="absolute top-[55%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[65%] my-lg:w-[26rem]"
+                style={{
+                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                }}
+              >
+                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                  Where?
+                </span>
+                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, odio.
+                </p>
+              </div>
+            </AnimateInBlock>
+
+            {/* Left Texts */}
+            <AnimateInBlock rootMarginBottom={-15}>
+              <div
+                id="button"
+                className="absolute top-[69%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[30%] my-lg:w-[26rem]"
+                style={{
+                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                }}
+              >
+                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                  Where?
+                </span>
+                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, odio.
+                </p>
+              </div>
+            </AnimateInBlock>
           </div>
-        </div>
-
-        {/* 背景レイヤー0
-         * ThreeCanvasのクリック阻害用レイヤー
-         */}
-        <div
-          className="absolute top-0 left-0 h-full w-full bg-black z-30"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0)",
-          }}
-        />
-
-        {/* 背景レイヤー0.5
-         * カメラグィーン部の黒色の透過背景用
-         * Viewport単位での管理の方がシンプルかつ正確なので
-         * 文字の配置管理用のコンポーネントと別に用意
-         */}
-        <div
-          className="absolute top-0 left-0 h-full w-full z-10"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            clipPath: "polygon(0 0, 100% 0, 100% 87.5%, 0 87.5%)",
-          }}
-        >
-          {/* Right Texts */}
-          <AnimateInBlock>
-            <div
-              id="button"
-              className="absolute top-[53%] right-[50%] translate-x-[50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:right-[30%] my-lg:w-[26rem]"
-              style={{
-                backgroundColor: "rgba(255, 0, 0, 0.4)",
-              }}
-            >
-              <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
-                Where?
-              </span>
-              <p className="text-center text-2xl text-white my-lg:text-3xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque,
-                odio.
-              </p>
-            </div>
-          </AnimateInBlock>
-
-          {/* Left Texts */}
-          <AnimateInBlock>
-            <div
-              id="button"
-              className="absolute top-[64.5%] left-[50%] translate-x-[-50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[30%] my-lg:w-[26rem]"
-              style={{
-                backgroundColor: "rgba(255, 0, 0, 0.4)",
-              }}
-            >
-              <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
-                When?
-              </span>
-              <p className="text-center text-2xl text-white my-lg:text-3xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque,
-                odio.
-              </p>
-            </div>
-          </AnimateInBlock>
         </div>
 
         {/* 背景レイヤー2
@@ -323,7 +313,7 @@ export default function Scene3() {
          */}
         {isMobile && (
           <div
-            className="absolute top-[707.5vh] left-0 h-[92.5vh] w-full z-10"
+            className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[50%] z-10"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.55)",
             }}
@@ -332,7 +322,7 @@ export default function Scene3() {
         {/* 背景レイヤー2 */}
         {isMobile || (
           <div
-            className="absolute top-[707.5vh] left-[45vw] h-[92.5vh] w-[55vw] z-10"
+            className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-40"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.55)",
             }}

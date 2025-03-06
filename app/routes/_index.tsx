@@ -49,7 +49,7 @@ export default function Index() {
       {/* <Scene1Test />
       <Panel1 />
       <Scene2 /> */}
-      {/* <Panel2 /> */}
+      <Panel2 />
       <Scene3 />
     </div>
   );
