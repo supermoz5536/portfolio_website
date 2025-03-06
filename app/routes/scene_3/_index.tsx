@@ -277,10 +277,16 @@ export default function Scene3() {
                   backgroundColor: "rgba(255, 0, 0, 0.4)",
                 }}
               >
-                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                <span
+                  id="fade-in-bottom"
+                  className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+                >
                   Where?
                 </span>
-                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                <p
+                  id="fade-in-bottom"
+                  className="text-center text-2xl text-white my-lg:text-3xl"
+                >
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Itaque, odio.
                 </p>
@@ -296,10 +302,16 @@ export default function Scene3() {
                   backgroundColor: "rgba(255, 0, 0, 0.4)",
                 }}
               >
-                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                <span
+                  id="fade-in-bottom"
+                  className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+                >
                   Where?
                 </span>
-                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                <p
+                  id="fade-in-bottom"
+                  className="text-center text-2xl text-white my-lg:text-3xl"
+                >
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Itaque, odio.
                 </p>
