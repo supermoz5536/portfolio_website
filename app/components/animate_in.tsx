@@ -72,6 +72,8 @@ export const AnimateIn = ({ children, rootMarginBottom }: AnimateInProps) => {
         /* 下からのフェードインの場合 */
         if (id == "fade-in-bottom") animateClassName = "animate-fade-in-bottom";
         if (id == "tablet") animateClassName = "animate-text-focus-in";
+        /* 左からのフェードインの場合 */
+        if (id == "fade-in-left") animateClassName = "animate-fade-in-left";
 
         /* アニメーションする要素のみに動的なCSSクラスを設定 */
         if (animateClassName != null) {

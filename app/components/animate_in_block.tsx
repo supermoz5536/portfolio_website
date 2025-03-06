@@ -86,6 +86,8 @@ export const AnimateInBlock = ({
           /* 下からのフェードインの場合 */
           if (id == "fade-in-bottom") animateClassName = "animate-fade-in-bottom"; // prettier-ignore
           if (id == "tablet") animateClassName = "animate-text-focus-in";
+          /* 左からのフェードインの場合 */
+          if (id == "fade-in-left") animateClassName = "animate-fade-in-left";
 
           /**
            * アニメーションする要素のみに以下を設定

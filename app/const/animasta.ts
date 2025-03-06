@@ -17,7 +17,7 @@ export const animista = {
     /* chart-r */
     "rotate-in-2-fwd-ccw":
       "rotate-in-2-fwd-ccw 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
-    /* svg */
+    /* svg **/
     "scale-in-center":
       "scale-in-center 0.85s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
     /* button */
@@ -26,6 +26,9 @@ export const animista = {
     /* tablet */
     "text-focus-in":
       "text-focus-in 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)    both",
+    /* fade-in-left */
+    "fade-in-left":
+      "fade-in-left 1.5s cubic-bezier(0.230, 1.000, 0.320, 1.000)   both",
   },
 
   keyframes: {
@@ -118,7 +121,7 @@ export const animista = {
         opacity: "1",
       },
     },
-    /* svg */
+    /* svg **/
     "scale-in-center": {
       "0%": {
         transform: "scale(0)",
@@ -148,6 +151,17 @@ export const animista = {
       },
       to: {
         filter: "blur(0)",
+        opacity: "1",
+      },
+    },
+    /* fade-in-left */
+    "fade-in-left": {
+      "0%": {
+        transform: "translateX(-50px)",
+        opacity: "0",
+      },
+      to: {
+        transform: "translateX(0)",
         opacity: "1",
       },
     },

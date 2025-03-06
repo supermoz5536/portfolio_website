@@ -126,48 +126,75 @@ export default function Scene3() {
           <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
             {/* Row1 */}
             <AnimateInBlock rootMarginBottom={-50}>
-              <div className="absolute top-[5%] left-0 flex flex-col justify-start items-center w-full">
+              <div className="absolute top-[4%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                   {/* Row1-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
-                    <span className="mb-5 z-50 text-7xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-5 z-50 text-8xl text-black "
+                    >
+                      Curious
                     </span>
                   </div>
 
                   {/* Row1-R */}
                   <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
-                    <span className="mb-5 z-50 text-4xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                    >
+                      Find your Joy
                     </span>
 
                     <div className="ml-6 flex flex-col justify-start items-start">
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Ideas spark here daily.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Creative minds play freely.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Imagination thrives openly.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Dare to dream boldly.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Invent joy daily always.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Curiosity rules your mind.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Passion meets playful creation.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
-                      </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Art starts right now.
                       </span>
                     </div>
                   </div>
@@ -177,48 +204,72 @@ export default function Scene3() {
 
             {/* Row2 */}
             <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[16%] left-0 flex flex-col justify-start items-center w-full">
+              <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
-                  {/* Row1-L */}
+                  {/* Row2-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
-                    <span className="mb-5 z-50 text-7xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-5 z-50 text-8xl text-black "
+                    >
+                      Discover
                     </span>
                   </div>
 
-                  {/* Row1-R */}
+                  {/* Row2-R */}
                   <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
-                    <span className="mb-5 z-50 text-4xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                    >
+                      Explore ideas
                     </span>
 
                     <div className="ml-6 flex flex-col justify-start items-start">
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Joy fuels art daily.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Play is truly powerful.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Delight in every detail.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Create smiles often.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Embrace fun daily here.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                        - Steps to playful wonder.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Unleash laughter now.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
-                      </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Make play serious always.
                       </span>
                     </div>
                   </div>
@@ -230,46 +281,73 @@ export default function Scene3() {
             <AnimateInBlock rootMarginBottom={-20}>
               <div className="absolute top-[27%] left-0 flex flex-col justify-start items-center w-full">
                 <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
-                  {/* Row1-L */}
+                  {/* Row3-L */}
                   <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
-                    <span className="mb-5 z-50 text-7xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-5 z-50 text-8xl text-black "
+                    >
+                      Innovate
                     </span>
                   </div>
 
-                  {/* Row1-R */}
+                  {/* Row3-R */}
                   <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
-                    <span className="mb-5 z-50 text-4xl text-black ">
-                      Scene3
+                    <span
+                      id="tablet"
+                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                    >
+                      Genuine fun
                     </span>
 
                     <div className="ml-6 flex flex-col justify-start items-start">
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Play honestly always together.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Fun with heart daily inspires.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - True creativity right here.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Authentic joy found now.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Deep play fuels creativity.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Imagination sparks sincerity.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - True laughter inspires ideas.
                       </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
-                      </span>
-                      <span className="mb-5 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
-                        - Steps to an Inner Universe.
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Ideas is truly righteous.
                       </span>
                     </div>
                   </div>

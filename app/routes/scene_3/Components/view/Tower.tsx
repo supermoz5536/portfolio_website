@@ -577,7 +577,7 @@ export function Tower() {
     <group
       onPointerDown={handlePointerDown}
       onPointerUp={handleZoomIn}
-      position={[0, -12.5, 0]}
+      position={[15, 7, 10]}
     >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
