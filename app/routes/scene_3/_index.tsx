@@ -58,6 +58,15 @@ export default function Scene3() {
       if (window.innerWidth >= 500) setIsMobile(false);
     }
 
+    /**
+     * GSAP スクロール計算のリフレッシュ
+     * モバイルの場合は、初回マウント後のスクロール計算結果が
+     * 正確ではないケースがあるので、再計算
+     */
+    ScrollTrigger.refresh();
+  }, []);
+
+  useEffect(() => {
     // 例えば、scrollProgress が 0〜1 の範囲の場合、50% (0.5) 未満は100%、それ以降は線形補間で更新
     let newClip;
     if (scrollProgress < 0.235) {
@@ -95,7 +104,7 @@ export default function Scene3() {
           }}
         />
 
-        {/* Three */}
+        {/* Three Outline*/}
         <div
           ref={canvasClipRef}
           className="sticky top-0 left-0 h-[100vh] w-full z-20"
@@ -272,9 +281,9 @@ export default function Scene3() {
             <AnimateInBlock rootMarginBottom={-5}>
               <div
                 id="button"
-                className="absolute top-[55%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[65%] my-lg:w-[26rem]"
+                className="absolute top-[55%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[65%] my-lg:w-[26rem]"
                 style={{
-                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                  backgroundColor: "rgba(255, 0, 0, 0.35)",
                 }}
               >
                 <span
@@ -297,7 +306,7 @@ export default function Scene3() {
             <AnimateInBlock rootMarginBottom={-15}>
               <div
                 id="button"
-                className="absolute top-[69%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[30%] my-lg:w-[26rem]"
+                className="absolute top-[69%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
                 style={{
                   backgroundColor: "rgba(255, 0, 0, 0.4)",
                 }}
@@ -306,7 +315,7 @@ export default function Scene3() {
                   id="fade-in-bottom"
                   className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
                 >
-                  Where?
+                  When?
                 </span>
                 <p
                   id="fade-in-bottom"
@@ -320,25 +329,25 @@ export default function Scene3() {
           </div>
         </div>
 
-        {/* 背景レイヤー2
-         * 画面下部
+        {/*
+         * Contact Form
          */}
+
         {isMobile && (
           <div
-            className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[50%] z-10"
+            className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-10"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.55)",
             }}
-          />
+          ></div>
         )}
-        {/* 背景レイヤー2 */}
         {isMobile || (
           <div
             className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-40"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.55)",
             }}
-          />
+          ></div>
         )}
       </div>
     </>

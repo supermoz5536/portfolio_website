@@ -206,14 +206,14 @@ export default function Scene2() {
                   <p>Journey through Creations</p>
                 </div>
                 <span className="mb-5 z-10 text-7xl text-white ">Who?</span>
-                <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+                <span className="mb-10 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                   Steps to an Inner Universe.
                 </span>
 
                 <Button
                   id="button"
                   className={
-                    "z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
+                    "ml-28 z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
                   }
                   onClick={() => activateOn()}
                 >
