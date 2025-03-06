@@ -9,7 +9,7 @@ import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
 
 export default function Scene3() {
-  const CanvasClipRef = useRef<any>(null);
+  const canvasClipRef = useRef<any>(null);
 
   const scrollProgress = useSystemStore((state) => state.scrollProgress);
   const setScrollProgress = 
@@ -65,8 +65,9 @@ export default function Scene3() {
       // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
       newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
     }
-    if (CanvasClipRef.current) {
-      CanvasClipRef.current.style.setProperty("--clip-bottom", newClip);
+
+    if (canvasClipRef.current) {
+      canvasClipRef.current.style.setProperty("--clip-bottom", newClip);
     }
   }, [scrollProgress]);
 
@@ -78,7 +79,7 @@ export default function Scene3() {
       >
         {/* Three */}
         <div
-          ref={CanvasClipRef}
+          ref={canvasClipRef}
           className="sticky top-0 left-0 h-[100vh] w-full z-20"
           style={{
             clipPath:
@@ -94,10 +95,15 @@ export default function Scene3() {
         </div>
 
         <>
-          <div className="absolute top-0 left-0 h-[37%] w-full z-40">
+          <div
+            className="absolute top-0 left-0 h-[37%] w-full z-40"
+            style={{
+              backgroundColor: "rgba(0, 255, 0, 0.3)",
+            }}
+          >
             <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
               {/* Row1 */}
-              <AnimateInBlock rootMarginBottom={-40}>
+              <AnimateInBlock rootMarginBottom={-50}>
                 <div className="absolute top-[10%] left-0 flex flex-col justify-start items-center h-full w-full">
                   <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                     {/* Row1-L */}
@@ -148,7 +154,7 @@ export default function Scene3() {
               </AnimateInBlock>
 
               {/* Row2 */}
-              <AnimateInBlock rootMarginBottom={-40}>
+              <AnimateInBlock rootMarginBottom={-20}>
                 <div className="absolute top-[37%] left-0 flex flex-col justify-start items-center h-full w-full">
                   <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                     {/* Row1-L */}
@@ -199,7 +205,7 @@ export default function Scene3() {
               </AnimateInBlock>
 
               {/* Row3 */}
-              <AnimateInBlock rootMarginBottom={-40}>
+              <AnimateInBlock rootMarginBottom={-20}>
                 <div className="absolute top-[64%] left-0 flex flex-col justify-start items-center h-full w-full">
                   <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
                     {/* Row1-L */}
@@ -261,16 +267,56 @@ export default function Scene3() {
             }}
           />
 
-          {/* 背景レイヤー1
-           * 画面上部
+          {/* 背景レイヤー0.5
+           * カメラグィーン部の黒色の透過背景用
+           * Viewport単位での管理の方がシンプルかつ正確なので
+           * 文字の配置管理用のコンポーネントと別に用意
            */}
           <div
-            className="absolute top-0 left-0 h-full w-full bg-black z-10"
+            className="absolute top-0 left-0 h-full w-full z-1000"
             style={{
               backgroundColor: "rgba(0, 0, 0, 0.4)",
               clipPath: "polygon(0 0, 100% 0, 100% 87.5%, 0 87.5%)",
             }}
-          ></div>
+          >
+            {/* Right Texts */}
+            <AnimateInBlock>
+              <div
+                id="button"
+                className="absolute top-[53%] right-[50%] translate-x-[50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:right-[30%] my-lg:w-[26rem]"
+                style={{
+                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                }}
+              >
+                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                  Where?
+                </span>
+                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, odio.
+                </p>
+              </div>
+            </AnimateInBlock>
+
+            {/* Left Texts */}
+            <AnimateInBlock>
+              <div
+                id="button"
+                className="absolute top-[64.5%] left-[50%] translate-x-[-50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center my-sm:left-[30%] my-lg:w-[26rem]"
+                style={{
+                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                }}
+              >
+                <span className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl">
+                  When?
+                </span>
+                <p className="text-center text-2xl text-white my-lg:text-3xl">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, odio.
+                </p>
+              </div>
+            </AnimateInBlock>
+          </div>
 
           {/* 背景レイヤー2
            * 画面下部

@@ -1,8 +1,11 @@
-.bounce-animation {
-  animation: bounce 3s ease-in-out infinite;
+.outline-animation {
+  background-color: rgba(255, 255, 255, 0);
+  outline-offset: 2px;
+  outline-color: rgba(255, 255, 255, 0.7);
+  animation: outline 1.5s ease-in-out;
 }
 
-@keyframes bounce {
+@keyframes outline {
   0%,
   100% {
     transform: translateY(-3px);
