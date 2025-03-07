@@ -138,10 +138,12 @@ export const animista = {
     /* button */
     "scale-in-hor-center": {
       "0%": {
+        // transform: "scaleX(0)",
         transform: "translate(-50%, -50%) scaleX(0)",
         opacity: "1",
       },
       to: {
+        // transform: "scaleX(1)",
         transform: "translate(-50%, -50%) scaleX(1)",
         opacity: "1",
       },

@@ -7,6 +7,7 @@ import { useSystemStore } from "../../store/scene3/system_store";
 import { useEffect, useRef, useState } from "react";
 import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
+import { AnimateIn } from "~/components/animate_in";
 
 export default function Scene3() {
   const canvasClipRef = useRef<any>(null);
@@ -160,7 +161,12 @@ export default function Scene3() {
               <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
                 <div
                   id="scale-in-top"
-                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+                  className={
+                    "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+                    (isMobile && isLandscape
+                      ? "items-start ml-[7vw]"
+                      : "items-center")
+                  }
                 >
                   {/* Row1-L */}
                   <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
@@ -247,7 +253,12 @@ export default function Scene3() {
               <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
                 <div
                   id="scale-in-top"
-                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+                  className={
+                    "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+                    (isMobile && isLandscape
+                      ? "items-end mr-[7vw]"
+                      : "items-center")
+                  }
                 >
                   {/* Row2-L */}
                   <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
@@ -326,96 +337,100 @@ export default function Scene3() {
             </AnimateInBlock>
 
             {/* Row3 */}
-            <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
-                <div
-                  id="scale-in-top"
-                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
-                >
-                  {/* Row3-L */}
-                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
-                    <span
-                      id="tablet"
-                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+            {(isMobile && isLandscape) || (
+              <>
+                <AnimateInBlock rootMarginBottom={-20}>
+                  <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
+                    <div
+                      id="scale-in-top"
+                      className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
                     >
-                      {isMobile ? " " : "Innovate"}
-                    </span>
-                  </div>
+                      {/* Row3-L */}
+                      <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+                        <span
+                          id="tablet"
+                          className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+                        >
+                          {isMobile ? " " : "Innovate"}
+                        </span>
+                      </div>
 
-                  {/* Row3-R */}
-                  <div
-                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
-                    style={{
-                      backgroundColor: "rgba(0, 255, 0, 0.5)",
-                    }}
-                  >
-                    <span
-                      id="tablet"
-                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
-                    >
-                      Genuine Fun
-                    </span>
+                      {/* Row3-R */}
+                      <div
+                        className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+                        style={{
+                          backgroundColor: "rgba(0, 255, 0, 0.5)",
+                        }}
+                      >
+                        <span
+                          id="tablet"
+                          className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                        >
+                          Genuine Fun
+                        </span>
 
-                    <div className="ml-6 flex flex-col justify-start items-start">
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Sparks new paths.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Fun with daily inspires.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - True creativity right here.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Authentic joy found now.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Deep play fuels creativity.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - True laughter inspires ideas.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Ideas is truly righteous.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
-                        - Play always honestly.
-                      </span>
+                        <div className="ml-6 flex flex-col justify-start items-start">
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Sparks new paths.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Fun with daily inspires.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - True creativity right here.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Authentic joy found now.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Deep play fuels creativity.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - True laughter inspires ideas.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Ideas is truly righteous.
+                          </span>
+                          <span
+                            id="fade-in-left"
+                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                          >
+                            - Play always honestly.
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </AnimateInBlock>
+                </AnimateInBlock>
+              </>
+            )}
 
             {/* Right Texts */}
-            <AnimateInBlock rootMarginBottom={-5}>
+            <AnimateInBlock rootMarginBottom={-30}>
               <div
-                id="button"
-                className="absolute top-[55%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[65%] my-lg:w-[26rem]"
+                id="tablet"
+                className="absolute top-[55%] right-[50%] translate-x-[50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:right-[30%] my-lg:w-[26rem]"
                 style={{
                   backgroundColor: "rgba(255, 0, 0, 0.35)",
                 }}
@@ -437,10 +452,10 @@ export default function Scene3() {
             </AnimateInBlock>
 
             {/* Left Texts */}
-            <AnimateInBlock rootMarginBottom={-15}>
+            <AnimateInBlock rootMarginBottom={-30}>
               <div
-                id="button"
-                className="absolute top-[69%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
+                id="tablet"
+                className="absolute top-[67%] left-[50%] translate-x-[-50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
                 style={{
                   backgroundColor: "rgba(0, 0, 255, 0.4)",
                 }}
@@ -468,20 +483,38 @@ export default function Scene3() {
          */}
 
         {isMobile && (
-          <div
-            className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-10"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.55)",
-            }}
-          ></div>
+          <>
+            <AnimateIn rootMarginBottom={-70}>
+              <div
+                id="scale-in-top"
+                className="absolute top-[707.5vh] left-0 h-[85.5vh] w-[100%] z-40 border-t-2 border-t-white border-b-2 border-b-white"
+                style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
+              ></div>
+            </AnimateIn>
+            <div
+              id="scale-in-top"
+              className="absolute top-[707.5vh] left-0 h-[85.5vh] w-[55%] z-50"
+            >
+              <div className="text-center text-3xl">aaaaa</div>
+            </div>
+          </>
         )}
         {isMobile || (
-          <div
-            className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-40"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.55)",
-            }}
-          ></div>
+          <>
+            <AnimateIn rootMarginBottom={-70}>
+              <div
+                id="scale-in-top"
+                className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-40 border-2"
+                style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
+              ></div>
+            </AnimateIn>
+            <div
+              id="scale-in-top"
+              className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-50"
+            >
+              <div className="text-center text-3xl">aaaaa</div>
+            </div>
+          </>
         )}
       </div>
     </>
