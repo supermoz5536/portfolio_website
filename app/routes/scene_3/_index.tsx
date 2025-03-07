@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
 import { AnimateIn } from "~/components/animate_in";
+import ContactForm from "./Components/ContactForm";
 
 export default function Scene3() {
   const canvasClipRef = useRef<any>(null);
@@ -484,35 +485,29 @@ export default function Scene3() {
 
         {isMobile && (
           <>
-            <AnimateIn rootMarginBottom={-70}>
+            <AnimateIn rootMarginBottom={-50}>
               <div
                 id="scale-in-top"
                 className="absolute top-[707.5vh] left-0 h-[85.5vh] w-[100%] z-40 border-t-2 border-t-white border-b-2 border-b-white"
                 style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
               ></div>
             </AnimateIn>
-            <div
-              id="scale-in-top"
-              className="absolute top-[707.5vh] left-0 h-[85.5vh] w-[55%] z-50"
-            >
-              <div className="text-center text-3xl">aaaaa</div>
+            <div className="absolute top-[707.5vh] left-0 h-[85.5vh] w-full z-50 overflow-auto">
+              <ContactForm />
             </div>
           </>
         )}
         {isMobile || (
           <>
-            <AnimateIn rootMarginBottom={-70}>
+            <AnimateIn rootMarginBottom={-50}>
               <div
                 id="scale-in-top"
-                className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-40 border-2"
+                className="absolute top-[720vh] left-[45%] h-[80vh] w-[55%] z-40 border-2"
                 style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
               ></div>
             </AnimateIn>
-            <div
-              id="scale-in-top"
-              className="absolute top-[707.5vh] left-[45%] h-[92.5vh] w-[55%] z-50"
-            >
-              <div className="text-center text-3xl">aaaaa</div>
+            <div className="absolute top-[720vh] left-[45%] h-[80vh] w-[55%] z-50 overflow-auto">
+              <ContactForm />
             </div>
           </>
         )}
