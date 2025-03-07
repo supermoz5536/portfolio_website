@@ -15,7 +15,8 @@ export default function Scene3() {
   const setScrollProgress = 
     useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
 
-  const [isMobile, setIsMobile] = useState<boolean>();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isLandscape, setIsLandscape] = useState<boolean>(false);
 
   /**
    * Scroll Progress
@@ -53,9 +54,12 @@ export default function Scene3() {
      * Device Setup
      */
 
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
+    if (window.matchMedia("(orientation: landscape)").matches) {
+      setIsLandscape(true);
+    }
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
     }
 
     /**
@@ -64,6 +68,32 @@ export default function Scene3() {
      * 正確ではないケースがあるので、再計算
      */
     ScrollTrigger.refresh();
+
+    /**
+     * Resize
+     */
+
+    // Callback
+    const resizeCallback = () => {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        setIsLandscape(true);
+      } else {
+        setIsLandscape(false);
+      }
+
+      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Listener
+    window.addEventListener("resize", resizeCallback);
+
+    return () => {
+      window.removeEventListener("resize", resizeCallback);
+    };
   }, []);
 
   useEffect(() => {
@@ -121,28 +151,37 @@ export default function Scene3() {
           <CanvasNormal />
         </div>
 
-        {/* 輪郭抽出部分のテキスト群のラッパー */}
+        {/* 輪郭抽出部分のテキスト群のラッパー(デスクトップ) */}
+
         <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
           <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
             {/* Row1 */}
             <AnimateInBlock rootMarginBottom={-50}>
-              <div className="absolute top-[4%] left-0 flex flex-col justify-start items-center w-full">
-                <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+              <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
+                <div
+                  id="scale-in-top"
+                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+                >
                   {/* Row1-L */}
-                  <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
                     <span
                       id="tablet"
-                      className="mb-5 z-50 text-8xl text-black "
+                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
                     >
-                      Curious
+                      {isMobile ? " " : "Curious"}
                     </span>
                   </div>
 
                   {/* Row1-R */}
-                  <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                  <div
+                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+                    style={{
+                      backgroundColor: "rgba(255, 0, 0, 0.5)",
+                    }}
+                  >
                     <span
                       id="tablet"
-                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                      className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
                     >
                       Find your Joy
                     </span>
@@ -150,49 +189,50 @@ export default function Scene3() {
                     <div className="ml-6 flex flex-col justify-start items-start">
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Ideas spark here daily.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Creative minds play freely.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Imagination thrives openly.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Dare to dream boldly.
                       </span>
+
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Invent joy daily always.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Curiosity rules your mind.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
-                        - Passion meets playful creation.
+                        - Passion meets creation.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Art starts right now.
                       </span>
@@ -205,69 +245,77 @@ export default function Scene3() {
             {/* Row2 */}
             <AnimateInBlock rootMarginBottom={-20}>
               <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
-                <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+                <div
+                  id="scale-in-top"
+                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+                >
                   {/* Row2-L */}
-                  <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
                     <span
                       id="tablet"
-                      className="mb-5 z-50 text-8xl text-black "
+                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
                     >
-                      Discover
+                      {isMobile ? " " : "Discover"}
                     </span>
                   </div>
 
                   {/* Row2-R */}
-                  <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                  <div
+                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+                    style={{
+                      backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    }}
+                  >
                     <span
                       id="tablet"
-                      className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+                      className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
                     >
-                      Explore ideas
+                      Explore Ideas
                     </span>
 
                     <div className="ml-6 flex flex-col justify-start items-start">
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Joy fuels art daily.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Play is truly powerful.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Delight in every detail.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Create smiles often.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Embrace fun daily here.
                       </span>
-                      <span className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap">
+                      <span className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                         - Steps to playful wonder.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Unleash laughter now.
                       </span>
                       <span
                         id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
                       >
                         - Make play serious always.
                       </span>
@@ -279,25 +327,33 @@ export default function Scene3() {
 
             {/* Row3 */}
             <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[27%] left-0 flex flex-col justify-start items-center w-full">
-                <div className="mt-10 pl-7 flex flex-col justify-start items-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center">
+              <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
+                <div
+                  id="scale-in-top"
+                  className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+                >
                   {/* Row3-L */}
-                  <div className="ml-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:ml-44 xl-2:ml-[25%]">
+                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
                     <span
                       id="tablet"
-                      className="mb-5 z-50 text-8xl text-black "
+                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
                     >
-                      Innovate
+                      {isMobile ? " " : "Innovate"}
                     </span>
                   </div>
 
                   {/* Row3-R */}
-                  <div className="pt-0 pl-8 mr-0 flex flex-col justify-start items-start h-[30vh] w-[30vw] my-md:pt-9 my-md:mr-44 xl-2:mr-[25%]">
+                  <div
+                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+                    style={{
+                      backgroundColor: "rgba(0, 255, 0, 0.5)",
+                    }}
+                  >
                     <span
                       id="tablet"
                       className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
                     >
-                      Genuine fun
+                      Genuine Fun
                     </span>
 
                     <div className="ml-6 flex flex-col justify-start items-start">
@@ -305,13 +361,13 @@ export default function Scene3() {
                         id="fade-in-left"
                         className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
                       >
-                        - Play honestly always together.
+                        - Sparks new paths.
                       </span>
                       <span
                         id="fade-in-left"
                         className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
                       >
-                        - Fun with heart daily inspires.
+                        - Fun with daily inspires.
                       </span>
                       <span
                         id="fade-in-left"
@@ -335,12 +391,6 @@ export default function Scene3() {
                         id="fade-in-left"
                         className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
                       >
-                        - Imagination sparks sincerity.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                      >
                         - True laughter inspires ideas.
                       </span>
                       <span
@@ -348,6 +398,12 @@ export default function Scene3() {
                         className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
                       >
                         - Ideas is truly righteous.
+                      </span>
+                      <span
+                        id="fade-in-left"
+                        className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+                      >
+                        - Play always honestly.
                       </span>
                     </div>
                   </div>
@@ -386,7 +442,7 @@ export default function Scene3() {
                 id="button"
                 className="absolute top-[69%] left-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
                 style={{
-                  backgroundColor: "rgba(255, 0, 0, 0.4)",
+                  backgroundColor: "rgba(0, 0, 255, 0.4)",
                 }}
               >
                 <span

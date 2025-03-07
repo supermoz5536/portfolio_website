@@ -88,6 +88,8 @@ export const AnimateInBlock = ({
           if (id == "tablet") animateClassName = "animate-text-focus-in";
           /* 左からのフェードインの場合 */
           if (id == "fade-in-left") animateClassName = "animate-fade-in-left";
+          /* 上からスケールイン */
+          if (id == "scale-in-top") animateClassName = "animate-scale-in-ver-top"; // prettier-ignore
 
           /**
            * アニメーションする要素のみに以下を設定

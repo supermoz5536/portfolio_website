@@ -29,6 +29,9 @@ export const animista = {
     /* fade-in-left */
     "fade-in-left":
       "fade-in-left 1.5s cubic-bezier(0.230, 1.000, 0.320, 1.000)   both",
+    /* scale-in-ver-top */
+    "scale-in-ver-top":
+      "scale-in-ver-top 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
   },
 
   keyframes: {
@@ -162,6 +165,19 @@ export const animista = {
       },
       to: {
         transform: "translateX(0)",
+        opacity: "1",
+      },
+    },
+    /* scale-in-ver-top */
+    "scale-in-ver-top": {
+      "0%": {
+        transform: "scaleY(0)",
+        "transform-origin": "100% 0%",
+        opacity: "1",
+      },
+      to: {
+        transform: "scaleY(1)",
+        "transform-origin": "100% 0%",
         opacity: "1",
       },
     },
