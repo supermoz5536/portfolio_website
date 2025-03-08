@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
 import { AnimateIn } from "~/components/animate_in";
-import ContactForm from "./Components/ContactForm";
+import ContactForm from "./Components/view/ContactForm";
 
 export default function Scene3() {
   const canvasClipRef = useRef<any>(null);

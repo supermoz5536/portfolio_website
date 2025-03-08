@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { RigidBody } from "@react-three/rapier";
+
 import { useEffect, useRef, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -10,6 +10,7 @@ import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { ShowCase } from "./ShowCase";
 import { FloorContents } from "./FloorContents";
 import { Bridge, BridgeRight } from "./Bridges";
+import { RigidBody } from "@react-three/rapier";
 
 type floorProps = {
   position: THREE.Vector3;

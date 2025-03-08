@@ -67,7 +67,7 @@ export function Player() {
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(0, 4, 800));
+        setSmoothCameraPosition(new THREE.Vector3(0, 4, 1200));
         setIsActicated(isActivated);
       },
     );
