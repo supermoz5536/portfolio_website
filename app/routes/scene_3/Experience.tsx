@@ -18,10 +18,10 @@ export default function Experience() {
     <>
       <color args={["#201919"]} attach="background" />
       <Camera />
-      <Physics>
-        <EnvironmentLights />
-        <Floors />
-      </Physics>
+      {/* <Physics> */}
+      <EnvironmentLights />
+      <Floors />
+      {/* </Physics> */}
       <Tower />
       <Earth />
     </>

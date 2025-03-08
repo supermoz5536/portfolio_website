@@ -101,88 +101,86 @@ export function Bridge({
     }
   }, []);
 
-  /* 初回マウント後の Bridge のポジションと角度の変更 */
-  useFrame((state, delta) => {
-    if (parentRef.current && childRef.current) {
-      /**
-       * Parentの更新
-       */
-      const targetPositionParent = new THREE.Vector3(
-        position.x,
-        position.y - childRef.current.geometry.parameters.height / 2,
-        position.z + FloorTopSuareLength / 2,
-      );
+  // /* 初回マウント後の Bridge のポジションと角度の変更 */
+  // useFrame((state, delta) => {
+  //   if (parentRef.current && childRef.current) {
+  //     /**
+  //      * Parentの更新
+  //      */
+  //     const targetPositionParent = new THREE.Vector3(
+  //       position.x,
+  //       position.y - childRef.current.geometry.parameters.height / 2,
+  //       position.z + FloorTopSuareLength / 2,
+  //     );
 
-      smoothPositionParent.lerp(targetPositionParent, 0.5 * delta);
+  //     smoothPositionParent.lerp(targetPositionParent, 0.5 * delta);
 
-      setSmoothPositionParent(
-        new THREE.Vector3(
-          smoothPositionParent.x,
-          smoothPositionParent.y,
-          smoothPositionParent.z,
-        ),
-      );
+  //     setSmoothPositionParent(
+  //       new THREE.Vector3(
+  //         smoothPositionParent.x,
+  //         smoothPositionParent.y,
+  //         smoothPositionParent.z,
+  //       ),
+  //     );
 
-      parentRef.current.setNextKinematicTranslation({
-        x: smoothPositionParent.x,
-        y: smoothPositionParent.y,
-        z: smoothPositionParent.z,
-      });
+  //     parentRef.current.setNextKinematicTranslation({
+  //       x: smoothPositionParent.x,
+  //       y: smoothPositionParent.y,
+  //       z: smoothPositionParent.z,
+  //     });
 
-      /* 角度更新 */
-      const smoothedAngleX = THREE.MathUtils.lerp(
-        smoothAngle.x, // start
-        triangleAngle, // end
-        0.5 * delta, // alpha
-      );
+  //     /* 角度更新 */
+  //     const smoothedAngleX = THREE.MathUtils.lerp(
+  //       smoothAngle.x, // start
+  //       triangleAngle, // end
+  //       0.5 * delta, // alpha
+  //     );
 
-      /* 次の計算に使うための状態を保存 */
-      setSmoothAngle(new THREE.Euler(smoothedAngleX, 0, 0));
+  //     /* 次の計算に使うための状態を保存 */
+  //     setSmoothAngle(new THREE.Euler(smoothedAngleX, 0, 0));
 
-      /* オイラー角からクォータニオンに変換 */
-      const rigidBodyQuotanion = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(smoothedAngleX, 0, 0),
-      );
+  //     /* オイラー角からクォータニオンに変換 */
+  //     const rigidBodyQuotanion = new THREE.Quaternion().setFromEuler(
+  //       new THREE.Euler(smoothedAngleX, 0, 0),
+  //     );
 
-      /* クォータニオンでRigidBodyの回転角を更新 */
-      parentRef.current.setNextKinematicRotation({
-        x: rigidBodyQuotanion.x,
-        y: rigidBodyQuotanion.y,
-        z: rigidBodyQuotanion.z,
-        w: rigidBodyQuotanion.w,
-      });
-    }
+  //     /* クォータニオンでRigidBodyの回転角を更新 */
+  //     parentRef.current.setNextKinematicRotation({
+  //       x: rigidBodyQuotanion.x,
+  //       y: rigidBodyQuotanion.y,
+  //       z: rigidBodyQuotanion.z,
+  //       w: rigidBodyQuotanion.w,
+  //     });
+  //   }
 
-    /**
-     * Childの更新
-     */
-    if (childRef.current) {
-      /**Geometryのサイズ更新 */
-      const targetBase = floorSpaceInterval; // 底辺
-      const targetHeight = heightDifference; // 高さ
-      // Geometryのサイズ制御できないあまり部分を
-      // +2することでフロア内部にめり込ませて隠蔽
-      const targetSlope = Math.hypot(targetBase, targetHeight) + 1;
-      const targetScaleZ = targetSlope / smoothSlope;
+  //   /**
+  //    * Childの更新
+  //    */
+  //   if (childRef.current) {
+  //     /**Geometryのサイズ更新 */
+  //     const targetBase = floorSpaceInterval; // 底辺
+  //     const targetHeight = heightDifference; // 高さ
+  //     // Geometryのサイズ制御できないあまり部分を
+  //     // +2することでフロア内部にめり込ませて隠蔽
+  //     const targetSlope = Math.hypot(targetBase, targetHeight) + 1;
+  //     const targetScaleZ = targetSlope / smoothSlope;
 
-      childRef.current.scale.set(1, 1, targetScaleZ);
+  //     childRef.current.scale.set(1, 1, targetScaleZ);
 
-      /* Positionの更新 */
-      childRef.current.position.set(
-        0,
-        0,
-        (+smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
-      );
-    }
-  });
+  //     /* Positionの更新 */
+  //     childRef.current.position.set(
+  //       0,
+  //       0,
+  //       (+smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
+  //     );
+  //   }
+  // });
 
   return (
     <>
       {isPositionReady && (
-        <RigidBody
+        <group
           ref={parentRef}
-          type="kinematicPosition"
-          colliders="hull"
           position={smoothPositionParent}
           rotation={smoothAngle}
         >
@@ -194,7 +192,7 @@ export function Bridge({
             geometry={smoothBridgeGeometry}
             material={stoneBridgeMaterial}
           />
-        </RigidBody>
+        </group>
       )}
     </>
   );
@@ -267,34 +265,34 @@ export function BridgeRight({
         ),
       );
 
-      parentRef.current.setNextKinematicTranslation({
-        x: smoothPositionParent.x,
-        y: smoothPositionParent.y,
-        z: smoothPositionParent.z,
-      });
+      // parentRef.current.setNextKinematicTranslation({
+      //   x: smoothPositionParent.x,
+      //   y: smoothPositionParent.y,
+      //   z: smoothPositionParent.z,
+      // });
 
-      /* 角度更新 */
-      const smoothedAngleZ = THREE.MathUtils.lerp(
-        smoothAngle.z, // start
-        triangleAngle, // end
-        0.5 * delta, // alpha
-      );
+      // /* 角度更新 */
+      // const smoothedAngleZ = THREE.MathUtils.lerp(
+      //   smoothAngle.z, // start
+      //   triangleAngle, // end
+      //   0.5 * delta, // alpha
+      // );
 
-      /* 次の計算に使うための状態を保存 */
-      setSmoothAngle(new THREE.Euler(0, 0, smoothedAngleZ));
+      // /* 次の計算に使うための状態を保存 */
+      // setSmoothAngle(new THREE.Euler(0, 0, smoothedAngleZ));
 
-      /* オイラー角からクォータニオンに変換 */
-      const rigidBodyQuotanion = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(0, 0, smoothedAngleZ),
-      );
+      // /* オイラー角からクォータニオンに変換 */
+      // const rigidBodyQuotanion = new THREE.Quaternion().setFromEuler(
+      //   new THREE.Euler(0, 0, smoothedAngleZ),
+      // );
 
-      /* クォータニオンでRigidBodyの回転角を更新 */
-      parentRef.current.setNextKinematicRotation({
-        x: rigidBodyQuotanion.x,
-        y: rigidBodyQuotanion.y,
-        z: rigidBodyQuotanion.z,
-        w: rigidBodyQuotanion.w,
-      });
+      // /* クォータニオンでRigidBodyの回転角を更新 */
+      // parentRef.current.setNextKinematicRotation({
+      //   x: rigidBodyQuotanion.x,
+      //   y: rigidBodyQuotanion.y,
+      //   z: rigidBodyQuotanion.z,
+      //   w: rigidBodyQuotanion.w,
+      // });
     }
 
     /**
@@ -323,10 +321,8 @@ export function BridgeRight({
   return (
     <>
       {isPositionReady && (
-        <RigidBody
+        <group
           ref={parentRef}
-          type="kinematicPosition"
-          colliders="hull"
           position={smoothPositionParent}
           rotation={smoothAngle}
         >
@@ -338,7 +334,7 @@ export function BridgeRight({
             geometry={smoothBridgeGeometry}
             material={stoneBridgeMaterial}
           />
-        </RigidBody>
+        </group>
       )}
     </>
   );

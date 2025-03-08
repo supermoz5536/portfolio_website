@@ -10,7 +10,7 @@ import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { ShowCase } from "./ShowCase";
 import { FloorContents } from "./FloorContents";
 import { Bridge, BridgeRight } from "./Bridges";
-import { RigidBody } from "@react-three/rapier";
+// import { RigidBody } from "@react-three/rapier";
 
 type floorProps = {
   position: THREE.Vector3;
@@ -40,31 +40,29 @@ export function Floor({ position, scene }: floorProps) {
     setIsPositionReady(true);
   }, []);
 
-  /* 初回マウント後以降の更新 */
-  useFrame((state, delta) => {
-    adjustedPosition.lerp(position, 0.5 * delta);
-    if (rigidBodyRef.current) {
-      rigidBodyRef.current.setNextKinematicTranslation({
-        x: adjustedPosition.x,
-        y: adjustedPosition.y,
-        z: adjustedPosition.z,
-      });
-    }
-  });
+  // /* 初回マウント後以降の更新 */
+  // useFrame((state, delta) => {
+  //   adjustedPosition.lerp(position, 0.5 * delta);
+  //   if (rigidBodyRef.current) {
+  //     rigidBodyRef.current.setNextKinematicTranslation({
+  //       x: adjustedPosition.x,
+  //       y: adjustedPosition.y,
+  //       z: adjustedPosition.z,
+  //     });
+  //   }
+  // });
 
   return (
     <>
       {isPositionReady && (
         <>
-          <RigidBody
+          <group
             ref={rigidBodyRef}
             position={adjustedPosition}
-            type="kinematicPosition"
-            colliders="hull"
             userData={{ key: "floor" }}
           >
             <primitive object={scene} />
-          </RigidBody>
+          </group>
         </>
       )}
     </>
@@ -168,7 +166,7 @@ export function Floors() {
                   />
                 )}
 
-                <FloorContents index={index} position={floorPosition} />
+                {/* <FloorContents index={index} position={floorPosition} /> */}
 
                 {/* Particle Codes */}
                 {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}
