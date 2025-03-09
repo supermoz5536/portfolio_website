@@ -122,7 +122,7 @@ export default function Scene3() {
         {/* 背景レイヤー0
          * ThreeCanvasのクリック阻害用レイヤー
          */}
-        <div className="absolute top-0 left-0 h-[87.5%] w-full z-30" />
+        {/* <div className="absolute top-0 left-0 h-[87.5%] w-full z-30" /> */}
 
         {/* 背景レイヤー0.5
          * カメラグィーン部の黒色の透過背景用
@@ -144,6 +144,14 @@ export default function Scene3() {
         <div
           ref={canvasClipRef}
           className="sticky top-0 left-0 h-[100vh] w-full z-20"
+          style={
+            isMobile
+              ? {}
+              : {
+                  clipPath:
+                    "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+                }
+          }
         >
           <CanvasOutline />
         </div>
@@ -158,6 +166,7 @@ export default function Scene3() {
         )}
 
         {/* 輪郭抽出部分のテキスト群のラッパー(デスクトップ) */}
+
         <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
           <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
             {/* Row1 */}
@@ -491,13 +500,14 @@ export default function Scene3() {
             <AnimateIn rootMarginBottom={-50}>
               <div
                 id="scale-in-top"
-                className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-40 border-t-2 border-t-white border-b-2 border-b-white"
+                className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-40"
                 style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
-              ></div>
+              >
+                {/* <div className="absolute top-[707.5vh] left-0 flex flex-col justify-start h-[92.5vh] w-full z-50 overflow-auto"> */}
+                <ContactForm />
+                {/* </div> */}
+              </div>
             </AnimateIn>
-            <div className="absolute top-[707.5vh] left-0 flex flex-col justify-start h-[92.5vh] w-full z-50 overflow-auto">
-              <ContactForm />
-            </div>
           </>
         )}
 
