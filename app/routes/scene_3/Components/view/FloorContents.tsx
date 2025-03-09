@@ -16,16 +16,11 @@ type FloorContentsProps = {
   position: THREE.Vector3;
 };
 
-const transparentMaterial = new THREE.MeshStandardMaterial({
-  transparent: true,
-  opacity: 0,
-  depthWrite: false,
-});
-
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
 const displayedShowcaseLight = [0, 3, 6, 9];
+const displayedFirefly: any = [0, 3, 6, 9, 11];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
@@ -56,6 +51,38 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
     return () => {
       unsubscribePlayer();
+    };
+  }, []);
+
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+
+    /**
+     * Resize
+     */
+
+    // Callback
+    const resizeCallback = () => {
+      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Listener
+    window.addEventListener("resize", resizeCallback);
+
+    return () => {
+      window.removeEventListener("resize", resizeCallback);
     };
   }, []);
 
@@ -93,12 +120,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={index} />
 
-            <Fireflies index={index} />
+            {displayedFirefly.includes(index) && (
+              <>{isMobile || <Fireflies index={index} />}</>
+            )}
 
             {displayedShowcaseLight.includes(index) && (
-              <>
-                <ShowCaseLight shadowLevel={0} index={index} />
-              </>
+              <>{isMobile || <ShowCaseLight shadowLevel={0} index={index} />}</>
             )}
 
             {/* Playerがいるフロアのみ生成 */}

@@ -166,7 +166,7 @@ export function Floors() {
                   />
                 )}
 
-                {/* <FloorContents index={index} position={floorPosition} /> */}
+                <FloorContents index={index} position={floorPosition} />
 
                 {/* Particle Codes */}
                 {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}

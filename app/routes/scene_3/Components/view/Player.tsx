@@ -1,12 +1,4 @@
-import { useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-import ThreePlayerStore from "../../../../store/scene2/three_player_store";
-import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store";
-import { useSystemStore } from "../../../../store/scene2/system_store";
-import { useThree } from "@react-three/fiber";
 
 export function Player() {
   return (

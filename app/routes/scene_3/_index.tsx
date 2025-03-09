@@ -129,32 +129,35 @@ export default function Scene3() {
          * Viewport単位での管理の方がシンプルかつ正確なので
          * 文字の配置管理用のコンポーネントと別に用意
          */}
-        <div
-          className="absolute top-0 left-0 h-[87.5%] w-full z-10"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-          }}
-        />
+        {isMobile || (
+          <>
+            <div
+              className="absolute top-0 left-0 h-[87.5%] w-full z-10"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
+              }}
+            />
+          </>
+        )}
 
         {/* Three Outline*/}
         <div
           ref={canvasClipRef}
           className="sticky top-0 left-0 h-[100vh] w-full z-20"
-          style={{
-            clipPath:
-              "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-          }}
         >
           <CanvasOutline />
         </div>
 
         {/* Three */}
-        <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
-          <CanvasNormal />
-        </div>
+        {isMobile || (
+          <>
+            <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
+              <CanvasNormal />
+            </div>
+          </>
+        )}
 
         {/* 輪郭抽出部分のテキスト群のラッパー(デスクトップ) */}
-
         <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
           <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
             {/* Row1 */}
@@ -488,15 +491,16 @@ export default function Scene3() {
             <AnimateIn rootMarginBottom={-50}>
               <div
                 id="scale-in-top"
-                className="absolute top-[707.5vh] left-0 h-[85.5vh] w-[100%] z-40 border-t-2 border-t-white border-b-2 border-b-white"
+                className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-40 border-t-2 border-t-white border-b-2 border-b-white"
                 style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
               ></div>
             </AnimateIn>
-            <div className="absolute top-[707.5vh] left-0 h-[85.5vh] w-full z-50 overflow-auto">
+            <div className="absolute top-[707.5vh] left-0 flex flex-col justify-start h-[92.5vh] w-full z-50 overflow-auto">
               <ContactForm />
             </div>
           </>
         )}
+
         {isMobile || (
           <>
             <AnimateIn rootMarginBottom={-50}>

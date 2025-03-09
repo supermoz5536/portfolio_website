@@ -17,7 +17,7 @@ export function Player() {
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
   const [currentFloor, setCurrentFloor] = useState(0);
-  const [isActicated, setIsActicated] = useState(false);
+  const [isActivated, setIsActicated] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
@@ -192,7 +192,7 @@ export function Player() {
     // 対応するキーが押されている場合に true になります。
     const { forward, backward, leftward, rightward } = getState();
 
-    if (isActicated) {
+    if (isActivated) {
       // Keypad
       if (forward) impulse.add(forwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
       if (backward) impulse.add(backwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
@@ -261,7 +261,8 @@ export function Player() {
     <>
       <RigidBody
         ref={rigidRef}
-        position={[0, 10, 7]}
+        type={isActivated ? "dynamic" : "fixed"}
+        position={[0, 3, 7]}
         canSleep={false}
         colliders="ball"
         linearDamping={1.5}

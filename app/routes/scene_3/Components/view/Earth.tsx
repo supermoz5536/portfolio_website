@@ -542,7 +542,7 @@ export function Earth() {
     <>
       <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
       <Stars sunPosition={sunPosition} />
-      <Sun sunPosition={sunPosition} playerPosition={playerPosition} />
+      {/* <Sun sunPosition={sunPosition} playerPosition={playerPosition} /> */}
     </>
   );
 }

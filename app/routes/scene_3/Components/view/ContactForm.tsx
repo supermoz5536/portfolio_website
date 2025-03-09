@@ -55,33 +55,41 @@ export default function ContactForm() {
   return (
     <>
       <AnimateInBlock rootMarginBottom={isMobile ? -60 : -60}>
-        <div className={"w-full p-8 " + (isMobile ? "pt-24" : "")}>
+        <div className="w-full p-8">
           {/* タイトル部分 */}
 
-          <h2 id="tablet" className="text-2xl font-bold mb-6">
-            お問い合わせ
+          <h2
+            id="tablet"
+            className={
+              "text-3xl font-bold mb-8 " +
+              (isMobile ? "text-black" : "text-white")
+            }
+          >
+            Inquiry Form
           </h2>
 
           {/**
            *method="post" を指定することで、同じルート(または指定があれば指定先)の action() に
            *フォームデータが送信されます。
            */}
-          <Form method="post" className="space-y-10">
+          <Form method="post" className={isMobile ? "space-y-5" : "space-y-10"}>
             {/* 名前入力フィールド */}
             <div>
               <label
                 id="tablet"
                 htmlFor="name"
-                className="block mb-1 font-semibold"
+                className={
+                  "block mb-1 font-semibold " +
+                  (isMobile ? "text-black" : "text-white")
+                }
               >
-                お名前
+                Name
               </label>
               <input
                 id="tablet"
                 name="name"
                 type="text"
                 className="w-full border border-gray-300 rounded p-2"
-                placeholder="山田 太郎"
                 required
               />
             </div>
@@ -91,16 +99,19 @@ export default function ContactForm() {
               <label
                 id="tablet"
                 htmlFor="email"
-                className="block mb-1 font-semibold"
+                className={
+                  "block mb-1 font-semibold " +
+                  (isMobile ? "text-black" : "text-white")
+                }
               >
-                メールアドレス
+                Email
               </label>
               <input
                 id="tablet"
                 name="email"
                 type="email"
                 className="w-full border border-gray-300 rounded p-2"
-                placeholder="example@example.com"
+                placeholder="sample@example.com"
                 required
               />
             </div>
@@ -110,16 +121,18 @@ export default function ContactForm() {
               <label
                 id="tablet"
                 htmlFor="message"
-                className="block mb-1 font-semibold"
+                className={
+                  "block mb-1 font-semibold " +
+                  (isMobile ? "text-black" : "text-white")
+                }
               >
-                お問い合わせ内容
+                Inquiry Content
               </label>
               <textarea
                 id="tablet"
                 name="message"
                 rows={5}
                 className="w-full border border-gray-300 rounded p-2"
-                placeholder="お問い合わせ内容をご記入ください"
                 required
               />
             </div>
@@ -129,9 +142,12 @@ export default function ContactForm() {
               <button
                 id="button"
                 type="submit"
-                className="absolute left-[50%] px-10 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition border-2"
+                className={
+                  "absolute left-[50%] px-10 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition border-2 " +
+                  (isMobile ? "mt-7" : "")
+                }
               >
-                <span id="fade-in-bottom">送信</span>
+                <span id="fade-in-bottom">Submit</span>
               </button>
             </div>
           </Form>

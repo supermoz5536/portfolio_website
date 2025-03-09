@@ -11,19 +11,52 @@ import { Earth } from "./Components/view/Earth.js";
 import { Tower } from "./Components/view/Tower.js";
 import { Camera } from "./Components/view/Camera.js";
 import * as THREE from "three";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Experience() {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+
+    /**
+     * Resize
+     */
+
+    // Callback
+    const resizeCallback = () => {
+      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Listener
+    window.addEventListener("resize", resizeCallback);
+
+    return () => {
+      window.removeEventListener("resize", resizeCallback);
+    };
+  }, []);
   return (
     <>
       <color args={["#201919"]} attach="background" />
       <Camera />
-      {/* <Physics> */}
       <EnvironmentLights />
       <Floors />
-      {/* </Physics> */}
-      <Tower />
-      <Earth />
+      {isMobile || (
+        <>
+          <Tower />
+          <Earth />
+        </>
+      )}
     </>
   );
 }
