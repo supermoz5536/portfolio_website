@@ -12,6 +12,16 @@ import ContactForm from "./Components/view/ContactForm";
 
 export default function Scene3() {
   const canvasClipRef = useRef<any>(null);
+  const textGroup1Ref = useRef<any>(null);
+  const textGroup2Ref = useRef<any>(null);
+  const textGroup3Ref = useRef<any>(null);
+  const textGroup4Ref = useRef<any>(null);
+  const textGroup5Ref = useRef<any>(null);
+  const textGroup1DoneRef = useRef<any>(false);
+  const textGroup2DoneRef = useRef<any>(false);
+  const textGroup3DoneRef = useRef<any>(false);
+  const textGroup4DoneRef = useRef<any>(false);
+  const textGroup5DoneRef = useRef<any>(false);
 
   const scrollProgress = useSystemStore((state) => state.scrollProgress);
   const setScrollProgress = 
@@ -99,19 +109,553 @@ export default function Scene3() {
   }, []);
 
   useEffect(() => {
-    // 例えば、scrollProgress が 0〜1 の範囲の場合、50% (0.5) 未満は100%、それ以降は線形補間で更新
+    /**
+     * Control ClipPath
+     */
+    setClipPath();
+
+    /**
+     * Control Text Groups
+     */
+
+    // setTextGroup1();
+    // setTextGroup2();
+    // setTextGroup3();
+    setTextGroup4();
+    setTextGroup5();
+  }, [scrollProgress]);
+
+  function setClipPath() {
     let newClip;
     if (scrollProgress < 0.235) {
       newClip = "100%";
     } else {
-      // scrollProgress が 0.5 から 1 に進むと、100% から 0% に変化する例
+      // scrollProgress が 0.235 から 1 に進むと、画面 Bottom(100%) => Top に変化
       newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
     }
 
     if (canvasClipRef.current) {
       canvasClipRef.current.style.setProperty("--clip-bottom", newClip);
     }
-  }, [scrollProgress]);
+  }
+
+  function setTextGroup1() {
+    const scrollTriggerRate = 0.01;
+    const scrollSpeedRate = 0.1;
+    let waitingViewPortRate;
+
+    /**
+     * Control Position
+     */
+
+    if (textGroup1Ref.current) {
+      if (scrollProgress < scrollTriggerRate) {
+        waitingViewPortRate = 10;
+      } else {
+        waitingViewPortRate =
+          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+      }
+
+      /**
+       * Control Display
+       */
+
+      textGroup1Ref.current.style.top = `${waitingViewPortRate}%`;
+      ScrollTrigger.create({
+        trigger: textGroup1Ref.current,
+        start: "top bottom", // 要素の上部が画面下に来たら表示
+        end: "bottom top", // 要素の下部が画面上に来たら非表示
+        onEnter: () => {
+          textGroup1Ref.current.style.display = "block";
+        },
+        onLeave: () => {
+          textGroup1Ref.current.style.display = "none";
+          textGroup1DoneRef.current = true;
+        },
+        onEnterBack: () => {
+          textGroup1Ref.current.style.display = "block";
+        },
+        onLeaveBack: () => {
+          textGroup1Ref.current.style.display = "none";
+        },
+      });
+
+      // console.log(tg1ViewPortRate + "%");
+    }
+  }
+
+  function setTextGroup2() {
+    const scrollTriggerRate = 0.07;
+    const scrollSpeedRate = 0.7;
+    let waitingViewPortRate;
+
+    /**
+     * Control Position
+     */
+
+    if (textGroup2Ref.current) {
+      if (scrollProgress < scrollTriggerRate) {
+        waitingViewPortRate = 100;
+      } else {
+        waitingViewPortRate =
+          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+      }
+
+      /**
+       * Control Display
+       */
+
+      textGroup2Ref.current.style.top = `${waitingViewPortRate}%`;
+      ScrollTrigger.create({
+        trigger: textGroup2Ref.current,
+        start: "top bottom", // 要素の上部が画面下に来たら表示
+        end: "bottom top", // 要素の下部が画面上に来たら非表示
+        onEnter: () => {
+          textGroup2Ref.current.style.display = "block";
+        },
+        onLeave: () => {
+          textGroup2Ref.current.style.display = "none";
+          textGroup2DoneRef.current = true;
+        },
+        onEnterBack: () => {
+          textGroup2Ref.current.style.display = "block";
+        },
+        onLeaveBack: () => {
+          textGroup2Ref.current.style.display = "none";
+        },
+      });
+
+      // console.log(waitingViewPortRate + "%");
+    }
+  }
+
+  function setTextGroup3() {
+    const scrollTriggerRate = 0.13;
+    const scrollSpeedRate = 1.3;
+    let waitingViewPortRate;
+
+    /**
+     * Control Position
+     */
+
+    if (textGroup3Ref.current) {
+      if (scrollProgress < scrollTriggerRate) {
+        waitingViewPortRate = 100;
+      } else {
+        waitingViewPortRate =
+          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+      }
+
+      /**
+       * Control Display
+       */
+
+      textGroup3Ref.current.style.top = `${waitingViewPortRate}%`;
+      ScrollTrigger.create({
+        trigger: textGroup3Ref.current,
+        start: "top bottom", // 要素の上部が画面下に来たら表示
+        end: "bottom top-=400", // 要素の下部が画面上に来たら非表示
+        onEnter: () => {
+          textGroup3Ref.current.style.display = "block";
+        },
+        onLeave: () => {
+          textGroup3Ref.current.style.display = "none";
+          textGroup3DoneRef.current = true;
+        },
+        onEnterBack: () => {
+          textGroup3Ref.current.style.display = "block";
+        },
+        onLeaveBack: () => {
+          textGroup3Ref.current.style.display = "none";
+        },
+      });
+
+      // console.log(waitingViewPortRate + "%");
+    }
+  }
+
+  function setTextGroup4() {
+    const triggerRate = 0.4;
+    const endRate = 0.55;
+    const scrollSpeedRate = 4.0;
+    let waitingViewPortRate;
+
+    /**
+     * Control Viewport Position
+     */
+
+    if (textGroup4Ref.current) {
+      if (scrollProgress < triggerRate) {
+        waitingViewPortRate = 100;
+      } else {
+        waitingViewPortRate =
+          (1 -
+            ((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) *
+          100;
+      }
+
+      textGroup4Ref.current.style.top = `${waitingViewPortRate}%`;
+
+      /**
+       * Control Display
+       */
+
+      if (scrollProgress < triggerRate) {
+        textGroup4Ref.current.style.display = "none";
+      } else if (scrollProgress > endRate) {
+        textGroup4Ref.current.style.display = "none";
+        textGroup4DoneRef.current = true;
+      } else {
+        textGroup4Ref.current.style.display = "block";
+      }
+
+      // console.log(Math.round(waitingViewPortRate) + "%");
+    }
+  }
+
+  function setTextGroup5() {
+    const triggerRate = 0.56;
+    const endRate = 0.71;
+    const scrollSpeedRate = 5.6;
+    let waitingViewPortRate;
+
+    /**
+     * Control Position
+     */
+
+    if (textGroup5Ref.current) {
+      if (scrollProgress < triggerRate) {
+        waitingViewPortRate = 100;
+      } else {
+        waitingViewPortRate =
+          (1 -
+            ((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) *
+          100;
+      }
+
+      textGroup5Ref.current.style.top = `${waitingViewPortRate}%`;
+
+      /**
+       * Control Display
+       */
+
+      if (scrollProgress < triggerRate) {
+        textGroup5Ref.current.style.display = "none";
+      } else if (scrollProgress > endRate) {
+        textGroup5Ref.current.style.display = "none";
+        textGroup5DoneRef.current = true;
+      } else {
+        textGroup5Ref.current.style.display = "block";
+      }
+
+      // console.log(waitingViewPortRate + "%");
+    }
+  }
+
+  const textGroup1Content = (
+    <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
+      <div
+        id="scale-in-top"
+        className={
+          "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+          (isMobile && isLandscape ? "items-start ml-[7vw]" : "items-center")
+        }
+      >
+        {/* Row1-L */}
+        <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+          <span
+            id="tablet"
+            className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+          >
+            {isMobile ? " " : "Curious"}
+          </span>
+        </div>
+
+        {/* Row1-R */}
+        <div
+          className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+          style={{
+            backgroundColor: "rgba(255, 0, 0, 0.5)",
+          }}
+        >
+          <span
+            id="tablet"
+            className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
+          >
+            Find your Joy
+          </span>
+
+          <div className="ml-6 flex flex-col justify-start items-start">
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Ideas spark here daily.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Creative minds play freely.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Imagination thrives openly.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Dare to dream boldly.
+            </span>
+
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Invent joy daily always.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Curiosity rules your mind.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Passion meets creation.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Art starts right now.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const textGroup2Content = (
+    <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
+      <div
+        id="scale-in-top"
+        className={
+          "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+          (isMobile && isLandscape ? "items-end mr-[7vw]" : "items-center")
+        }
+      >
+        {/* Row2-L */}
+        <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+          <span
+            id="tablet"
+            className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+          >
+            {isMobile ? " " : "Discover"}
+          </span>
+        </div>
+
+        {/* Row2-R */}
+        <div
+          className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+          style={{
+            backgroundColor: "rgba(0, 0, 255, 0.5)",
+          }}
+        >
+          <span
+            id="tablet"
+            className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
+          >
+            Explore Ideas
+          </span>
+
+          <div className="ml-6 flex flex-col justify-start items-start">
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Joy fuels art daily.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Play is truly powerful.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Delight in every detail.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Create smiles often.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Embrace fun daily here.
+            </span>
+            <span className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+              - Steps to playful wonder.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Unleash laughter now.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+            >
+              - Make play serious always.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const textGroup3Content = (
+    <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
+      <div
+        id="scale-in-top"
+        className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+      >
+        {/* Row3-L */}
+        <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+          <span
+            id="tablet"
+            className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+          >
+            {isMobile ? " " : "Innovate"}
+          </span>
+        </div>
+
+        {/* Row3-R */}
+        <div
+          className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+          style={{
+            backgroundColor: "rgba(0, 255, 0, 0.5)",
+          }}
+        >
+          <span
+            id="tablet"
+            className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+          >
+            Genuine Fun
+          </span>
+
+          <div className="ml-6 flex flex-col justify-start items-start">
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Sparks new paths.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Fun with daily inspires.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - True creativity right here.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Authentic joy found now.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Deep play fuels creativity.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - True laughter inspires ideas.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Ideas is truly righteous.
+            </span>
+            <span
+              id="fade-in-left"
+              className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+            >
+              - Play always honestly.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const textGroup4Content = (
+    <div
+      id="tablet"
+      className="absolute top-0 right-[50%] translate-x-[50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:right-[30%] my-lg:w-[26rem]"
+      style={{
+        backgroundColor: "rgba(255, 0, 0, 0.35)",
+      }}
+    >
+      <span
+        id="fade-in-bottom"
+        className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+      >
+        Where?
+      </span>
+      <p
+        id="fade-in-bottom"
+        className="text-center text-2xl text-white my-lg:text-3xl"
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+      </p>
+    </div>
+  );
+
+  const textGroup5Content = (
+    <div
+      id="tablet"
+      className="absolute top-0 left-[50%] translate-x-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
+      style={{
+        backgroundColor: "rgba(0, 0, 255, 0.4)",
+      }}
+    >
+      <span
+        id="fade-in-bottom"
+        className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+      >
+        When?
+      </span>
+      <p
+        id="fade-in-bottom"
+        className="text-center text-2xl text-white my-lg:text-3xl"
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+      </p>
+    </div>
+  );
 
   return (
     <>
@@ -119,375 +663,112 @@ export default function Scene3() {
         id="scene3"
         className="relative justify-center items-center h-[800vh] w-full"
       >
-        {/* 背景レイヤー0
-         * ThreeCanvasのクリック阻害用レイヤー
+        {/*
+         * Sticky Components
          */}
-        {/* <div className="absolute top-0 left-0 h-[87.5%] w-full z-30" /> */}
 
-        {/* 背景レイヤー0.5
-         * カメラグィーン部の黒色の透過背景用
-         * Viewport単位での管理の方がシンプルかつ正確なので
-         * 文字の配置管理用のコンポーネントと別に用意
-         */}
-        {isMobile || (
-          <>
-            <div
-              className="absolute top-0 left-0 h-[87.5%] w-full z-10"
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-              }}
-            />
-          </>
-        )}
-
-        {/* Three Outline*/}
-        <div
-          ref={canvasClipRef}
-          className="sticky top-0 left-0 h-[100vh] w-full z-20"
-          style={
-            isMobile
-              ? {}
-              : {
-                  clipPath:
-                    "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-                }
-          }
-        >
-          <CanvasOutline />
-        </div>
-
-        {/* Three */}
-        {isMobile || (
-          <>
-            <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
+        <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
+          {/* Three Normal */}
+          {isMobile || (
+            <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
               <CanvasNormal />
             </div>
-          </>
-        )}
+          )}
 
-        {/* 輪郭抽出部分のテキスト群のラッパー(デスクトップ) */}
-
-        <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
-          <div className="relative top-0 left-0 flex flex-col justify-start items-center h-full w-full">
-            {/* Row1 */}
-            <AnimateInBlock rootMarginBottom={-50}>
-              <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
-                <div
-                  id="scale-in-top"
-                  className={
-                    "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
-                    (isMobile && isLandscape
-                      ? "items-start ml-[7vw]"
-                      : "items-center")
+          {/* Three Outline */}
+          <div
+            ref={canvasClipRef}
+            className="absolute top-0 left-0 h-[100vh] w-full z-20"
+            style={
+              isMobile
+                ? {}
+                : {
+                    clipPath:
+                      "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
                   }
-                >
-                  {/* Row1-L */}
-                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
-                    <span
-                      id="tablet"
-                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
-                    >
-                      {isMobile ? " " : "Curious"}
-                    </span>
-                  </div>
+            }
+          >
+            <CanvasOutline />
+          </div>
 
-                  {/* Row1-R */}
-                  <div
-                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
-                    style={{
-                      backgroundColor: "rgba(255, 0, 0, 0.5)",
-                    }}
-                  >
-                    <span
-                      id="tablet"
-                      className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
-                    >
-                      Find your Joy
-                    </span>
-
-                    <div className="ml-6 flex flex-col justify-start items-start">
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Ideas spark here daily.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Creative minds play freely.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Imagination thrives openly.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Dare to dream boldly.
-                      </span>
-
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Invent joy daily always.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Curiosity rules your mind.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Passion meets creation.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Art starts right now.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AnimateInBlock>
-
-            {/* Row2 */}
-            <AnimateInBlock rootMarginBottom={-20}>
-              <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
-                <div
-                  id="scale-in-top"
-                  className={
-                    "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
-                    (isMobile && isLandscape
-                      ? "items-end mr-[7vw]"
-                      : "items-center")
-                  }
-                >
-                  {/* Row2-L */}
-                  <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
-                    <span
-                      id="tablet"
-                      className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
-                    >
-                      {isMobile ? " " : "Discover"}
-                    </span>
-                  </div>
-
-                  {/* Row2-R */}
-                  <div
-                    className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
-                    style={{
-                      backgroundColor: "rgba(0, 0, 255, 0.5)",
-                    }}
-                  >
-                    <span
-                      id="tablet"
-                      className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
-                    >
-                      Explore Ideas
-                    </span>
-
-                    <div className="ml-6 flex flex-col justify-start items-start">
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Joy fuels art daily.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Play is truly powerful.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Delight in every detail.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Create smiles often.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Embrace fun daily here.
-                      </span>
-                      <span className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
-                        - Steps to playful wonder.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Unleash laughter now.
-                      </span>
-                      <span
-                        id="fade-in-left"
-                        className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
-                      >
-                        - Make play serious always.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AnimateInBlock>
-
-            {/* Row3 */}
-            {(isMobile && isLandscape) || (
-              <>
-                <AnimateInBlock rootMarginBottom={-20}>
-                  <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
-                    <div
-                      id="scale-in-top"
-                      className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
-                    >
-                      {/* Row3-L */}
-                      <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
-                        <span
-                          id="tablet"
-                          className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
-                        >
-                          {isMobile ? " " : "Innovate"}
-                        </span>
-                      </div>
-
-                      {/* Row3-R */}
-                      <div
-                        className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
-                        style={{
-                          backgroundColor: "rgba(0, 255, 0, 0.5)",
-                        }}
-                      >
-                        <span
-                          id="tablet"
-                          className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
-                        >
-                          Genuine Fun
-                        </span>
-
-                        <div className="ml-6 flex flex-col justify-start items-start">
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Sparks new paths.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Fun with daily inspires.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - True creativity right here.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Authentic joy found now.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Deep play fuels creativity.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - True laughter inspires ideas.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Ideas is truly righteous.
-                          </span>
-                          <span
-                            id="fade-in-left"
-                            className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
-                          >
-                            - Play always honestly.
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          {/* Text Group 1 */}
+          {/* <div
+            ref={textGroup1Ref}
+            className="absolute top-0 left-0 h-[100vh] w-full z-30"
+          >
+            <div className="relative w-full h-full">
+              {textGroup1DoneRef.current ? (
+                textGroup1Content
+              ) : (
+                <AnimateInBlock rootMarginBottom={-50}>
+                  {textGroup1Content}
                 </AnimateInBlock>
-              </>
-            )}
+              )}
+            </div>
+          </div> */}
 
-            {/* Right Texts */}
-            <AnimateInBlock rootMarginBottom={-30}>
-              <div
-                id="tablet"
-                className="absolute top-[55%] right-[50%] translate-x-[50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:right-[30%] my-lg:w-[26rem]"
-                style={{
-                  backgroundColor: "rgba(255, 0, 0, 0.35)",
-                }}
-              >
-                <span
-                  id="fade-in-bottom"
-                  className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
-                >
-                  Where?
-                </span>
-                <p
-                  id="fade-in-bottom"
-                  className="text-center text-2xl text-white my-lg:text-3xl"
-                >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Itaque, odio.
-                </p>
-              </div>
-            </AnimateInBlock>
+          {/* Text Group 2 */}
+          {/* <div
+            ref={textGroup2Ref}
+            className="absolute top-0 left-0 h-[100vh] w-full z-30"
+          >
+            <div className="relative w-full h-full">
+              {textGroup2DoneRef.current ? (
+                textGroup2Content
+              ) : (
+                <AnimateInBlock rootMarginBottom={-20}>
+                  {textGroup2Content}
+                </AnimateInBlock>
+              )}
+            </div>
+          </div> */}
 
-            {/* Left Texts */}
-            <AnimateInBlock rootMarginBottom={-30}>
-              <div
-                id="tablet"
-                className="absolute top-[67%] left-[50%] translate-x-[-50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
-                style={{
-                  backgroundColor: "rgba(0, 0, 255, 0.4)",
-                }}
-              >
-                <span
-                  id="fade-in-bottom"
-                  className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
-                >
-                  When?
-                </span>
-                <p
-                  id="fade-in-bottom"
-                  className="text-center text-2xl text-white my-lg:text-3xl"
-                >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Itaque, odio.
-                </p>
-              </div>
-            </AnimateInBlock>
+          {/* Text Group 3 */}
+          {/* <div
+            ref={textGroup3Ref}
+            className="absolute top-0 left-0 h-[100vh] w-full z-30"
+          >
+            <div className="relative w-full h-full">
+              {textGroup3DoneRef.current ? (
+                textGroup3Content
+              ) : (
+                <AnimateInBlock rootMarginBottom={-20}>
+                  {textGroup3Content}
+                </AnimateInBlock>
+              )}
+            </div>
+          </div> */}
+
+          {/* Text Group 4 (Right Texts) */}
+          <div
+            ref={textGroup4Ref}
+            className="absolute top-0 left-0 h-[100vh] w-full z-30"
+          >
+            <div className="relative w-full h-full">
+              {textGroup4DoneRef.current ? (
+                textGroup4Content
+              ) : (
+                <AnimateInBlock rootMarginBottom={-30}>
+                  {textGroup4Content}
+                </AnimateInBlock>
+              )}
+            </div>
+          </div>
+
+          {/* Text Group 5 (Left Texts) */}
+          <div
+            ref={textGroup5Ref}
+            className="absolute top-0 left-0 h-[100vh] w-full z-30"
+          >
+            <div className="relative w-full h-full">
+              {textGroup5DoneRef.current ? (
+                textGroup5Content
+              ) : (
+                <AnimateInBlock rootMarginBottom={-20}>
+                  {textGroup5Content}
+                </AnimateInBlock>
+              )}
+            </div>
           </div>
         </div>
 
@@ -500,12 +781,10 @@ export default function Scene3() {
             <AnimateIn rootMarginBottom={-50}>
               <div
                 id="scale-in-top"
-                className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-40"
+                className="absolute top-[707.5vh] left-0 h-[92.5vh] w-[100%] z-40 overflow-auto"
                 style={{ backgroundColor: "rgba(0, 255, 0, 0.4)" }}
               >
-                {/* <div className="absolute top-[707.5vh] left-0 flex flex-col justify-start h-[92.5vh] w-full z-50 overflow-auto"> */}
                 <ContactForm />
-                {/* </div> */}
               </div>
             </AnimateIn>
           </>
@@ -529,3 +808,324 @@ export default function Scene3() {
     </>
   );
 }
+
+// {
+//   /* 輪郭抽出部分のテキスト群のラッパー(デスクトップ) */
+// }
+// <div className="absolute top-0 left-0 h-[87.5%] w-full z-40">
+//   <div className="relative top-0 left-0 h-full w-full">
+//     {/* Row1 */}
+//     <AnimateInBlock rootMarginBottom={-50}>
+//       <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
+//         <div
+//           id="scale-in-top"
+//           className={
+//             "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+//             (isMobile && isLandscape ? "items-start ml-[7vw]" : "items-center")
+//           }
+//         >
+//           {/* Row1-L */}
+//           <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+//             <span
+//               id="tablet"
+//               className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+//             >
+//               {isMobile ? " " : "Curious"}
+//             </span>
+//           </div>
+
+//           {/* Row1-R */}
+//           <div
+//             className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+//             style={{
+//               backgroundColor: "rgba(255, 0, 0, 0.5)",
+//             }}
+//           >
+//             <span
+//               id="tablet"
+//               className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
+//             >
+//               Find your Joy
+//             </span>
+
+//             <div className="ml-6 flex flex-col justify-start items-start">
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Ideas spark here daily.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Creative minds play freely.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Imagination thrives openly.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Dare to dream boldly.
+//               </span>
+
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Invent joy daily always.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Curiosity rules your mind.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Passion meets creation.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Art starts right now.
+//               </span>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </AnimateInBlock>
+
+//     {/* Row2 */}
+//     <AnimateInBlock rootMarginBottom={-20}>
+//       <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
+//         <div
+//           id="scale-in-top"
+//           className={
+//             "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+//             (isMobile && isLandscape ? "items-end mr-[7vw]" : "items-center")
+//           }
+//         >
+//           {/* Row2-L */}
+//           <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+//             <span
+//               id="tablet"
+//               className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+//             >
+//               {isMobile ? " " : "Discover"}
+//             </span>
+//           </div>
+
+//           {/* Row2-R */}
+//           <div
+//             className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+//             style={{
+//               backgroundColor: "rgba(0, 0, 255, 0.5)",
+//             }}
+//           >
+//             <span
+//               id="tablet"
+//               className="mb-7 z-50 text-4xl text-white whitespace-nowrap"
+//             >
+//               Explore Ideas
+//             </span>
+
+//             <div className="ml-6 flex flex-col justify-start items-start">
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Joy fuels art daily.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Play is truly powerful.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Delight in every detail.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Create smiles often.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Embrace fun daily here.
+//               </span>
+//               <span className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+//                 - Steps to playful wonder.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Unleash laughter now.
+//               </span>
+//               <span
+//                 id="fade-in-left"
+//                 className="mb-7 z-50 text-[1.2rem] leading-6 text-white whitespace-nowrap"
+//               >
+//                 - Make play serious always.
+//               </span>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </AnimateInBlock>
+
+//     {/* Row3 */}
+//     {(isMobile && isLandscape) || (
+//       <>
+//         <AnimateInBlock rootMarginBottom={-20}>
+//           <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
+//             <div
+//               id="scale-in-top"
+//               className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
+//             >
+//               {/* Row3-L */}
+//               <div className=" ml-0 flex flex-col justify-start items-start h-[30vh] w-[21rem] my-md:ml-20 xl-2:ml-0">
+//                 <span
+//                   id="tablet"
+//                   className="mb-5 z-50 text-6xl text-black my-md:text-7xl my-lg:text-8xl"
+//                 >
+//                   {isMobile ? " " : "Innovate"}
+//                 </span>
+//               </div>
+
+//               {/* Row3-R */}
+//               <div
+//                 className="pt-4 pl-8 mr-0 flex flex-col justify-start items-start h-[33rem] w-[21rem] my-md:mt-36 my-md:pt-9 my-md:mr-32 xl-2:ml-20"
+//                 style={{
+//                   backgroundColor: "rgba(0, 255, 0, 0.5)",
+//                 }}
+//               >
+//                 <span
+//                   id="tablet"
+//                   className="mb-7 z-50 text-4xl text-black whitespace-nowrap"
+//                 >
+//                   Genuine Fun
+//                 </span>
+
+//                 <div className="ml-6 flex flex-col justify-start items-start">
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Sparks new paths.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Fun with daily inspires.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - True creativity right here.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Authentic joy found now.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Deep play fuels creativity.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - True laughter inspires ideas.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Ideas is truly righteous.
+//                   </span>
+//                   <span
+//                     id="fade-in-left"
+//                     className="mb-7 z-50 text-[1.2rem] leading-6 text-black whitespace-nowrap"
+//                   >
+//                     - Play always honestly.
+//                   </span>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </AnimateInBlock>
+//       </>
+//     )}
+
+//     {/* Right Texts */}
+//     <AnimateInBlock rootMarginBottom={-30}>
+//       <div
+//         id="tablet"
+//         className="absolute top-[55%] right-[50%] translate-x-[50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:right-[30%] my-lg:w-[26rem]"
+//         style={{
+//           backgroundColor: "rgba(255, 0, 0, 0.35)",
+//         }}
+//       >
+//         <span
+//           id="fade-in-bottom"
+//           className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+//         >
+//           Where?
+//         </span>
+//         <p
+//           id="fade-in-bottom"
+//           className="text-center text-2xl text-white my-lg:text-3xl"
+//         >
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+//         </p>
+//       </div>
+//     </AnimateInBlock>
+
+//     {/* Left Texts */}
+//     <AnimateInBlock rootMarginBottom={-30}>
+//       <div
+//         id="tablet"
+//         className="absolute top-[67%] left-[50%] translate-x-[-50%] translate-y-[-50%] h-52 w-[20rem] flex flex-col justify-center items-center border-t-2 border-t-gray-300 border-b-2 border-b-gray-300 my-sm:left-[30%] my-lg:w-[26rem]"
+//         style={{
+//           backgroundColor: "rgba(0, 0, 255, 0.4)",
+//         }}
+//       >
+//         <span
+//           id="fade-in-bottom"
+//           className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
+//         >
+//           When?
+//         </span>
+//         <p
+//           id="fade-in-bottom"
+//           className="text-center text-2xl text-white my-lg:text-3xl"
+//         >
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+//         </p>
+//       </div>
+//     </AnimateInBlock>
+//   </div>
+// </div>;
