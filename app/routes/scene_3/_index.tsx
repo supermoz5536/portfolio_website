@@ -75,10 +75,11 @@ export default function Scene3() {
     }
 
     /**
-     * GSAP スクロール計算のリフレッシュ
-     * モバイルの場合は、初回マウント後のスクロール計算結果が
-     * 正確ではないケースがあるので、再計算
+     * GSAP Reset
+     * モバイルは、初回マウント後のスクロール計算結果が不正確
+     * なのでスクロールの再計算を明示
      */
+
     ScrollTrigger.refresh();
 
     /**
@@ -97,10 +98,8 @@ export default function Scene3() {
 
       if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
         setIsMobile(true);
-        ScrollTrigger.refresh();
       } else {
         setIsMobile(false);
-        ScrollTrigger.refresh();
       }
     };
 
