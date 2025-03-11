@@ -58,13 +58,7 @@ export default function ContactForm() {
         <div className="w-full p-8">
           {/* タイトル部分 */}
 
-          <h2
-            id="tablet"
-            className={
-              "text-3xl font-bold mb-8 " +
-              (isMobile ? "text-black" : "text-white")
-            }
-          >
+          <h2 id="tablet" className={"text-3xl font-bold mb-8 text-white"}>
             Inquiry Form
           </h2>
 
@@ -78,10 +72,7 @@ export default function ContactForm() {
               <label
                 id="tablet"
                 htmlFor="name"
-                className={
-                  "block mb-1 font-semibold " +
-                  (isMobile ? "text-black" : "text-white")
-                }
+                className={"block mb-1 font-semibold text-white"}
               >
                 Name
               </label>
@@ -99,10 +90,7 @@ export default function ContactForm() {
               <label
                 id="tablet"
                 htmlFor="email"
-                className={
-                  "block mb-1 font-semibold " +
-                  (isMobile ? "text-black" : "text-white")
-                }
+                className={"block mb-1 font-semibold text-white"}
               >
                 Email
               </label>
@@ -121,12 +109,9 @@ export default function ContactForm() {
               <label
                 id="tablet"
                 htmlFor="message"
-                className={
-                  "block mb-1 font-semibold " +
-                  (isMobile ? "text-black" : "text-white")
-                }
+                className={"block mb-1 font-semibold text-white"}
               >
-                Inquiry Content
+                Content
               </label>
               <textarea
                 id="tablet"

@@ -3,8 +3,20 @@ import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
+import { useEffect, useState } from "react";
 
 const EntryPointThree = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+  }, []);
   return (
     <>
       <KeyboardControls
@@ -43,6 +55,7 @@ const EntryPointThree = () => {
             far: 4000,
             position: [0, 0, 100],
           }}
+          dpr={isMobile ? [0.75, 0.75] : [1.5, 1.5]}
         >
           <Experience />
         </Canvas>

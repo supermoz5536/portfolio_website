@@ -51,12 +51,9 @@ export default function Experience() {
       <Camera />
       <EnvironmentLights />
       <Floors />
-      {isMobile || (
-        <>
-          <Tower />
-          <Earth />
-        </>
-      )}
+      {isMobile || <></>}
+      <Tower />
+      <Earth />
     </>
   );
 }

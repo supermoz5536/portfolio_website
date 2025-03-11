@@ -89,14 +89,18 @@ export default function Scene3() {
     const resizeCallback = () => {
       if (window.matchMedia("(orientation: landscape)").matches) {
         setIsLandscape(true);
+        ScrollTrigger.refresh();
       } else {
         setIsLandscape(false);
+        ScrollTrigger.refresh();
       }
 
       if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
         setIsMobile(true);
+        ScrollTrigger.refresh();
       } else {
         setIsMobile(false);
+        ScrollTrigger.refresh();
       }
     };
 
@@ -118,9 +122,9 @@ export default function Scene3() {
      * Control Text Groups
      */
 
-    // setTextGroup1();
-    // setTextGroup2();
-    // setTextGroup3();
+    setTextGroup1();
+    setTextGroup2();
+    setTextGroup3();
     setTextGroup4();
     setTextGroup5();
   }, [scrollProgress]);
@@ -140,8 +144,9 @@ export default function Scene3() {
   }
 
   function setTextGroup1() {
-    const scrollTriggerRate = 0.01;
+    const triggerRate = 0.01;
     const scrollSpeedRate = 0.1;
+    const endRate = 0.19;
     let waitingViewPortRate;
 
     /**
@@ -149,44 +154,36 @@ export default function Scene3() {
      */
 
     if (textGroup1Ref.current) {
-      if (scrollProgress < scrollTriggerRate) {
-        waitingViewPortRate = 10;
+      if (scrollProgress < triggerRate) {
+        waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
       }
+
+      textGroup1Ref.current.style.top = `${waitingViewPortRate}%`;
 
       /**
        * Control Display
        */
 
-      textGroup1Ref.current.style.top = `${waitingViewPortRate}%`;
-      ScrollTrigger.create({
-        trigger: textGroup1Ref.current,
-        start: "top bottom", // 要素の上部が画面下に来たら表示
-        end: "bottom top", // 要素の下部が画面上に来たら非表示
-        onEnter: () => {
-          textGroup1Ref.current.style.display = "block";
-        },
-        onLeave: () => {
-          textGroup1Ref.current.style.display = "none";
-          textGroup1DoneRef.current = true;
-        },
-        onEnterBack: () => {
-          textGroup1Ref.current.style.display = "block";
-        },
-        onLeaveBack: () => {
-          textGroup1Ref.current.style.display = "none";
-        },
-      });
+      if (scrollProgress < triggerRate) {
+        textGroup1Ref.current.style.display = "none";
+      } else if (scrollProgress > endRate) {
+        textGroup1Ref.current.style.display = "none";
+        textGroup1DoneRef.current = true;
+      } else {
+        textGroup1Ref.current.style.display = "block";
+      }
 
-      // console.log(tg1ViewPortRate + "%");
+      // console.log(waitingViewPortRate + "%");
     }
   }
 
   function setTextGroup2() {
-    const scrollTriggerRate = 0.07;
-    const scrollSpeedRate = 0.7;
+    const triggerRate = 0.095;
+    const scrollSpeedRate = 0.95;
+    const endRate = 0.28;
     let waitingViewPortRate;
 
     /**
@@ -194,44 +191,36 @@ export default function Scene3() {
      */
 
     if (textGroup2Ref.current) {
-      if (scrollProgress < scrollTriggerRate) {
+      if (scrollProgress < triggerRate) {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
       }
+
+      textGroup2Ref.current.style.top = `${waitingViewPortRate}%`;
 
       /**
        * Control Display
        */
 
-      textGroup2Ref.current.style.top = `${waitingViewPortRate}%`;
-      ScrollTrigger.create({
-        trigger: textGroup2Ref.current,
-        start: "top bottom", // 要素の上部が画面下に来たら表示
-        end: "bottom top", // 要素の下部が画面上に来たら非表示
-        onEnter: () => {
-          textGroup2Ref.current.style.display = "block";
-        },
-        onLeave: () => {
-          textGroup2Ref.current.style.display = "none";
-          textGroup2DoneRef.current = true;
-        },
-        onEnterBack: () => {
-          textGroup2Ref.current.style.display = "block";
-        },
-        onLeaveBack: () => {
-          textGroup2Ref.current.style.display = "none";
-        },
-      });
+      if (scrollProgress < triggerRate) {
+        textGroup2Ref.current.style.display = "none";
+      } else if (scrollProgress > endRate) {
+        textGroup2Ref.current.style.display = "none";
+        textGroup2DoneRef.current = true;
+      } else {
+        textGroup2Ref.current.style.display = "block";
+      }
 
       // console.log(waitingViewPortRate + "%");
     }
   }
 
   function setTextGroup3() {
-    const scrollTriggerRate = 0.13;
-    const scrollSpeedRate = 1.3;
+    const triggerRate = 0.19;
+    const scrollSpeedRate = 1.9;
+    const endRate = 0.38;
     let waitingViewPortRate;
 
     /**
@@ -239,36 +228,27 @@ export default function Scene3() {
      */
 
     if (textGroup3Ref.current) {
-      if (scrollProgress < scrollTriggerRate) {
+      if (scrollProgress < triggerRate) {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 - (scrollProgress - scrollTriggerRate) / scrollTriggerRate) * 100 * scrollSpeedRate; // prettier-ignore
+          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
       }
+
+      textGroup3Ref.current.style.top = `${waitingViewPortRate}%`;
 
       /**
        * Control Display
        */
 
-      textGroup3Ref.current.style.top = `${waitingViewPortRate}%`;
-      ScrollTrigger.create({
-        trigger: textGroup3Ref.current,
-        start: "top bottom", // 要素の上部が画面下に来たら表示
-        end: "bottom top-=400", // 要素の下部が画面上に来たら非表示
-        onEnter: () => {
-          textGroup3Ref.current.style.display = "block";
-        },
-        onLeave: () => {
-          textGroup3Ref.current.style.display = "none";
-          textGroup3DoneRef.current = true;
-        },
-        onEnterBack: () => {
-          textGroup3Ref.current.style.display = "block";
-        },
-        onLeaveBack: () => {
-          textGroup3Ref.current.style.display = "none";
-        },
-      });
+      if (scrollProgress < triggerRate) {
+        textGroup3Ref.current.style.display = "none";
+      } else if (scrollProgress > endRate) {
+        textGroup3Ref.current.style.display = "none";
+        textGroup3DoneRef.current = true;
+      } else {
+        textGroup3Ref.current.style.display = "block";
+      }
 
       // console.log(waitingViewPortRate + "%");
     }
@@ -276,8 +256,8 @@ export default function Scene3() {
 
   function setTextGroup4() {
     const triggerRate = 0.4;
-    const endRate = 0.55;
     const scrollSpeedRate = 4.0;
+    const endRate = 0.55;
     let waitingViewPortRate;
 
     /**
@@ -315,8 +295,8 @@ export default function Scene3() {
 
   function setTextGroup5() {
     const triggerRate = 0.56;
-    const endRate = 0.71;
     const scrollSpeedRate = 5.6;
+    const endRate = 0.71;
     let waitingViewPortRate;
 
     /**
@@ -353,11 +333,11 @@ export default function Scene3() {
   }
 
   const textGroup1Content = (
-    <div className="absolute top-[3.5%] left-0 flex flex-col justify-start items-center w-full">
+    <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="scale-in-top"
         className={
-          "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
+          "flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
           (isMobile && isLandscape ? "items-start ml-[7vw]" : "items-center")
         }
       >
@@ -442,7 +422,7 @@ export default function Scene3() {
   );
 
   const textGroup2Content = (
-    <div className="absolute top-[15%] left-0 flex flex-col justify-start items-center w-full">
+    <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="scale-in-top"
         className={
@@ -527,7 +507,7 @@ export default function Scene3() {
   );
 
   const textGroup3Content = (
-    <div className="absolute top-[26.5%] left-0 flex flex-col justify-start items-center w-full">
+    <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="scale-in-top"
         className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
@@ -687,12 +667,16 @@ export default function Scene3() {
                       "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
                   }
             }
+            // style={{
+            //   clipPath:
+            //     "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+            // }}
           >
             <CanvasOutline />
           </div>
 
           {/* Text Group 1 */}
-          {/* <div
+          <div
             ref={textGroup1Ref}
             className="absolute top-0 left-0 h-[100vh] w-full z-30"
           >
@@ -700,15 +684,15 @@ export default function Scene3() {
               {textGroup1DoneRef.current ? (
                 textGroup1Content
               ) : (
-                <AnimateInBlock rootMarginBottom={-50}>
+                <AnimateInBlock rootMarginBottom={-20}>
                   {textGroup1Content}
                 </AnimateInBlock>
               )}
             </div>
-          </div> */}
+          </div>
 
           {/* Text Group 2 */}
-          {/* <div
+          <div
             ref={textGroup2Ref}
             className="absolute top-0 left-0 h-[100vh] w-full z-30"
           >
@@ -721,10 +705,10 @@ export default function Scene3() {
                 </AnimateInBlock>
               )}
             </div>
-          </div> */}
+          </div>
 
           {/* Text Group 3 */}
-          {/* <div
+          <div
             ref={textGroup3Ref}
             className="absolute top-0 left-0 h-[100vh] w-full z-30"
           >
@@ -737,7 +721,7 @@ export default function Scene3() {
                 </AnimateInBlock>
               )}
             </div>
-          </div> */}
+          </div>
 
           {/* Text Group 4 (Right Texts) */}
           <div
@@ -748,7 +732,7 @@ export default function Scene3() {
               {textGroup4DoneRef.current ? (
                 textGroup4Content
               ) : (
-                <AnimateInBlock rootMarginBottom={-30}>
+                <AnimateInBlock rootMarginBottom={-10}>
                   {textGroup4Content}
                 </AnimateInBlock>
               )}

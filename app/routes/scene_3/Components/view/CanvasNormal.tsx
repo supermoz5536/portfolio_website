@@ -9,8 +9,21 @@ import {
 import { ToneMappingMode } from "postprocessing";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
 import * as THREE from "three";
+import { useEffect, useState } from "react";
 
 export function CanvasNormal() {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+  }, []);
+
   return (
     <>
       <Canvas
@@ -35,17 +48,26 @@ export function CanvasNormal() {
           far: 4000,
           position: [0, 0, 100],
         }}
+        dpr={isMobile ? [0.75, 0.75] : [1, 1]}
       >
         <Experience />
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.NEUTRAL} />
-          {/* <NormalCustom /> */}
+          <NormalCustom />
           <Bloom luminanceThreshold={1.0} mipmapBlur intensity={0.1} />
-          <DepthOfField
-            focusDistance={0.005}
-            focalLength={0.025}
-            bokehScale={6}
-          />
+          {isMobile ? (
+            <DepthOfField
+              focusDistance={0.005}
+              focalLength={0.025}
+              bokehScale={3}
+            />
+          ) : (
+            <DepthOfField
+              focusDistance={0.005}
+              focalLength={0.025}
+              bokehScale={6}
+            />
+          )}
         </EffectComposer>
       </Canvas>
     </>

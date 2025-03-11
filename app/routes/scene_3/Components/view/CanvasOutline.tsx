@@ -18,6 +18,18 @@ import * as THREE from "three";
 import { OutLineCustom } from "./PostProcessing/Outline/Outline";
 
 export function CanvasOutline() {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+  }, []);
+
   return (
     <>
       <Canvas
@@ -38,6 +50,7 @@ export function CanvasOutline() {
           far: 4000,
           position: [0, 0, 100],
         }}
+        dpr={isMobile ? [0.75, 0.75] : [1, 1]}
       >
         <Experience />
         <EffectComposer>

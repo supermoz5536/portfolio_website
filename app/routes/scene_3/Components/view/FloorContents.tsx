@@ -125,7 +125,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             )}
 
             {displayedShowcaseLight.includes(index) && (
-              <>{isMobile || <ShowCaseLight shadowLevel={0} index={index} />}</>
+              // <>{isMobile || }</>
+              <ShowCaseLight shadowLevel={0} index={index} />
             )}
 
             {/* Playerがいるフロアのみ生成 */}

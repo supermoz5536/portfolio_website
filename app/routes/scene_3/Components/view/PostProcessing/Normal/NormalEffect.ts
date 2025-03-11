@@ -3,7 +3,8 @@ import { Uniform, Vector2 } from "three";
 
 const normalEffectFragmentShader = /* glsl */ `
     void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
-      outputColor = inputColor; 
+      vec4 filterColor = vec4(0.0, 0.0, 0.0, 0.5);
+      outputColor = filterColor; 
     }
 `;
 
