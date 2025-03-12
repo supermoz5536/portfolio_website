@@ -137,12 +137,13 @@ export default function Experience({ flag }: ExprienceProps) {
       <Camera />
       <EnvironmentLights />
       <Floors />
+      {isMobile && <>{flag == "normal" && <Earth />}</>}
       {isMobile || (
         <>
-          <Tower />
+          <Earth />
+          {flag == "normal" && <Tower />}
         </>
       )}
-      <Earth />
     </>
   );
 }

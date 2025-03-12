@@ -20,7 +20,14 @@ export function EnvironmentLights() {
   const ambLightRef: any = useRef();
   const environmentLightsFolder = getEnvironmentLightsFolder();
 
-  // useHelper(dirLightRef, THREE.DirectionalLightHelper, 4, "red");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Device Setup
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+  }, []);
 
   useEffect(() => {
     /**
@@ -68,7 +75,7 @@ export function EnvironmentLights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={2}
+        intensity={isMobile ? 3 : 1}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -79,7 +86,7 @@ export function EnvironmentLights() {
         shadow-normalBias={0.005} // normalBias を追加
       />
 
-      <ambientLight ref={ambLightRef} intensity={2.4} />
+      <ambientLight ref={ambLightRef} intensity={isMobile ? 2 : 0.4} />
     </>
   );
 }

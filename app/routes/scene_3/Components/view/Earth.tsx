@@ -328,7 +328,8 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
      * Update Material
      */
 
-    material.uniforms.uDayCycleProgress.value = rescaledPlayerMoveRatio;
+    material.uniforms.uDayCycleProgress.value = 0.4;
+    // material.uniforms.uDayCycleProgress.value = rescaledPlayerMoveRatio;
     material.uniforms.uSunPosition.value.copy(sunPosition);
   }, [sunPosition, rescaledPlayerMoveRatio]);
 

@@ -14,7 +14,6 @@ import { useSystemStore } from "~/store/scene3/system_store";
 
 export function CanvasNormal() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const scrollProgressTest = useSystemStore((state) => state.scrollProgressTest); // prettier-ignore
 
   useEffect(() => {
     // Device Setup
@@ -35,7 +34,7 @@ export function CanvasNormal() {
         }}
         shadows
         gl={{
-          toneMapping: THREE.NoToneMapping,
+          // toneMapping: THREE.NoToneMapping,
           localClippingEnabled: true,
           alpha: true,
         }}
@@ -50,22 +49,6 @@ export function CanvasNormal() {
         }}
       >
         <Experience flag="normal" />
-        <EffectComposer>
-          <ToneMapping mode={ToneMappingMode.NEUTRAL} />
-          <NormalCustom />
-          {isMobile ? (
-            <></>
-          ) : (
-            <>
-              <Bloom luminanceThreshold={1.0} mipmapBlur intensity={0.1} />
-              <DepthOfField
-                focusDistance={0.005}
-                focalLength={0.025}
-                bokehScale={6}
-              />
-            </>
-          )}
-        </EffectComposer>
       </Canvas>
     </>
   );

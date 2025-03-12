@@ -10,6 +10,7 @@ import { Question } from "./Question";
 import { PlayerShadow } from "./PlayerShadow";
 import { Fireflies } from "./Fireflies";
 import { StoneTablet } from "./StoneTablet";
+import { EmptyObject9 } from "./EmptyObjects";
 
 type FloorContentsProps = {
   index: number;
@@ -19,8 +20,8 @@ type FloorContentsProps = {
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
-// const displayedShowcaseLight = [0, 3, 6, 9];
-const displayedShowcaseLight: any = [];
+const displayedShowcaseLightMobile: any = [];
+const displayedShowcaseLightTablet = [0, 3, 6, 9];
 const displayedFirefly: any = [0, 3, 6, 9, 11];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
@@ -115,8 +116,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
           <group ref={groupRef} position={adjustedPosition}>
             <ShowCase position={adjustedPosition} index={index} />
 
-            {/* Empty Content */}
-            {displayedQuestion.includes(index) && <Question />}
+            {/* Content */}
+            {isMobile && index == 0 && <EmptyObject9 />}
+            {isMobile && index == 3 && <EmptyObject9 />}
+            {isMobile && index == 6 && <EmptyObject9 />}
+            {isMobile && index == 9 && <EmptyObject9 />}
+            {isMobile || (displayedQuestion.includes(index) && <Question />)}
 
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={index} />
@@ -125,9 +130,20 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>{isMobile || <Fireflies index={index} />}</>
             )}
 
-            {displayedShowcaseLight.includes(index) && (
-              // <>{isMobile || }</>
-              <ShowCaseLight shadowLevel={0} index={index} />
+            {isMobile && (
+              <>
+                {displayedShowcaseLightMobile.includes(index) && (
+                  <ShowCaseLight shadowLevel={0} index={index} />
+                )}
+              </>
+            )}
+
+            {isMobile || (
+              <>
+                {displayedShowcaseLightTablet.includes(index) && (
+                  <ShowCaseLight shadowLevel={0} index={index} />
+                )}
+              </>
             )}
 
             {/* Playerがいるフロアのみ生成 */}

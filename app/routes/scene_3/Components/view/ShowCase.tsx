@@ -152,7 +152,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           />
 
           {/* Main Content */}
-          <ShowcaseComponent />
+          {/* <ShowcaseComponent /> */}
         </group>
       </>
     </>
