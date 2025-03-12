@@ -27,6 +27,10 @@ export default function Scene3() {
   const setScrollProgress = 
     useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
 
+  const scrollProgressTest = useSystemStore((state) => state.scrollProgressTest); // prettier-ignore
+  const setScrollProgressTest = 
+      useSystemStore((state: any)=>state.setScrollProgressTest) // prettier-ignore
+
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isLandscape, setIsLandscape] = useState<boolean>(false);
 
@@ -54,7 +58,31 @@ export default function Scene3() {
           onUpdate: (value) => {
             const progressRate = value.progress;
             setScrollProgress(progressRate);
-            console.log(progressRate);
+          },
+        },
+      },
+    );
+
+    /**
+     * Test Scroll Trigger
+     */
+    gsap.fromTo(
+      "#scene3",
+
+      {}, // fromVars: null
+
+      {
+        // toVars: null
+        // Option
+        scrollTrigger: {
+          trigger: "#scene3",
+          start: "top bottom",
+          end: "bottom bottom",
+          scrub: 0.5,
+          pin: false,
+          onUpdate: (value) => {
+            const progressRate = value.progress;
+            setScrollProgressTest(progressRate);
           },
         },
       },
@@ -334,7 +362,8 @@ export default function Scene3() {
   const textGroup1Content = (
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
-        id="scale-in-top"
+        id="tablet"
+        // id="scale-in-top"
         className={
           "flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
           (isMobile && isLandscape ? "items-start ml-[7vw]" : "items-center")
@@ -423,7 +452,8 @@ export default function Scene3() {
   const textGroup2Content = (
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
-        id="scale-in-top"
+        id="tablet"
+        // id="scale-in-top"
         className={
           "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
           (isMobile && isLandscape ? "items-end mr-[7vw]" : "items-center")
@@ -508,7 +538,8 @@ export default function Scene3() {
   const textGroup3Content = (
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
-        id="scale-in-top"
+        id="tablet"
+        // id="scale-in-top"
         className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
       >
         {/* Row3-L */}
@@ -648,28 +679,27 @@ export default function Scene3() {
 
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
           {/* Three Normal */}
-          {isMobile || (
-            <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
-              <CanvasNormal />
-            </div>
-          )}
+          {/* {isMobile || ()} */}
+          <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
+            <CanvasNormal />
+          </div>
 
           {/* Three Outline */}
           <div
             ref={canvasClipRef}
             className="absolute top-0 left-0 h-[100vh] w-full z-20"
-            style={
-              isMobile
-                ? {}
-                : {
-                    clipPath:
-                      "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-                  }
-            }
-            // style={{
-            //   clipPath:
-            //     "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-            // }}
+            // style={
+            //   isMobile
+            //     ? {}
+            //     : {
+            //         clipPath:
+            //           "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+            //       }
+            // }
+            style={{
+              clipPath:
+                "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+            }}
           >
             <CanvasOutline />
           </div>

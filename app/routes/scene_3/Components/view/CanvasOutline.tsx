@@ -16,23 +16,13 @@ import { ToneMappingMode, BlendFunction, GlitchMode } from "postprocessing";
 import { Resizer, KernelSize } from "postprocessing";
 import * as THREE from "three";
 import { OutLineCustom } from "./PostProcessing/Outline/Outline";
+import { useSystemStore } from "~/store/scene3/system_store";
 
 export function CanvasOutline() {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-  }, []);
-
   return (
     <>
       <Canvas
+        frameloop="never"
         style={{
           minHeight: "100vh",
           height: "100%",
@@ -50,9 +40,8 @@ export function CanvasOutline() {
           far: 4000,
           position: [0, 0, 100],
         }}
-        dpr={isMobile ? [0.75, 0.75] : [1, 1]}
       >
-        <Experience />
+        <Experience flag="outline" />
         <EffectComposer>
           <OutLineCustom />
         </EffectComposer>

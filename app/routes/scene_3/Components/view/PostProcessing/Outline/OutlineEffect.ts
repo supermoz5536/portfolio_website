@@ -42,7 +42,7 @@ const outlineEffectFragmentShader = /* glsl */ `
 
         float edge = sqrt(Gx * Gx + Gy * Gy);
 
-        float strength = 0.825;
+        float strength = 0.8;
 
           // 輪郭を黒、背景を白
         float sobel = 1.0 - clamp(edge * strength, 0.0, 0.4);
