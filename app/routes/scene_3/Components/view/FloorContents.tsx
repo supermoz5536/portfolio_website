@@ -19,7 +19,8 @@ type FloorContentsProps = {
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [9];
-const displayedShowcaseLight = [0, 3, 6, 9];
+// const displayedShowcaseLight = [0, 3, 6, 9];
+const displayedShowcaseLight: any = [];
 const displayedFirefly: any = [0, 3, 6, 9, 11];
 
 export function FloorContents({ index, position }: FloorContentsProps) {

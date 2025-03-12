@@ -48,31 +48,24 @@ export function CanvasNormal() {
           far: 4000,
           position: [0, 0, 100],
         }}
-        dpr={isMobile ? [0.75, 0.75] : [1, 1]}
       >
         <Experience flag="normal" />
-        {scrollProgressTest > 0.3 && (
-          <>
-            <EffectComposer>
-              <ToneMapping mode={ToneMappingMode.NEUTRAL} />
-              <NormalCustom />
+        <EffectComposer>
+          <ToneMapping mode={ToneMappingMode.NEUTRAL} />
+          <NormalCustom />
+          {isMobile ? (
+            <></>
+          ) : (
+            <>
               <Bloom luminanceThreshold={1.0} mipmapBlur intensity={0.1} />
-              {isMobile ? (
-                <DepthOfField
-                  focusDistance={0.005}
-                  focalLength={0.025}
-                  bokehScale={3}
-                />
-              ) : (
-                <DepthOfField
-                  focusDistance={0.005}
-                  focalLength={0.025}
-                  bokehScale={6}
-                />
-              )}
-            </EffectComposer>
-          </>
-        )}
+              <DepthOfField
+                focusDistance={0.005}
+                focalLength={0.025}
+                bokehScale={6}
+              />
+            </>
+          )}
+        </EffectComposer>
       </Canvas>
     </>
   );

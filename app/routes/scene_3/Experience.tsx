@@ -94,7 +94,7 @@ export default function Experience({ flag }: ExprienceProps) {
       startRenderRate = 0.0;
       endRenderRate = 0.55;
     } else if (flag == "normal") {
-      startRenderRate = 0.3;
+      startRenderRate = 0.0;
       endRenderRate = 1.0;
     }
 
@@ -104,7 +104,7 @@ export default function Experience({ flag }: ExprienceProps) {
       gl.setPixelRatio(0.001);
     } else {
       if (!isMobile) gl.setPixelRatio(1.7);
-      if (isMobile && flag == "outline") gl.setPixelRatio(0.6);
+      if (isMobile && flag == "outline") gl.setPixelRatio(0.8);
       if (isMobile && flag == "normal") gl.setPixelRatio(0.6);
     }
   }, [scrollProgressTest]);

@@ -68,7 +68,7 @@ export function EnvironmentLights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={1}
+        intensity={2}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -79,7 +79,7 @@ export function EnvironmentLights() {
         shadow-normalBias={0.005} // normalBias を追加
       />
 
-      <ambientLight ref={ambLightRef} intensity={0.4} />
+      <ambientLight ref={ambLightRef} intensity={2.4} />
     </>
   );
 }

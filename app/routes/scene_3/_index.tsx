@@ -151,7 +151,7 @@ export default function Scene3() {
 
     setTextGroup1();
     setTextGroup2();
-    setTextGroup3();
+    // setTextGroup3();
     setTextGroup4();
     setTextGroup5();
   }, [scrollProgress]);
@@ -737,7 +737,7 @@ export default function Scene3() {
           </div>
 
           {/* Text Group 3 */}
-          <div
+          {/* <div
             ref={textGroup3Ref}
             className="absolute top-0 left-0 h-[100vh] w-full z-30"
           >
@@ -750,7 +750,7 @@ export default function Scene3() {
                 </AnimateInBlock>
               )}
             </div>
-          </div>
+          </div> */}
 
           {/* Text Group 4 (Right Texts) */}
           <div
