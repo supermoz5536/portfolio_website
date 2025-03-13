@@ -105,7 +105,7 @@ export default function Scene3() {
     /**
      * GSAP Reset
      * モバイルは、初回マウント後のスクロール計算結果が不正確
-     * なのでスクロールの再計算を明示
+     * スクロールの再計算を明示
      */
 
     ScrollTrigger.refresh();
