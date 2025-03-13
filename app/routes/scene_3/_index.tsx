@@ -83,6 +83,7 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
+            console.log(progressRate);
             setScrollProgressTopAndTop(progressRate);
           },
         },
@@ -149,7 +150,7 @@ export default function Scene3() {
   function setTextGroup1() {
     const triggerRate = 0.01;
     const scrollSpeedRate = 0.1;
-    const endRate = 0.19;
+    const endRate = isMobile && isLandscape ? 0.27 : 0.19;
     let waitingViewPortRate;
 
     /**
@@ -184,9 +185,9 @@ export default function Scene3() {
   }
 
   function setTextGroup2() {
-    const triggerRate = 0.095;
-    const scrollSpeedRate = 0.95;
-    const endRate = 0.28;
+    const triggerRate = isMobile && isLandscape ? 0.095 : 0.14;
+    const scrollSpeedRate = isMobile && isLandscape ? 0.95 : 1.4;
+    const endRate = isMobile && isLandscape ? 0.37 : 0.34;
     let waitingViewPortRate;
 
     /**
@@ -339,7 +340,6 @@ export default function Scene3() {
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="tablet"
-        // id="scale-in-top"
         className={
           "flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
           (isMobile && isLandscape ? "items-start ml-[7vw]" : "items-center")
@@ -429,7 +429,6 @@ export default function Scene3() {
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="tablet"
-        // id="scale-in-top"
         className={
           "mt-10 flex flex-col justify-start h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center " +
           (isMobile && isLandscape ? "items-end mr-[7vw]" : "items-center")
@@ -515,7 +514,6 @@ export default function Scene3() {
     <div className="absolute top-0 left-0 flex flex-col justify-start items-center w-full">
       <div
         id="tablet"
-        // id="scale-in-top"
         className="mt-10 flex flex-col justify-start items-center h-[30vh] w-full my-md:pl-0 my-md:flex-row my-md:justify-between my-md:items-center lg-2:justify-around xl-2:justify-center"
       >
         {/* Row3-L */}

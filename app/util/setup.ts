@@ -6,10 +6,6 @@ export function setupDevice() {
   const setIsLandscape = useGlobalStore((state: any) => state.setIsLandscape);
 
   useEffect(() => {
-    /**
-     * Device Setup
-     */
-
     if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
       setIsMobile(true);
     }
