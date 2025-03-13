@@ -8,7 +8,7 @@ const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const boxMaterial = new THREE.MeshStandardMaterial({
   color: "ffffff",
   emissive: new THREE.Color(0xffffff),
-  emissiveIntensity: 75,
+  emissiveIntensity: 30,
 });
 
 export function EmptyObject9() {

@@ -542,7 +542,7 @@ export function Earth() {
   return (
     <>
       <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
-      <Stars sunPosition={sunPosition} />
+      <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />
       {/* <Sun sunPosition={sunPosition} playerPosition={playerPosition} /> */}
     </>
   );
