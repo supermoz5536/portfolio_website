@@ -9,6 +9,7 @@ import {
   ShowCaseContent10,
   ShowCaseContent11,
 } from "./ShowCaseContents";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type ShowCaseProps = {
   position: THREE.Vector3;
@@ -60,18 +61,9 @@ const showcaseComponents: any = {
 
 export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
-
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-
     /**
      * Texture Setup
      */

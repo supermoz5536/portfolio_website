@@ -9,6 +9,7 @@ import {
   getGui,
   getShowcaseLightsFolder,
 } from "../../util/lil-gui";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type ShowCaseLightProps = {
   shadowLevel: number;
@@ -20,14 +21,7 @@ export function EnvironmentLights() {
   const ambLightRef: any = useRef();
   const environmentLightsFolder = getEnvironmentLightsFolder();
 
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Device Setup
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-  }, []);
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   useEffect(() => {
     /**

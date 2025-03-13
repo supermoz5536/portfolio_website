@@ -11,6 +11,7 @@ import { InsideConeMaterial } from "./Materials/InsideConeMaterial";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { FresnelConeMaterial } from "./Materials/FresnelConeMaterial";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type CommonProps = {
   normWidth: number;
@@ -358,13 +359,13 @@ export function Tower() {
   const state = useThree();
   const cameraBasePosition = new THREE.Vector3(61, -23, -62);
 
-  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
 
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [normWidth, setNormWidth] = useState(40);
   const [normHeight, setNormHeight] = useState(10);
@@ -386,15 +387,6 @@ export function Tower() {
   );
 
   useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
-
     /**
      * Add Listener
      */
