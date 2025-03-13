@@ -151,7 +151,7 @@ export default function Scene3() {
 
     setTextGroup1();
     setTextGroup2();
-    // setTextGroup3();
+    isMobile || setTextGroup3();
     setTextGroup4();
     setTextGroup5();
   }, [scrollProgress]);
@@ -737,20 +737,24 @@ export default function Scene3() {
           </div>
 
           {/* Text Group 3 */}
-          {/* <div
-            ref={textGroup3Ref}
-            className="absolute top-0 left-0 h-[100vh] w-full z-30"
-          >
-            <div className="relative w-full h-full">
-              {textGroup3DoneRef.current ? (
-                textGroup3Content
-              ) : (
-                <AnimateInBlock rootMarginBottom={-20}>
-                  {textGroup3Content}
-                </AnimateInBlock>
-              )}
-            </div>
-          </div> */}
+          {isMobile || (
+            <>
+              <div
+                ref={textGroup3Ref}
+                className="absolute top-0 left-0 h-[100vh] w-full z-30"
+              >
+                <div className="relative w-full h-full">
+                  {textGroup3DoneRef.current ? (
+                    textGroup3Content
+                  ) : (
+                    <AnimateInBlock rootMarginBottom={-20}>
+                      {textGroup3Content}
+                    </AnimateInBlock>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Text Group 4 (Right Texts) */}
           <div
