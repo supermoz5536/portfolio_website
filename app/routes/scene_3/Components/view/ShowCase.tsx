@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   ShowCaseContent0,
   ShowCaseContent3,
@@ -61,7 +61,17 @@ const showcaseComponents: any = {
 export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
+      setIsMobile(true);
+    }
+
     /**
      * Texture Setup
      */
@@ -152,7 +162,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           />
 
           {/* Main Content */}
-          {/* <ShowcaseComponent /> */}
+          {isMobile || ([0, 3, 6].includes(index) && <ShowcaseComponent />)}
         </group>
       </>
     </>

@@ -59,7 +59,6 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
-            console.log(progressRate);
             setScrollProgressTopAndTop(progressRate);
           },
         },

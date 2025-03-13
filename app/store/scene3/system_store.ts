@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 type SystemStore = {
-  scrollProgressTopAndTop: number;
-  scrollProgressTopAndBottom: number;
+  scrollProgressTopAndTop: number; // For TextGroup1-5
+  scrollProgressTopAndBottom: number; // For Control Rendering, Resolution and Camera
 };
 
 export const useSystemStore = create<SystemStore>()(
