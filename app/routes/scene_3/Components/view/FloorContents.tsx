@@ -11,6 +11,7 @@ import { PlayerShadow } from "./PlayerShadow";
 import { Fireflies } from "./Fireflies";
 import { StoneTablet } from "./StoneTablet";
 import { EmptyObject9 } from "./EmptyObjects";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type FloorContentsProps = {
   index: number;
@@ -35,6 +36,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
     new THREE.Vector3(position.x, position.y, position.z),
   );
 
+  const isMobile = useGlobalStore((state) => state.isMobile);
+
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
     setIsPositionReady(true);
@@ -53,38 +56,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
 
     return () => {
       unsubscribePlayer();
-    };
-  }, []);
-
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-
-    /**
-     * Resize
-     */
-
-    // Callback
-    const resizeCallback = () => {
-      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    // Listener
-    window.addEventListener("resize", resizeCallback);
-
-    return () => {
-      window.removeEventListener("resize", resizeCallback);
     };
   }, []);
 

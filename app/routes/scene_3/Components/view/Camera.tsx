@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import * as THREE from "three";
+import { useGlobalStore } from "~/store/global/global_store";
 import { useSystemStore } from "~/store/scene3/system_store";
 
 export function Camera() {
@@ -28,7 +29,7 @@ export function Camera() {
 
   const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
 
-  const [isMobile, setIsMobile] = useState<boolean>();
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   // デフォルトカメラとして登録
   useLayoutEffect(() => {
@@ -38,15 +39,6 @@ export function Camera() {
 
   // 初回マウント前にアスペクト比率を事前適用する必要がある
   useLayoutEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
-
     if (cameraRef.current) {
       // canvas サイズ(width, height)の変更は
       // R3Fの仕様で camera の size に自動反映されるが

@@ -12,16 +12,10 @@ import * as THREE from "three";
 import { useEffect, useState } from "react";
 import { useSystemStore } from "~/store/scene3/system_store";
 import Stats from "three/examples/jsm/libs/stats.module.js";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export function CanvasNormal() {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Device Setup
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-  }, []);
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   return (
     <>

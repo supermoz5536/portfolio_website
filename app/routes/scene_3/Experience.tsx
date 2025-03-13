@@ -10,6 +10,7 @@ import { Camera } from "./Components/view/Camera.js";
 import { useEffect, useRef, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene3/system_store.js";
+import { useGlobalStore } from "~/store/global/global_store.js";
 
 type ExprienceProps = {
   flag: "outline" | "normal";
@@ -22,37 +23,11 @@ export default function Experience({ flag }: ExprienceProps) {
   const animationFrameIdRef = useRef<any>();
 
   const { gl, advance } = useThree();
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const scrollProgressTopAndTop = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
 
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isRender, setIsRender] = useState(false);
-
-  useEffect(() => {
-    // Device Setup
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-
-    /**
-     * Resize
-     */
-
-    // Callback
-    const resizeCallback = () => {
-      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    // Listener
-    window.addEventListener("resize", resizeCallback);
-
-    return () => {
-      window.removeEventListener("resize", resizeCallback);
-    };
-  }, []);
 
   useEffect(() => {
     /**

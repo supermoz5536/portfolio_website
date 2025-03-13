@@ -83,6 +83,7 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
+            console.log(progressRate);
             setScrollProgressTopAndTop(progressRate);
           },
         },
@@ -148,7 +149,7 @@ export default function Scene3() {
 
   function setTextGroup1() {
     const triggerRate = 0.01;
-    const scrollSpeedRate = 0.1;
+    const speedRate = 0.1;
     const endRate = isMobile && isLandscape ? 0.27 : 0.19;
     let waitingViewPortRate;
 
@@ -161,7 +162,7 @@ export default function Scene3() {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
+          (1 -((scrollProgress - triggerRate) / triggerRate) * speedRate) * 100; // prettier-ignore
       }
 
       textGroup1Ref.current.style.top = `${waitingViewPortRate}%`;
@@ -184,8 +185,14 @@ export default function Scene3() {
   }
 
   function setTextGroup2() {
-    const triggerRate = isMobile && isLandscape ? 0.095 : 0.14;
-    const scrollSpeedRate = isMobile && isLandscape ? 0.95 : 1.4;
+    const triggerRateNoMobile = 0.097;
+    const triggerRateMobile = isMobile && isLandscape ? 0.095 : 0.14;
+    const triggerRateFinal = isMobile ? triggerRateMobile : triggerRateNoMobile;
+
+    const SpeedRateNoMobile = 0.97;
+    const SpeedRateMobile = isMobile && isLandscape ? 0.95 : 1.4;
+    const SpeedRateFinal = isMobile ? SpeedRateMobile : SpeedRateNoMobile;
+
     const endRate = isMobile && isLandscape ? 0.37 : 0.34;
     let waitingViewPortRate;
 
@@ -194,11 +201,11 @@ export default function Scene3() {
      */
 
     if (textGroup2Ref.current) {
-      if (scrollProgress < triggerRate) {
+      if (scrollProgress < triggerRateFinal) {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
+          (1 -((scrollProgress - triggerRateFinal) / triggerRateFinal) * SpeedRateFinal) * 100; // prettier-ignore
       }
 
       textGroup2Ref.current.style.top = `${waitingViewPortRate}%`;
@@ -207,7 +214,7 @@ export default function Scene3() {
        * Control Display
        */
 
-      if (scrollProgress < triggerRate) {
+      if (scrollProgress < triggerRateFinal) {
         textGroup2Ref.current.style.display = "none";
       } else if (scrollProgress > endRate) {
         textGroup2Ref.current.style.display = "none";
@@ -222,7 +229,7 @@ export default function Scene3() {
 
   function setTextGroup3() {
     const triggerRate = 0.19;
-    const scrollSpeedRate = 1.9;
+    const speedRate = 1.9;
     const endRate = 0.38;
     let waitingViewPortRate;
 
@@ -235,7 +242,7 @@ export default function Scene3() {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 -((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) * 100; // prettier-ignore
+          (1 -((scrollProgress - triggerRate) / triggerRate) * speedRate) * 100; // prettier-ignore
       }
 
       textGroup3Ref.current.style.top = `${waitingViewPortRate}%`;
@@ -259,7 +266,7 @@ export default function Scene3() {
 
   function setTextGroup4() {
     const triggerRate = 0.4;
-    const scrollSpeedRate = 4.0;
+    const speedRate = 4.0;
     const endRate = 0.55;
     let waitingViewPortRate;
 
@@ -272,8 +279,7 @@ export default function Scene3() {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 -
-            ((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) *
+          (1 - ((scrollProgress - triggerRate) / triggerRate) * speedRate) *
           100;
       }
 
@@ -298,7 +304,7 @@ export default function Scene3() {
 
   function setTextGroup5() {
     const triggerRate = 0.56;
-    const scrollSpeedRate = 5.6;
+    const speedRate = 5.6;
     const endRate = 0.71;
     let waitingViewPortRate;
 
@@ -311,8 +317,7 @@ export default function Scene3() {
         waitingViewPortRate = 100;
       } else {
         waitingViewPortRate =
-          (1 -
-            ((scrollProgress - triggerRate) / triggerRate) * scrollSpeedRate) *
+          (1 - ((scrollProgress - triggerRate) / triggerRate) * speedRate) *
           100;
       }
 

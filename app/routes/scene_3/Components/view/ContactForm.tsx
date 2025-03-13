@@ -18,39 +18,10 @@ import { Form } from "@remix-run/react";
 import { useEffect, useState } from "react";
 
 import { AnimateInBlock } from "~/components/animate_in_block";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export default function ContactForm() {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-
-    /**
-     * Resize
-     */
-
-    // Callback
-    const resizeCallback = () => {
-      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    // Listener
-    window.addEventListener("resize", resizeCallback);
-
-    return () => {
-      window.removeEventListener("resize", resizeCallback);
-    };
-  }, []);
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   return (
     <>
