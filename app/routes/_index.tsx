@@ -47,9 +47,10 @@ export default function Index() {
   return (
     <div className="relative flex flex-col items-center justify-start">
       <Scene1Test />
-      {/* <Panel1 />
-      <Scene2 />
-      <Panel2 /> */}
+      {/* <Panel1 /> */}
+      {/* <Scene2 /> */}
+      <Scene1Test />
+      {/* <Panel2 /> */}
       <Scene3 />
     </div>
   );

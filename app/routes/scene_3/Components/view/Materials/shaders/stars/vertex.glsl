@@ -35,7 +35,6 @@ void main () {
         gl_Position = clippedPosition;
     }
 
-
     vColor = mix(aColor, vec3(1.0), uBrightStrength);
 
     

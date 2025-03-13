@@ -98,6 +98,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             <StoneTablet position={adjustedPosition} index={index} />
 
             {displayedFirefly.includes(index) && (
+              // <Fireflies index={index} />
               <>{isMobile || <Fireflies index={index} />}</>
             )}
 

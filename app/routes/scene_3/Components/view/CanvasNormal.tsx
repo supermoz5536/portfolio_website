@@ -54,7 +54,7 @@ export function CanvasNormal() {
               <Bloom
                 luminanceThreshold={1.0}
                 intensity={0.1}
-                kernelSize={KernelSize.MEDIUM}
+                kernelSize={KernelSize.SMALL}
                 resolutionScale={0.3}
               />
               <DepthOfField
