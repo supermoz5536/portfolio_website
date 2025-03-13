@@ -68,7 +68,7 @@ export function CanvasNormal() {
               <DepthOfField
                 focusDistance={0.005}
                 focalLength={0.025}
-                bokehScale={3}
+                bokehScale={2}
               />
             </>
           ) : (
