@@ -3,20 +3,11 @@ import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
-import { useEffect, useState } from "react";
+import { useGlobalStore } from "~/store/global/global_store";
 
 const EntryPointThree = () => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
-  useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-  }, []);
   return (
     <>
       <KeyboardControls
@@ -38,19 +29,7 @@ const EntryPointThree = () => {
           }}
           shadows
           gl={{ localClippingEnabled: true, alpha: true }}
-          // PerspectiveCamera が設定可能
           camera={{
-            // Floor[0]のShowCaseのアップ
-            // fov: 45,
-            // near: 0.1,
-            // far: 4000,
-            // position: [0, 5, 5.25],
-
-            // fov: 45,
-            // near: 0.01,
-            // far: 4000,
-            // position: [10.5, 20, 30],
-
             fov: 45,
             near: 0.1,
             far: 4000,

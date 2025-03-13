@@ -8,12 +8,13 @@ import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
 import { EnvironmentLights } from "./Components/view/Lights.js";
 import { Earth } from "./Components/view/Earth.js";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { useSystemStore } from "~/store/scene2/system_store";
 import ThreePlayerStore from "../../store/scene2/three_player_store";
 import { Tower } from "./Components/view/Tower";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Experience() {
   const threeState = useThree();
@@ -22,31 +23,23 @@ export default function Experience() {
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
   const tempRef = useRef(new THREE.Vector3());
-  const isMobileRef = useRef(true);
   const isOrbitControlMobileRef = useRef(false);
   const animationFrameIdRef = useRef<any>();
 
   const [isRender, setIsRender] = useState(false);
 
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const isActivated = useSystemStore((state) => state.isActivated);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
 
   useEffect(() => {
     /**
-     * Device Setup
+     * Setup
      */
 
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) {
-        isMobileRef.current = true;
-        orbitControlRef.current.enabled = false;
-      }
-      if (window.innerWidth >= 500) {
-        isMobileRef.current = false;
-        orbitControlRef.current.enabled = true;
-      }
-    }
+    if (isMobile) orbitControlRef.current.enabled = false;
+    if (!isMobile) orbitControlRef.current.enabled = true;
 
     /**
      * Get Camera Direction on Orbit Mode
@@ -88,12 +81,12 @@ export default function Experience() {
         isOrbitControlMobileRef.current = value;
 
         // モバイルのOrbitControlモードがON
-        if (isMobileRef.current && isOrbitControlMobileRef.current) {
+        if (isMobile && isOrbitControlMobileRef.current) {
           orbitControlRef.current.enabled = true;
           setIsPlayerFocus(false);
 
           // モバイルのOrbitControlモードがOFF
-        } else if (isMobileRef.current && !isOrbitControlMobileRef.current) {
+        } else if (isMobile && !isOrbitControlMobileRef.current) {
           orbitControlRef.current.enabled = false;
           setIsPlayerFocus(true);
         }
