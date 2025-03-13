@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import firefliesVertex from "./Materials/shaders/firelies/vertex.glsl";
 import firefliesFragment from "./Materials/shaders/firelies/fragment.glsl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { getFirefliesFolder, getGui } from "../../util/lil-gui";
 import { useFrame } from "@react-three/fiber";
 

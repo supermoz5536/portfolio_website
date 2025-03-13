@@ -17,13 +17,19 @@ import { Tower } from "./Components/view/Tower";
 
 export default function Experience() {
   const threeState = useThree();
+  const { gl, advance } = useThree();
 
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
   const tempRef = useRef(new THREE.Vector3());
   const isMobileRef = useRef(true);
   const isOrbitControlMobileRef = useRef(false);
+  const animationFrameIdRef = useRef<any>();
 
+  const [isRender, setIsRender] = useState(false);
+
+  const isActivated = useSystemStore((state) => state.isActivated);
+  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
 
   useEffect(() => {
@@ -101,6 +107,59 @@ export default function Experience() {
     };
   }, []);
 
+  useEffect(() => {
+    /**
+     * Control Render for CPU Performance
+     */
+
+    if (scrollProgressTopAndBottom < 0.0) {
+      setIsRender(false);
+      renderFinish();
+    } else if (scrollProgressTopAndBottom > 1.0) {
+      setIsRender(false);
+      renderFinish();
+    } else {
+      if (!isRender) {
+        setIsRender(true);
+        renderStart();
+      }
+    }
+
+    /**
+     * Control Resolution for GPU Performance
+     */
+
+    if (scrollProgressTopAndBottom < 0) {
+      gl.setPixelRatio(0.001);
+    } else if (scrollProgressTopAndBottom > 1) {
+      gl.setPixelRatio(0.001);
+    } else {
+      gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    }
+  }, [scrollProgressTopAndBottom]);
+
+  function renderStart() {
+    const timeSec = performance.now();
+    const timeMs = timeSec / 1000;
+
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+
+    loop(timeMs);
+
+    function loop(t: number) {
+      advance(t / 1000);
+      animationFrameIdRef.current = requestAnimationFrame(loop);
+    }
+  }
+
+  function renderFinish() {
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+  }
+
   return (
     <>
       {/* <color args={["#bdedfc"]} attach="background" /> */}
@@ -116,7 +175,7 @@ export default function Experience() {
         minPolarAngle={Math.PI * 0.4}
       />
 
-      <Physics>
+      <Physics paused={!isActivated}>
         <EnvironmentLights />
         <Player />
         <Floors />

@@ -1,5 +1,4 @@
 import { useFrame } from "@react-three/fiber";
-import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 

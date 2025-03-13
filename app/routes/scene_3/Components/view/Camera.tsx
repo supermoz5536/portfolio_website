@@ -1,7 +1,5 @@
-import { PerspectiveCamera } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Vector3 } from "three";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 import { useGlobalStore } from "~/store/global/global_store";
 import { useSystemStore } from "~/store/scene3/system_store";

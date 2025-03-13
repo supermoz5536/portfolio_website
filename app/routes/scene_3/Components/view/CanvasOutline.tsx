@@ -2,14 +2,14 @@ import { Canvas } from "@react-three/fiber";
 import Experience from "../../Experience";
 import {
   EffectComposer,
-  Bloom,
-  Outline,
-  HueSaturation,
-  ToneMapping,
-  Vignette,
-  Glitch,
-  Noise,
-  DepthOfField,
+  // Bloom,
+  // Outline,
+  // HueSaturation,
+  // ToneMapping,
+  // Vignette,
+  // Glitch,
+  // Noise,
+  // DepthOfField,
 } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ToneMappingMode, BlendFunction, GlitchMode } from "postprocessing";

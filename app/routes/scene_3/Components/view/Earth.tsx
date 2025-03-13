@@ -5,8 +5,6 @@ import backGroundVertex from "./Materials/shaders/earthBackground/vertex.glsl";
 import backGroundFragment from "./Materials/shaders/earthBackground/fragment.glsl";
 import { EarthSphereMaterial } from "./Materials/EarthSphereMaterial";
 import { getGui } from "../../util/lil-gui";
-import { vec3 } from "three/webgpu";
-import { Point } from "@react-three/drei";
 import { StarsMaterial } from "./Materials/StarsMaterial";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { SunMaterial } from "./Materials/SunMaterial";

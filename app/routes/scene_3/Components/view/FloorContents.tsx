@@ -1,13 +1,11 @@
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
-import { RigidBody, vec3 } from "@react-three/rapier";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { ShowCaseLight } from "./ShowCaseLight";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
-import { PlayerShadow } from "./PlayerShadow";
 import { Fireflies } from "./Fireflies";
 import { StoneTablet } from "./StoneTablet";
 import { EmptyObject9 } from "./EmptyObjects";

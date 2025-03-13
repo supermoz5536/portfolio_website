@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 type SystemStore = {
+  scrollProgressTopAndBottom: number;
   isActivated: boolean;
   isPlayerFocused: boolean;
   isOrbitControlMobile: boolean;
@@ -13,9 +14,16 @@ type SystemStore = {
 export const useSystemStore = create<SystemStore>()(
   subscribeWithSelector((set) => {
     return {
+      scrollProgressTopAndBottom: 0,
       isActivated: false,
       isPlayerFocused: true,
       isOrbitControlMobile: false,
+
+      setScrollProgressTopAndBottom: (newState: number) => {
+        set((state: any) => {
+          return { scrollProgressTopAndBottom: newState };
+        });
+      },
 
       setIsActivated: (newState: boolean) => {
         set((state: any) => {

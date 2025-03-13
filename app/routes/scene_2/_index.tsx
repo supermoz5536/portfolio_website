@@ -1,7 +1,6 @@
 import "./css/index.css";
 import { Button } from "@headlessui/react";
 import EntryPointThree from "./EntryPointThree";
-import { useStore } from "zustand";
 import { useSystemStore } from "~/store/scene2/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { LuChevronDown } from "react-icons/lu";
@@ -11,20 +10,27 @@ import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/scene2/three_player_store";
 import ThreeContents from "../../store/scene2/three_contents_store";
 import { MdOutlineCameraswitch } from "react-icons/md";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap/dist/gsap";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Scene2() {
   const { isActivated, setIsActivated } = useSystemStore();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [isFirstActivate, setIsFirstActivate] = useState(true);
-  const [isMobile, setIsMobile] = useState(true);
   const [isGuidOn, setIsGuideOn] = useState(true);
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [isNoneSelected, setIsNoneSelected] = useState(false);
   const [isOrbitControlMobile, setIsOrbitControlMobile] = useState(false);
 
-  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+
+  const setScrollProgressTopAndBottom = 
+  useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
   const activateOn = () => {
     setIsActivated(true);
@@ -50,15 +56,62 @@ export default function Scene2() {
   };
 
   useEffect(() => {
-    /*
-     * Device Setup
+    /**
+     * GSAP: Recalculate Scroll Volume For mobile
+     */
+    ScrollTrigger.refresh();
+
+    /**
+     * Resize
      */
 
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
+    // Callback
+    const resizeCallback = () => {
+      ScrollTrigger.refresh();
+    };
 
+    // Listener
+    window.addEventListener("resize", resizeCallback);
+
+    return () => {
+      window.removeEventListener("resize", resizeCallback);
+    };
+  }, []);
+
+  /**
+   * Scroll Progress
+   */
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  useGSAP(() => {
+    /**
+     * Control Scroll
+     */
+    gsap.fromTo(
+      "#scene2",
+
+      {}, // fromVars: null
+
+      {
+        // toVars: null
+        // Option
+        scrollTrigger: {
+          trigger: "#scene2",
+          start: "top bottom",
+          end: "bottom bottom",
+          scrub: 0.5,
+          pin: false,
+          onUpdate: (value) => {
+            const progressRate = value.progress;
+            setScrollProgressTopAndBottom(progressRate);
+          },
+        },
+      },
+    );
+  }, []);
+
+  useEffect(() => {
     /**
      * ZoomOut Control
      */

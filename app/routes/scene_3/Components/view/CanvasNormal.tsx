@@ -9,9 +9,6 @@ import {
 import { ToneMappingMode, KernelSize } from "postprocessing";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
 import * as THREE from "three";
-import { useEffect, useState } from "react";
-import { useSystemStore } from "~/store/scene3/system_store";
-import Stats from "three/examples/jsm/libs/stats.module.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export function CanvasNormal() {

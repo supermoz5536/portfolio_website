@@ -15,8 +15,6 @@
  */
 
 import { Form } from "@remix-run/react";
-import { useEffect, useState } from "react";
-
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGlobalStore } from "~/store/global/global_store";
 

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import useSystemStore from "../../../../store/scene2/three_contents_store";
 import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { AnimateIn } from "~/components/animate_in";
 import { AnimateInBlock } from "~/components/animate_in_block";
