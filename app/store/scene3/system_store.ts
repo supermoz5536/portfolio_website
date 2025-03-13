@@ -2,25 +2,25 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 type SystemStore = {
-  scrollProgress: number;
-  scrollProgressTest: number;
+  scrollProgressTopAndTop: number;
+  scrollProgressTopAndBottom: number;
 };
 
 export const useSystemStore = create<SystemStore>()(
   subscribeWithSelector((set) => {
     return {
-      scrollProgress: 0,
-      scrollProgressTest: 0,
+      scrollProgressTopAndTop: 0,
+      scrollProgressTopAndBottom: 0,
 
-      setScrollProgress: (newState: number) => {
+      setScrollProgressTopAndTop: (newState: number) => {
         set((state: any) => {
-          return { scrollProgress: newState };
+          return { scrollProgressTopAndTop: newState };
         });
       },
 
-      setScrollProgressTest: (newState: number) => {
+      setScrollProgressTopAndBottom: (newState: number) => {
         set((state: any) => {
-          return { scrollProgressTest: newState };
+          return { scrollProgressTopAndBottom: newState };
         });
       },
     };

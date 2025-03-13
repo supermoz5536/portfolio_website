@@ -51,8 +51,9 @@ export function CanvasNormal() {
       >
         <Experience flag="normal" />
 
+        {/* EffectComposer単体で曇り不具合が発生する */}
         <EffectComposer>
-          <ToneMapping mode={ToneMappingMode.NEUTRAL} />
+          <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <NormalCustom />
           {isMobile ? (
             <>
@@ -62,9 +63,6 @@ export function CanvasNormal() {
                 kernelSize={KernelSize.MEDIUM}
                 resolutionScale={0.3}
               />
-              {/* DepthOfField：
-               * Mobileで影ができるような不具合が出たらオフにする
-               */}
               <DepthOfField
                 focusDistance={0.005}
                 focalLength={0.025}

@@ -23,13 +23,15 @@ export default function Scene3() {
   const textGroup4DoneRef = useRef<any>(false);
   const textGroup5DoneRef = useRef<any>(false);
 
-  const scrollProgress = useSystemStore((state) => state.scrollProgress);
-  const setScrollProgress = 
-    useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
+  const scrollProgress = useSystemStore(
+    (state) => state.scrollProgressTopAndTop,
+  );
 
-  const scrollProgressTest = useSystemStore((state) => state.scrollProgressTest); // prettier-ignore
-  const setScrollProgressTest = 
-      useSystemStore((state: any)=>state.setScrollProgressTest) // prettier-ignore
+  const setScrollProgressTopAndTop = 
+    useSystemStore((state: any)=>state.setScrollProgressTopAndTop) // prettier-ignore
+
+  const setScrollProgressTopAndBottom = 
+      useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isLandscape, setIsLandscape] = useState<boolean>(false);
@@ -57,7 +59,8 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
-            setScrollProgress(progressRate);
+            console.log(progressRate);
+            setScrollProgressTopAndTop(progressRate);
           },
         },
       },
@@ -82,7 +85,7 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
-            setScrollProgressTest(progressRate);
+            setScrollProgressTopAndBottom(progressRate);
           },
         },
       },

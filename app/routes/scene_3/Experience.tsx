@@ -22,7 +22,7 @@ export default function Experience({ flag }: ExprienceProps) {
   const animationFrameIdRef = useRef<any>();
 
   const { gl, advance } = useThree();
-  const scrollProgressTest = useSystemStore((state) => state.scrollProgressTest); // prettier-ignore
+  const scrollProgressTopAndTop = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isRender, setIsRender] = useState(false);
@@ -60,10 +60,10 @@ export default function Experience({ flag }: ExprienceProps) {
      */
 
     if (flag == "outline") {
-      if (scrollProgressTest < 0) {
+      if (scrollProgressTopAndTop < 0) {
         setIsRender(false);
         renderFinish();
-      } else if (scrollProgressTest > 0.55) {
+      } else if (scrollProgressTopAndTop > 0.55) {
         setIsRender(false);
         renderFinish();
       } else {
@@ -75,7 +75,7 @@ export default function Experience({ flag }: ExprienceProps) {
     }
 
     if (flag == "normal") {
-      if (scrollProgressTest > 0) {
+      if (scrollProgressTopAndTop > 0) {
         if (!isRender) {
           setIsRender(true);
           renderStart();
@@ -98,16 +98,16 @@ export default function Experience({ flag }: ExprienceProps) {
       endRenderRate = 1.0;
     }
 
-    if (scrollProgressTest < startRenderRate) {
+    if (scrollProgressTopAndTop < startRenderRate) {
       gl.setPixelRatio(0.001);
-    } else if (scrollProgressTest > endRenderRate) {
+    } else if (scrollProgressTopAndTop > endRenderRate) {
       gl.setPixelRatio(0.001);
     } else {
       if (!isMobile) gl.setPixelRatio(1.7);
       if (isMobile && flag == "outline") gl.setPixelRatio(0.8);
       if (isMobile && flag == "normal") gl.setPixelRatio(0.6);
     }
-  }, [scrollProgressTest]);
+  }, [scrollProgressTopAndTop]);
 
   function renderStart() {
     const timeSec = performance.now();

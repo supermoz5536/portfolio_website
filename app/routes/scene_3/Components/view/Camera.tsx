@@ -8,7 +8,9 @@ import { useSystemStore } from "~/store/scene3/system_store";
 export function Camera() {
   const cameraRef = useRef<any>();
   const three = useThree();
-  const scrollProgress = useSystemStore((state) => state.scrollProgress);
+  const scrollProgress = useSystemStore(
+    (state) => state.scrollProgressTopAndTop,
+  );
 
   // size: 現在のcanvas描画領域(width, height)が格納
   const size = useThree((store) => store.size);
