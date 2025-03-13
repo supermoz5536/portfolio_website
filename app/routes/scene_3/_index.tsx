@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
+import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
 import { CanvasNormal } from "./Components/view/CanvasNormal";
 import { CanvasOutline } from "./Components/view/CanvasOutline";
@@ -23,6 +24,9 @@ export default function Scene3() {
   const textGroup4DoneRef = useRef<any>(false);
   const textGroup5DoneRef = useRef<any>(false);
 
+  const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLandscape = useGlobalStore((state) => state.isLandscape);
+
   const scrollProgress = useSystemStore(
     (state) => state.scrollProgressTopAndTop,
   );
@@ -33,8 +37,28 @@ export default function Scene3() {
   const setScrollProgressTopAndBottom = 
       useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isLandscape, setIsLandscape] = useState<boolean>(false);
+  useEffect(() => {
+    /**
+     * GSAP: Recalculate Scroll Volume For mobile
+     */
+    ScrollTrigger.refresh();
+
+    /**
+     * Resize
+     */
+
+    // Callback
+    const resizeCallback = () => {
+      ScrollTrigger.refresh();
+    };
+
+    // Listener
+    window.addEventListener("resize", resizeCallback);
+
+    return () => {
+      window.removeEventListener("resize", resizeCallback);
+    };
+  }, []);
 
   /**
    * Scroll Progress
@@ -89,56 +113,6 @@ export default function Scene3() {
         },
       },
     );
-  }, []);
-
-  useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (window.matchMedia("(orientation: landscape)").matches) {
-      setIsLandscape(true);
-    }
-
-    if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-      setIsMobile(true);
-    }
-
-    /**
-     * GSAP Reset
-     * モバイルは、初回マウント後のスクロール計算結果が不正確
-     * スクロールの再計算を明示
-     */
-
-    ScrollTrigger.refresh();
-
-    /**
-     * Resize
-     */
-
-    // Callback
-    const resizeCallback = () => {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        setIsLandscape(true);
-        ScrollTrigger.refresh();
-      } else {
-        setIsLandscape(false);
-        ScrollTrigger.refresh();
-      }
-
-      if (/iPhone|Android.+Mobile/.test(navigator.userAgent)) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    // Listener
-    window.addEventListener("resize", resizeCallback);
-
-    return () => {
-      window.removeEventListener("resize", resizeCallback);
-    };
   }, []);
 
   useEffect(() => {

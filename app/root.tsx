@@ -14,6 +14,9 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
+import { useEffect } from "react";
+import { useGlobalStore } from "./store/global/global_store";
+import { setupDevice } from "./util/setup";
 
 // 全てのページで共通して読み込むべき外部リソース（CSSやフォントなど）を宣言してます。
 // ============================================
@@ -97,6 +100,8 @@ export const links: LinksFunction = () => [
 // <Scripts /> は、React が正しくハイドレーションするために必要な
 // スクリプト（イベント、状態管理など）を読み込む仕組みを提供しています。
 export function Layout({ children }: { children: React.ReactNode }) {
+  setupDevice();
+
   return (
     <html lang="en">
       <head>
