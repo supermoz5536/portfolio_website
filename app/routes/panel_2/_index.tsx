@@ -4,7 +4,7 @@ import GraphRadar from "./component/Radar_chart";
 import GanttChart from "./component/Gantt_chart_";
 import { AnimateInBlock } from "../../components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -12,9 +12,17 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 let isFirstTry = true;
 
 export default function Panel2() {
+  const panel2Ref = useRef<any>();
+  const contentHeightRef = useRef<any>();
+
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [contentHeight, setContentHeight] = useState();
 
   useEffect(() => {
+    setIsMounted(true);
+
     /**
      * GSAP
      */
@@ -28,6 +36,8 @@ export default function Panel2() {
 
     // Callback
     const resizeCallback = () => {
+      setIsInitialized(false);
+      getContentHeight();
       ScrollTrigger.refresh();
     };
 
@@ -39,11 +49,17 @@ export default function Panel2() {
     };
   }, []);
 
-  /**
-   * Control Scroll
-   */
+  useEffect(() => {
+    if (isMounted) {
+      getContentHeight();
+      ScrollTrigger.refresh();
+    }
+  }, [isMounted]);
 
   useGSAP(() => {
+    /**
+     * Control Scroll
+     */
     gsap.fromTo(
       "#panel2",
       {}, // fromVars: null
@@ -67,9 +83,7 @@ export default function Panel2() {
     );
   }, []);
 
-  const placeHolder = (
-    <div className="min-h-[100vh] h-auto w-full overflow-hidden" />
-  );
+  const placeHolder = <div className="h-auto w-full overflow-hidden" />;
 
   const content = (
     <div className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden">
@@ -149,14 +163,39 @@ export default function Panel2() {
     return body2;
   }
 
+  function getContentHeight() {
+    if (panel2Ref.current) {
+      // const local = panel2Ref.current.offsetHeight;
+
+      // 初期化要素の高さをキャッシュ
+      // 初期化プロセスを終了
+      setContentHeight(panel2Ref.current.offsetHeight);
+      setIsInitialized(true);
+      // panel2Ref.current.style.height = `${contentHeight}px`;
+      // panel2Ref.current.style.height = `${local}px`;
+    }
+
+    return <></>;
+  }
+
   return (
     <div
+      ref={panel2Ref}
       id="panel2"
-      className="min-h-[100vh] h-auto w-full bg-white overflow-hidden"
+      className="w-full bg-white overflow-hidden"
+      // className="min-h-[100vh] h-auto w-full bg-white overflow-hidden"
+      style={{
+        height: contentHeight + "px",
+      }}
     >
-      {scrollProgress <= 0.0 && placeHolder}
-      {scrollProgress >= 1.0 && placeHolder}
-      {0.0 < scrollProgress && scrollProgress < 1.0 && getBody()}
+      {isInitialized || (isMounted && getBody())}
+      {isInitialized && (
+        <>
+          {/* {scrollProgress <= 0.0 && placeHolder} */}
+          {/* {scrollProgress >= 1.0 && placeHolder} */}
+          {getBody()}
+        </>
+      )}
     </div>
   );
 }
