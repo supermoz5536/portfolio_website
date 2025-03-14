@@ -1,3 +1,4 @@
+//
 import { BarChartWrapper } from "./component/Bar_chart_wrapper";
 import GraphRadar from "./component/Radar_chart";
 import GanttChart from "./component/Gantt_chart_";
