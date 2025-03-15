@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { AnimateIn } from "~/components/animate_in";
 import { MdScreenRotation } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type PopupLayerProps = {
   viewFlag: boolean;
@@ -17,6 +18,9 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
   const { downloadUrlArray }: any = useLoaderData();
   const FallbackLink = `zhttps://firebasestorage.googleapis.com/v0/b/portfolio-website-4645b.firebasestorage.app/o/system%2Fvideo%2Fcontent_block%1F${number}.mp4?alt=media`;
   const [isResized, setIsResized] = useState<boolean>();
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLandscape = useGlobalStore((state) => state.isLandscape);
 
   useEffect(() => {
     setIsResized((prev) => !prev);
@@ -45,7 +49,12 @@ export const PopupLayer1 = (props: PopupLayerProps) => {
               </div>
 
               {/* ConentBlock2 (右下) */}
-              <div className="absolute top-1/2 left-1/2 z-30 flex justify-center items-center h-1/2 w-1/2 overflow-y-auto bg-blue-400 popup-layer-1-scroll-a">
+              <div
+                className={
+                  "absolute top-1/2 left-1/2 z-30 flex justify-center items-center h-1/2 w-1/2 bg-blue-400 popup-layer-1-scroll-a " +
+                  (isMobile && isLandscape ? "" : "overflow-y-auto")
+                }
+              >
                 {/* 背景画像 */}
                 <div
                   className="absolute top-0 left-0 h-full w-full"
