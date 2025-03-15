@@ -39,6 +39,7 @@ export function CanvasNormal() {
           far: 4000,
           position: [0, 0, 100],
         }}
+        dpr={isMobile ? 0.8 : 1.7}
       >
         <Experience flag="normal" />
 

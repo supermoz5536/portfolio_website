@@ -127,7 +127,9 @@ export default function Experience() {
     } else if (scrollProgressTopAndBottom > 1) {
       gl.setPixelRatio(0.001);
     } else {
-      gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+      isMobile
+        ? gl.setPixelRatio(Math.min(window.devicePixelRatio, 0.5))
+        : gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
     }
   }, [scrollProgressTopAndBottom]);
 

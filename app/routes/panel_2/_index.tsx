@@ -13,7 +13,7 @@ let isFirstTry = true;
 
 export default function Panel2() {
   const panel2Ref = useRef<any>();
-  const contentHeightRef = useRef<any>();
+  const contentRef = useRef<any>();
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
@@ -76,17 +76,25 @@ export default function Panel2() {
             const progressRate = value.progress;
             setScrollProgress(progressRate);
             if (progressRate >= 1.0) isFirstTry = false;
-            console.log(progressRate);
+            // console.log(progressRate);
           },
         },
       },
     );
   }, []);
 
-  const placeHolder = <div className="h-auto w-full overflow-hidden" />;
+  const placeHolder = (
+    <div
+      className="w-full"
+      style={{ height: `${contentHeight}px` }} // 「初回マウント」「リサイズ」でキャッシュした高さを適用
+    />
+  );
 
-  const content = (
-    <div className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden">
+  const body = (
+    <div
+      ref={contentRef}
+      className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden"
+    >
       {/* Responsible Width-Max-Break */}
       <div className="xl:flex flex-row justify-between xl-3:justify-center">
         {/* Header Max Wide */}
@@ -155,45 +163,35 @@ export default function Panel2() {
     </div>
   );
 
-  const body1 = <AnimateIn>{content}</AnimateIn>;
-  const body2 = content;
+  const body1 = <AnimateIn>{body}</AnimateIn>;
+  const body2 = body;
 
   function getBody() {
     if (isFirstTry) return body1;
     return body2;
   }
 
+  /// 初回マウント / リサイズ時に適用
   function getContentHeight() {
     if (panel2Ref.current) {
-      // const local = panel2Ref.current.offsetHeight;
-
       // 初期化要素の高さをキャッシュ
-      // 初期化プロセスを終了
       setContentHeight(panel2Ref.current.offsetHeight);
-      setIsInitialized(true);
-      // panel2Ref.current.style.height = `${contentHeight}px`;
-      // panel2Ref.current.style.height = `${local}px`;
-    }
 
+      // 初期化プロセスを終了し
+      // 条件分岐プロセス（スクロール範囲別でのマウント <=> アンマウント）を開始
+      setIsInitialized(true);
+    }
     return <></>;
   }
 
   return (
-    <div
-      ref={panel2Ref}
-      id="panel2"
-      className="w-full bg-white overflow-hidden"
-      // className="min-h-[100vh] h-auto w-full bg-white overflow-hidden"
-      style={{
-        height: contentHeight + "px",
-      }}
-    >
+    <div ref={panel2Ref} id="panel2" className="w-full bg-white">
       {isInitialized || (isMounted && getBody())}
       {isInitialized && (
         <>
-          {/* {scrollProgress <= 0.0 && placeHolder} */}
-          {/* {scrollProgress >= 1.0 && placeHolder} */}
-          {getBody()}
+          {scrollProgress <= 0.0 && placeHolder}
+          {scrollProgress >= 1.0 && placeHolder}
+          {0.0 < scrollProgress && scrollProgress < 1.0 && getBody()}
         </>
       )}
     </div>

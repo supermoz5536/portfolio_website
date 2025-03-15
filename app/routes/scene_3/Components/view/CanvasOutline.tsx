@@ -17,8 +17,10 @@ import { Resizer, KernelSize } from "postprocessing";
 import * as THREE from "three";
 import { OutLineCustom } from "./PostProcessing/Outline/Outline";
 import { useSystemStore } from "~/store/scene3/system_store";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export function CanvasOutline() {
+  const isMobile = useGlobalStore((state) => state.isMobile);
   return (
     <>
       <Canvas
@@ -40,6 +42,7 @@ export function CanvasOutline() {
           far: 4000,
           position: [0, 0, 100],
         }}
+        dpr={isMobile ? 0.5 : 1.7}
       >
         <Experience flag="outline" />
         <EffectComposer>

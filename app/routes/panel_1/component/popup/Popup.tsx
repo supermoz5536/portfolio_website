@@ -153,7 +153,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
               : null}
 
             {/* 上層の4つのコンテナー */}
-            {number == 1 && (
+            {viewFlag && number == 1 && (
               <PopupLayer1
                 viewFlag={viewFlag}
                 number={number}
@@ -161,7 +161,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
                 width={typeof window != "undefined" ? aspects.width : 100}
               />
             )}
-            {number == 2 && (
+            {viewFlag && number == 2 && (
               <PopupLayer2
                 viewFlag={viewFlag}
                 number={number}
@@ -169,7 +169,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
                 width={typeof window != "undefined" ? aspects.width : 100}
               />
             )}
-            {number == 3 && (
+            {viewFlag && number == 3 && (
               <PopupLayer3
                 viewFlag={viewFlag}
                 number={number}
@@ -177,7 +177,7 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
                 width={typeof window != "undefined" ? aspects.width : 100}
               />
             )}
-            {number == 4 && (
+            {viewFlag && number == 4 && (
               <PopupLayer4
                 viewFlag={viewFlag}
                 number={number}

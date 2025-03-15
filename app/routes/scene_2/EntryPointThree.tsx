@@ -4,9 +4,16 @@ import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
 import { useGlobalStore } from "~/store/global/global_store";
+import { useEffect, useState } from "react";
 
 const EntryPointThree = () => {
   const isMobile = useGlobalStore((state) => state.isMobile);
+  // const [isMac, setIsMac] = useState<boolean>();
+
+  // useEffect(() => {
+  //   const detectedOS = navigator.platform.includes("Mac");
+  //   setIsMac(detectedOS);
+  // }, []);
 
   return (
     <>
@@ -28,14 +35,18 @@ const EntryPointThree = () => {
             zIndex: 0,
           }}
           shadows
-          gl={{ localClippingEnabled: true, alpha: true }}
+          gl={{
+            localClippingEnabled: true,
+            alpha: true,
+            // powerPreference: "high-performance",
+          }}
           camera={{
             fov: 45,
             near: 0.1,
             far: 4000,
             position: [0, 0, 100],
           }}
-          dpr={isMobile ? [0.75, 0.75] : [1.5, 1.5]}
+          dpr={isMobile ? [0.01, 0.01] : [1.5, 1.5]}
         >
           <Experience />
         </Canvas>
