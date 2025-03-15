@@ -3,6 +3,7 @@ import "./Popup_layer.css";
 import { useLoaderData } from "@remix-run/react";
 import { MdScreenRotation } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type PopupLayerProps = {
   viewFlag: boolean;
@@ -16,6 +17,9 @@ export const PopupLayer2 = (props: PopupLayerProps) => {
   const { downloadUrlArray }: any = useLoaderData();
   const FallbackLink = `zhttps://firebasestorage.googleapis.com/v0/b/portfolio-website-4645b.firebasestorage.app/o/system%2Fvideo%2Fcontent_block%1F${number}.mp4?alt=media`;
   const [isResized, setIsResized] = useState<boolean>();
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLandscape = useGlobalStore((state) => state.isLandscape);
 
   useEffect(() => {
     setIsResized((prev) => !prev);
@@ -44,7 +48,12 @@ export const PopupLayer2 = (props: PopupLayerProps) => {
               </div>
 
               {/* ConentBlock2 (左下) */}
-              <div className="absolute top-1/2 left-0 z-30 flex justify-center items-center h-1/2 w-1/2 overflow-y-auto bg-blue-400 popup-layer-1-scroll-a">
+              <div
+                className={
+                  "absolute top-1/2 left-0 z-30 flex justify-center items-center h-1/2 w-1/2 bg-blue-400 popup-layer-1-scroll-a " +
+                  (isMobile && isLandscape ? "" : "overflow-y-auto")
+                }
+              >
                 {/* 背景画像 */}
                 <div
                   className="absolute top-0 left-0 h-full w-full"
@@ -76,8 +85,7 @@ export const PopupLayer2 = (props: PopupLayerProps) => {
                         className="text-gray-50 text-xl font-normal"
                       >
                         Inventory Z is a desktop application specialized in
-                        inventory management for Amazon import businesses and
-                        retail arbitrage, known as "Sedori" in Japan.
+                        inventory management for Amazon import businesses.
                       </p>
                       <br />
                       <p
