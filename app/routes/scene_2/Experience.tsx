@@ -24,6 +24,7 @@ export default function Experience() {
   const isMobileRef = useRef(true);
   const isOrbitControlMobileRef = useRef(false);
 
+  const isAvtivated = useSystemStore((state: any) => state.isActivated);
   const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
 
   useEffect(() => {
@@ -116,7 +117,7 @@ export default function Experience() {
         minPolarAngle={Math.PI * 0.4}
       />
 
-      <Physics>
+      <Physics paused={isAvtivated ? false : true}>
         <EnvironmentLights />
         <Player />
         <Floors />
