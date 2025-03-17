@@ -213,7 +213,7 @@ export default function Scene2() {
                 <Button
                   id="button"
                   className={
-                    "z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
+                    "mt-10 ml-28 z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
                   }
                   onClick={() => activateOn()}
                 >
