@@ -1,9 +1,11 @@
+import { cli } from "@remix-run/dev";
 import { BlendFunction, Effect } from "postprocessing";
 import { Uniform, Vector2 } from "three";
 
 // Sobelフィルタ用に解像度を uniform として送る
 const outlineEffectFragmentShader = /* glsl */ `
     uniform vec2 texelSize;
+    uniform float scrollProgress;
 
     void mainUv(inout vec2 uv) {
         // 何も書かなくてもOK。UVをいじるならここ。
@@ -48,7 +50,21 @@ const outlineEffectFragmentShader = /* glsl */ `
           // 輪郭を黒、背景を白
         float sobel = 1.0 - clamp(edge * strength, 0.0, 0.4);
 
-        outputColor = vec4(vec3(sobel), 1.0);
+        float clipRate;
+
+        if (scrollProgress < 0.235) {
+          clipRate = 100.0;
+         } else {
+          clipRate = (1.0 - (scrollProgress - 0.235) / 0.235) * 100.0;
+         }
+         
+
+        float t = step(clipRate / 100.0, 1.0 - uv.y);
+        
+
+        vec4 color = mix(vec4(vec3(sobel), 1.0), inputColor, t);
+
+        outputColor = color;
 
         // // 1回のテクスチャフェッチでグレースケール値を計算
         // float gray = dot(texture2D(inputBuffer, uv).rgb, vec3(0.299, 0.587, 0.114));
@@ -67,16 +83,14 @@ const outlineEffectFragmentShader = /* glsl */ `
 `;
 
 export class OutLineEffect extends Effect {
-  constructor(resolution: { x: number; y: number }) {
+  constructor(props: { x: number; y: number; scrollProgress: number }) {
     super("outlineEffect", outlineEffectFragmentShader, {
       blendFunction: BlendFunction.LIGHTEN,
 
       // uniforms
-      uniforms: new Map([
-        [
-          "texelSize",
-          new Uniform(new Vector2(1 / resolution.x, 1 / resolution.y)),
-        ],
+      uniforms: new Map<string, Uniform<any>>([
+        ["texelSize", new Uniform(new Vector2(1 / props.x, 1 / props.y))],
+        ["scrollProgress", new Uniform(props.scrollProgress)],
       ]),
     });
   }

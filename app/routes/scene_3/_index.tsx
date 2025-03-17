@@ -31,6 +31,9 @@ export default function Scene3() {
     (state) => state.scrollProgressTopAndTop,
   );
 
+  const setClipRate = 
+  useSystemStore((state: any)=>state.setClipRate) // prettier-ignore
+
   const setScrollProgressTopAndTop = 
     useSystemStore((state: any)=>state.setScrollProgressTopAndTop) // prettier-ignore
 
@@ -83,7 +86,7 @@ export default function Scene3() {
           pin: false,
           onUpdate: (value) => {
             const progressRate = value.progress;
-            console.log(progressRate);
+            // console.log(progressRate);
             setScrollProgressTopAndTop(progressRate);
           },
         },
@@ -139,12 +142,14 @@ export default function Scene3() {
       newClip = "100%";
     } else {
       // scrollProgress が 0.235 から 1 に進むと、画面 Bottom(100%) => Top に変化
-      newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
+      // newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
+      newClip = (1 - (scrollProgress - 0.235) / 0.235) * 100;
+      setClipRate(newClip);
     }
 
-    if (canvasClipRef.current) {
-      canvasClipRef.current.style.setProperty("--clip-bottom", newClip);
-    }
+    // if (canvasClipRef.current) {
+    //   canvasClipRef.current.style.setProperty("--clip-bottom", `${newClip}%`);
+    // }
   }
 
   function setTextGroup1() {
@@ -659,7 +664,7 @@ export default function Scene3() {
           {/* Three Normal */}
           {/* {isMobile || ()} */}
           <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
-            <CanvasNormal />
+            {/* <CanvasNormal /> */}
           </div>
 
           {/* Three Outline */}
@@ -674,12 +679,12 @@ export default function Scene3() {
             //           "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
             //       }
             // }
-            style={{
-              clipPath:
-                "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-            }}
+            // style={{
+            //   clipPath:
+            //     "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
+            // }}
           >
-            {/* <CanvasOutline /> */}
+            <CanvasOutline />
           </div>
 
           {/* Text Group 1 */}

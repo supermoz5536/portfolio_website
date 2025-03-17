@@ -12,20 +12,14 @@ import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene3/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 
-type ExprienceProps = {
-  flag: "outline" | "normal";
-};
-
-export default function Experience({ flag }: ExprienceProps) {
-  let startRenderRate = 0;
-  let endRenderRate = 0;
+export default function Experience() {
+  const startRenderRate = 0.0;
 
   const animationFrameIdRef = useRef<any>();
 
   const { gl, advance } = useThree();
-
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const scrollProgressTopAndTop = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
+  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   const [isRender, setIsRender] = useState(false);
 
@@ -34,30 +28,13 @@ export default function Experience({ flag }: ExprienceProps) {
      * Control Render for CPU Performance
      */
 
-    if (flag == "outline") {
-      if (scrollProgressTopAndTop < 0) {
-        setIsRender(false);
-        renderFinish();
-      } else if (scrollProgressTopAndTop > 0.55) {
-        setIsRender(false);
-        renderFinish();
-      } else {
-        if (!isRender) {
-          setIsRender(true);
-          renderStart();
-        }
-      }
-    }
-
-    if (flag == "normal") {
-      if (scrollProgressTopAndTop > 0) {
-        if (!isRender) {
-          setIsRender(true);
-          renderStart();
-        }
-      } else {
-        setIsRender(false);
-        renderFinish();
+    if (scrollProgressTopAndBottom <= startRenderRate) {
+      setIsRender(false);
+      renderFinish();
+    } else {
+      if (!isRender) {
+        setIsRender(true);
+        renderStart();
       }
     }
 
@@ -65,24 +42,13 @@ export default function Experience({ flag }: ExprienceProps) {
      * Control Resolution for GPU Performance
      */
 
-    if (flag == "outline") {
-      startRenderRate = 0.0;
-      endRenderRate = 0.55;
-    } else if (flag == "normal") {
-      startRenderRate = 0.0;
-      endRenderRate = 1.0;
-    }
-
-    if (scrollProgressTopAndTop < startRenderRate) {
-      gl.setPixelRatio(0.001);
-    } else if (scrollProgressTopAndTop > endRenderRate) {
+    if (scrollProgressTopAndBottom <= startRenderRate) {
       gl.setPixelRatio(0.001);
     } else {
-      if (!isMobile) gl.setPixelRatio(1.7);
-      if (isMobile && flag == "outline") gl.setPixelRatio(0.5);
-      if (isMobile && flag == "normal") gl.setPixelRatio(0.8);
+      if (isMobile) gl.setPixelRatio(0.65);
+      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
     }
-  }, [scrollProgressTopAndTop]);
+  }, [scrollProgressTopAndBottom]);
 
   function renderStart() {
     const timeSec = performance.now();
@@ -112,11 +78,11 @@ export default function Experience({ flag }: ExprienceProps) {
       <Camera />
       <EnvironmentLights />
       <Floors />
-      {isMobile && <>{flag == "normal" && <Earth />}</>}
+      <Earth />
       {isMobile || (
         <>
           <Earth />
-          {flag == "normal" && <Tower />}
+          <Tower />
         </>
       )}
     </>

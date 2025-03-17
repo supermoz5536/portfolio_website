@@ -2,25 +2,33 @@ import { Canvas } from "@react-three/fiber";
 import Experience from "../../Experience";
 import {
   EffectComposer,
-  // Bloom,
+  Bloom,
   // Outline,
   // HueSaturation,
   // ToneMapping,
   // Vignette,
   // Glitch,
   // Noise,
-  // DepthOfField,
+  DepthOfField,
+  ToneMapping,
 } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
 import { ToneMappingMode, BlendFunction, GlitchMode } from "postprocessing";
 import { Resizer, KernelSize } from "postprocessing";
 import * as THREE from "three";
 import { OutLineCustom } from "./PostProcessing/Outline/Outline";
 import { useSystemStore } from "~/store/scene3/system_store";
 import { useGlobalStore } from "~/store/global/global_store";
+import { NormalCustom } from "./PostProcessing/Normal/Normal";
 
 export function CanvasOutline() {
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const [dpr, setDpr] = useState(2.0);
+
+  useEffect(() => {
+    setDpr(Math.min(window.devicePixelRatio, 2.0));
+  }, []);
   return (
     <>
       <Canvas
@@ -42,10 +50,40 @@ export function CanvasOutline() {
           far: 4000,
           position: [0, 0, 100],
         }}
-        dpr={isMobile ? 0.5 : 1.7}
+        dpr={isMobile ? 0.65 : dpr}
       >
-        <Experience flag="outline" />
+        <Experience />
         <EffectComposer>
+          <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+          <NormalCustom />
+          {isMobile ? (
+            <>
+              <Bloom
+                luminanceThreshold={1.0}
+                intensity={0.1}
+                kernelSize={KernelSize.SMALL}
+                resolutionScale={0.3}
+              />
+              <DepthOfField
+                focusDistance={0.005}
+                focalLength={0.025}
+                bokehScale={2}
+              />
+            </>
+          ) : (
+            <>
+              <Bloom
+                luminanceThreshold={1.0}
+                intensity={0.1}
+                kernelSize={KernelSize.VERY_LARGE}
+              />
+              <DepthOfField
+                focusDistance={0.005}
+                focalLength={0.025}
+                bokehScale={6}
+              />
+            </>
+          )}
           <OutLineCustom />
         </EffectComposer>
       </Canvas>
