@@ -22,7 +22,7 @@ import { useSystemStore } from "~/store/scene3/system_store";
 import { useGlobalStore } from "~/store/global/global_store";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
 
-export function CanvasOutline() {
+export function CanvasScene3() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const [dpr, setDpr] = useState(2.0);
 

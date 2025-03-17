@@ -6,8 +6,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
-import { CanvasNormal } from "./Components/view/CanvasNormal";
-import { CanvasOutline } from "./Components/view/CanvasOutline";
+import { CanvasScene3 } from "./Components/view/CanvasScene3";
 import { AnimateIn } from "~/components/animate_in";
 import ContactForm from "./Components/view/ContactForm";
 
@@ -121,11 +120,6 @@ export default function Scene3() {
 
   useEffect(() => {
     /**
-     * Control ClipPath
-     */
-    setClipPath();
-
-    /**
      * Control Text Groups
      */
 
@@ -135,22 +129,6 @@ export default function Scene3() {
     setTextGroup4();
     setTextGroup5();
   }, [scrollProgress]);
-
-  function setClipPath() {
-    let newClip;
-    if (scrollProgress < 0.235) {
-      newClip = "100%";
-    } else {
-      // scrollProgress が 0.235 から 1 に進むと、画面 Bottom(100%) => Top に変化
-      // newClip = `${(1 - (scrollProgress - 0.235) / 0.235) * 100}%`;
-      newClip = (1 - (scrollProgress - 0.235) / 0.235) * 100;
-      setClipRate(newClip);
-    }
-
-    // if (canvasClipRef.current) {
-    //   canvasClipRef.current.style.setProperty("--clip-bottom", `${newClip}%`);
-    // }
-  }
 
   function setTextGroup1() {
     const triggerRate = 0.01;
@@ -661,30 +639,12 @@ export default function Scene3() {
          */}
 
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
-          {/* Three Normal */}
-          {/* {isMobile || ()} */}
-          <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
-            {/* <CanvasNormal /> */}
-          </div>
-
           {/* Three Outline */}
           <div
             ref={canvasClipRef}
             className="absolute top-0 left-0 h-[100vh] w-full z-20"
-            // style={
-            //   isMobile
-            //     ? {}
-            //     : {
-            //         clipPath:
-            //           "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-            //       }
-            // }
-            // style={{
-            //   clipPath:
-            //     "polygon(0 0, 100% 0, 100% var(--clip-bottom, 100%), 0 var(--clip-bottom, 100%))",
-            // }}
           >
-            <CanvasOutline />
+            <CanvasScene3 />
           </div>
 
           {/* Text Group 1 */}
