@@ -4,16 +4,15 @@ import GraphRadar from "./component/Radar_chart";
 import GanttChart from "./component/Gantt_chart_";
 import { AnimateInBlock } from "../../components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useGSAP } from "@gsap/react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap/dist/gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 let isFirstTry = true;
 
 export default function Panel2() {
   const panel2Ref = useRef<any>();
   const contentRef = useRef<any>();
+  const scrollTriggerRef = useRef<any>(false);
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
@@ -27,8 +26,37 @@ export default function Panel2() {
      * GSAP
      */
 
-    gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.refresh(); //  Recalculate Scroll Volume For mobile
+    import("gsap/dist/ScrollTrigger").then(({ ScrollTrigger }) => {
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.refresh(); //  Recalculate Scroll Volume For mobile
+      scrollTriggerRef.current = ScrollTrigger;
+
+      /**
+       * Control Scroll
+       */
+
+      gsap.fromTo(
+        "#panel2",
+        {}, // fromVars: null
+        {
+          // toVars: null
+          // Option
+          scrollTrigger: {
+            trigger: "#panel2",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+            pin: false,
+            onUpdate: (value) => {
+              const progressRate = value.progress;
+              setScrollProgress(progressRate);
+              if (progressRate >= 1.0) isFirstTry = false;
+              console.log(progressRate);
+            },
+          },
+        },
+      );
+    });
 
     /**
      * Resize
@@ -38,7 +66,7 @@ export default function Panel2() {
     const resizeCallback = () => {
       setIsInitialized(false);
       getContentHeight();
-      ScrollTrigger.refresh();
+      if (scrollTriggerRef.current) scrollTriggerRef.current.refresh();
     };
 
     // Listener
@@ -52,36 +80,9 @@ export default function Panel2() {
   useEffect(() => {
     if (isMounted) {
       getContentHeight();
-      ScrollTrigger.refresh();
+      if (scrollTriggerRef.current) scrollTriggerRef.current.refresh();
     }
   }, [isMounted]);
-
-  useGSAP(() => {
-    /**
-     * Control Scroll
-     */
-    gsap.fromTo(
-      "#panel2",
-      {}, // fromVars: null
-      {
-        // toVars: null
-        // Option
-        scrollTrigger: {
-          trigger: "#panel2",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.5,
-          pin: false,
-          onUpdate: (value) => {
-            const progressRate = value.progress;
-            setScrollProgress(progressRate);
-            if (progressRate >= 1.0) isFirstTry = false;
-            // console.log(progressRate);
-          },
-        },
-      },
-    );
-  }, []);
 
   const placeHolder = (
     <div

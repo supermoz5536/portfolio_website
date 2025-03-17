@@ -44,7 +44,7 @@ const EntryPointThree = () => {
               initPlayerCoord.z + 15,
             ],
           }}
-          dpr={[0.6, 0.6]}
+          dpr={[0.9, 0.9]}
         >
           <Experience />
         </Canvas>
