@@ -5,6 +5,12 @@ import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
 
 const EntryPointThree = () => {
+  const initPlayerCoord = {
+    x: 0,
+    y: 4,
+    z: 8,
+  };
+
   return (
     <>
       <KeyboardControls
@@ -24,25 +30,21 @@ const EntryPointThree = () => {
             zIndex: 0,
           }}
           shadows
-          gl={{ localClippingEnabled: true, alpha: true }}
-          // PerspectiveCamera が設定可能
+          gl={{
+            localClippingEnabled: true,
+            alpha: true,
+          }}
           camera={{
-            // Floor[0]のShowCaseのアップ
-            // fov: 45,
-            // near: 0.1,
-            // far: 4000,
-            // position: [0, 5, 5.25],
-
-            // fov: 45,
-            // near: 0.01,
-            // far: 4000,
-            // position: [10.5, 20, 30],
-
             fov: 45,
             near: 0.1,
             far: 4000,
-            position: [0, 0, 100],
+            position: [
+              initPlayerCoord.x,
+              initPlayerCoord.y + 4,
+              initPlayerCoord.z + 15,
+            ],
           }}
+          dpr={[0.6, 0.6]}
         >
           <Experience />
         </Canvas>

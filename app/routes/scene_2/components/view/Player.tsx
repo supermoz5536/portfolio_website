@@ -8,7 +8,11 @@ import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store"
 import { useSystemStore } from "../../../../store/scene2/system_store";
 import { useThree } from "@react-three/fiber";
 
+let isFirstTry = true;
+
 export function Player() {
+  const initPlayerCoord = new THREE.Vector3(0, 4, 8);
+
   const state = useThree();
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
@@ -19,15 +23,24 @@ export function Player() {
   const [currentFloor, setCurrentFloor] = useState(0);
   const [isActicated, setIsActicated] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
+  const [gravity, setGravity] = useState(0);
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
 
   const [smoothCameraPosition, setSmoothCameraPosition] = useState(
-    new THREE.Vector3(0, 4, 8),
+    new THREE.Vector3(
+      initPlayerCoord.x,
+      initPlayerCoord.y + 5,
+      initPlayerCoord.z + 15,
+    ),
   );
 
   const [smoothCameraTarget, setSmoothCameraTarget] = useState(
-    new THREE.Vector3(),
+    new THREE.Vector3(
+      initPlayerCoord.x,
+      initPlayerCoord.y + 5,
+      initPlayerCoord.z - 10,
+    ),
   );
 
   const [savedCemeraPosition, setSavedCameraPosition] = useState(
@@ -44,7 +57,7 @@ export function Player() {
     /**
      * Setup Camera Position
      */
-    setSmoothCameraPosition(new THREE.Vector3(0, 0, 5));
+    // setSmoothCameraPosition(new THREE.Vector3(0, 0, 5));
 
     /* Listem Player Current Floor */
     const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
@@ -63,12 +76,29 @@ export function Player() {
     const unsubscribeIsActivated = useSystemStore.subscribe(
       (state: any) => state.isActivated,
       (isActivated) => {
-        rigidRef.current.setTranslation({ x: 0, y: 7, z: 7 });
+        rigidRef.current.setTranslation({ x: 0, y: 4, z: 8 });
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(0, 4, 800));
         setIsActicated(isActivated);
+
+        setSmoothCameraPosition(
+          new THREE.Vector3(
+            initPlayerCoord.x,
+            initPlayerCoord.y + 5,
+            initPlayerCoord.z + 15,
+          ),
+        );
+
+        if (isFirstTry) {
+          isFirstTry = false;
+          for (let i = 0; i < 3; i++) {
+            const timeout = 1250 + (i * 750); // prettier-ignore
+            setTimeout(() => {
+              setGravity(1.0);
+            }, timeout);
+          }
+        }
       },
     );
 
@@ -261,7 +291,8 @@ export function Player() {
     <>
       <RigidBody
         ref={rigidRef}
-        position={[0, 10, 7]}
+        position={[0, 4, 8]}
+        gravityScale={gravity}
         canSleep={false}
         colliders="ball"
         linearDamping={1.5}

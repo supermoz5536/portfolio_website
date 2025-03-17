@@ -50,10 +50,10 @@ export default function Index() {
       {/* <Scene1Test /> */}
       {/* <Scene1Test /> */}
       <Scene2 />
-      {/* <Scene1Test /> */}
-      {/* <Scene1Test /> */}
+      <Scene1Test />
+      <Scene1Test />
       {/* <Panel2 /> */}
-      {/* <Scene3 /> */}
+      <Scene3 />
     </div>
   );
 }
