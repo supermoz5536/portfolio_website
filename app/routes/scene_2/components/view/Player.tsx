@@ -17,7 +17,7 @@ export function Player() {
   const [targetOpacity, setTargetOpacity] = useState(1);
   const [smoothOpacity, setSmoothOpacity] = useState(1);
   const [currentFloor, setCurrentFloor] = useState(0);
-  const [isActivated, setIsActicated] = useState(false);
+  const [isActicated, setIsActicated] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [moveDeltaX, setMoveDeltaX] = useState(0);
   const [moveDeltaY, setMoveDeltaY] = useState(0);
@@ -67,7 +67,7 @@ export function Player() {
         rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
         rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
 
-        setSmoothCameraPosition(new THREE.Vector3(0, 4, 1200));
+        setSmoothCameraPosition(new THREE.Vector3(0, 4, 800));
         setIsActicated(isActivated);
       },
     );
@@ -192,7 +192,7 @@ export function Player() {
     // 対応するキーが押されている場合に true になります。
     const { forward, backward, leftward, rightward } = getState();
 
-    if (isActivated) {
+    if (isActicated) {
       // Keypad
       if (forward) impulse.add(forwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
       if (backward) impulse.add(backwardDir.clone().multiplyScalar(imuplseStrength)); // prettier-ignore
@@ -261,8 +261,7 @@ export function Player() {
     <>
       <RigidBody
         ref={rigidRef}
-        type={isActivated ? "dynamic" : "fixed"}
-        position={[0, 3, 7]}
+        position={[0, 10, 7]}
         canSleep={false}
         colliders="ball"
         linearDamping={1.5}

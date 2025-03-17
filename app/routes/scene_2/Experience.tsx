@@ -8,38 +8,39 @@ import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
 import { EnvironmentLights } from "./Components/view/Lights.js";
 import { Earth } from "./Components/view/Earth.js";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { useSystemStore } from "~/store/scene2/system_store";
 import ThreePlayerStore from "../../store/scene2/three_player_store";
 import { Tower } from "./Components/view/Tower";
-import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Experience() {
   const threeState = useThree();
-  const { gl, advance } = useThree();
 
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
   const tempRef = useRef(new THREE.Vector3());
+  const isMobileRef = useRef(true);
   const isOrbitControlMobileRef = useRef(false);
-  const animationFrameIdRef = useRef<any>();
 
-  const [isRender, setIsRender] = useState(false);
-
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  const isActivated = useSystemStore((state) => state.isActivated);
-  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
 
   useEffect(() => {
     /**
-     * Setup
+     * Device Setup
      */
 
-    if (isMobile) orbitControlRef.current.enabled = false;
-    if (!isMobile) orbitControlRef.current.enabled = true;
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) {
+        isMobileRef.current = true;
+        orbitControlRef.current.enabled = false;
+      }
+      if (window.innerWidth >= 500) {
+        isMobileRef.current = false;
+        orbitControlRef.current.enabled = true;
+      }
+    }
 
     /**
      * Get Camera Direction on Orbit Mode
@@ -81,12 +82,12 @@ export default function Experience() {
         isOrbitControlMobileRef.current = value;
 
         // モバイルのOrbitControlモードがON
-        if (isMobile && isOrbitControlMobileRef.current) {
+        if (isMobileRef.current && isOrbitControlMobileRef.current) {
           orbitControlRef.current.enabled = true;
           setIsPlayerFocus(false);
 
           // モバイルのOrbitControlモードがOFF
-        } else if (isMobile && !isOrbitControlMobileRef.current) {
+        } else if (isMobileRef.current && !isOrbitControlMobileRef.current) {
           orbitControlRef.current.enabled = false;
           setIsPlayerFocus(true);
         }
@@ -99,61 +100,6 @@ export default function Experience() {
       unsubscribeIsOrbitControlMobile();
     };
   }, []);
-
-  useEffect(() => {
-    /**
-     * Control Render for CPU Performance
-     */
-
-    if (scrollProgressTopAndBottom < 0.0) {
-      setIsRender(false);
-      renderFinish();
-    } else if (scrollProgressTopAndBottom > 1.0) {
-      setIsRender(false);
-      renderFinish();
-    } else {
-      if (!isRender) {
-        setIsRender(true);
-        renderStart();
-      }
-    }
-
-    /**
-     * Control Resolution for GPU Performance
-     */
-
-    if (scrollProgressTopAndBottom < 0) {
-      gl.setPixelRatio(0.001);
-    } else if (scrollProgressTopAndBottom > 1) {
-      gl.setPixelRatio(0.001);
-    } else {
-      isMobile
-        ? gl.setPixelRatio(Math.min(window.devicePixelRatio, 0.5))
-        : gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
-    }
-  }, [scrollProgressTopAndBottom]);
-
-  function renderStart() {
-    const timeSec = performance.now();
-    const timeMs = timeSec / 1000;
-
-    if (animationFrameIdRef.current) {
-      cancelAnimationFrame(animationFrameIdRef.current);
-    }
-
-    loop(timeMs);
-
-    function loop(t: number) {
-      advance(t / 1000);
-      animationFrameIdRef.current = requestAnimationFrame(loop);
-    }
-  }
-
-  function renderFinish() {
-    if (animationFrameIdRef.current) {
-      cancelAnimationFrame(animationFrameIdRef.current);
-    }
-  }
 
   return (
     <>
@@ -170,7 +116,7 @@ export default function Experience() {
         minPolarAngle={Math.PI * 0.4}
       />
 
-      <Physics paused={!isActivated}>
+      <Physics>
         <EnvironmentLights />
         <Player />
         <Floors />

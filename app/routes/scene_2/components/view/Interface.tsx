@@ -6,7 +6,6 @@ import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store"
 import { useSystemStore } from "../../../../store/scene2/system_store";
 import ThreePlayerStore from "../../../../store/scene2/three_player_store";
 import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
-import { useGlobalStore } from "~/store/global/global_store";
 
 let isFirstTry = true;
 
@@ -27,15 +26,12 @@ export function MovementPad() {
   const isTouchMoveOnRef = useRef<any>(false);
   const touchStartTimeoutRef = useRef<any>();
   const isOrbitControlMobileRef = useRef<any>(false);
+  const isMobileRef = useRef(true);
 
   /**
-   * Store
+   * Store Updater
    */
 
-  // State
-  const isMobile = useGlobalStore((state) => state.isMobile);
-
-  // Setter
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const setIsPlayerFirstMoved = ThreePlayerStore((state: any) => state.setIsPlayerFirstMoved); // prettier-ignore
   const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
@@ -44,6 +40,15 @@ export function MovementPad() {
   const setIsTouchMoveOn = ThreeInterfaceStore((state: any) => state.setIsTouchMoveOn); // prettier-ignore
 
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) isMobileRef.current = true;
+      if (window.innerWidth >= 500) isMobileRef.current = false;
+    }
+
     /**
      * Setup values
      */
@@ -274,7 +279,7 @@ export function MovementPad() {
     document.addEventListener("touchcancel", handleTouchEndAndCancel);
     document.addEventListener("contextmenu", handleContextMenu);
 
-    if (!isMobile) {
+    if (!isMobileRef.current) {
       document.addEventListener("mousedown", handleMouseDown);
       document.addEventListener("mouseup", handleMouseUp);
     }
@@ -315,7 +320,7 @@ export function MovementPad() {
       document.removeEventListener("touchcancel", handleTouchEndAndCancel);
       document.removeEventListener("contextmenu", handleContextMenu);
 
-      if (!isMobile) {
+      if (!isMobileRef.current) {
         document.removeEventListener("mousedown", handleMouseDown);
         document.removeEventListener("mouseup", handleMouseUp);
       }

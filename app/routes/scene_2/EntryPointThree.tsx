@@ -3,18 +3,8 @@ import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
-import { useGlobalStore } from "~/store/global/global_store";
-import { useEffect, useState } from "react";
 
 const EntryPointThree = () => {
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  // const [isMac, setIsMac] = useState<boolean>();
-
-  // useEffect(() => {
-  //   const detectedOS = navigator.platform.includes("Mac");
-  //   setIsMac(detectedOS);
-  // }, []);
-
   return (
     <>
       <KeyboardControls
@@ -27,7 +17,6 @@ const EntryPointThree = () => {
         ]}
       >
         <Canvas
-          frameloop="never"
           style={{
             minHeight: "100vh",
             height: "100%",
@@ -35,18 +24,25 @@ const EntryPointThree = () => {
             zIndex: 0,
           }}
           shadows
-          gl={{
-            localClippingEnabled: true,
-            alpha: true,
-            // powerPreference: "high-performance",
-          }}
+          gl={{ localClippingEnabled: true, alpha: true }}
+          // PerspectiveCamera が設定可能
           camera={{
+            // Floor[0]のShowCaseのアップ
+            // fov: 45,
+            // near: 0.1,
+            // far: 4000,
+            // position: [0, 5, 5.25],
+
+            // fov: 45,
+            // near: 0.01,
+            // far: 4000,
+            // position: [10.5, 20, 30],
+
             fov: 45,
             near: 0.1,
             far: 4000,
             position: [0, 0, 100],
           }}
-          dpr={isMobile ? [0.01, 0.01] : [1.5, 1.5]}
         >
           <Experience />
         </Canvas>

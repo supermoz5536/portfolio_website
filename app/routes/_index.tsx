@@ -7,8 +7,8 @@ import {
   fetchBarChartDocData,
 } from "~/model/firestore/firestore_server_model";
 import Scene1Test from "./scene_1_asap/_index";
-import Scene2 from "./scene_2/_index";
 import Scene3 from "./scene_3/_index";
+import Scene2 from "./scene_2/_index";
 
 export const meta: MetaFunction = () => {
   return [
@@ -49,11 +49,11 @@ export default function Index() {
       {/* <Panel1 /> */}
       {/* <Scene1Test /> */}
       {/* <Scene1Test /> */}
-      {/* <Scene2 /> */}
-      <Scene1Test />
-      <Scene1Test />
+      <Scene2 />
+      {/* <Scene1Test /> */}
+      {/* <Scene1Test /> */}
       {/* <Panel2 /> */}
-      <Scene3 />
+      {/* <Scene3 /> */}
     </div>
   );
 }

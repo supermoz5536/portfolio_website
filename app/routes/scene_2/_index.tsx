@@ -1,6 +1,7 @@
 import "./css/index.css";
 import { Button } from "@headlessui/react";
 import EntryPointThree from "./EntryPointThree";
+import { useStore } from "zustand";
 import { useSystemStore } from "~/store/scene2/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { LuChevronDown } from "react-icons/lu";
@@ -10,27 +11,20 @@ import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/scene2/three_player_store";
 import ThreeContents from "../../store/scene2/three_contents_store";
 import { MdOutlineCameraswitch } from "react-icons/md";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap/dist/gsap";
-import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Scene2() {
   const { isActivated, setIsActivated } = useSystemStore();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [isFirstActivate, setIsFirstActivate] = useState(true);
+  const [isMobile, setIsMobile] = useState(true);
   const [isGuidOn, setIsGuideOn] = useState(true);
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
   const [isNoneSelected, setIsNoneSelected] = useState(false);
   const [isOrbitControlMobile, setIsOrbitControlMobile] = useState(false);
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
-
-  const setScrollProgressTopAndBottom = 
-  useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
+  const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
 
   const activateOn = () => {
     setIsActivated(true);
@@ -56,62 +50,15 @@ export default function Scene2() {
   };
 
   useEffect(() => {
-    /**
-     * GSAP: Recalculate Scroll Volume For mobile
-     */
-    ScrollTrigger.refresh();
-
-    /**
-     * Resize
+    /*
+     * Device Setup
      */
 
-    // Callback
-    const resizeCallback = () => {
-      ScrollTrigger.refresh();
-    };
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
 
-    // Listener
-    window.addEventListener("resize", resizeCallback);
-
-    return () => {
-      window.removeEventListener("resize", resizeCallback);
-    };
-  }, []);
-
-  /**
-   * Scroll Progress
-   */
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  useGSAP(() => {
-    /**
-     * Control Scroll
-     */
-    gsap.fromTo(
-      "#scene2",
-
-      {}, // fromVars: null
-
-      {
-        // toVars: null
-        // Option
-        scrollTrigger: {
-          trigger: "#scene2",
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: 0.5,
-          pin: false,
-          onUpdate: (value) => {
-            const progressRate = value.progress;
-            setScrollProgressTopAndBottom(progressRate);
-          },
-        },
-      },
-    );
-  }, []);
-
-  useEffect(() => {
     /**
      * ZoomOut Control
      */
@@ -243,7 +190,7 @@ export default function Scene2() {
     <>
       <div
         id="scene2"
-        className="relative flex justify-center items-center h-[100vh] w-full overflow-hidden"
+        className="relative flex justify-center items-center h-[100vh] w-full"
       >
         {/* Three */}
         <div className="absolute top-0 left-0 h-[100vh] w-full z-0">
@@ -259,14 +206,14 @@ export default function Scene2() {
                   <p>Journey through Creations</p>
                 </div>
                 <span className="mb-5 z-10 text-7xl text-white ">Who?</span>
-                <span className="mb-10 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
+                <span className="mb-5 z-10 text-[1.2rem] leading-6 text-white whitespace-nowrap">
                   Steps to an Inner Universe.
                 </span>
 
                 <Button
                   id="button"
                   className={
-                    "ml-28 z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
+                    "z-10 rounded-full border-2 border-sky-400 bg-white text-black hover:bg-gray-300 transform duration-200"
                   }
                   onClick={() => activateOn()}
                 >
@@ -352,15 +299,17 @@ export default function Scene2() {
             {!isGuidOn && (
               <>
                 {/* Close Button */}
-                <AnimateIn>
-                  <Button
-                    id="svg"
-                    className="absolute mt-5 mr-5 top-[5%] right-[5%]"
-                    onClick={() => activateOff()}
-                  >
-                    <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
-                  </Button>
-                </AnimateIn>
+                {isOrbitControlMobile || (
+                  <AnimateIn>
+                    <Button
+                      id="svg"
+                      className="absolute mt-5 mr-5 top-[5%] right-[5%]"
+                      onClick={() => activateOff()}
+                    >
+                      <IoMdCloseCircleOutline className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
+                    </Button>
+                  </AnimateIn>
+                )}
 
                 {/* OrbitControl Button */}
                 {isMobile && !isOrbitControlMobile && (
@@ -378,7 +327,7 @@ export default function Scene2() {
                 {/* Home Button */}
                 {!isPlayerFocused && !isNoneSelected && (
                   <Button onClick={handleHome}>
-                    <div className="absolute flex justify-center items-center top-[90%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
+                    <div className="absolute flex justify-center items-center top-[75%] right-[50%] h-14 w-14 translate-x-1/2 -translate-y-1/2 bg-white border-4 border-t-purple-400 border-b-purple-400 rounded-full transform hover:cursor-pointe hover:bg-gray-300 duration-200">
                       <LuChevronDown className="h-10 w-10 text-gray-700 bounce-animation" />
                     </div>
                   </Button>

@@ -10,7 +10,6 @@ import { Point } from "@react-three/drei";
 import { StarsMaterial } from "./Materials/StarsMaterial";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { SunMaterial } from "./Materials/SunMaterial";
-import { useGlobalStore } from "~/store/global/global_store";
 
 type CommonProps = {
   sunPosition: THREE.Vector3;
@@ -172,14 +171,13 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
-
   useEffect(() => {
     setIsMounted(true);
     if (backGroundRef.current) {
       backGroundRef.current.material.uniforms.uTextureSky.value = textureSky;
       backGroundRef.current.material.uniforms.uTextureGround.value = textureGround; // prettier-ignore
-      backGroundRef.current.material.uniforms.uIsMobile.value = isMobile;
+      backGroundRef.current.material.uniforms.uIsMobile.value =
+        window.innerWidth < 500 ? true : false;
     }
   }, [textureSky, textureGround]);
 

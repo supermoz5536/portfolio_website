@@ -11,7 +11,6 @@ import { InsideConeMaterial } from "./Materials/InsideConeMaterial";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { FresnelConeMaterial } from "./Materials/FresnelConeMaterial";
-import { useGlobalStore } from "~/store/global/global_store";
 
 type CommonProps = {
   normWidth: number;
@@ -364,6 +363,7 @@ export function Tower() {
 
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [normWidth, setNormWidth] = useState(40);
   const [normHeight, setNormHeight] = useState(10);
@@ -384,9 +384,16 @@ export function Tower() {
     ),
   );
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
-
   useEffect(() => {
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     /**
      * Add Listener
      */

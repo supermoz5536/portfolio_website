@@ -9,7 +9,6 @@ import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { Object3D } from "three";
-import { useGlobalStore } from "~/store/global/global_store";
 
 type StoneTabletProps = {
   position: THREE.Vector3;
@@ -35,6 +34,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
 
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
   const [scene, setScene] = useState<Object3D>();
 
@@ -53,8 +53,6 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
       position.z - 4.25,
     ),
   );
-
-  const isMobile = useGlobalStore((state) => state.isMobile);
 
   useEffect(() => {
     /**
@@ -96,6 +94,15 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleTouchEnd);
     document.addEventListener("touchcancel", handleTouchCancel);
+
+    /**
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
 
     return () => {
       unsubscribeIsPlayerFocused();

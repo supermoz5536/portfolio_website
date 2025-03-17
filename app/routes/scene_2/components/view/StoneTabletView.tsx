@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import useSystemStore from "../../../../store/scene2/three_contents_store";
 import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { AnimateIn } from "~/components/animate_in";
 import { AnimateInBlock } from "~/components/animate_in_block";
-import { useGlobalStore } from "~/store/global/global_store";
 
 export function StoneTabletView() {
   const [isViewOn, setIsViewOn] = useState(false);
@@ -13,14 +11,13 @@ export function StoneTabletView() {
   const [isVisText2, setIsVisText2] = useState(false);
   const [isVisText3, setIsVisText3] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(true);
 
   const timeoutBgRef = useRef<any>();
   const timeoutHeaderRef = useRef<any>();
   const timeoutText1Ref = useRef<any>();
   const timeoutText2Ref = useRef<any>();
   const timeoutText3Ref = useRef<any>();
-
-  const isMobile = useGlobalStore((state) => state.isMobile);
 
   const handleViewOn = () => {
     /**
@@ -61,6 +58,15 @@ export function StoneTabletView() {
   };
 
   useEffect(() => {
+    /*
+     * Device Setup
+     */
+
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) setIsMobile(true);
+      if (window.innerWidth >= 500) setIsMobile(false);
+    }
+
     /**
      * Handle View
      */
