@@ -261,9 +261,9 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
   const mesh = new THREE.Mesh(geometry, material);
   const gui = getGui();
 
-  const testRatio = 0.5;
-  const rescaledPlayerMoveRatio = testRatio * 0.75 + 0.25;
-  // const rescaledPlayerMoveRatio = playerMoveRatio * 0.75 + 0.25;
+  // const testRatio = 0.5;
+  // const rescaledPlayerMoveRatio = testRatio * 0.75 + 0.25;
+  const rescaledPlayerMoveRatio = playerMoveRatio * 0.75 + 0.25;
 
   useEffect(() => {
     /**
@@ -466,7 +466,7 @@ export function Earth() {
   const gui = getGui();
 
   const [playerPosition, setPlayerPosition] = useState(new THREE.Vector3());
-  const [playerMoveRatio, setPlayerMoveRatio] = useState(0);
+  const [playerMoveRatio, setPlayerMoveRatio] = useState(0.5);
 
   const [sunPosition, setSunPosition] = useState(new THREE.Vector3());
 
@@ -498,20 +498,20 @@ export function Earth() {
      * Player Position
      */
 
-    const unsubscibePlayer = ThreePlayer.subscribe(
-      (state: any) => state.currentPosition,
-      (currentPosition) => {
-        const playerMoveRatio =
-          (currentPosition.x / endPosition.x -
-            currentPosition.z / endPosition.z) / 2; // prettier-ignore
+    // const unsubscibePlayer = ThreePlayer.subscribe(
+    //   (state: any) => state.currentPosition,
+    //   (currentPosition) => {
+    //     const playerMoveRatio =
+    //       (currentPosition.x / endPosition.x -
+    //         currentPosition.z / endPosition.z) / 2; // prettier-ignore
 
-        setPlayerPosition(currentPosition);
-        setPlayerMoveRatio(playerMoveRatio);
-      },
-    );
+    //     setPlayerPosition(currentPosition);
+    //     setPlayerMoveRatio(playerMoveRatio);
+    //   },
+    // );
 
     return () => {
-      unsubscibePlayer();
+      // unsubscibePlayer();
     };
   }, []);
 
@@ -544,7 +544,6 @@ export function Earth() {
   return (
     <>
       <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
-      {/* <Stars sunPosition={new THREE.Vector3(1, 1, 1)} /> */}
       {isMobile || <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />}
       {/* <Sun sunPosition={sunPosition} playerPosition={playerPosition} /> */}
     </>
