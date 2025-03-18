@@ -30,9 +30,6 @@ export default function Scene3() {
     (state) => state.scrollProgressTopAndTop,
   );
 
-  const setClipRate = 
-  useSystemStore((state: any)=>state.setClipRate) // prettier-ignore
-
   const setScrollProgressTopAndTop = 
     useSystemStore((state: any)=>state.setScrollProgressTopAndTop) // prettier-ignore
 

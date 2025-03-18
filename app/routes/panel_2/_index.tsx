@@ -6,6 +6,7 @@ import { AnimateInBlock } from "../../components/animate_in_block";
 import { AnimateIn } from "~/components/animate_in";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap/dist/gsap";
+import { useGlobalStore } from "~/store/global/global_store";
 
 let isFirstTry = true;
 
@@ -13,14 +14,19 @@ export default function Panel2() {
   const panel2Ref = useRef<any>();
   const contentRef = useRef<any>();
   const scrollTriggerRef = useRef<any>(false);
+  const currentWindowWidthRef = useRef<any>();
+  const isMobileRef = useRef<any>();
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [contentHeight, setContentHeight] = useState();
 
+  const isMobile = useGlobalStore((state) => state.isMobile);
+
   useEffect(() => {
     setIsMounted(true);
+    currentWindowWidthRef.current = window.innerWidth;
 
     /**
      * GSAP
@@ -64,9 +70,20 @@ export default function Panel2() {
 
     // Callback
     const resizeCallback = () => {
-      setIsInitialized(false);
-      getContentHeight();
-      if (scrollTriggerRef.current) scrollTriggerRef.current.refresh();
+      // モバイルの場合のメニューバー表示非表示の
+      // リサイズを除外するため、横幅のみでリサイズを判断
+      if (isMobileRef.current) {
+        if (
+          currentWindowWidthRef.current &&
+          currentWindowWidthRef.current != window.innerWidth
+        ) {
+          callbackActions();
+          currentWindowWidthRef.current = window.innerWidth;
+        }
+      } else {
+        callbackActions();
+        currentWindowWidthRef.current = window.innerWidth;
+      }
     };
 
     // Listener
@@ -76,6 +93,10 @@ export default function Panel2() {
       window.removeEventListener("resize", resizeCallback);
     };
   }, []);
+
+  useEffect(() => {
+    isMobileRef.current = isMobile;
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMounted) {
@@ -183,6 +204,15 @@ export default function Panel2() {
       setIsInitialized(true);
     }
     return <></>;
+  }
+
+  function callbackActions() {
+    setIsInitialized(false);
+    getContentHeight();
+    if (scrollTriggerRef.current) {
+      scrollTriggerRef.current.refresh();
+      console.log("fasdfasdfasf");
+    }
   }
 
   return (
