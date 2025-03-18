@@ -12,6 +12,53 @@ type waveProps = {
 let isFirstTry = true;
 
 const wavesGeometry = new THREE.PlaneGeometry(1, 1, 12, 12);
+const wavesGreenMaterial = new THREE.ShaderMaterial({
+  vertexShader: waveVertexShader,
+  fragmentShader: waveFragmentShader,
+  uniforms: {
+    uElapseTime: { value: 0.0 },
+
+    // For Vertex
+    uBigWavesElevation: { value: 0.0 },
+    uBigWavesFrequency: { value: new THREE.Vector2(0.0, 0.0) },
+    uBigWavesSpeed: { value: new THREE.Vector2(0.0, 0.0) },
+
+    uSmallWavesElevation: { value: 0.217 },
+    uSmallWavesFrequency: { value: 1.833 },
+    uSmallWavesSpeed: { value: 0.254 },
+    uSmallWavesIteration: { value: 2.0 },
+
+    // For Fragment
+    uSurfaceColor: { value: new THREE.Color("#50ad54") },
+    uDepthColor: { value: new THREE.Color("#009405") },
+    uColorOffset: { value: 0.289 },
+    uColorMultiplier: { value: 15.0 },
+  },
+});
+
+const wavesBlueMaterial = new THREE.ShaderMaterial({
+  vertexShader: waveVertexShader,
+  fragmentShader: waveFragmentShader,
+  uniforms: {
+    uElapseTime: { value: 0.0 },
+
+    // For Vertex
+    uBigWavesElevation: { value: 0.0 },
+    uBigWavesFrequency: { value: new THREE.Vector2(0.0, 0.0) },
+    uBigWavesSpeed: { value: new THREE.Vector2(0.0, 0.0) },
+
+    uSmallWavesElevation: { value: 0.217 },
+    uSmallWavesFrequency: { value: 1.833 },
+    uSmallWavesSpeed: { value: 0.254 },
+    uSmallWavesIteration: { value: 2.0 },
+
+    // For Fragment
+    uSurfaceColor: { value: new THREE.Color("#5ad2e0") },
+    uDepthColor: { value: new THREE.Color("#00c2c9") },
+    uColorOffset: { value: 0.289 },
+    uColorMultiplier: { value: 15.0 },
+  },
+});
 
 export function Waves({ flag }: waveProps) {
   const wavesRef: any = useRef();
@@ -82,33 +129,7 @@ export function Waves({ flag }: waveProps) {
       <mesh
         ref={wavesRef}
         geometry={wavesGeometry}
-        material={
-          new THREE.ShaderMaterial({
-            vertexShader: waveVertexShader,
-            fragmentShader: waveFragmentShader,
-            uniforms: {
-              uElapseTime: { value: 0.0 },
-
-              // For Vertex
-              uBigWavesElevation: { value: 0.0 },
-              uBigWavesFrequency: { value: new THREE.Vector2(0.0, 0.0) },
-              uBigWavesSpeed: { value: new THREE.Vector2(0.0, 0.0) },
-
-              uSmallWavesElevation: { value: 0.217 },
-              uSmallWavesFrequency: { value: 1.833 },
-              uSmallWavesSpeed: { value: 0.254 },
-              uSmallWavesIteration: { value: 2.0 },
-
-              // For Fragment
-              uSurfaceColor: {
-                value: new THREE.Color(debugObj.uSurfaceColor),
-              },
-              uDepthColor: { value: new THREE.Color(debugObj.uDepthColor) },
-              uColorOffset: { value: 0.289 },
-              uColorMultiplier: { value: 15.0 },
-            },
-          })
-        }
+        material={flag == 0 ? wavesGreenMaterial : wavesBlueMaterial}
         position={[0, flag == 0 ? 1.5 : 4.975, 0]}
         // position={[0, flag == 0 ? 1.25 : 4.975, 0]}
         rotation={[flag == 0 ? -Math.PI / 2 : Math.PI / 2, 0, 0]}

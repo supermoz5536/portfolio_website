@@ -18,7 +18,7 @@ type FloorContentsProps = {
 
 const displayedQuestion = [7, 9, 10, 11];
 const displayedGreenWave = [0, 3, 6, 9];
-const displayedBlueWave = [9];
+const displayedBlueWave = [0, 9];
 const displayedShowcaseLightMobile: any = [];
 const displayedShowcaseLightTablet = [0, 3, 6, 9];
 const displayedFirefly: any = [0, 3, 6, 9, 11];
@@ -122,8 +122,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* <PlayerShadow index={index} /> */}
 
                 {/* Waves */}
-                {/* {displayedGreenWave.includes(index) && <Waves flag={0} />} */}
-                {/* {displayedBlueWave.includes(index) && <Waves flag={1} />} */}
+                {displayedGreenWave.includes(index) && <Waves flag={0} />}
+                {displayedBlueWave.includes(index) && <Waves flag={1} />}
               </>
             )}
           </group>
