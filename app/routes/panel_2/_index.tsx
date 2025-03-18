@@ -162,7 +162,7 @@ export default function Panel2() {
               <br />
               <br />
               <br />
-              <span className="block h-[0.5rem] w-[13zrem] mt-3 bg-transparent" />
+              <span className="block h-[0.5rem] w-[13rem] mt-3 bg-transparent" />
             </div>
             {/* Content Container B */}
             <div>

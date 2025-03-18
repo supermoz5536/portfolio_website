@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { PopupLayer1 } from "../popup_layer/Popup_layer_1";
+import { PopupLayer1 } from "../popup_layer/popup_layer_1";
 import { PopupLayer3 } from "../popup_layer/popup_layer_3";
 import { PopupLayer4 } from "../popup_layer/popup_layer_4";
 import { PopupLayer2 } from "../popup_layer/popup_layer_2";
