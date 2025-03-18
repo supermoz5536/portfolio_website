@@ -14,18 +14,43 @@ import { useEffect, useRef, useState } from "react";
 import { useSystemStore } from "~/store/scene2/system_store";
 import ThreePlayerStore from "../../store/scene2/three_player_store";
 import { Tower } from "./Components/view/Tower";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Experience() {
   const threeState = useThree();
+  const { gl, advance } = useThree();
+
+  const startRenderRate = 0.0;
+  const endRenderRate = 1.0;
+
+  /**
+   * Local State
+   */
+  const [isRender, setIsRender] = useState(false);
 
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
   const tempRef = useRef(new THREE.Vector3());
   const isMobileRef = useRef(true);
   const isOrbitControlMobileRef = useRef(false);
+  const animationFrameIdRef = useRef<any>();
 
+  /**
+   * Store State
+   */
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const isAvtivated = useSystemStore((state: any) => state.isActivated);
+  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
+  console.log("scrollProgressTopAndBottom", scrollProgressTopAndBottom);
+
+  /**
+   * Store Setter
+   */
   const setIsPlayerFocus = useSystemStore((state:any)=>state.setIsPlayerFocus) // prettier-ignore
+
+  /* -------------------
+   Control OrbitControl
+   ------------------- */
 
   useEffect(() => {
     /**
@@ -101,6 +126,67 @@ export default function Experience() {
       unsubscribeIsOrbitControlMobile();
     };
   }, []);
+
+  /* -----------------
+   Control Performance
+   ----------------- */
+
+  useEffect(() => {
+    /**
+     * Control Render for CPU Performance
+     */
+
+    if (scrollProgressTopAndBottom <= startRenderRate) {
+      setIsRender(false);
+      renderFinish();
+    } else if (scrollProgressTopAndBottom >= endRenderRate) {
+      setIsRender(false);
+      renderFinish();
+    } else {
+      if (!isRender) {
+        setIsRender(true);
+        renderStart();
+      }
+    }
+
+    /**
+     * Control Resolution for GPU Performance
+     */
+
+    if (scrollProgressTopAndBottom == 0) {
+      if (isMobile) gl.setPixelRatio(0.6);
+      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    } else if (scrollProgressTopAndBottom <= startRenderRate) {
+      gl.setPixelRatio(0.001);
+    } else if (scrollProgressTopAndBottom >= endRenderRate) {
+      gl.setPixelRatio(0.001);
+    } else {
+      if (isMobile) gl.setPixelRatio(0.6);
+      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    }
+  }, [scrollProgressTopAndBottom]);
+
+  function renderStart() {
+    const timeSec = performance.now();
+    const timeMs = timeSec / 1000;
+
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+
+    loop(timeMs);
+
+    function loop(t: number) {
+      advance(t / 1000);
+      animationFrameIdRef.current = requestAnimationFrame(loop);
+    }
+  }
+
+  function renderFinish() {
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+  }
 
   return (
     <>

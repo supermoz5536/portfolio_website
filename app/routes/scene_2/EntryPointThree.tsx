@@ -3,13 +3,17 @@ import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
+import { useEffect, useState } from "react";
+import { useGlobalStore } from "~/store/global/global_store";
 
 const EntryPointThree = () => {
-  const initPlayerCoord = {
-    x: 0,
-    y: 4,
-    z: 8,
-  };
+  const initPlayerCoord = {x: 0, y: 4, z: 8}; // prettier-ignore
+  const [dpr, setDpr] = useState(2.0);
+  const isMobile = useGlobalStore((state) => state.isMobile);
+
+  useEffect(() => {
+    setDpr(Math.min(window.devicePixelRatio, 2.0));
+  }, []);
 
   return (
     <>
@@ -23,7 +27,7 @@ const EntryPointThree = () => {
         ]}
       >
         <Canvas
-          frameloop="never"
+          frameloop="always"
           style={{
             minHeight: "100vh",
             height: "100%",
@@ -45,7 +49,7 @@ const EntryPointThree = () => {
               initPlayerCoord.z + 15,
             ],
           }}
-          dpr={[0.9, 0.9]}
+          dpr={isMobile ? 0.6 : dpr}
         >
           <Experience />
         </Canvas>
