@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import { RigidBody, vec3 } from "@react-three/rapier";
-import ThreePlayer from "../../../../store/scene2/three_player_store";
+import ThreePlayer from "../../../../../store/scene2/three_player_store";
 import { ShowCaseLight } from "./Lights";
 import { Waves } from "./Waves";
 import { Question } from "./Question";

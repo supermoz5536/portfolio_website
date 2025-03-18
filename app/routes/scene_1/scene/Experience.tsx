@@ -12,7 +12,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { useSystemStore } from "~/store/scene2/system_store.js";
-import ThreePlayerStore from "../../store/scene2/three_player_store.js";
+import ThreePlayerStore from "../../../store/scene2/three_player_store.js";
 import { Tower } from "./Components/view/Tower.js";
 import { Camera } from "./Components/view/Camera.js";
 

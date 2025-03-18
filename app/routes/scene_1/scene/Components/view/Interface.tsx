@@ -2,10 +2,10 @@
 /// 0.5pxだけズレるが、一旦このまま開発を進める。
 
 import { useEffect, useRef, useState } from "react";
-import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store";
-import { useSystemStore } from "../../../../store/scene2/system_store";
-import ThreePlayerStore from "../../../../store/scene2/three_player_store";
-import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
+import ThreeInterfaceStore from "../../../../../store/scene2/three_interface_store";
+import { useSystemStore } from "../../../../../store/scene2/system_store";
+import ThreePlayerStore from "../../../../../store/scene2/three_player_store";
+import ThreeContentsStore from "../../../../../store/scene2/three_contents_store";
 
 let isFirstTry = true;
 

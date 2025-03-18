@@ -1,5 +1,5 @@
 import Experience from "./Experience";
-import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
+import { StoneTabletView } from "../../scene_2/Components/view/StoneTabletView";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";

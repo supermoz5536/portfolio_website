@@ -4,9 +4,9 @@ import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { useSystemStore } from "../../store/scene1/system_store";
+import { useSystemStore } from "../../../store/scene1/system_store";
 
-export default function Scene1() {
+export default function Scene() {
   const setScrollProgress = 
     useSystemStore((state: any)=>state.setScrollProgress) // prettier-ignore
 
