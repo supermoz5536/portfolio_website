@@ -11,12 +11,12 @@ import { AnimateIn } from "~/components/animate_in";
 import ThreePlayer from "../../store/scene2/three_player_store";
 import ThreeContents from "../../store/scene2/three_contents_store";
 import { MdOutlineCameraswitch } from "react-icons/md";
+import { useGlobalStore } from "~/store/global/global_store";
 
 export default function Scene2() {
   const { isActivated, setIsActivated } = useSystemStore();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [isFirstActivate, setIsFirstActivate] = useState(true);
-  const [isMobile, setIsMobile] = useState(true);
   const [isGuidOn, setIsGuideOn] = useState(true);
   const [isGuidVisible, setIsGuideVisible] = useState(false);
   const [isPlayerFocused, setIsPlayerFocused] = useState(true);
@@ -25,6 +25,8 @@ export default function Scene2() {
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
   const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   const activateOn = () => {
     setIsActivated(true);
@@ -50,15 +52,6 @@ export default function Scene2() {
   };
 
   useEffect(() => {
-    /*
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
-
     /**
      * ZoomOut Control
      */

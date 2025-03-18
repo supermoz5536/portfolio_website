@@ -6,6 +6,7 @@ import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store"
 import { useSystemStore } from "../../../../store/scene2/system_store";
 import ThreePlayerStore from "../../../../store/scene2/three_player_store";
 import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
+import { useGlobalStore } from "~/store/global/global_store";
 
 let isFirstTry = true;
 
@@ -29,6 +30,12 @@ export function MovementPad() {
   const isMobileRef = useRef(true);
 
   /**
+   * Global State
+   */
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
+
+  /**
    * Store Updater
    */
 
@@ -40,15 +47,6 @@ export function MovementPad() {
   const setIsTouchMoveOn = ThreeInterfaceStore((state: any) => state.setIsTouchMoveOn); // prettier-ignore
 
   useEffect(() => {
-    /**
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) isMobileRef.current = true;
-      if (window.innerWidth >= 500) isMobileRef.current = false;
-    }
-
     /**
      * Setup values
      */
@@ -330,6 +328,10 @@ export function MovementPad() {
       unsubscribeIsOrbitControlMobile();
     };
   }, []);
+
+  useEffect(() => {
+    isMobileRef.current = isMobile;
+  }, [isMobile]);
 
   function alignAndConfigPad() {
     if (padRef.current && handleRef.current) {

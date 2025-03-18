@@ -16,6 +16,7 @@ import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { useFrame } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
 import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type ShowCaseProps = {
   position: THREE.Vector3;
@@ -71,7 +72,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const [isDown, setIsDown] = useState(false);
   const [isZoomIn, setIsZoomIn] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
 
   const [lerpCamera, setLeapCamera] = useState(
@@ -90,17 +90,12 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     ),
   );
 
-  const setIsPlayerFocus = useSystemStore(
-    (state: any) => state.setIsPlayerFocus,
-  );
+  const isMobile = useGlobalStore((state) => state.isMobile);
+  const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
 
-  const currentPosition = ThreePlayerStore(
-    (state: any) => state.currentPosition,
-  );
-
-  const setIsContentSelectedMouseDown = ThreeContentsStore(
-    (state: any) => state.setIsContentSelectedMouseDown,
-  );
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  const setIsContentSelectedMouseDown = // prettier-ignore
+    ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown);
 
   useEffect(() => {
     /**
@@ -128,15 +123,6 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleTouchEnd);
     document.addEventListener("touchcancel", handleTouchCancel);
-
-    /**
-     * Device Setup
-     */
-
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 500) setIsMobile(true);
-      if (window.innerWidth >= 500) setIsMobile(false);
-    }
 
     /**
      * Texture Setup
