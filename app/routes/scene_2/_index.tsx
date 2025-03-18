@@ -1,7 +1,6 @@
 import "./css/index.css";
 import { Button } from "@headlessui/react";
 import EntryPointThree from "./EntryPointThree";
-import { useStore } from "zustand";
 import { useSystemStore } from "~/store/scene2/system_store";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { LuChevronDown } from "react-icons/lu";
@@ -12,8 +11,12 @@ import ThreePlayer from "../../store/scene2/three_player_store";
 import ThreeContents from "../../store/scene2/three_contents_store";
 import { MdOutlineCameraswitch } from "react-icons/md";
 import { useGlobalStore } from "~/store/global/global_store";
+import { gsap } from "gsap/dist/gsap";
 
 export default function Scene2() {
+  /**
+   * Local State
+   */
   const { isActivated, setIsActivated } = useSystemStore();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [isFirstActivate, setIsFirstActivate] = useState(true);
@@ -23,10 +26,18 @@ export default function Scene2() {
   const [isNoneSelected, setIsNoneSelected] = useState(false);
   const [isOrbitControlMobile, setIsOrbitControlMobile] = useState(false);
 
-  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  /**
+   * Store State
+   */
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const toggleIsOrbitControlMobile = useSystemStore((state:any)=> state.toggleIsOrbitControlMobile) // prettier-ignore
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
+  /**
+   * Store Setter
+   */
+  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
+  const setScrollProgressTopAndBottom = 
+      useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
   const activateOn = () => {
     setIsActivated(true);
@@ -52,6 +63,36 @@ export default function Scene2() {
   };
 
   useEffect(() => {
+    /**
+     * Scroll Trigger
+     */
+    import("gsap/dist/ScrollTrigger").then(({ ScrollTrigger }) => {
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.refresh(); //  Recalculate Scroll Volume For mobile
+
+      gsap.fromTo(
+        "#scene2",
+
+        {}, // fromVars: null
+
+        {
+          // toVars: null
+          // Option
+          scrollTrigger: {
+            trigger: "#scene2",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+            pin: false,
+            onUpdate: (value) => {
+              const progressRate = value.progress;
+              setScrollProgressTopAndBottom(progressRate);
+            },
+          },
+        },
+      );
+    });
+
     /**
      * ZoomOut Control
      */
@@ -115,11 +156,10 @@ export default function Scene2() {
     };
   }, []);
 
-  /**
-   * Control Activation
-   */
-
   useEffect(() => {
+    /* --------------------
+       Control Activation
+    -------------------- */
     if (isActivated) {
       // 初回アクティベーション時の遅延演出の表示
       if (isFirstActivate) {

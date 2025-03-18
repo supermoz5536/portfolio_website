@@ -23,6 +23,7 @@ const EntryPointThree = () => {
         ]}
       >
         <Canvas
+          frameloop="never"
           style={{
             minHeight: "100vh",
             height: "100%",

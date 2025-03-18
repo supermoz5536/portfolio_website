@@ -1,10 +1,9 @@
 import "./css/index.css";
 import { AnimateInBlock } from "~/components/animate_in_block";
-import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
 import { useSystemStore } from "../../store/scene3/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { CanvasScene3 } from "./Components/view/CanvasScene3";
 import { AnimateIn } from "~/components/animate_in";
 import ContactForm from "./Components/view/ContactForm";
