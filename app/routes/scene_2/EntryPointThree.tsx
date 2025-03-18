@@ -42,7 +42,7 @@ const EntryPointThree = () => {
           camera={{
             fov: 45,
             near: 0.1,
-            far: 4000,
+            far: 3200,
             position: [
               initPlayerCoord.x,
               initPlayerCoord.y + 4,

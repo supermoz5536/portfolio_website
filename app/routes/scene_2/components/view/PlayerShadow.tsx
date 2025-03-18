@@ -10,6 +10,8 @@ type PlayerShadowProps = {
   index: number;
 };
 
+const playerShadowGeometry = new THREE.PlaneGeometry(24, 24);
+
 let isArrivedFloor11 = false;
 let currentShader = playerShadowFragmentShader2;
 
@@ -86,7 +88,7 @@ export function PlayerShadow({ index }: PlayerShadowProps) {
     <>
       <mesh
         ref={playerShadowRef}
-        geometry={new THREE.PlaneGeometry(24, 24)}
+        geometry={playerShadowGeometry}
         material={
           new THREE.ShaderMaterial({
             vertexShader: playerShadowVertexShader,

@@ -122,8 +122,8 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                 {/* <PlayerShadow index={index} /> */}
 
                 {/* Waves */}
-                {displayedGreenWave.includes(index) && <Waves flag={0} />}
-                {displayedBlueWave.includes(index) && <Waves flag={1} />}
+                {/* {displayedGreenWave.includes(index) && <Waves flag={0} />} */}
+                {/* {displayedBlueWave.includes(index) && <Waves flag={1} />} */}
               </>
             )}
           </group>
