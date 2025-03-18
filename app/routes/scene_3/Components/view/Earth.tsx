@@ -360,7 +360,7 @@ export function Stars({ sunPosition }: StartsProps) {
   starsMaterial.uniforms.uSunPosition.value.copy(sunPosition);
 
   const distanceFromOriginToStars = 1000;
-  const counts = 1000;
+  const counts = 500;
   const positionArray: any = new Float32Array(counts * 3);
   const colorArray: any = new Float32Array(counts * 3);
   const sizeArray: any = new Float32Array(counts);
@@ -400,7 +400,7 @@ export function Stars({ sunPosition }: StartsProps) {
         /**
          * Set Random Size
          */
-        const aSize = Math.pow(Math.random() * 0.9, 10) + 0.1;
+        const aSize = Math.pow(Math.random() * 0.7, 15) + 0.004;
 
         sizeArray[iOffset] = aSize;
       }
@@ -544,7 +544,8 @@ export function Earth() {
   return (
     <>
       <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
-      {isMobile || <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />}
+      {/* {isMobile || <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />} */}
+      <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />
       {/* <Sun sunPosition={sunPosition} playerPosition={playerPosition} /> */}
     </>
   );

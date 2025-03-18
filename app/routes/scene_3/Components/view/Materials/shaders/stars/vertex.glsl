@@ -30,7 +30,7 @@ void main () {
     gl_PointSize = pointSize;
 
 
-    if (pointSize < 0.5) {
+    if (pointSize < 0.01) {
         vec4 clippedPosition = vec4(2.0, 2.0, 2.0, 1.0);
         gl_Position = clippedPosition;
     }

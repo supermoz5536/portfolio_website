@@ -13,7 +13,7 @@ export function StarsMaterial() {
             ? Math.min(window.devicePixelRatio, 2.0)
             : null,
       },
-      uBrightStrength: { value: 0.5 }, // [0-1]
+      uBrightStrength: { value: 0.7 }, // [0-1]
     },
     vertexShader: starsVertex,
     fragmentShader: starsFragment,

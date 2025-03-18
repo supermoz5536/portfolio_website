@@ -81,7 +81,6 @@ export default function Experience() {
       <Earth />
       {isMobile || (
         <>
-          <Earth />
           <Tower />
         </>
       )}

@@ -7,7 +7,7 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useEffect, useState } from "react";
-import { ToneMappingMode } from "postprocessing";
+import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { KernelSize } from "postprocessing";
 import { OutLineCustom } from "./PostProcessing/Outline/Outline";
 import { useGlobalStore } from "~/store/global/global_store";
@@ -51,14 +51,14 @@ export function CanvasScene3() {
             <>
               <Bloom
                 luminanceThreshold={1.0}
-                intensity={0.1}
-                kernelSize={KernelSize.SMALL}
-                resolutionScale={0.3}
+                intensity={2.0}
+                kernelSize={KernelSize.VERY_LARGE}
               />
               <DepthOfField
                 focusDistance={0.005}
                 focalLength={0.025}
-                bokehScale={2}
+                bokehScale={0.7}
+                focusRange={0.01}
               />
             </>
           ) : (
