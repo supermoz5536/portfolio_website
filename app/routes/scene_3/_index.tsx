@@ -2,7 +2,6 @@ import "./css/index.css";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/dist/gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useSystemStore } from "../../store/scene3/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
@@ -22,6 +21,9 @@ export default function Scene3() {
   const textGroup3DoneRef = useRef<any>(false);
   const textGroup4DoneRef = useRef<any>(false);
   const textGroup5DoneRef = useRef<any>(false);
+  const scrollTriggerRef = useRef<any>(false);
+  const currentWindowWidthRef = useRef<any>();
+  const isMobileRef = useRef<any>();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isLandscape = useGlobalStore((state) => state.isLandscape);
@@ -37,10 +39,58 @@ export default function Scene3() {
       useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
   useEffect(() => {
-    /**
-     * GSAP: Recalculate Scroll Volume For mobile
-     */
-    ScrollTrigger.refresh();
+    currentWindowWidthRef.current = window.innerWidth;
+
+    import("gsap/dist/ScrollTrigger").then(({ ScrollTrigger }) => {
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.refresh(); //  Recalculate Scroll Volume For mobile
+      scrollTriggerRef.current = ScrollTrigger;
+
+      gsap.fromTo(
+        "#scene3",
+
+        {}, // fromVars: null
+
+        {
+          // toVars: null
+          // Option
+          scrollTrigger: {
+            trigger: "#scene3",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5,
+            pin: false,
+            onUpdate: (value) => {
+              const progressRate = value.progress;
+              setScrollProgressTopAndTop(progressRate);
+              // console.log(progressRate);
+            },
+          },
+        },
+      );
+
+      gsap.fromTo(
+        "#scene3",
+
+        {}, // fromVars: null
+
+        {
+          // toVars: null
+          // Option
+          scrollTrigger: {
+            trigger: "#scene3",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: 0.5,
+            pin: false,
+            onUpdate: (value) => {
+              const progressRate = value.progress;
+              setScrollProgressTopAndBottom(progressRate);
+            },
+          },
+        },
+      );
+    });
 
     /**
      * Resize
@@ -48,7 +98,20 @@ export default function Scene3() {
 
     // Callback
     const resizeCallback = () => {
-      ScrollTrigger.refresh();
+      // モバイルの場合のメニューバー表示非表示の
+      // リサイズを除外するため、横幅のみでリサイズを判断
+      if (isMobileRef.current) {
+        if (
+          currentWindowWidthRef.current &&
+          currentWindowWidthRef.current != window.innerWidth
+        ) {
+          if (scrollTriggerRef.current) scrollTriggerRef.current.refresh();
+          currentWindowWidthRef.current = window.innerWidth;
+        }
+      } else {
+        if (scrollTriggerRef.current) scrollTriggerRef.current.refresh();
+        currentWindowWidthRef.current = window.innerWidth;
+      }
     };
 
     // Listener
@@ -59,61 +122,9 @@ export default function Scene3() {
     };
   }, []);
 
-  /**
-   * Scroll Progress
-   */
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  useGSAP(() => {
-    gsap.fromTo(
-      "#scene3",
-
-      {}, // fromVars: null
-
-      {
-        // toVars: null
-        // Option
-        scrollTrigger: {
-          trigger: "#scene3",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.5,
-          pin: false,
-          onUpdate: (value) => {
-            const progressRate = value.progress;
-            // console.log(progressRate);
-            setScrollProgressTopAndTop(progressRate);
-          },
-        },
-      },
-    );
-
-    /**
-     * Test Scroll Trigger
-     */
-    gsap.fromTo(
-      "#scene3",
-
-      {}, // fromVars: null
-
-      {
-        // toVars: null
-        // Option
-        scrollTrigger: {
-          trigger: "#scene3",
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: 0.5,
-          pin: false,
-          onUpdate: (value) => {
-            const progressRate = value.progress;
-            setScrollProgressTopAndBottom(progressRate);
-          },
-        },
-      },
-    );
-  }, []);
+  useEffect(() => {
+    isMobileRef.current = isMobile;
+  }, [isMobile]);
 
   useEffect(() => {
     /**

@@ -211,7 +211,6 @@ export default function Panel2() {
     getContentHeight();
     if (scrollTriggerRef.current) {
       scrollTriggerRef.current.refresh();
-      console.log("fasdfasdfasf");
     }
   }
 
