@@ -57,8 +57,8 @@ export function CanvasScene3() {
               <DepthOfField
                 focusDistance={0.005}
                 focalLength={0.025}
-                bokehScale={0.7}
-                focusRange={0.01}
+                bokehScale={6}
+                worldFocusRange={20}
               />
             </>
           ) : (
