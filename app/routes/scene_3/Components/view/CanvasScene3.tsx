@@ -45,6 +45,12 @@ export function CanvasScene3() {
       >
         <Experience />
         <EffectComposer>
+          {/**
+           * Mobile のShowcaseContentsの内容が簡易的になっているので
+           * Section1を実装後のパフォーマンスを踏まえて
+           * コンテンツ内容を最終調整する。
+           * パフォーマンスに余裕があればPCと同じコンテンツ内容も検討する
+           */}
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
 
           {isMobile ? (
