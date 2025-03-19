@@ -360,7 +360,7 @@ export function Stars({ sunPosition }: StartsProps) {
   starsMaterial.uniforms.uSunPosition.value.copy(sunPosition);
 
   const distanceFromOriginToStars = 1000;
-  const counts = 1000;
+  const counts = 600;
   const positionArray: any = new Float32Array(counts * 3);
   const colorArray: any = new Float32Array(counts * 3);
   const sizeArray: any = new Float32Array(counts);

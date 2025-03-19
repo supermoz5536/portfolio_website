@@ -81,8 +81,8 @@ export function Floors() {
     gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
         if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
+          child.castShadow = false;
+          child.receiveShadow = false;
         }
       });
 

@@ -58,6 +58,7 @@ const wavesBlueMaterial = new THREE.ShaderMaterial({
     uColorOffset: { value: 0.289 },
     uColorMultiplier: { value: 15.0 },
   },
+  side: THREE.DoubleSide,
 });
 
 export function Waves({ flag }: waveProps) {

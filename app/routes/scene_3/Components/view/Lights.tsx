@@ -75,7 +75,8 @@ export function EnvironmentLights() {
         shadow-camera-right={5}
         shadow-camera-bottom={-5}
         shadow-camera-left={-5}
-        shadow-normalBias={0.005} // normalBias を追加
+        shadow-bias={-0.001}
+        shadow-normalBias={0.1}
       />
 
       <ambientLight ref={ambLightRef} intensity={isMobile ? 1 : 0.4} />

@@ -46,19 +46,21 @@ export function CanvasScene3() {
         <Experience />
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-          <NormalCustom />
+
           {isMobile ? (
             <>
               <Bloom
                 luminanceThreshold={1.0}
-                intensity={2.0}
+                intensity={2.1} // Setting For NormalCustom
+                // intensity={1} // Setting For No NormalCustom
                 kernelSize={KernelSize.VERY_LARGE}
               />
               <DepthOfField
-                focusDistance={0.005}
-                focalLength={0.025}
-                bokehScale={6}
-                worldFocusRange={20}
+                blendFunction={BlendFunction.NORMAL}
+                focusDistance={0.001}
+                focalLength={0.0025}
+                bokehScale={3.75}
+                worldFocusRange={130}
               />
             </>
           ) : (
@@ -75,6 +77,7 @@ export function CanvasScene3() {
               />
             </>
           )}
+          <NormalCustom />
           <OutLineCustom />
         </EffectComposer>
       </Canvas>
