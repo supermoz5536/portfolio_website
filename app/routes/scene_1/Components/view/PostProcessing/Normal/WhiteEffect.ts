@@ -14,13 +14,13 @@ const whiteEffectFragmentShader = /* glsl */ `
 `;
 
 export class WhiteEffect extends Effect {
-  constructor(props: { scrollProgress: number }) {
+  constructor() {
     super("whiteEffect", whiteEffectFragmentShader, {
       blendFunction: BlendFunction.NORMAL,
 
       // uniforms
       uniforms: new Map<string, Uniform<any>>([
-        ["scrollProgress", new Uniform(props.scrollProgress)],
+        ["scrollProgress", new Uniform(0)],
       ]),
     });
   }

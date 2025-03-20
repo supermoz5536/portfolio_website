@@ -6,11 +6,7 @@ import { WhiteEffect } from "./WhiteEffect";
 export function WhiteCustom() {
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
-  const normalEffectRef = useRef(
-    new WhiteEffect({
-      scrollProgress: 0,
-    }),
-  );
+  const normalEffectRef = useRef(new WhiteEffect());
 
   useEffect(() => {
     normalEffectRef.current.uniforms.get("scrollProgress")!.value =
