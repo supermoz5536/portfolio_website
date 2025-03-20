@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { KernelSize } from "postprocessing";
-import { OutLineCustom } from "./PostProcessing/Outline/Outline";
+import { OutLineCustom } from "./PostProcessing/Outline/OutlineCustom";
 import { useGlobalStore } from "~/store/global/global_store";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
 
