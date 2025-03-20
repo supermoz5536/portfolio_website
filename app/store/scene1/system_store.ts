@@ -2,18 +2,33 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 type SystemStore = {
-  scrollProgress: number;
+  clipRate: number;
+  scrollProgressTopAndTop: number; // For TextGroup1-5
+  scrollProgressTopAndBottom: number; // For Control Rendering, Resolution and Camera
 };
 
 export const useSystemStore = create<SystemStore>()(
   subscribeWithSelector((set) => {
     return {
-      scrollProgress: 0,
+      clipRate: 100,
+      scrollProgressTopAndTop: 0,
+      scrollProgressTopAndBottom: 0,
 
-      setScrollProgress: (newState: number) => {
+      setClipRate: (newState: number) => {
         set((state: any) => {
-          console.log(newState);
-          return { scrollProgress: newState };
+          return { clipRate: newState };
+        });
+      },
+
+      setScrollProgressTopAndTop: (newState: number) => {
+        set((state: any) => {
+          return { scrollProgressTopAndTop: newState };
+        });
+      },
+
+      setScrollProgressTopAndBottom: (newState: number) => {
+        set((state: any) => {
+          return { scrollProgressTopAndBottom: newState };
         });
       },
     };
