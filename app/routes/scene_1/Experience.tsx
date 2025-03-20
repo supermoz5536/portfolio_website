@@ -12,6 +12,8 @@ import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 
+let debugIsIntroEnd = true; // StoreのisIntroEndを実装後に差し替えが必要な変数
+
 export default function Experience() {
   const endRenderRate = 1.0;
 
@@ -23,10 +25,6 @@ export default function Experience() {
 
   const [isRender, setIsRender] = useState(false);
 
-  // useEffect(() => {
-  //   console.log(scrollProgressTopAndBottom);
-  // }, [scrollProgressTopAndBottom]);
-
   useEffect(() => {
     /**
      * Control Render for CPU Performance
@@ -36,8 +34,7 @@ export default function Experience() {
       setIsRender(false);
       renderFinish();
     } else {
-      if (!isRender) {
-        console.log("1", scrollProgressTopAndBottom);
+      if (!isRender && debugIsIntroEnd) {
         setIsRender(true);
         renderStart();
       }
@@ -48,12 +45,11 @@ export default function Experience() {
      */
 
     if (scrollProgressTopAndBottom >= endRenderRate) {
-      console.log("2", scrollProgressTopAndBottom);
       gl.setPixelRatio(0.001);
     } else {
-      console.log("3", scrollProgressTopAndBottom);
-      if (isMobile) gl.setPixelRatio(0.65);
-      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+      if (isMobile && debugIsIntroEnd) gl.setPixelRatio(0.65);
+      if (!isMobile && debugIsIntroEnd)
+        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
     }
   }, [scrollProgressTopAndBottom]);
 
