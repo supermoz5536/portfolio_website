@@ -9,10 +9,6 @@ export function OutLineCustom() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const scrollProgress = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
 
-  useEffect(() => {
-    console.log(scrollProgress);
-  }, [scrollProgress]);
-
   const OutlineEffect = new OutLineEffect({
     x: size.width * (isMobile ? 1.0 : 0.75),
     y: size.height * (isMobile ? 1.0 : 0.75),
