@@ -12,9 +12,9 @@ export default function Scene1() {
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
 
-  const scrollTriggerRef = useRef<any>(false);
-  const currentWindowWidthRef = useRef<any>();
   const isMobileRef = useRef<any>();
+  const currentWindowWidthRef = useRef<any>();
+  const scrollTriggerRef = useRef<any>(false);
 
   /**
    * Store State
@@ -66,7 +66,7 @@ export default function Scene1() {
             onUpdate: (value) => {
               const progressRate = value.progress;
               setScrollProgressTopAndBottom(progressRate);
-              // console.log(progressRate);
+              console.log(progressRate);
             },
           },
         },
@@ -80,7 +80,8 @@ export default function Scene1() {
     const timeout1 = setTimeout(() => setIsText1(true), 2000);
     const timeout2 = setTimeout(() => setIsText2(true), 7000);
     const timeout3 = setTimeout(() => setIsText3(true), 12000);
-    const timeout4 = setTimeout(() => setIsIntroEnd(true), 17000);
+    const timeout4 = setTimeout(() => setIsSkiped(true), 17000);
+    const timeout5 = setTimeout(() => setIsIntroEnd(true), 18000);
 
     /**
      * Resize
@@ -112,6 +113,7 @@ export default function Scene1() {
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
+      clearTimeout(timeout5);
       window.removeEventListener("resize", resizeCallback);
     };
   }, []);
@@ -119,6 +121,14 @@ export default function Scene1() {
   useEffect(() => {
     isMobileRef.current = isMobile;
   }, [isMobile]);
+
+  useEffect(() => {
+    if (isIntroEnded) {
+      document.body.style.position = "";
+    } else {
+      document.body.style.position = "fixed";
+    }
+  }, [isIntroEnded]);
 
   function controlSkip() {
     setIsAllTextVisible(false);
@@ -128,23 +138,18 @@ export default function Scene1() {
     }, 1000);
   }
 
-  useEffect(() => {
-    if (isIntroEnded) {
-      document.body.style.overflow = "";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
-  }, [isIntroEnded]);
-
   return (
-    <div
-      id="scene1"
-      className="relative justify-center items-center h-[400vh] w-full"
-    >
+    <div className="relative justify-center items-center h-[400vh] w-full">
       {/* --------
           Scene1
         -------- */}
-      <div className="relative justify-center items-center h-full w-full">
+      <div
+        id="scene1"
+        className={
+          "relative justify-center items-center h-full " +
+          (isIntroEnded ? "w-full" : "w-[100vw]")
+        }
+      >
         {/**
          *  Sticky
          */}
@@ -160,7 +165,7 @@ export default function Scene1() {
           Intro
         -------- */}
       {isIntroEnded || (
-        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
+        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
               {isText1 && (
@@ -196,6 +201,23 @@ export default function Scene1() {
               onClick={() => controlSkip()}
             >
               Skip
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------
+          Scene HTML Layder
+        ---------------------- */}
+      {isIntroEnded && (
+        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
+          <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
+            <button
+              className={
+                "absolute top-[90%] left-[50%] -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-black outline transition-opacity duration-1000"
+              }
+            >
+              ↓
             </button>
           </div>
         </div>

@@ -5,6 +5,8 @@ import { useSystemStore } from "~/store/scene1/system_store";
 
 export function HueSlideCustom() {
   const hueSlideEffectRef = useRef(new HueSlideEffect());
+  const skippedTimeRef = useRef();
+
   const isSkiped = useSystemStore((state: any) => state.isSkiped);
 
   useEffect(() => {
@@ -14,6 +16,9 @@ export function HueSlideCustom() {
   useFrame((state) => {
     const elapsedTime = state.clock.elapsedTime;
     hueSlideEffectRef.current.uniforms.get("uTime")!.value = elapsedTime; // prettier-ignore
+
+    if (isSkiped == false && skippedTimeRef.current == null)
+    hueSlideEffectRef.current.uniforms.get("uSkippedTime")!.value = elapsedTime; // prettier-ignore
   });
 
   return (

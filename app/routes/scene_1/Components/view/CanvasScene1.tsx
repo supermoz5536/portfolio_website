@@ -6,10 +6,13 @@ import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
 import { WhiteCustom } from "./PostProcessing/Normal/White/WhiteCustom";
 import { HueSlideCustom } from "./PostProcessing/Normal/HueSlide/HueSlideCustom";
+import { useSystemStore } from "~/store/scene1/system_store";
 
 export function CanvasScene1() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const [dpr, setDpr] = useState(2.0);
+
+  const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
     setDpr(Math.min(window.devicePixelRatio, 2.0));
@@ -41,7 +44,7 @@ export function CanvasScene1() {
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
-          <HueSlideCustom />
+          {isIntroEnded || <HueSlideCustom />}
         </EffectComposer>
       </Canvas>
     </>
