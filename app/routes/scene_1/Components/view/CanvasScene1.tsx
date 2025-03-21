@@ -4,7 +4,8 @@ import { EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useEffect, useState } from "react";
 import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
-import { WhiteCustom } from "./PostProcessing/Normal/WhiteCustom";
+import { WhiteCustom } from "./PostProcessing/Normal/White/WhiteCustom";
+import { HueSlideCustom } from "./PostProcessing/Normal/HueSlide/HueSlideCustom";
 
 export function CanvasScene1() {
   const isMobile = useGlobalStore((state) => state.isMobile);
@@ -40,6 +41,7 @@ export function CanvasScene1() {
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
+          <HueSlideCustom />
         </EffectComposer>
       </Canvas>
     </>
