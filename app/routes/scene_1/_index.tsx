@@ -125,6 +125,14 @@ export default function Scene1() {
     }, 1000);
   }
 
+  useEffect(() => {
+    if (isIntroEnded) {
+      document.body.style.overflow = "";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  }, [isIntroEnded]);
+
   return (
     <div
       id="scene1"
@@ -139,7 +147,6 @@ export default function Scene1() {
          */}
 
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
-          {/* Three */}
           <div className="absolute top-0 left-0 h-full w-full z-0">
             <CanvasScene1 />
           </div>
@@ -152,7 +159,7 @@ export default function Scene1() {
       {isIntroEnded || (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
-            <div className="flex flex-col justify-center items-center w-[70vw]">
+            <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
               {isText1 && (
                 <ShowSubtitle
                   inputText={text1}
@@ -180,7 +187,7 @@ export default function Scene1() {
 
             <button
               className={
-                "absolute top-[90%] left-[90%] h-10 w-16 text-black outline duration-1000 " +
+                "absolute top-[90%] left-[90%] -translate-x-1/2 -translate-y-1/2 h-10 w-16 text-black outline duration-1000 " +
                 (isSkiped ? "opacity-0" : "opacity-100")
               }
               onClick={() => controlSkip()}

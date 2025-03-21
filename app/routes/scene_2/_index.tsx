@@ -156,10 +156,10 @@ export default function Scene2() {
     };
   }, []);
 
-  useEffect(() => {
-    /* --------------------
-       Control Activation
+  /* --------------------
+      Control Activation
     -------------------- */
+  useEffect(() => {
     if (isActivated) {
       // 初回アクティベーション時の遅延演出の表示
       if (isFirstActivate) {
