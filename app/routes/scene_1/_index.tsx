@@ -11,7 +11,6 @@ export default function Scene1() {
   const [isText1, setIsText1] = useState(false);
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
-  const [isSkiped, setIsSkiped] = useState(false);
 
   const scrollTriggerRef = useRef<any>(false);
   const currentWindowWidthRef = useRef<any>();
@@ -22,17 +21,21 @@ export default function Scene1() {
    */
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isIntroEnded = useSystemStore((state: any)=>state.isIntroEnd) // prettier-ignore
+  const isSkiped = useSystemStore((state: any) => state.isSkiped);
+  const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   /**
    * Store Setter
    */
 
-  const setScrollProgressTopAndBottom = 
-      useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
+  const setIsSkiped = 
+      useSystemStore((state: any)=>state.setIsSkiped) // prettier-ignore
 
   const setIsIntroEnd = 
       useSystemStore((state: any)=>state.setIsIntroEnd) // prettier-ignore
+
+  const setScrollProgressTopAndBottom = 
+      useSystemStore((state: any)=>state.setScrollProgressTopAndBottom) // prettier-ignore
 
   useEffect(() => {
     currentWindowWidthRef.current = window.innerWidth;
