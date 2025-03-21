@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 type SystemStore = {
-  clipRate: number;
+  isIntroEnd: boolean;
   scrollProgressTopAndTop: number; // For TextGroup1-5
   scrollProgressTopAndBottom: number; // For Control Rendering, Resolution and Camera
 };
@@ -10,13 +10,13 @@ type SystemStore = {
 export const useSystemStore = create<SystemStore>()(
   subscribeWithSelector((set) => {
     return {
-      clipRate: 100,
+      isIntroEnd: false,
       scrollProgressTopAndTop: 0,
       scrollProgressTopAndBottom: 0,
 
-      setClipRate: (newState: number) => {
+      setIsIntroEnd: (newState: boolean) => {
         set((state: any) => {
-          return { clipRate: newState };
+          return { isIntroEnd: newState };
         });
       },
 
