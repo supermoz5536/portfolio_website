@@ -169,10 +169,27 @@ export default function Scene1() {
         </div>
       </div>
 
+      {/* ---------------------
+          Scene HTML Layder
+        ---------------------- */}
+      {isIntroEnded && (
+        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
+          <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
+            <button
+              className={
+                "absolute top-[90%] left-[50%] -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-black outline transition-opacity duration-1000"
+              }
+            >
+              ↓
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* -------
           Intro
         -------- */}
-      {isIntroEnded || (
+      {(isLoaded && isIntroEnded) || (
         <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
@@ -214,19 +231,15 @@ export default function Scene1() {
         </div>
       )}
 
-      {/* ---------------------
-          Scene HTML Layder
-        ---------------------- */}
-      {isIntroEnded && (
+      {/* ---------
+          Loading
+        --------- */}
+      {isLoaded || (
         <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
-          <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
-            <button
-              className={
-                "absolute top-[90%] left-[50%] -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-black outline transition-opacity duration-1000"
-              }
-            >
-              ↓
-            </button>
+          <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
+            <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
+              <span className="text-black text-3xl">Loading...</span>
+            </div>
           </div>
         </div>
       )}
