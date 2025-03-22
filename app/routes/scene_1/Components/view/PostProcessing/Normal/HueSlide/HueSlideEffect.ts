@@ -26,7 +26,10 @@ const hueSlideEffectFragmentShader = /* glsl */ `
 
          vec3 color = hsv2rgb(
              vec3(
-             -vUv.x * 0.2 + 0.3 + uTime * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+            //  -vUv.x * 0.2 + 1.0 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+            //  -vUv.x * 0.2 + 0.65 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+             -vUv.x * 0.2 + 0.425 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+            //  -vUv.x * 0.2 + 0.3 + uTime * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
              0.95,
              1.0
              )

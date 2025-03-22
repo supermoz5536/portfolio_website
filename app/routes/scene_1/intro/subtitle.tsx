@@ -72,7 +72,7 @@ export function ShowSubtitle({
     <span
       ref={textRef}
       className={
-        "text-3xl text-black duration-1000 " +
+        "text-3xl text-white duration-1000 " +
         (isVisible ? "opacity-100" : "opacity-0")
       }
     >

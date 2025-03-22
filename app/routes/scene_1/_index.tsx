@@ -4,7 +4,7 @@ import { useSystemStore } from "../../store/scene1/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
 import { CanvasScene1 } from "./Components/view/CanvasScene1";
-import { ShowSubtitle } from "./intro/intro";
+import { ShowSubtitle } from "./intro/subtitle";
 
 export default function Scene1() {
   const [isTextAllVisible, setIsAllTextVisible] = useState(true);
