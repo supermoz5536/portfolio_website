@@ -336,22 +336,25 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
 }
 
 export function Ground() {
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
-  const textureLoader = new THREE.TextureLoader(loadingManager);
-  const groundTexture = textureLoader.load("asset/texture/ground.jpg");
-
-  const mesh = new THREE.Mesh(
-    new THREE.CircleGeometry(4000),
-    new THREE.MeshBasicMaterial({
-      map: groundTexture,
-      side: THREE.DoubleSide,
-    }),
+  const meshRef = useRef(
+    new THREE.Mesh(
+      new THREE.CircleGeometry(4000),
+      new THREE.MeshBasicMaterial(),
+    ),
   );
 
-  mesh.position.set(0, -500, 0);
-  mesh.rotation.set(-Math.PI / 2, 0, 0);
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
 
-  return mesh;
+  useEffect(() => {
+    const textureLoader = new THREE.TextureLoader(loadingManager);
+    const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+
+    meshRef.current.material.map = groundTexture;
+    meshRef.current.position.set(0, -500, 0);
+    meshRef.current.rotation.set(-Math.PI / 2, 0, 0);
+  }, []);
+
+  return meshRef.current;
 }
 
 export function Stars({ sunPosition }: StartsProps) {

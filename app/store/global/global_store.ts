@@ -7,6 +7,7 @@ type GlobalStore = {
   isLandscape: boolean;
   loadingManager: THREE.LoadingManager | undefined;
   isLoaded: boolean;
+  loadingProgressRatio: number;
 };
 
 export const useGlobalStore = create<GlobalStore>()(
@@ -16,6 +17,7 @@ export const useGlobalStore = create<GlobalStore>()(
       isLandscape: false,
       loadingManager: undefined,
       isLoaded: false,
+      loadingProgressRatio: 0,
 
       setIsMobile: (newState: boolean) => {
         set((state: any) => {
@@ -38,6 +40,12 @@ export const useGlobalStore = create<GlobalStore>()(
       setIsLoaded: (newState: boolean) => {
         set((state: any) => {
           return { isLoaded: newState };
+        });
+      },
+
+      setLoadingProgressRatio: (newState: number) => {
+        set((state: any) => {
+          return { loadingProgressRatio: newState };
         });
       },
     };

@@ -8,11 +8,15 @@ export function setupLoadingManager() {
   /**
    * Global State
    */
-  const setIsLoaded = useGlobalStore((state: any) => 
-    state.setIsLoaded); // prettier-ignore
 
   const setLoadingManager = useGlobalStore((state: any) => 
     state.setLoadingManager); // prettier-ignore
+
+  const setIsLoaded = useGlobalStore((state: any) => 
+    state.setIsLoaded); // prettier-ignore
+
+  const setLoadingProgressRatio = useGlobalStore((state: any) => 
+    state.setLoadingProgressRatio); // prettier-ignore
 
   /**
    * LoaderManager
@@ -20,7 +24,7 @@ export function setupLoadingManager() {
   const loadingManager = new THREE.LoadingManager(
     // onLoad
     () => {
-      if (loadedCountRef.current > 10) {
+      if (loadedCountRef.current > 40) {
         setIsLoaded(true);
         console.log("loaded");
       }
@@ -28,11 +32,12 @@ export function setupLoadingManager() {
 
     // onProgress
     (url, loaded, total) => {
-      const progressRatio = loaded / total;
-      console.log("loaded", progressRatio);
-      console.log("total", total);
+      loadedCountRef.current = loaded;
 
-      loadedCountRef.current = total;
+      const progressRatio = loaded / total;
+      setLoadingProgressRatio(progressRatio);
+
+      console.log("total", total);
     },
 
     // on Error

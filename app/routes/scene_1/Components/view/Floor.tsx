@@ -8,19 +8,12 @@ import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { ShowCase } from "./ShowCase";
 import { FloorContents } from "./FloorContents";
 import { Bridge, BridgeRight } from "./Bridges";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type floorProps = {
   position: THREE.Vector3;
   scene: Object3D;
 };
-
-/**
- * Loader
- */
-const gltfLoader: any = new GLTFLoader();
-const dracoLoader: any = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/");
-gltfLoader.setDRACOLoader(dracoLoader);
 
 /**
  * Model Setting
@@ -67,16 +60,26 @@ export function Floor({ position, scene }: floorProps) {
 }
 
 export function Floors() {
+  let floorPositions: THREE.Vector3[] = [];
   const stageRow = 4;
   const stageColumn = 3;
   const floorAxesInterval = 64; // フロア間の中心軸の距離 (高さの差分の基準値としても利用)
-  let floorPositions: THREE.Vector3[] = [];
+
   const [controlRatePositionY, setControlRatePositionY] = useState(0.275); // フロア間のy軸の調節用変数
   const [scene, setScene] = useState<Object3D>();
   const [boundingBoxFloor, setBoundingBoxFloor] = useState<THREE.Box3>();
 
-  /* Initialize */
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
+
   useEffect(() => {
+    /**
+     * Loader
+     */
+    const gltfLoader: any = new GLTFLoader();
+    const dracoLoader: any = new DRACOLoader(loadingManager);
+    dracoLoader.setDecoderPath("/draco/");
+    gltfLoader.setDRACOLoader(dracoLoader);
+
     /* Importing Each Model  */
     gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {

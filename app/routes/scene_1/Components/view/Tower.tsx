@@ -49,15 +49,6 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
   depthWrite: false,
 });
 
-/**
- * Loader
- */
-
-const gltfLoader = new GLTFLoader();
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/");
-gltfLoader.setDRACOLoader(dracoLoader);
-
 export function TopCircle({ normWidth, normHeight }: CommonProps) {
   return (
     <>
@@ -135,8 +126,10 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
 }
 
 export function MidPlane() {
-  const [scene, setScene] = useState();
   const mixerRef = useRef<any>();
+  const [scene, setScene] = useState();
+
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
 
   const waveMaterial: any = useMemo(() => {
     const waveMaterial = new THREE.MeshStandardMaterial({
@@ -220,6 +213,15 @@ export function MidPlane() {
   }, []);
 
   useEffect(() => {
+    /**
+     * Loader
+     */
+    const gltfLoader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader(loadingManager);
+    dracoLoader.setDecoderPath("/draco/");
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    /* Load Model */
     gltfLoader.load("/asset/model/midPlane.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {
         if (child.isMesh) {
