@@ -2,20 +2,22 @@ import { useEffect, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { Object3D } from "three";
-
-/**
- * Loader
- */
-const gltfLoader: any = new GLTFLoader();
-const dracoLoader: any = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/");
-gltfLoader.setDRACOLoader(dracoLoader);
+import { useGlobalStore } from "~/store/global/global_store";
 
 export function Question() {
   const [scene, setScene] = useState<Object3D>();
 
-  /* Initialize */
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
+
   useEffect(() => {
+    /**
+     * Loader
+     */
+    const gltfLoader: any = new GLTFLoader();
+    const dracoLoader: any = new DRACOLoader(loadingManager);
+    dracoLoader.setDecoderPath("/draco/");
+    gltfLoader.setDRACOLoader(dracoLoader);
+
     /* Importing Each Model  */
     gltfLoader.load("/asset/model/question.glb", (gltf: any) => {
       gltf.scene.traverse((child: any) => {

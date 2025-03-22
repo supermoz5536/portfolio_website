@@ -21,6 +21,7 @@ export default function Scene1() {
    */
 
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
   const isSkiped = useSystemStore((state: any) => state.isSkiped);
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
@@ -74,16 +75,6 @@ export default function Scene1() {
     });
 
     /**
-     * Subtitle
-     */
-
-    const timeout1 = setTimeout(() => setIsText1(true), 2000);
-    const timeout2 = setTimeout(() => setIsText2(true), 7000);
-    const timeout3 = setTimeout(() => setIsText3(true), 12000);
-    const timeout4 = setTimeout(() => setIsSkiped(true), 17000);
-    const timeout5 = setTimeout(() => setIsIntroEnd(true), 18000);
-
-    /**
      * Resize
      */
 
@@ -109,11 +100,6 @@ export default function Scene1() {
     window.addEventListener("resize", resizeCallback);
 
     return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-      clearTimeout(timeout3);
-      clearTimeout(timeout4);
-      clearTimeout(timeout5);
       window.removeEventListener("resize", resizeCallback);
     };
   }, []);
@@ -121,6 +107,28 @@ export default function Scene1() {
   useEffect(() => {
     isMobileRef.current = isMobile;
   }, [isMobile]);
+
+  useEffect(() => {
+    /**
+     * Subtitle
+     */
+
+    if (isLoaded) {
+      const timeout1 = setTimeout(() => setIsText1(true), 2000);
+      const timeout2 = setTimeout(() => setIsText2(true), 7000);
+      const timeout3 = setTimeout(() => setIsText3(true), 12000);
+      const timeout4 = setTimeout(() => setIsSkiped(true), 17000);
+      const timeout5 = setTimeout(() => setIsIntroEnd(true), 18000);
+
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+        clearTimeout(timeout4);
+        clearTimeout(timeout5);
+      };
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
     if (isIntroEnded) {

@@ -15,16 +15,16 @@ const stoneBridgeMaterial = new THREE.MeshPhysicalMaterial({
   color: "white", // 完全な白
 });
 
-const transparentBridgeMaterial = new THREE.MeshPhysicalMaterial({
-  metalness: 0,
-  roughness: 0,
-  transmission: 1,
-  ior: 1.62,
-  thickness: 0.001,
-  opacity: 0.95, // 透明度を強調
-  // transparent: true, // 透明を有効化
-  color: 0xffffff, // 完全な白
-});
+// const transparentBridgeMaterial = new THREE.MeshPhysicalMaterial({
+//   metalness: 0,
+//   roughness: 0,
+//   transmission: 1,
+//   ior: 1.62,
+//   thickness: 0.001,
+//   opacity: 0.95, // 透明度を強調
+//   // transparent: true, // 透明を有効化
+//   color: 0xffffff, // 完全な白
+// });
 
 /**
  * Texture Loader
