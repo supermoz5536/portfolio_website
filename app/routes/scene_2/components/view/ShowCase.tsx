@@ -91,6 +91,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   );
 
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
   const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
 
   const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
@@ -127,7 +128,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     /**
      * Texture Setup
      */
-    const textureLoader = new THREE.TextureLoader();
+    const textureLoader = new THREE.TextureLoader(loadingManager);
     const stoneTexture = textureLoader.load("asset/texture/stone.png");
 
     if (stoneTexture) {

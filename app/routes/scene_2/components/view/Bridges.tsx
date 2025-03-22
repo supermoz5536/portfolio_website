@@ -2,6 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type bridgeProps = {
   position: THREE.Vector3;
@@ -16,21 +17,16 @@ const stoneBridgeMaterial = new THREE.MeshPhysicalMaterial({
   color: "white", // 完全な白
 });
 
-const transparentBridgeMaterial = new THREE.MeshPhysicalMaterial({
-  metalness: 0,
-  roughness: 0,
-  transmission: 1,
-  ior: 1.62,
-  thickness: 0.001,
-  opacity: 0.95, // 透明度を強調
-  // transparent: true, // 透明を有効化
-  color: 0xffffff, // 完全な白
-});
-
-/**
- * Texture Loader
- */
-const textureLoader = new THREE.TextureLoader();
+// const transparentBridgeMaterial = new THREE.MeshPhysicalMaterial({
+//   metalness: 0,
+//   roughness: 0,
+//   transmission: 1,
+//   ior: 1.62,
+//   thickness: 0.001,
+//   opacity: 0.95, // 透明度を強調
+//   // transparent: true, // 透明を有効化
+//   color: 0xffffff, // 完全な白
+// });
 
 export function Bridge({
   position,
@@ -70,6 +66,8 @@ export function Bridge({
     new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
   );
 
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
+
   /**
    * 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
    */
@@ -79,6 +77,7 @@ export function Bridge({
     /**
      * Texture Setup
      */
+    const textureLoader = new THREE.TextureLoader(loadingManager);
     const stoneTexture = textureLoader.load("asset/texture/stone.png");
 
     if (stoneTexture) {

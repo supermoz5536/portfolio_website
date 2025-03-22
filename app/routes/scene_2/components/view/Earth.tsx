@@ -336,7 +336,8 @@ export function Sphere({ sunPosition, playerMoveRatio }: SphereProps) {
 }
 
 export function Ground() {
-  const textureLoader = new THREE.TextureLoader();
+  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const textureLoader = new THREE.TextureLoader(loadingManager);
   const groundTexture = textureLoader.load("asset/texture/ground.jpg");
 
   const mesh = new THREE.Mesh(

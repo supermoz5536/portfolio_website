@@ -64,6 +64,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
 
   const isMobile = useGlobalStore((state) => state.isMobile);
   const loadingManager = useGlobalStore((state) => state.loadingManager);
+
   useEffect(() => {
     /**
      * Texture Setup
