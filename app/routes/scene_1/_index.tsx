@@ -1,4 +1,5 @@
 import "./css/index.css";
+import "./css/loading.scss";
 import { gsap } from "gsap/dist/gsap";
 import { useSystemStore } from "../../store/scene1/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
@@ -228,7 +229,31 @@ export default function Scene1() {
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-col justify-center items-center h-[20vh] w-[70vw]">
-              <span className="text-black text-3xl">Loading...</span>
+              <div id="container">
+                <p className="loading-text" aria-label="Loading">
+                  <span className="letter" aria-hidden="true">
+                    L
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    o
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    a
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    d
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    i
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    n
+                  </span>
+                  <span className="letter" aria-hidden="true">
+                    g
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
