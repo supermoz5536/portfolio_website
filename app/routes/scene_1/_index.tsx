@@ -13,6 +13,7 @@ export default function Scene1() {
   const [isText1, setIsText1] = useState(false);
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
+  const [isLoadingLayer, setIsLoadingLayer] = useState(true);
 
   const isMobileRef = useRef<any>();
   const currentWindowWidthRef = useRef<any>();
@@ -116,6 +117,8 @@ export default function Scene1() {
      */
 
     if (isLoaded) {
+      setIsLoadingLayer;
+      const timeout0 = setTimeout(() => setIsLoadingLayer(false), 1000);
       const timeout1 = setTimeout(() => setIsText1(true), 2000);
       const timeout2 = setTimeout(() => setIsText2(true), 7000);
       const timeout3 = setTimeout(() => setIsText3(true), 12000);
@@ -123,6 +126,7 @@ export default function Scene1() {
       const timeout5 = setTimeout(() => setIsIntroEnd(true), 18000);
 
       return () => {
+        clearTimeout(timeout0);
         clearTimeout(timeout1);
         clearTimeout(timeout2);
         clearTimeout(timeout3);
@@ -225,12 +229,19 @@ export default function Scene1() {
       {/* ---------
           Loading
         --------- */}
-      {isLoaded || (
+      {isLoadingLayer && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-row justify-center items-center h-[20vh] w-[70vw]">
+              {/* CSS Animation */}
               <div id="container">
-                <p className="loading-text" aria-label="Loading">
+                <p
+                  className={
+                    "loading-text " +
+                    (isLoaded ? "duration-1000 opacity-0" : "opacity-100")
+                  }
+                  aria-label="Loading"
+                >
                   <span className="letter" aria-hidden="true">
                     L
                   </span>
@@ -254,11 +265,25 @@ export default function Scene1() {
                   </span>
                 </p>
               </div>
-              <span className="mr-7 text-black text-5xl">
+
+              {/* Progress Ratio */}
+              <span
+                className={
+                  "mr-7 text-black text-5xl " +
+                  (isLoaded ? "duration-1000 opacity-0" : "opacity-100")
+                }
+              >
                 {loadingProgressRatio}%
               </span>
             </div>
-            <p className="flex justify-center items-center h-[20vh] w-[70vw] text-black text-2xl">
+
+            {/* Comments */}
+            <p
+              className={
+                "flex justify-center items-center h-[20vh] w-[70vw] text-black text-2xl " +
+                (isLoaded ? "duration-1000 opacity-0" : "opacity-100")
+              }
+            >
               This website was made just for fun.
             </p>
           </div>
