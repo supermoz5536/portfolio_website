@@ -4,6 +4,7 @@ import { useRef } from "react";
 
 export function setupLoadingManager() {
   const loadedCountRef = useRef<number>(0);
+  const timeoutRef = useRef<any>();
 
   /**
    * Global State
@@ -24,20 +25,26 @@ export function setupLoadingManager() {
   const loadingManager = new THREE.LoadingManager(
     // onLoad
     () => {
-      if (loadedCountRef.current > 40) {
-        setIsLoaded(true);
-        console.log("loaded");
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
+
+      timeoutRef.current = setTimeout(() => {
+        if (loadedCountRef.current > 36) {
+          setIsLoaded(true);
+          console.log("loaded");
+        }
+      }, 3000);
     },
 
     // onProgress
     (url, loaded, total) => {
       loadedCountRef.current = loaded;
 
-      const progressRatio = loaded / total;
+      const progressRatio = Math.floor((loaded / 46) * 100);
       setLoadingProgressRatio(progressRatio);
 
-      console.log("total", total);
+      console.log("ロード済", loaded);
     },
 
     // on Error

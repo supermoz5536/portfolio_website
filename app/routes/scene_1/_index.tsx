@@ -24,7 +24,7 @@ export default function Scene1() {
 
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isLoaded = useGlobalStore((state: any) => state.isLoaded);
-  const isSkiped = useSystemStore((state: any) => state.isSkiped);
+  const loadingProgressRatio = useGlobalStore((state: any) => state.loadingProgressRatio); // prettier-ignore
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   /**
@@ -228,7 +228,7 @@ export default function Scene1() {
       {isLoaded || (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
-            <div className="flex flex-col justify-center items-center h-[20vh] w-[70vw]">
+            <div className="flex flex-row justify-center items-center h-[20vh] w-[70vw]">
               <div id="container">
                 <p className="loading-text" aria-label="Loading">
                   <span className="letter" aria-hidden="true">
@@ -254,7 +254,13 @@ export default function Scene1() {
                   </span>
                 </p>
               </div>
+              <span className="mr-7 text-black text-5xl">
+                {loadingProgressRatio}%
+              </span>
             </div>
+            <p className="flex justify-center items-center h-[20vh] w-[70vw] text-black text-2xl">
+              This website was made just for fun.
+            </p>
           </div>
         </div>
       )}
