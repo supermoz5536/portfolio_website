@@ -4,7 +4,7 @@ import { Uniform, Vector2 } from "three";
 const hueSlideEffectFragmentShader = /* glsl */ `
     uniform float uTime;
     uniform float uSkippedTime;
-    uniform bool uIsSkiped;
+    uniform float uSkipFactor;
 
     // https://qiita.com/keim_at_si/items/c2d1afd6443f3040e900
     // このコードの中で、
@@ -28,16 +28,15 @@ const hueSlideEffectFragmentShader = /* glsl */ `
              vec3(
             //  -vUv.x * 0.2 + 1.0 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
             //  -vUv.x * 0.2 + 0.65 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-             -vUv.x * 0.2 + 0.425 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-            //  -vUv.x * 0.2 + 0.3 + uTime * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+            //  -vUv.x * 0.2 + 0.425 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
+             -vUv.x * 0.2 + 0.3 + uTime * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
              0.95,
              1.0
              )
          );
 
-         if (uIsSkiped) {
-            color += (uTime - uSkippedTime) * 1.5;
-         }
+         float multiplyer = 0.85;
+         color += (uTime - uSkippedTime) * multiplyer * uSkipFactor;      
 
          outputColor = vec4( color, 1.0 );
         
@@ -53,7 +52,7 @@ export class HueSlideEffect extends Effect {
       uniforms: new Map<string, Uniform<any>>([
         ["uTime", new Uniform(0)],
         ["uSkippedTime", new Uniform(0)],
-        ["uIsSkiped", new Uniform(false)],
+        ["uSkipFactor", new Uniform(0)],
       ]),
     });
   }

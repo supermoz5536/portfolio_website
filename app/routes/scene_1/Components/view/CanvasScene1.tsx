@@ -4,14 +4,16 @@ import { EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useEffect, useState } from "react";
 import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
-import { WhiteCustom } from "./PostProcessing/Normal/White/WhiteCustom";
-import { HueSlideCustom } from "./PostProcessing/Normal/HueSlide/HueSlideCustom";
+import { WhiteCustom } from "./PostProcessing/White/WhiteCustom";
+import { HueSlideCustom } from "./PostProcessing/HueSlide/HueSlideCustom";
 import { useSystemStore } from "~/store/scene1/system_store";
+import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 
 export function CanvasScene1() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const [dpr, setDpr] = useState(2.0);
 
+  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ export function CanvasScene1() {
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
           {isIntroEnded || <HueSlideCustom />}
+          <WhiteSlideCustom />
         </EffectComposer>
       </Canvas>
     </>
