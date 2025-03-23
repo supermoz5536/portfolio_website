@@ -4,10 +4,11 @@ import { useSystemStore } from "../../store/scene1/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
 import { CanvasScene1 } from "./Components/view/CanvasScene1";
-import { ShowSubtitle } from "./intro/subtitle";
+import { Subtitle } from "./intro/Subtitle";
+import { SkipButton } from "./intro/SkipButton";
 
 export default function Scene1() {
-  const [isTextAllVisible, setIsAllTextVisible] = useState(true);
+  const [isAllVisible, setIsAllVisible] = useState(true);
   const [isText1, setIsText1] = useState(false);
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
@@ -138,8 +139,8 @@ export default function Scene1() {
     }
   }, [isIntroEnded]);
 
-  function controlSkip() {
-    setIsAllTextVisible(false);
+  function onSkip() {
+    setIsAllVisible(false);
     setIsSkiped(true);
     setTimeout(() => {
       setIsIntroEnd(true);
@@ -152,16 +153,11 @@ export default function Scene1() {
           Scene1
         -------- */}
       <div
-        id="scene1"
         className={
           "relative justify-center items-center h-full " +
           (isIntroEnded ? "w-full" : "w-[100vw]")
         }
       >
-        {/**
-         *  Sticky
-         */}
-
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
           <div className="absolute top-0 left-0 h-full w-full z-0">
             <CanvasScene1 />
@@ -173,7 +169,7 @@ export default function Scene1() {
           Scene HTML Layder
         ---------------------- */}
       {isIntroEnded && (
-        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
+        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
             <button
               className={
@@ -189,44 +185,38 @@ export default function Scene1() {
       {/* -------
           Intro
         -------- */}
-      {(isLoaded && isIntroEnded) || (
-        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
+      {isLoaded && !isIntroEnded && (
+        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
               {isText1 && (
-                <ShowSubtitle
+                <Subtitle
                   inputText={text1}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isTextAllVisible}
+                  parentVisiblity={isAllVisible}
                 />
               )}
 
               {isText2 && (
-                <ShowSubtitle
+                <Subtitle
                   inputText={text2}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isTextAllVisible}
+                  parentVisiblity={isAllVisible}
                 />
               )}
 
               {isText3 && (
-                <ShowSubtitle
+                <Subtitle
                   inputText={text3}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isTextAllVisible}
+                  parentVisiblity={isAllVisible}
                 />
               )}
             </div>
 
-            <button
-              className={
-                "absolute top-[90%] left-[90%] -translate-x-1/2 -translate-y-1/2 h-10 w-16 text-black outline duration-1000 " +
-                (isSkiped ? "opacity-0" : "opacity-100")
-              }
-              onClick={() => controlSkip()}
-            >
-              Skip
-            </button>
+            {isLoaded && (
+              <SkipButton parentVisiblity={isAllVisible} onSkip={onSkip} />
+            )}
           </div>
         </div>
       )}
@@ -235,9 +225,9 @@ export default function Scene1() {
           Loading
         --------- */}
       {isLoaded || (
-        <div id="intro" className="absolute top-0 left-0 h-[100vh] w-full z-10">
+        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
-            <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
+            <div className="flex flex-col justify-center items-center h-[20vh] w-[70vw]">
               <span className="text-black text-3xl">Loading...</span>
             </div>
           </div>

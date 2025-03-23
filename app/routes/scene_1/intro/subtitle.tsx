@@ -5,7 +5,7 @@ type ShowSubtitle = {
   parentVisiblity: boolean;
 };
 
-export function ShowSubtitle({
+export function Subtitle({
   inputText,
   startTime,
   parentVisiblity,
