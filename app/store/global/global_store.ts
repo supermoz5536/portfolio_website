@@ -8,6 +8,7 @@ type GlobalStore = {
   loadingManager: THREE.LoadingManager | undefined;
   isLoaded: boolean;
   loadingProgressRatio: number;
+  assets: Record<string, any>;
 };
 
 export const useGlobalStore = create<GlobalStore>()(
@@ -18,6 +19,7 @@ export const useGlobalStore = create<GlobalStore>()(
       loadingManager: undefined,
       isLoaded: false,
       loadingProgressRatio: 0,
+      assets: {},
 
       setIsMobile: (newState: boolean) => {
         set((state: any) => {
@@ -46,6 +48,12 @@ export const useGlobalStore = create<GlobalStore>()(
       setLoadingProgressRatio: (newState: number) => {
         set((state: any) => {
           return { loadingProgressRatio: newState };
+        });
+      },
+
+      setAssets: (newState: Record<string, any>) => {
+        set((state: any) => {
+          return { assets: newState };
         });
       },
     };

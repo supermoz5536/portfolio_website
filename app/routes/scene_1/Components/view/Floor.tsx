@@ -69,31 +69,22 @@ export function Floors() {
   const [scene, setScene] = useState<Object3D>();
   const [boundingBoxFloor, setBoundingBoxFloor] = useState<THREE.Box3>();
 
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
+  const assets = useGlobalStore((state) => state.assets);
 
   useEffect(() => {
-    /**
-     * Loader
-     */
-    const gltfLoader: any = new GLTFLoader();
-    const dracoLoader: any = new DRACOLoader(loadingManager);
-    dracoLoader.setDecoderPath("/draco/");
-    gltfLoader.setDRACOLoader(dracoLoader);
-
     /* Importing Each Model  */
-    gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          child.castShadow = false;
-          child.receiveShadow = false;
-        }
-      });
-
-      const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
-
-      setScene(gltf.scene);
-      setBoundingBoxFloor(boundingBox);
+    assets.gltf.floor.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = false;
+        child.receiveShadow = false;
+      }
     });
+
+    const boundingBox = new THREE.Box3().setFromObject(assets.gltf.floor.scene);
+
+    setScene(assets.gltf.floor.scene);
+    setBoundingBoxFloor(boundingBox);
 
     /* Listem Player Current Floor */
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
@@ -110,7 +101,7 @@ export function Floors() {
     return () => {
       unsubscibePlayerPosition();
     };
-  }, []);
+  }, [isLoaded]);
 
   /* Calculate Each Position for Floor */
   for (let rowIndex = 0; rowIndex < stageRow; rowIndex++) {
@@ -147,16 +138,16 @@ export function Floors() {
                 <Floor position={floorPosition} scene={scene.clone()} />
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
-                {!hiddenBridgeForward.includes(index) && (
+                {/* {!hiddenBridgeForward.includes(index) && (
                   <Bridge
                     position={floorPosition}
                     boundingBox={boundingBoxFloor}
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
-                )}
+                )} */}
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
-                {!hiddenBridgeRight.includes(index) && (
+                {/* {!hiddenBridgeRight.includes(index) && (
                   // Bridgeを回転させて再利用
 
                   <BridgeRight
@@ -164,7 +155,7 @@ export function Floors() {
                     boundingBox={boundingBoxFloor}
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
-                )}
+                )} */}
 
                 <FloorContents index={index} position={floorPosition} />
 

@@ -1,53 +1,94 @@
 // assetsLoader.ts
+import { useRef } from "react";
 import * as THREE from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
-/**
- * この関数をアプリの起動時やトップレベルコンポーネントで呼び出し、
- * すべてのアセットを一括でロードし、グローバルストアに保存する想定
- */
-export async function loadAllAssets(loadingManager?: THREE.LoadingManager) {
+export async function loadAllAssets() {
+  const totalCount = 7;
+
+  const assetsObj = useRef<any>({ gltf: {}, texture: {} });
+  const loadedCount = useRef<any>(0);
+
   /**
-   * Setup Loader
+   * Store Setter
    */
+  const setAssets = useGlobalStore((state: any) => state.setAssets);
+
+  const setLoadingProgressRatio = useGlobalStore((state: any) => 
+    state.setLoadingProgressRatio); // prettier-ignore
+
+  const setIsLoaded = useGlobalStore((state: any) => 
+    state.setIsLoaded); // prettier-ignore
+
+  /**
+   * Loader
+   */
+
+  const textureLoader = new THREE.TextureLoader();
 
   const gltfLoader: any = new GLTFLoader();
   const dracoLoader: any = new DRACOLoader();
   dracoLoader.setDecoderPath("/draco/");
   gltfLoader.setDRACOLoader(dracoLoader);
 
+  /* ------------
+     Load Assets
+   ------------ */
+
+  if (typeof window !== "undefined") {
+    await Promise.all([
+      loadGLTF(gltfLoader, "/asset/model/floor.glb", "floor"),
+      loadGLTF(gltfLoader, "/asset/model/midPlane.glb", "midPlane"),
+      loadGLTF(gltfLoader, "/asset/model/question.glb", "question"),
+      loadGLTF(gltfLoader, "/asset/model/stoneTablet.glb", "stoneTablet"),
+      loadTexture(textureLoader, "asset/texture/ground.jpg", "ground"),
+      loadTexture(textureLoader, "asset/texture/playerShadow.jpg", "playerShadow"), //prettier-ignore
+      loadTexture(textureLoader, "asset/texture/stone.png", "stone"),
+    ]);
+
+    setIsLoaded(true);
+    console.log("loaded");
+  }
+
   /**
-   * Load Models
+   * Methods
    */
 
-  // floor.glb のロード例
-  await new Promise<void>((resolve, reject) => {
-    gltfLoader.load(
-      "/asset/model/floor.glb",
-      (gltf) => {
-        setFloorGLTF(gltf); // グローバルストアに保存
+  function getProgressRatio() {
+    return Math.floor((loadedCount.current / totalCount) * 100);
+  }
+
+  function loadGLTF(gltfLoader: GLTFLoader, path: string, assetName: string) {
+    return new Promise<void>((resolve) => {
+      gltfLoader.load(path, (gltf: any) => {
+        assetsObj.current.gltf[assetName] = gltf;
+        setAssets(assetsObj.current);
+
+        loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
+
         resolve();
-      },
-      undefined,
-      (error) => reject(error),
-    );
-  });
+      });
+    });
+  }
 
-  // 他にロードしたいモデルやテクスチャがあれば同様のパターンで順次ロード
-  // 例）
-  // await new Promise<void>((resolve, reject) => {
-  //   gltfLoader.load(
-  //     "/asset/model/other.glb",
-  //     (gltf) => {
-  //       setOtherGLTF(gltf);
-  //       resolve();
-  //     },
-  //     undefined,
-  //     (error) => reject(error),
-  //   );
-  // });
+  function loadTexture(
+    textureLoader: THREE.TextureLoader,
+    path: string,
+    assetName: string,
+  ) {
+    return new Promise<void>((resolve) => {
+      textureLoader.load(path, (texture: any) => {
+        assetsObj.current.texture[assetName] = texture;
+        setAssets(assetsObj.current);
 
-  // すべてのロードが完了したら関数を抜ける
+        loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
+
+        resolve();
+      });
+    });
+  }
 }

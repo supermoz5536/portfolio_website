@@ -41,7 +41,6 @@ export default function Experience() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isAvtivated = useSystemStore((state: any) => state.isActivated);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
-  console.log("scrollProgressTopAndBottom", scrollProgressTopAndBottom);
 
   /**
    * Store Setter

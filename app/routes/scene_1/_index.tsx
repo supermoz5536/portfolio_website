@@ -117,7 +117,7 @@ export default function Scene1() {
      */
 
     if (isLoaded) {
-      setIsLoadingLayer;
+      setIsLoadingLayer(false);
       const timeout0 = setTimeout(() => setIsLoadingLayer(false), 1000);
       const timeout1 = setTimeout(() => setIsText1(true), 2000);
       const timeout2 = setTimeout(() => setIsText2(true), 7000);
@@ -138,9 +138,9 @@ export default function Scene1() {
 
   useEffect(() => {
     if (isIntroEnded) {
-      document.body.style.position = "";
+      // document.body.style.position = "";
     } else {
-      document.body.style.position = "fixed";
+      // document.body.style.position = "fixed";
     }
   }, [isIntroEnded]);
 

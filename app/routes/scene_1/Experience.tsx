@@ -80,13 +80,13 @@ export default function Experience() {
       <color args={["#201919"]} attach="background" />
       <Camera />
       <EnvironmentLights />
-      <Floors />
-      <Earth />
+      {/* <Floors /> */}
+      {/* <Earth />
       {isMobile || (
         <>
           <Tower />
         </>
-      )}
+      )} */}
     </>
   );
 }
