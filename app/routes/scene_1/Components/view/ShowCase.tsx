@@ -61,15 +61,16 @@ const showcaseComponents: any = {
 
 export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
+
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
     /**
      * Texture Setup
      */
-    const textureLoader = new THREE.TextureLoader(loadingManager);
-    const stoneTexture = textureLoader.load("asset/texture/stone.png");
+
+    const stoneTexture = assets.texture.stone;
 
     if (stoneTexture) {
       showcaseBodyMaterial.map = stoneTexture;

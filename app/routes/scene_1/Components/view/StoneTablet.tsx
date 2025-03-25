@@ -12,28 +12,20 @@ type StoneTabletProps = {
 
 export function StoneTablet({ position, index }: StoneTabletProps) {
   const [scene, setScene] = useState<Object3D>();
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
     /**
-     * Loader
+     * Importing Model
      */
 
-    const gltfLoader: any = new GLTFLoader();
-    const dracoLoader: any = new DRACOLoader(loadingManager);
-    dracoLoader.setDecoderPath("/draco/");
-    gltfLoader.setDRACOLoader(dracoLoader);
-
-    /* Importing Model */
-    gltfLoader.load("/asset/model/stoneTablet.glb", (gltf: any) => {
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-      setScene(gltf.scene);
+    assets.gltf.stoneTablet.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
     });
+    setScene(assets.gltf.stoneTablet.scene.clone());
   }, []);
 
   return (

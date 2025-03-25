@@ -6,7 +6,7 @@ import {
   fetchGanttDocDatas,
   fetchBarChartDocData,
 } from "~/model/firestore/firestore_server_model";
-import Scene1Test from "./scene_1_asap/_index";
+import Scene1Test from "./scene_1_test/_index";
 import Scene3 from "./scene_3/_index";
 import Scene2 from "./scene_2/_index";
 import Scene1 from "./scene_1/_index";
