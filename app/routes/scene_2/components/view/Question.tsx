@@ -8,8 +8,6 @@ export function Question() {
   const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
-    console.log(assets.gltf.question.scene);
-
     assets.gltf.question.scene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;

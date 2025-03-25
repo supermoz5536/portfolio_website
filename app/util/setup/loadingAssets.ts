@@ -48,10 +48,10 @@ export async function loadAllAssets() {
     ]);
 
     const timeout = setTimeout(() => {
-      setIsLoaded(true);
+      // setIsLoaded(true);
       console.log("loaded");
       clearTimeout(timeout);
-    }, 500);
+    }, 750);
   }
 
   /**

@@ -11,14 +11,14 @@ const whiteSlideEffectFragmentShader = /* glsl */ `
     void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
          vec3 color = vec3(1.0, 1.0, 1.0);
-         float low = -0.6;
+         float low = -0.65;
          float high = -0.6;
-         float multiplyer = 0.075;
+         float multiplyer = 0.15;
          float elapsedTime = uTime - uLoadedTime;
          
 
          low += elapsedTime * multiplyer * uLoadFactor;
-         high += (elapsedTime + 0.5) * (elapsedTime + 0.5) * multiplyer * uLoadFactor; 
+         high += (elapsedTime) * (elapsedTime) * multiplyer * uLoadFactor; 
       
          float blend = min(1.0, smoothstep(low, high, uv.x));
 

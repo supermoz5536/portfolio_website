@@ -1,5 +1,5 @@
 import "./css/index.css";
-import "./css/loading.scss";
+// import "./css/loading.scss";
 import { gsap } from "gsap/dist/gsap";
 import { useSystemStore } from "../../store/scene1/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
@@ -117,12 +117,12 @@ export default function Scene1() {
      */
 
     if (isLoaded) {
-      const timeout0 = setTimeout(() => setIsLoadingLayer(false), 0);
-      const timeout1 = setTimeout(() => setIsText1(true), 2000);
-      const timeout2 = setTimeout(() => setIsText2(true), 7000);
-      const timeout3 = setTimeout(() => setIsText3(true), 12000);
-      const timeout4 = setTimeout(() => setIsSkiped(true), 17000);
-      const timeout5 = setTimeout(() => setIsIntroEnd(true), 18000);
+      const timeout0 = setTimeout(() => setIsLoadingLayer(false), 1000);
+      const timeout1 = setTimeout(() => setIsText1(true), 4000);
+      const timeout2 = setTimeout(() => setIsText2(true), 9000);
+      const timeout3 = setTimeout(() => setIsText3(true), 14750);
+      const timeout4 = setTimeout(() => setIsSkiped(true), 19500);
+      const timeout5 = setTimeout(() => setIsIntroEnd(true), 20500);
 
       return () => {
         clearTimeout(timeout0);
@@ -154,14 +154,14 @@ export default function Scene1() {
   return (
     <div
       id="scene1"
-      className="relative justify-center items-center h-[400vh] w-full bg-white"
+      className="relative flex justify-center items-center h-[400vh] w-full bg-white"
     >
       {/* --------
           Scene1
         -------- */}
       <div
         className={
-          "relative justify-center items-center h-full " +
+          "relative flex justify-center items-center h-full " +
           (isIntroEnded ? "w-full" : "w-[100vw]")
         }
       >
@@ -233,8 +233,8 @@ export default function Scene1() {
         --------- */}
       {isLoadingLayer && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
-          <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
-            <div className="flex flex-row justify-center items-center h-[20vh] w-[70vw]">
+          <div className="relative flex flex-col justify-center items-center h-full w-full z-10 bg-blue-100">
+            <div className="flex flex-row justify-center items-center h-[20vh] w-72 bg-yellow-100">
               {/* CSS Animation */}
               <div id="container">
                 <p
@@ -286,7 +286,7 @@ export default function Scene1() {
                 (isLoaded ? "duration-1000 opacity-0" : "opacity-100")
               }
             >
-              This website was made just for fun.
+              This website was made for fun.
             </p>
           </div>
         </div>

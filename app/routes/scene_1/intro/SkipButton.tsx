@@ -10,7 +10,7 @@ export function SkipButton({ parentVisiblity, onSkip }: ShowSubtitle) {
 
   useEffect(() => {
     const timeoutVisible = setTimeout(() => setIsVisible(true), 1500);
-    const timeoutInvisible = setTimeout(() => setIsVisible(false), 17000);
+    const timeoutInvisible = setTimeout(() => setIsVisible(false), 19500);
     const timeoutRemove = setTimeout(() => {
       if (buttonRef.current) buttonRef.current.style.display = "none";
     }, 18000);

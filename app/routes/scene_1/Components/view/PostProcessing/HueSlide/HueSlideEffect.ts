@@ -2,11 +2,15 @@ import { BlendFunction, Effect } from "postprocessing";
 import { Uniform, Vector2 } from "three";
 
 const hueSlideEffectFragmentShader = /* glsl */ `
-    precision lowp float;
+    precision highp float;
+    // precision mediump float;
+    // precision lowp float;
 
     uniform float uTime;
     uniform float uSkippedTime;
     uniform float uSkipFactor;
+    uniform float uSpeedRatio;
+    uniform float uBlurIntensity;
 
     // https://qiita.com/keim_at_si/items/c2d1afd6443f3040e900
     // このコードの中で、
@@ -28,12 +32,9 @@ const hueSlideEffectFragmentShader = /* glsl */ `
 
          vec3 color = hsv2rgb(
              vec3(
-            //  -vUv.x * 0.2 + 1.0 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-            //  -vUv.x * 0.2 + 0.65 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-            //  -vUv.x * 0.2 + 0.425 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-             -vUv.x * 0.2 + 0.3 + uTime * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02,
-             0.95,
-             1.0
+               (vUv.x * uBlurIntensity - 0.7) - (uTime * 0.1 * uSpeedRatio) + random(gl_FragCoord.xy * 0.01) * 0.02,
+               0.95,
+               1.0
              )
          );
 
@@ -55,6 +56,8 @@ export class HueSlideEffect extends Effect {
         ["uTime", new Uniform(0)],
         ["uSkippedTime", new Uniform(0)],
         ["uSkipFactor", new Uniform(0)],
+        ["uSpeedRatio", new Uniform(1.0)],
+        ["uBlurIntensity", new Uniform(1.0)],
       ]),
     });
   }
