@@ -66,19 +66,17 @@ export function Bridge({
     new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
   );
 
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
-  /**
-   * 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
-   */
   useEffect(() => {
+    // mesh のポジション確定まで RigidBody を待機
     setIsPositionReady(true);
 
     /**
      * Texture Setup
      */
-    const textureLoader = new THREE.TextureLoader(loadingManager);
-    const stoneTexture = textureLoader.load("asset/texture/stone.png");
+
+    const stoneTexture = assets.texture.stone;
 
     if (stoneTexture) {
       stoneBridgeMaterial.map = stoneTexture;

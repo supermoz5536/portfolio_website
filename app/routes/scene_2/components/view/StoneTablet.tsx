@@ -46,31 +46,20 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
   );
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
-    /**
-     * Loader
-     */
-
-    const gltfLoader: any = new GLTFLoader();
-    const dracoLoader: any = new DRACOLoader(loadingManager);
-    dracoLoader.setDecoderPath("/draco/");
-    gltfLoader.setDRACOLoader(dracoLoader);
-
     /**
      * Importing Model
      */
 
-    gltfLoader.load("/asset/model/stoneTablet.glb", (gltf: any) => {
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-      setScene(gltf.scene);
+    assets.gltf.stoneTablet.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
     });
+    setScene(assets.gltf.stoneTablet.scene.clone());
 
     /**
      * Add Listener

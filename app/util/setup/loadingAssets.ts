@@ -44,7 +44,6 @@ export async function loadAllAssets() {
       loadGLTF(gltfLoader, "/asset/model/question.glb", "question"),
       loadGLTF(gltfLoader, "/asset/model/stoneTablet.glb", "stoneTablet"),
       loadTexture(textureLoader, "asset/texture/ground.jpg", "ground"),
-      loadTexture(textureLoader, "asset/texture/playerShadow.jpg", "playerShadow"), //prettier-ignore
       loadTexture(textureLoader, "asset/texture/stone.png", "stone"),
     ]);
 

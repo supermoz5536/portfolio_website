@@ -39,6 +39,7 @@ export default function Experience() {
    * Store State
    */
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
   const isAvtivated = useSystemStore((state: any) => state.isActivated);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
@@ -189,26 +190,33 @@ export default function Experience() {
 
   return (
     <>
-      {/* <color args={["#bdedfc"]} attach="background" /> */}
       <color args={["#201919"]} attach="background" />
-      {/* <axesHelper position={[0, 0.05, 0]} scale={1000} /> */}
-      {/* <gridHelper
-        position={[0, 0, 0]}
-        args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
-      /> */}
       <OrbitControls
         ref={orbitControlRef}
         maxPolarAngle={Math.PI * 0.7}
         minPolarAngle={Math.PI * 0.4}
       />
-
-      <Physics paused={isAvtivated ? false : true}>
-        <EnvironmentLights />
-        <Player />
-        <Floors />
-      </Physics>
-      <Tower />
-      <Earth />
+      {isLoaded && (
+        <>
+          <Physics paused={isAvtivated ? false : true}>
+            <EnvironmentLights />
+            <Player />
+            <Floors />
+          </Physics>
+          <Tower />
+          <Earth />
+        </>
+      )}
     </>
   );
+}
+
+{
+  /* <axesHelper position={[0, 0.05, 0]} scale={1000} /> */
+}
+{
+  /* <gridHelper
+        position={[0, 0, 0]}
+        args={[1000, 250, "#cccccc", "#cccccc"]} // 1 grid = 4 unit
+      /> */
 }

@@ -125,9 +125,12 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
 }
 
 export function MidPlane() {
-  const [scene, setScene] = useState();
   const mixerRef = useRef<any>();
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const sceneRef = useRef<any>();
+
+  const [scene, setScene] = useState();
+
+  const assets = useGlobalStore((state: any) => state.assets);
 
   const waveMaterial: any = useMemo(() => {
     const waveMaterial = new THREE.MeshStandardMaterial({
@@ -212,36 +215,33 @@ export function MidPlane() {
 
   useEffect(() => {
     /**
-     * Loader
+     * Load Model
      */
 
-    const gltfLoader = new GLTFLoader();
-    const dracoLoader = new DRACOLoader(loadingManager);
-    dracoLoader.setDecoderPath("/draco/");
-    gltfLoader.setDRACOLoader(dracoLoader);
-
-    gltfLoader.load("/asset/model/midPlane.glb", (gltf: any) => {
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.recieveShadow = true;
-        }
-        setScene(gltf.scene);
-      });
-
-      // glTF にアニメーションが含まれている場合の処理
-      if (gltf.animations && gltf.animations.length > 0) {
-        // AnimationMixer を gltf.scene を対象に作成し、mixerRef.current に保持する
-        mixerRef.current = new THREE.AnimationMixer(gltf.scene);
-        // glTF に含まれるすべての AnimationClip をループ処理で Action として登録し再生開始する
-        // アニメーションクリップという生のアニメーション情報を
-        // clipActionメソッドで、AnimationMixerクラスのミキサーが扱えるよう変換して再生￥
-        gltf.animations.forEach((clip: any) => {
-          const action = mixerRef.current.clipAction(clip);
-          action.play();
-        });
+    assets.gltf.midPlane.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.recieveShadow = true;
       }
+      sceneRef.current = assets.gltf.midPlane.scene.clone();
+      setScene(sceneRef.current);
     });
+
+    // glTF にアニメーションが含まれている場合の処理
+    if (
+      assets.gltf.midPlane.animations &&
+      assets.gltf.midPlane.animations.length > 0
+    ) {
+      // AnimationMixer を gltf.scene を対象に作成し、mixerRef.current に保持する
+      mixerRef.current = new THREE.AnimationMixer(sceneRef.current);
+      // glTF に含まれるすべての AnimationClip をループ処理で Action として登録し再生開始する
+      // アニメーションクリップという生のアニメーション情報を
+      // clipActionメソッドで、AnimationMixerクラスのミキサーが扱えるよう変換して再生￥
+      assets.gltf.midPlane.animations.forEach((clip: any) => {
+        const action = mixerRef.current.clipAction(clip);
+        action.play();
+      });
+    }
   }, []);
 
   useFrame((state, delta) => {
