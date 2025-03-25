@@ -1,5 +1,5 @@
 import "./css/index.css";
-// import "./css/loading.scss";
+import "./css/loading.scss";
 import { gsap } from "gsap/dist/gsap";
 import { useSystemStore } from "../../store/scene1/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
@@ -233,8 +233,8 @@ export default function Scene1() {
         --------- */}
       {isLoadingLayer && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
-          <div className="relative flex flex-col justify-center items-center h-full w-full z-10 bg-blue-100">
-            <div className="flex flex-row justify-center items-center h-[20vh] w-72 bg-yellow-100">
+          <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
+            <div className="flex flex-row justify-center items-center h-[20vh] w-72">
               {/* CSS Animation */}
               <div id="container">
                 <p
@@ -282,7 +282,7 @@ export default function Scene1() {
             {/* Comments */}
             <p
               className={
-                "flex justify-center items-center h-[20vh] w-[70vw] text-black text-2xl " +
+                "flex justify-center items-center h-[20vh] w-[90vw] text-center text-black text-2xl " +
                 (isLoaded ? "duration-1000 opacity-0" : "opacity-100")
               }
             >
