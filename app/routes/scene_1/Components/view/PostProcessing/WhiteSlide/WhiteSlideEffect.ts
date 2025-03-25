@@ -2,6 +2,8 @@ import { BlendFunction, Effect } from "postprocessing";
 import { Uniform, Vector2 } from "three";
 
 const whiteSlideEffectFragmentShader = /* glsl */ `
+    precision lowp float;
+
     uniform float uTime;
     uniform float uLoadedTime;
     uniform float uLoadFactor;
@@ -9,12 +11,14 @@ const whiteSlideEffectFragmentShader = /* glsl */ `
     void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
          vec3 color = vec3(1.0, 1.0, 1.0);
-         float low = -0.5;
-         float high = -0.3;
-         float multiplyer = 0.25;
+         float low = -0.6;
+         float high = -0.6;
+         float multiplyer = 0.075;
+         float elapsedTime = uTime - uLoadedTime;
+         
 
-         low += ((uTime - uLoadedTime) - 0.02) * multiplyer * uLoadFactor;
-         high += (pow((uTime - uLoadedTime) + 0.5, 2.0) - 0.25) * multiplyer * uLoadFactor; 
+         low += elapsedTime * multiplyer * uLoadFactor;
+         high += (elapsedTime + 0.5) * (elapsedTime + 0.5) * multiplyer * uLoadFactor; 
       
          float blend = min(1.0, smoothstep(low, high, uv.x));
 

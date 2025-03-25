@@ -9,7 +9,7 @@ export function SkipButton({ parentVisiblity, onSkip }: ShowSubtitle) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timeoutVisible = setTimeout(() => setIsVisible(true), 0);
+    const timeoutVisible = setTimeout(() => setIsVisible(true), 1500);
     const timeoutInvisible = setTimeout(() => setIsVisible(false), 17000);
     const timeoutRemove = setTimeout(() => {
       if (buttonRef.current) buttonRef.current.style.display = "none";
@@ -23,7 +23,7 @@ export function SkipButton({ parentVisiblity, onSkip }: ShowSubtitle) {
   }, []);
 
   useEffect(() => {
-    setIsVisible(parentVisiblity);
+    if (!parentVisiblity) setIsVisible(parentVisiblity);
   }, [parentVisiblity]);
 
   return (

@@ -47,8 +47,11 @@ export async function loadAllAssets() {
       loadTexture(textureLoader, "asset/texture/stone.png", "stone"),
     ]);
 
-    setIsLoaded(true);
-    console.log("loaded");
+    const timeout = setTimeout(() => {
+      setIsLoaded(true);
+      console.log("loaded");
+      clearTimeout(timeout);
+    }, 500);
   }
 
   /**

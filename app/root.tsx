@@ -104,7 +104,6 @@ export const links: LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   setupDevice();
   loadAllAssets();
-  // setupLoadingManager();
 
   return (
     <html lang="en">

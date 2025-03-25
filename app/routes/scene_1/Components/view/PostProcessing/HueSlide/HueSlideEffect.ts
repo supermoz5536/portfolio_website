@@ -2,6 +2,8 @@ import { BlendFunction, Effect } from "postprocessing";
 import { Uniform, Vector2 } from "three";
 
 const hueSlideEffectFragmentShader = /* glsl */ `
+    precision lowp float;
+
     uniform float uTime;
     uniform float uSkippedTime;
     uniform float uSkipFactor;

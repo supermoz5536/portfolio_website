@@ -117,8 +117,7 @@ export default function Scene1() {
      */
 
     if (isLoaded) {
-      setIsLoadingLayer(false);
-      const timeout0 = setTimeout(() => setIsLoadingLayer(false), 1000);
+      const timeout0 = setTimeout(() => setIsLoadingLayer(false), 0);
       const timeout1 = setTimeout(() => setIsText1(true), 2000);
       const timeout2 = setTimeout(() => setIsText2(true), 7000);
       const timeout3 = setTimeout(() => setIsText3(true), 12000);

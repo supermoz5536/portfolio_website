@@ -47,7 +47,7 @@ export function CanvasScene1() {
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
           {isIntroEnded || <HueSlideCustom />}
-          <WhiteSlideCustom />
+          {isIntroEnded || <WhiteSlideCustom />}
         </EffectComposer>
       </Canvas>
     </>
