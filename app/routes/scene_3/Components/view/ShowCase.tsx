@@ -63,14 +63,14 @@ export function ShowCase({ position, index }: ShowCaseProps) {
   const ShowcaseComponent: any = showcaseComponents[index];
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
     /**
      * Texture Setup
      */
-    const textureLoader = new THREE.TextureLoader(loadingManager);
-    const stoneTexture = textureLoader.load("asset/texture/stone.png");
+
+    const stoneTexture = assets.texture.stone;
 
     if (stoneTexture) {
       showcaseBodyMaterial.map = stoneTexture;
@@ -141,7 +141,7 @@ export function ShowCase({ position, index }: ShowCaseProps) {
             <>
               <mesh
                 geometry={boxGeometry}
-                material={glassMaterialFloor10}
+                material={glassMaterial}
                 position={[0, 3, 1.95]}
                 rotation={[0, Math.PI / 2, 0]}
                 scale={[0.1, 4, 4]}

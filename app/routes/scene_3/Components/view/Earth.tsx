@@ -6,7 +6,6 @@ import backGroundFragment from "./Materials/shaders/earthBackground/fragment.gls
 import { EarthSphereMaterial } from "./Materials/EarthSphereMaterial";
 import { getGui } from "../../util/lil-gui";
 import { StarsMaterial } from "./Materials/StarsMaterial";
-import ThreePlayer from "../../../../store/scene2/three_player_store";
 import { SunMaterial } from "./Materials/SunMaterial";
 import { useGlobalStore } from "~/store/global/global_store";
 
@@ -344,11 +343,10 @@ export function Ground() {
     ),
   );
 
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
-    const textureLoader = new THREE.TextureLoader(loadingManager);
-    const groundTexture = textureLoader.load("asset/texture/ground.jpg");
+    const groundTexture = assets.texture.ground;
 
     meshRef.current.material.map = groundTexture;
     meshRef.current.position.set(0, -500, 0);

@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Object3D } from "three";
 import React from "react";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
-import { ShowCase } from "./ShowCase";
 import { FloorContents } from "./FloorContents";
 import { Bridge, BridgeRight } from "./Bridges";
 import { useGlobalStore } from "~/store/global/global_store";
@@ -60,42 +57,38 @@ export function Floor({ position, scene }: floorProps) {
 }
 
 export function Floors() {
-  let floorPositions: THREE.Vector3[] = [];
   const stageRow = 4;
   const stageColumn = 3;
   const floorAxesInterval = 64; // フロア間の中心軸の距離 (高さの差分の基準値としても利用)
-  const [controlRatePositionY, setControlRatePositionY] = useState(0.275); // フロア間のy軸の調節用変数
+
   const [scene, setScene] = useState<Object3D>();
+  const [controlRatePositionY, setControlRatePositionY] = useState(0.275); // フロア間のy軸の調節用変数
   const [boundingBoxFloor, setBoundingBoxFloor] = useState<THREE.Box3>();
 
-  const loadingManager = useGlobalStore((state) => state.loadingManager);
+  const assets = useGlobalStore((state: any) => state.assets);
 
-  /* Initialize */
   useEffect(() => {
     /**
-     * Loader
+     * Load Model
      */
-    const gltfLoader: any = new GLTFLoader();
-    const dracoLoader: any = new DRACOLoader(loadingManager);
-    dracoLoader.setDecoderPath("/draco/");
-    gltfLoader.setDRACOLoader(dracoLoader);
 
-    /* Importing Each Model  */
-    gltfLoader.load("/asset/model/floor.glb", (gltf: any) => {
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          child.castShadow = false;
-          child.receiveShadow = false;
-        }
-      });
-
-      const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
-
-      setScene(gltf.scene);
-      setBoundingBoxFloor(boundingBox);
+    assets.gltf.floor.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = false;
+        child.receiveShadow = false;
+      }
     });
 
-    /* Listem Player Current Floor */
+    const boundingBox = 
+      new THREE.Box3().setFromObject(assets.gltf.floor.scene); // prettier-ignore
+
+    setScene(assets.gltf.floor.scene);
+    setBoundingBoxFloor(boundingBox);
+
+    /*
+     * Listem Player Current Floor
+     */
+
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
       (value) => {
@@ -112,23 +105,30 @@ export function Floors() {
     };
   }, []);
 
-  /* Calculate Each Position for Floor */
-  for (let rowIndex = 0; rowIndex < stageRow; rowIndex++) {
-    for (let columnIndex = 0; columnIndex < stageColumn; columnIndex++) {
-      const firstLeftColumnFloorPosition = [
-        columnIndex * floorAxesInterval,
-        rowIndex * floorAxesInterval * controlRatePositionY,
-        rowIndex * -floorAxesInterval,
-      ];
-      const floorPosition = new THREE.Vector3(
-        firstLeftColumnFloorPosition[0],
-        firstLeftColumnFloorPosition[1] +
-          columnIndex * floorAxesInterval * controlRatePositionY,
-        rowIndex * -floorAxesInterval,
-      );
-      floorPositions = [...floorPositions, floorPosition];
+  /*
+   * Calculate Each Position for Floor
+   */
+
+  const floorPositions: THREE.Vector3[] = useMemo(() => {
+    const floorPositions = [];
+    for (let rowIndex = 0; rowIndex < stageRow; rowIndex++) {
+      for (let columnIndex = 0; columnIndex < stageColumn; columnIndex++) {
+        const firstLeftColumnFloorPosition = [
+          columnIndex * floorAxesInterval,
+          rowIndex * floorAxesInterval * controlRatePositionY,
+          rowIndex * -floorAxesInterval,
+        ];
+        const floorPosition = new THREE.Vector3(
+          firstLeftColumnFloorPosition[0],
+          firstLeftColumnFloorPosition[1] +
+            columnIndex * floorAxesInterval * controlRatePositionY,
+          rowIndex * -floorAxesInterval,
+        );
+        floorPositions.push(floorPosition);
+      }
     }
-  }
+    return floorPositions;
+  }, [controlRatePositionY]);
 
   return (
     <>
@@ -167,10 +167,6 @@ export function Floors() {
                 )}
 
                 <FloorContents index={index} position={floorPosition} />
-
-                {/* Particle Codes */}
-                {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}
-                {/* here */}
               </React.Fragment>
             );
           })}

@@ -17,11 +17,13 @@ export default function Experience() {
 
   const animationFrameIdRef = useRef<any>();
 
-  const { gl, advance } = useThree();
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
-
   const [isRender, setIsRender] = useState(false);
+
+  const { gl, advance } = useThree();
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
+  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
+  const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -74,14 +76,18 @@ export default function Experience() {
 
   return (
     <>
-      <color args={["#201919"]} attach="background" />
-      <Camera />
-      <EnvironmentLights />
-      <Floors />
-      <Earth />
-      {isMobile || (
+      {isLoaded && (
         <>
-          <Tower />
+          <color args={["#201919"]} attach="background" />
+          <Camera />
+          <EnvironmentLights />
+          <Floors />
+          <Earth />
+          {isMobile || (
+            <>
+              <Tower />
+            </>
+          )}
         </>
       )}
     </>
