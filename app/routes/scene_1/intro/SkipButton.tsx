@@ -31,7 +31,7 @@ export function SkipButton({ parentVisiblity, onSkip }: ShowSubtitle) {
       <button
         ref={buttonRef}
         className={
-          "absolute top-[90%] left-[90%] -translate-x-1/2 -translate-y-1/2 h-10 w-16 text-black outline transition-opacity " +
+          "absolute top-[90%] right-[10%] h-10 w-16 text-black outline transition-opacity " +
           (isVisible
             ? "duration-[3000ms] opacity-100"
             : "duration-[1000ms] opacity-0")
