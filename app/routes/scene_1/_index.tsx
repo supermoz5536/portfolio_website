@@ -161,8 +161,8 @@ export default function Scene1() {
         -------- */}
       <div
         className={
-          "relative flex justify-center items-center h-full " +
-          (isIntroEnded ? "w-full" : "w-[100vw]")
+          "relative h-full " + 
+          (isIntroEnded ? "w-full" : "w-[100vw]") // prettier-ignore
         }
       >
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">

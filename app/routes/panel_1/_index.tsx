@@ -52,7 +52,7 @@ export default function Panel1() {
     <>
       <div
         ref={container}
-        className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden"
+        className="text-black bg-white min-h-[100vh] h-auto w-full"
       >
         {/* Responsible Width-Max-Break */}
         <div className="xl:flex flex-row justify-between xl-3:justify-center">
@@ -86,7 +86,7 @@ export default function Panel1() {
                 </div>
               </AnimateInBlock>
               {/* Content Container A */}
-              <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-96">
+              <div className="mt-10 ml-8 my-lg:ml-10 lg-2:mr-12 xl:mt-[7vh] xl-3:ml-24 xl-3:mr-20 w-72">
                 {/* Content 1 */}
                 <ContentBlock
                   title="ChatBus"
@@ -115,7 +115,7 @@ export default function Panel1() {
               </div>
               {/* Content Container B */}
               <div>
-                <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-96">
+                <div className="mt-10 ml-8 mr-8 my-lg:mr-0 my-md:mt-10 xl:mt-[7vh] xl:mr-16 w-72">
                   {/* Content 2 */}
                   <ContentBlock
                     title="Inventory Z"

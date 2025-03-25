@@ -6,7 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export async function loadAllAssets() {
-  const totalCount = 7;
+  const totalCount = 6;
 
   const assetsObj = useRef<any>({ gltf: {}, texture: {} });
   const loadedCount = useRef<any>(0);
@@ -48,10 +48,10 @@ export async function loadAllAssets() {
     ]);
 
     const timeout = setTimeout(() => {
-      // setIsLoaded(true);
+      setIsLoaded(true);
       console.log("loaded");
       clearTimeout(timeout);
-    }, 750);
+    }, 2000);
   }
 
   /**
