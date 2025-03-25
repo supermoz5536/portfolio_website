@@ -138,9 +138,9 @@ export default function Scene1() {
 
   useEffect(() => {
     if (isIntroEnded) {
-      // document.body.style.position = "";
+      document.body.style.position = "";
     } else {
-      // document.body.style.position = "fixed";
+      document.body.style.position = "fixed";
     }
   }, [isIntroEnded]);
 
@@ -153,7 +153,10 @@ export default function Scene1() {
   }
 
   return (
-    <div className="relative justify-center items-center h-[400vh] w-full">
+    <div
+      id="scene1"
+      className="relative justify-center items-center h-[400vh] w-full bg-white"
+    >
       {/* --------
           Scene1
         -------- */}
