@@ -73,19 +73,6 @@ export function Floors() {
   const assets = useGlobalStore((state) => state.assets);
 
   useEffect(() => {
-    /* Importing Each Model  */
-    assets.gltf.floor.scene.traverse((child: any) => {
-      if (child.isMesh) {
-        child.castShadow = false;
-        child.receiveShadow = false;
-      }
-    });
-
-    const boundingBox = new THREE.Box3().setFromObject(assets.gltf.floor.scene);
-
-    setScene(assets.gltf.floor.scene);
-    setBoundingBoxFloor(boundingBox);
-
     /* Listem Player Current Floor */
     const unsubscibePlayerPosition = ThreePlayer.subscribe(
       (state: any) => state.currentFloorNum,
@@ -101,9 +88,34 @@ export function Floors() {
     return () => {
       unsubscibePlayerPosition();
     };
+  }, []);
+
+  /**
+   * Load Model
+   */
+
+  useEffect(() => {
+    if (isLoaded) {
+      assets.gltf.floor.scene.traverse((child: any) => {
+        if (child.isMesh) {
+          child.castShadow = false;
+          child.receiveShadow = false;
+        }
+      });
+
+      const boundingBox = new THREE.Box3().setFromObject(
+        assets.gltf.floor.scene,
+      );
+
+      setScene(assets.gltf.floor.scene);
+      setBoundingBoxFloor(boundingBox);
+    }
   }, [isLoaded]);
 
-  /* Calculate Each Position for Floor */
+  /*
+   * Calculate Each Position for Floor
+   */
+
   for (let rowIndex = 0; rowIndex < stageRow; rowIndex++) {
     for (let columnIndex = 0; columnIndex < stageColumn; columnIndex++) {
       const firstLeftColumnFloorPosition = [
@@ -157,7 +169,7 @@ export function Floors() {
                   />
                 )} */}
 
-                <FloorContents index={index} position={floorPosition} />
+                {/* <FloorContents index={index} position={floorPosition} /> */}
 
                 {/* Particle Codes */}
                 {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}
