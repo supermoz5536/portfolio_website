@@ -1,19 +1,40 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import Experience from "../../Experience";
 import { EffectComposer, ToneMapping } from "@react-three/postprocessing";
-import { useEffect, useState } from "react";
-import { ToneMappingMode, BlendFunction } from "postprocessing";
+import { useEffect, useRef, useState } from "react";
+import { ToneMappingMode } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
 import { WhiteCustom } from "./PostProcessing/White/WhiteCustom";
 import { HueSlideCustom } from "./PostProcessing/HueSlide/HueSlideCustom";
 import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 
+export function PreCompile() {
+  const { gl, scene, camera } = useThree();
+  const resultRef = useRef<any>(null);
+
+  useEffect(() => {
+    console.log("PreCompile Triggered");
+    resultRef.current = runCompile();
+
+    if (resultRef.current) {
+      console.log("scene1 compiled");
+    }
+  }, [gl, scene, camera]);
+
+  async function runCompile() {
+    await gl.compileAsync(scene, camera);
+  }
+
+  return null;
+}
+
 export function CanvasScene1() {
   const [dprMobile, setDprMobile] = useState(0.05);
   const [dprDeskTop, setDprDeskTop] = useState<number>(2.0);
 
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
@@ -44,7 +65,16 @@ export function CanvasScene1() {
         }}
         dpr={isMobile ? dprMobile : dprDeskTop}
       >
-        <Experience setDprMobile={setDprMobile} setDprDeskTop={setDprDeskTop} />
+        {isPreLoaded && (
+          <>
+            <Experience
+              setDprMobile={setDprMobile}
+              setDprDeskTop={setDprDeskTop}
+            />
+            <PreCompile />
+          </>
+        )}
+
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
