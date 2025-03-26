@@ -11,9 +11,9 @@ const whiteSlideEffectFragmentShader = /* glsl */ `
     void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
          vec3 color = vec3(1.0, 1.0, 1.0);
-         float low = -0.65;
-         float high = -0.6;
-         float multiplyer = 0.15;
+         float low = -0.85;
+         float high = -0.8;
+         float multiplyer = 0.1;
          float elapsedTime = uTime - uLoadedTime;
          
 
