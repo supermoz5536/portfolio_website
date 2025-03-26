@@ -12,9 +12,16 @@ export async function loadAllAssets() {
   const loadedCount = useRef<any>(0);
 
   /**
+   * Store State
+   */
+
+  const setAssets = useGlobalStore((state: any) => state.setAssets);
+
+  /**
    * Store Setter
    */
-  const setAssets = useGlobalStore((state: any) => state.setAssets);
+
+  const setIsPreLoaded = useGlobalStore((state: any) => state.setIsPreLoaded);
 
   const setLoadingProgressRatio = useGlobalStore((state: any) => 
     state.setLoadingProgressRatio); // prettier-ignore
@@ -47,10 +54,18 @@ export async function loadAllAssets() {
       loadTexture(textureLoader, "asset/texture/stone.png", "stone"),
     ]);
 
-    const timeout = setTimeout(() => {
+    const timeout1 = setTimeout(() => {
+      console.log("Pre-Loaded");
+      setIsPreLoaded(true);
+
+      clearTimeout(timeout1);
+    }, 1000);
+
+    const timeout2 = setTimeout(() => {
+      console.log("Loaded");
       setIsLoaded(true);
-      console.log("loaded");
-      clearTimeout(timeout);
+
+      clearTimeout(timeout2);
     }, 4000);
   }
 
