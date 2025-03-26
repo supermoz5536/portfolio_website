@@ -51,7 +51,7 @@ export async function loadAllAssets() {
       setIsLoaded(true);
       console.log("loaded");
       clearTimeout(timeout);
-    }, 2000);
+    }, 4000);
   }
 
   /**
