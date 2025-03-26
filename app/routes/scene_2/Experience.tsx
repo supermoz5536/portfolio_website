@@ -39,7 +39,7 @@ export default function Experience() {
    * Store State
    */
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
+  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
   const isAvtivated = useSystemStore((state: any) => state.isActivated);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
@@ -196,7 +196,7 @@ export default function Experience() {
         maxPolarAngle={Math.PI * 0.7}
         minPolarAngle={Math.PI * 0.4}
       />
-      {isLoaded && (
+      {isPreLoaded && (
         <>
           <Physics paused={isAvtivated ? false : true}>
             <EnvironmentLights />

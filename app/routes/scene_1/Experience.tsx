@@ -31,14 +31,12 @@ export default function Experience({
   const { advance } = useThree();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
+  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const isSkiped = useSystemStore((state) => state.isSkiped); // prettier-ignore
 
   useEffect(() => {
-    // console.log(scrollProgressTopAndBottom);
-
     /**
      * Control Render for CPU Performance
      *
@@ -111,10 +109,11 @@ export default function Experience({
   return (
     <>
       <color args={["#201919"]} attach="background" />
-      <Camera />
-      <EnvironmentLights />
-      {isLoaded && (
+
+      {isPreLoaded && (
         <>
+          <Camera />
+          <EnvironmentLights />
           <Floors />
           <Earth />
           {isMobile || (
