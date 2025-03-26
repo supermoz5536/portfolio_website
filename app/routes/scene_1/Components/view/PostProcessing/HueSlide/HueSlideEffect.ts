@@ -2,9 +2,9 @@ import { BlendFunction, Effect } from "postprocessing";
 import { Uniform, Vector2 } from "three";
 
 const hueSlideEffectFragmentShader = /* glsl */ `
-    precision highp float;
+    // precision highp float;
     // precision mediump float;
-    // precision lowp float;
+    precision lowp float;
 
     uniform float uTime;
     uniform float uSkippedTime;
@@ -38,7 +38,7 @@ const hueSlideEffectFragmentShader = /* glsl */ `
              )
          );
 
-         float multiplyer = 0.85;
+         float multiplyer = 0.15;
          color += (uTime - uSkippedTime) * multiplyer * uSkipFactor;      
 
          outputColor = vec4( color, 1.0 );

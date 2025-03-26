@@ -192,7 +192,7 @@ export default function Scene1() {
       {/* -------
           Intro
         -------- */}
-      {isLoaded && !isIntroEnded && (
+      {!isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10 ">
             <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">

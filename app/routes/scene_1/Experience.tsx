@@ -12,49 +12,79 @@ import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 
-let debugIsIntroEnd = true; // StoreのisIntroEndを実装後に差し替えが必要な変数
+type ExperienceProps = {
+  setDprMobile: React.Dispatch<React.SetStateAction<number>>;
+  setDprDeskTop: React.Dispatch<React.SetStateAction<number>>;
+};
 
-export default function Experience() {
+// let isIntroEnd = false;
+export default function Experience({
+  setDprMobile,
+  setDprDeskTop,
+}: ExperienceProps) {
   const endRenderRate = 1.0;
 
   const animationFrameIdRef = useRef<any>();
 
-  const [isRender, setIsRender] = useState(false);
+  const [isRender, setIsRender] = useState(true);
 
-  const { gl, advance } = useThree();
+  const { advance } = useThree();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isLoaded = useGlobalStore((state: any) => state.isLoaded);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
+  const isSkiped = useSystemStore((state) => state.isSkiped); // prettier-ignore
 
   useEffect(() => {
+    // console.log(scrollProgressTopAndBottom);
+
     /**
      * Control Render for CPU Performance
+     *
+     * スキップ前で画面内　＝＞　no render
+     * スキップ後で画面内　＝＞　render
+     * スキップ後で画面外　＝＞　no render
      */
 
-    if (scrollProgressTopAndBottom >= endRenderRate) {
+    if (!isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+      setIsRender(true);
+      renderStart();
+
+      //
+    } else if (isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+      setIsRender(true);
+      renderStart();
+
+      //
+    } else if (isSkiped && scrollProgressTopAndBottom >= endRenderRate) {
       setIsRender(false);
       renderFinish();
-    } else {
-      if (!isRender && debugIsIntroEnd) {
-        setIsRender(true);
-        renderStart();
-      }
     }
 
     /**
      * Control Resolution for GPU Performance
+     *
+     * スキップ前で画面内　＝＞　低解像度
+     * スキップ後で画面内　＝＞　通常解像度
+     * スキップ後で画面外　＝＞　低解像度
      */
 
-    if (scrollProgressTopAndBottom >= endRenderRate) {
-      gl.setPixelRatio(0.001);
-    } else {
-      if (isMobile && debugIsIntroEnd) gl.setPixelRatio(0.65);
-      if (!isMobile && debugIsIntroEnd)
-        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    if (!isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+      if (isMobile) setDprMobile(0.05);
+      if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 1.5));
+
+      //
+    } else if (isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+      if (isMobile) setDprMobile(0.65);
+      if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 2.0));
+
+      //
+    } else if (isSkiped && scrollProgressTopAndBottom >= endRenderRate) {
+      if (isMobile) setDprMobile(0.001);
+      if (!isMobile) setDprDeskTop(0.001);
     }
-  }, [scrollProgressTopAndBottom]);
+  }, [scrollProgressTopAndBottom, isSkiped]);
 
   function renderStart() {
     const timeSec = performance.now();

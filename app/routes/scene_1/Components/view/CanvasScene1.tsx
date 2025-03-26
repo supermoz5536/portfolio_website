@@ -10,18 +10,20 @@ import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 
 export function CanvasScene1() {
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  const [dpr, setDpr] = useState(2.0);
+  const [dprMobile, setDprMobile] = useState(0.05);
+  const [dprDeskTop, setDprDeskTop] = useState<number>(2.0);
 
-  const isLoaded = useGlobalStore((state: any) => state.isLoaded);
+  const isMobile = useGlobalStore((state) => state.isMobile);
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
-    setDpr(Math.min(window.devicePixelRatio, 2.0));
+    setDprDeskTop(Math.min(window.devicePixelRatio, 2.0));
   }, []);
+
   return (
     <>
       <Canvas
+        key={isMobile ? dprMobile : dprDeskTop}
         frameloop="never"
         style={{
           minHeight: "100vh",
@@ -40,9 +42,9 @@ export function CanvasScene1() {
           far: 4000,
           position: [0, 0, 100],
         }}
-        dpr={isMobile ? 0.65 : dpr}
+        dpr={isMobile ? dprMobile : dprDeskTop}
       >
-        <Experience />
+        <Experience setDprMobile={setDprMobile} setDprDeskTop={setDprDeskTop} />
         <EffectComposer>
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           <WhiteCustom />
