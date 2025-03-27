@@ -1,4 +1,4 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import Experience from "../../Experience";
 import {
   EffectComposer,
@@ -6,16 +6,42 @@ import {
   DepthOfField,
   ToneMapping,
 } from "@react-three/postprocessing";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToneMappingMode, BlendFunction } from "postprocessing";
 import { KernelSize } from "postprocessing";
 import { OutLineCustom } from "./PostProcessing/Outline/OutlineCustom";
 import { useGlobalStore } from "~/store/global/global_store";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
 
+export function PreCompile() {
+  const resultRef = useRef<any>(null);
+
+  const setIsCompiledScene3 = useGlobalStore(
+    (state: any) => state.setIsCompiledScene3,
+  );
+
+  const { gl, scene, camera } = useThree();
+
+  useEffect(() => {
+    resultRef.current = runCompile();
+
+    if (resultRef.current) {
+      setIsCompiledScene3(true);
+    }
+  }, [gl, scene, camera]);
+
+  async function runCompile() {
+    await gl.compileAsync(scene, camera);
+  }
+
+  return null;
+}
+
 export function CanvasScene3() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const [dpr, setDpr] = useState(2.0);
+
+  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
 
   useEffect(() => {
     setDpr(Math.min(window.devicePixelRatio, 2.0));
@@ -43,7 +69,12 @@ export function CanvasScene3() {
         }}
         dpr={isMobile ? 0.65 : dpr}
       >
-        <Experience />
+        {isPreLoaded && (
+          <>
+            <Experience />
+            <PreCompile />
+          </>
+        )}
         <EffectComposer>
           {/**
            * Mobile のShowcaseContentsの内容が簡易的になっているので

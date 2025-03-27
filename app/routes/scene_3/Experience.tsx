@@ -22,7 +22,6 @@ export default function Experience() {
   const { gl, advance } = useThree();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   useEffect(() => {
@@ -76,18 +75,14 @@ export default function Experience() {
 
   return (
     <>
-      {isPreLoaded && (
+      <color args={["#201919"]} attach="background" />
+      <Camera />
+      <EnvironmentLights />
+      <Floors />
+      <Earth />
+      {isMobile || (
         <>
-          <color args={["#201919"]} attach="background" />
-          <Camera />
-          <EnvironmentLights />
-          <Floors />
-          <Earth />
-          {isMobile || (
-            <>
-              <Tower />
-            </>
-          )}
+          <Tower />
         </>
       )}
     </>

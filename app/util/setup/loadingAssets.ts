@@ -8,8 +8,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export async function loadAllAssets() {
-  const totalCount = 6;
+  const totalCount = 8;
 
+  const isFirstTryRef = useRef(true);
   const assetsObj = useRef<any>({ gltf: {}, texture: {} });
   const loadedCount = useRef<any>(0);
 
@@ -35,15 +36,27 @@ export async function loadAllAssets() {
    * Store Lisnter
    */
 
-  // For isLoaded
+  // isLoaded will be triggered after the three scenes compiled
   const unsubscribe = useGlobalStore.subscribe(
-    (state) => state.isCompiledScene1,
-    (isCompiledScene1) => {
-      if (isCompiledScene1) {
+    (state) => ({
+      isCompiledScene1: state.isCompiledScene1,
+      isCompiledScene3: state.isCompiledScene3,
+    }),
+
+    (newState, prevState) => {
+      const { isCompiledScene1, isCompiledScene3 } = newState;
+
+      if (isCompiledScene1 && isCompiledScene3 && isFirstTryRef.current) {
+        isFirstTryRef.current = false;
+        loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
+
         const timeout = setTimeout(() => {
-          console.log("Loaded");
+          loadedCount.current++;
+          setLoadingProgressRatio(getProgressRatio());
           setIsLoaded(true);
 
+          console.log("Loaded", loadedCount.current);
           clearTimeout(timeout);
           unsubscribe();
         }, 1000);
