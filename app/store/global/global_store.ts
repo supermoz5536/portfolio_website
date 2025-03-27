@@ -11,6 +11,7 @@ type GlobalStore = {
   loadingProgressRatio: number;
   assets: Record<string, any>;
   isCompiledScene1: boolean;
+  isCompiledScene2: boolean;
   isCompiledScene3: boolean;
 };
 
@@ -25,6 +26,7 @@ export const useGlobalStore = create<GlobalStore>()(
       loadingProgressRatio: 0,
       assets: {},
       isCompiledScene1: false,
+      isCompiledScene2: false,
       isCompiledScene3: false,
 
       setIsMobile: (newState: boolean) => {
@@ -72,6 +74,12 @@ export const useGlobalStore = create<GlobalStore>()(
       setIsCompiledScene1: (newState: boolean) => {
         set((state: any) => {
           return { isCompiledScene1: newState };
+        });
+      },
+
+      setIsCompiledScene2: (newState: boolean) => {
+        set((state: any) => {
+          return { isCompiledScene2: newState };
         });
       },
 

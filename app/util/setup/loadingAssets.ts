@@ -1,4 +1,4 @@
-// Workflow
+// Workflow:
 //  - isPreLoaded => Check isCompoled => isLoaded (in Lisnter Callback)
 
 import { useRef } from "react";
@@ -40,13 +40,19 @@ export async function loadAllAssets() {
   const unsubscribe = useGlobalStore.subscribe(
     (state) => ({
       isCompiledScene1: state.isCompiledScene1,
+      isCompiledScene2: state.isCompiledScene2,
       isCompiledScene3: state.isCompiledScene3,
     }),
 
     (newState, prevState) => {
-      const { isCompiledScene1, isCompiledScene3 } = newState;
+      const { isCompiledScene1, isCompiledScene2, isCompiledScene3 } = newState;
 
-      if (isCompiledScene1 && isCompiledScene3 && isFirstTryRef.current) {
+      if (
+        isFirstTryRef.current &&
+        isCompiledScene1 &&
+        isCompiledScene2 &&
+        isCompiledScene3
+      ) {
         isFirstTryRef.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());

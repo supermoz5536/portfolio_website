@@ -1,15 +1,42 @@
 import Experience from "./Experience";
 import { StoneTabletView } from "../scene_2/Components/view/StoneTabletView";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGlobalStore } from "~/store/global/global_store";
 
+export function PreCompile() {
+  const resultRef = useRef<any>(null);
+
+  const setIsCompiledScene2 = useGlobalStore(
+    (state: any) => state.setIsCompiledScene2,
+  );
+
+  const { gl, scene, camera } = useThree();
+
+  useEffect(() => {
+    resultRef.current = runCompile();
+
+    if (resultRef.current) {
+      setIsCompiledScene2(true);
+    }
+  }, [gl, scene, camera]);
+
+  async function runCompile() {
+    await gl.compileAsync(scene, camera);
+  }
+
+  return null;
+}
+
 const EntryPointThree = () => {
-  const initPlayerCoord = {x: 0, y: 4, z: 8}; // prettier-ignore
+  const initPlayerCoord = { x: 0, y: 4, z: 8 };
+
   const [dpr, setDpr] = useState(2.0);
+
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
 
   useEffect(() => {
     setDpr(Math.min(window.devicePixelRatio, 2.0));
@@ -51,7 +78,12 @@ const EntryPointThree = () => {
           }}
           dpr={isMobile ? 0.6 : dpr}
         >
-          <Experience />
+          {isPreLoaded && (
+            <>
+              <Experience />
+              <PreCompile />
+            </>
+          )}
         </Canvas>
         <MovementPad />
         <StoneTabletView />
