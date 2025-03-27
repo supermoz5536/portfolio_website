@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { CanvasScene1 } from "./Components/view/CanvasScene1";
 import { Subtitle } from "./intro/Subtitle";
 import { SkipButton } from "./intro/SkipButton";
+import { AnimateIn } from "~/components/animate_in";
 
 export default function Scene1() {
   const [isAllVisible, setIsAllVisible] = useState(true);
@@ -178,13 +179,17 @@ export default function Scene1() {
       {isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
-            <button
-              className={
-                "absolute top-[90%] left-[50%] -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-black outline transition-opacity duration-1000"
-              }
-            >
-              ↓
-            </button>
+            <AnimateIn rootMarginBottom={0}>
+              <button
+                id="tablet"
+                className={
+                  "absolute -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
+                  (isMobile ? "top-[75%] left-[50%] " : "top-[90%] left-[50%]")
+                }
+              >
+                ↓
+              </button>
+            </AnimateIn>
           </div>
         </div>
       )}
@@ -195,7 +200,12 @@ export default function Scene1() {
       {!isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
-            <div className="flex flex-col justify-start items-start h-[20vh] w-[70vw]">
+            <div
+              className={
+                "flex flex-col justify-start items-start w-[70vw] " +
+                (isMobile ? "h-[40vh]" : "h-[20vh]")
+              }
+            >
               {isText1 && (
                 <Subtitle
                   inputText={text1}
