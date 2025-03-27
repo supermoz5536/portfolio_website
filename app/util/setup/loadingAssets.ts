@@ -1,4 +1,6 @@
-// assetsLoader.ts
+// Workflow
+//  - isPreLoaded => Check isCompoled => isLoaded (in Lisnter Callback)
+
 import { useRef } from "react";
 import * as THREE from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
@@ -30,6 +32,26 @@ export async function loadAllAssets() {
     state.setIsLoaded); // prettier-ignore
 
   /**
+   * Store Lisnter
+   */
+
+  // For isLoaded
+  const unsubscribe = useGlobalStore.subscribe(
+    (state) => state.isCompiledScene1,
+    (isCompiledScene1) => {
+      if (isCompiledScene1) {
+        const timeout = setTimeout(() => {
+          console.log("Loaded");
+          setIsLoaded(true);
+
+          clearTimeout(timeout);
+          unsubscribe();
+        }, 1000);
+      }
+    },
+  );
+
+  /**
    * Loader
    */
 
@@ -54,19 +76,12 @@ export async function loadAllAssets() {
       loadTexture(textureLoader, "asset/texture/stone.png", "stone"),
     ]);
 
-    const timeout1 = setTimeout(() => {
+    const timeout = setTimeout(() => {
       console.log("Pre-Loaded");
       setIsPreLoaded(true);
 
-      clearTimeout(timeout1);
+      clearTimeout(timeout);
     }, 1000);
-
-    const timeout2 = setTimeout(() => {
-      console.log("Loaded");
-      setIsLoaded(true);
-
-      clearTimeout(timeout2);
-    }, 4000);
   }
 
   /**

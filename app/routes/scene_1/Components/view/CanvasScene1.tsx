@@ -10,15 +10,19 @@ import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 
 export function PreCompile() {
-  const { gl, scene, camera } = useThree();
   const resultRef = useRef<any>(null);
 
+  const setIsCompiledScene1 = useGlobalStore(
+    (state: any) => state.setIsCompiledScene1,
+  );
+
+  const { gl, scene, camera } = useThree();
+
   useEffect(() => {
-    console.log("PreCompile Triggered");
     resultRef.current = runCompile();
 
     if (resultRef.current) {
-      console.log("scene1 compiled");
+      setIsCompiledScene1(true);
     }
   }, [gl, scene, camera]);
 
