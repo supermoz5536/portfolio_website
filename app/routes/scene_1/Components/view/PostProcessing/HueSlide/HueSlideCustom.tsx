@@ -7,11 +7,15 @@ import { gsap } from "gsap/dist/gsap";
 import * as THREE from "three";
 
 let isFirstTry = true;
+let isFirstTryDelta = true;
 
 export function HueSlideCustom() {
   const startTimeRef = useRef<number>(0);
   const hueSlideEffectRef = useRef(new HueSlideEffect());
   const currentSpeedRef = useRef<number>(1.0);
+  const deltaAcumRef = useRef<number>(0);
+  const acumCountRef = useRef<number>(0);
+  const deltaRef = useRef<number>(0.03);
 
   /**
    * Control Speed
@@ -34,6 +38,10 @@ export function HueSlideCustom() {
       isMobile ? 0.1 : 0.2;
   }, []);
 
+  /**
+   *  Callback for isLoaded
+   */
+
   useEffect(() => {
     if (isLoaded) {
       const timeout1 = setTimeout(() => {
@@ -46,31 +54,42 @@ export function HueSlideCustom() {
       }, 6500);
 
       const timeout3 = setTimeout(() => {
+        beforeT1.current = false;
         afterT1.current = false;
         beforeT2.current = true;
       }, 10000);
 
       const timeout4 = setTimeout(() => {
+        beforeT1.current = false;
+        afterT1.current = false;
         beforeT2.current = false;
         afterT2.current = true;
       }, 12500);
-
-      const timeout5 = setTimeout(() => {
-        afterT2.current = false;
-        beforeT3.current = false;
-      }, 14000);
 
       return () => {
         clearTimeout(timeout1);
         clearTimeout(timeout2);
         clearTimeout(timeout3);
         clearTimeout(timeout4);
-        clearTimeout(timeout5);
       };
     }
   }, [isLoaded]);
 
   useFrame((state, delta) => {
+    /* ----------------
+        Before Loaded
+     ---------------- */
+    deltaAcumRef.current += delta;
+    acumCountRef.current++;
+
+    if (isFirstTryDelta && acumCountRef.current > 10) {
+      isFirstTryDelta = false;
+      deltaRef.current = deltaAcumRef.current / acumCountRef.current;
+    }
+
+    /* ----------------
+        After Loaded
+     ---------------- */
     if (isLoaded) {
       if (isFirstTry) {
         isFirstTry = false;
@@ -99,7 +118,11 @@ export function HueSlideCustom() {
         if (beforeT1.current) setSpeedRatio(delta, 0.775);
         if (afterT1.current) setSpeedRatio(delta, 0.775);
         if (beforeT2.current) setSpeedRatio(delta, 0.785);
-        if (afterT2.current) setSpeedRatio(delta, 0.9375);
+        if (afterT2.current) {
+          isMobile // 変動の程度を調整 (ベース値の uTime の値が尺の後半で増加してるため)
+            ? setSpeedRatio(delta, 0.835)
+            : setSpeedRatio(delta, 0.9375);
+        }
       }
 
       /**
@@ -113,11 +136,17 @@ export function HueSlideCustom() {
     }
   });
 
+  /* -------------
+       Function
+    ------------- */
+
   function setSpeedRatio(delta: number, targetRatio: number) {
     currentSpeedRef.current = THREE.MathUtils.lerp(
       currentSpeedRef.current,
       targetRatio,
-      delta * 0.3,
+      isMobile // モバイル端末でのスクロール時に delta が乱れるため補正
+        ? deltaRef.current * 0.3
+        : delta * 0.3,
     );
 
     hueSlideEffectRef.current.uniforms.get("uSpeedRatio")!.value =
