@@ -13,12 +13,19 @@ export function HueSlideCustom() {
   const hueSlideEffectRef = useRef(new HueSlideEffect());
   const skippedTimeRef = useRef();
   const currentSpeedRef = useRef<number>(1.0);
+
+  /**
+   * Control Speed
+   */
   const beforeT1 = useRef(false);
   const afterT1 = useRef(false);
   const beforeT2 = useRef(false);
   const afterT2 = useRef(false);
   const beforeT3 = useRef(false);
 
+  /**
+   * Store State
+   */
   const isSkiped = useSystemStore((state: any) => state.isSkiped);
   const isMobile = useGlobalStore((state: any) => state.isMobile);
   const isLoaded = useGlobalStore((state: any) => state.isLoaded);
@@ -80,12 +87,21 @@ export function HueSlideCustom() {
 
       /**
        * Gradation's Speed - To avoid Yellow Color behind Texts.
+       *
+       *
+       * setSpeedRatio を経由して uSpeedRatio を更新しているが
+       * isSkiped == true の切り替え時に関しては
+       * 「スキップ関連の状態変更」と「グラデーション速度」が依存関係を持つことで
+       * グラデーション速度が異常上昇する不具合が生じてしまう。
+       * 対策：条件分岐して独立性を保持。
        */
 
-      if (beforeT1.current) setSpeedRatio(delta, 0.775);
-      if (afterT1.current) setSpeedRatio(delta, 0.775);
-      if (beforeT2.current) setSpeedRatio(delta, 0.785);
-      if (afterT2.current) setSpeedRatio(delta, 0.9375);
+      if (!isSkiped) {
+        if (beforeT1.current) setSpeedRatio(delta, 0.775);
+        if (afterT1.current) setSpeedRatio(delta, 0.775);
+        if (beforeT2.current) setSpeedRatio(delta, 0.785);
+        if (afterT2.current) setSpeedRatio(delta, 0.9375);
+      }
 
       /**
        * Conditional Flag

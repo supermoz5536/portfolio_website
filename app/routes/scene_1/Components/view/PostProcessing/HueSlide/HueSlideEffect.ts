@@ -38,7 +38,7 @@ const hueSlideEffectFragmentShader = /* glsl */ `
              )
          );
 
-         float multiplyer = 0.15;
+         float multiplyer = 1.2;
          color += (uTime - uSkippedTime) * multiplyer * uSkipFactor;      
 
          outputColor = vec4( color, 1.0 );
