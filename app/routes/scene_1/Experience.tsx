@@ -35,6 +35,7 @@ export default function Experience({
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const isSkiped = useSystemStore((state) => state.isSkiped); // prettier-ignore
+  const isIntroEnd = useSystemStore((state) => state.isIntroEnd); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -45,17 +46,17 @@ export default function Experience({
      * スキップ後で画面外　＝＞　no render
      */
 
-    if (!isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+    if (!isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
       setIsRender(true);
       renderStart();
 
       //
-    } else if (isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+    } else if (isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
       setIsRender(true);
       renderStart();
 
       //
-    } else if (isSkiped && scrollProgressTopAndBottom >= endRenderRate) {
+    } else if (isIntroEnd && scrollProgressTopAndBottom >= endRenderRate) {
       setIsRender(false);
       renderFinish();
     }
@@ -68,21 +69,21 @@ export default function Experience({
      * スキップ後で画面外　＝＞　低解像度
      */
 
-    if (!isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+    if (!isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
       if (isMobile) setDprMobile(0.05);
       if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 1.5));
 
       //
-    } else if (isSkiped && scrollProgressTopAndBottom < endRenderRate) {
+    } else if (isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
       if (isMobile) setDprMobile(0.65);
       if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 2.0));
 
       //
-    } else if (isSkiped && scrollProgressTopAndBottom >= endRenderRate) {
+    } else if (isIntroEnd && scrollProgressTopAndBottom >= endRenderRate) {
       if (isMobile) setDprMobile(0.001);
       if (!isMobile) setDprDeskTop(0.001);
     }
-  }, [scrollProgressTopAndBottom, isSkiped]);
+  }, [scrollProgressTopAndBottom, isIntroEnd]);
 
   function renderStart() {
     const timeSec = performance.now();

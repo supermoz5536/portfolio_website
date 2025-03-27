@@ -11,7 +11,6 @@ let isFirstTry = true;
 export function HueSlideCustom() {
   const startTimeRef = useRef<number>(0);
   const hueSlideEffectRef = useRef(new HueSlideEffect());
-  const skippedTimeRef = useRef();
   const currentSpeedRef = useRef<number>(1.0);
 
   /**
@@ -107,7 +106,7 @@ export function HueSlideCustom() {
        * Conditional Flag
        */
 
-      if (isSkiped == false && skippedTimeRef.current == null) {
+      if (isSkiped == false) {
         hueSlideEffectRef.current.uniforms.get("uSkippedTime")!.value = elapsedTime - startTimeRef.current; // prettier-ignore
         hueSlideEffectRef.current.uniforms.get("uSkipFactor")!.value = 1.0; // prettier-ignore
       }
