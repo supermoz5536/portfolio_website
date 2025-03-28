@@ -57,7 +57,7 @@ export default function Panel2() {
               const progressRate = value.progress;
               setScrollProgress(progressRate);
               if (progressRate >= 1.0) isFirstTry = false;
-              console.log(progressRate);
+              // console.log(progressRate);
             },
           },
         },

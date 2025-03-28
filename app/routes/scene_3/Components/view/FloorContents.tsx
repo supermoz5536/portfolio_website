@@ -10,6 +10,7 @@ import { Fireflies } from "./Fireflies";
 import { StoneTablet } from "./StoneTablet";
 import { EmptyObject9 } from "./EmptyObjects";
 import { useGlobalStore } from "~/store/global/global_store";
+import { useSystemStore } from "~/store/scene3/system_store";
 
 type FloorContentsProps = {
   index: number;
@@ -26,15 +27,18 @@ const displayedFirefly: any = [0, 3, 6, 9, 11];
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
   const groupRef = useRef<any>();
+  const isFirstTry = useRef<any>(true);
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloor, setCurrentFloor] = useState(0);
+  const [enteredScene3, setEnteredScene3] = useState(false);
 
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
   );
 
   const isMobile = useGlobalStore((state) => state.isMobile);
+  const scrollProgress = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
 
   useEffect(() => {
     // 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
@@ -56,6 +60,13 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       unsubscribePlayer();
     };
   }, []);
+
+  useEffect(() => {
+    if (isFirstTry.current && scrollProgress > 0.0) {
+      isFirstTry.current = false;
+      setEnteredScene3(true);
+    }
+  }, [scrollProgress]);
 
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -100,7 +111,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>{isMobile || <Fireflies index={index} />}</>
             )}
 
-            {isMobile && (
+            {isMobile && enteredScene3 && (
               <>
                 {displayedShowcaseLightMobile.includes(index) && (
                   <ShowCaseLight shadowLevel={0} index={index} />
@@ -108,7 +119,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               </>
             )}
 
-            {isMobile || (
+            {!isMobile && enteredScene3 && (
               <>
                 {displayedShowcaseLightTablet.includes(index) && (
                   <ShowCaseLight shadowLevel={0} index={index} />

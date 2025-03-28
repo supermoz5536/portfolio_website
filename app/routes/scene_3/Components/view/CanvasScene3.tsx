@@ -42,6 +42,7 @@ export function CanvasScene3() {
   const [dpr, setDpr] = useState(2.0);
 
   const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
+  const isLoaded = useGlobalStore((state) => state.isLoaded);
 
   useEffect(() => {
     setDpr(Math.min(window.devicePixelRatio, 2.0));
@@ -75,6 +76,7 @@ export function CanvasScene3() {
             <PreCompile />
           </>
         )}
+
         <EffectComposer>
           {/**
            * Mobile のShowcaseContentsの内容が簡易的になっているので
