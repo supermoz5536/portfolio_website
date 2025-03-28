@@ -9,6 +9,18 @@ import { Subtitle } from "./intro/Subtitle";
 import { SkipButton } from "./intro/SkipButton";
 import { AnimateIn } from "~/components/animate_in";
 
+/**
+ * Debug
+ *
+ * Applied
+ *  - fixed
+ *  - html layer
+ *  - intro
+ *  - loading
+ */
+
+const visibleDebug = false;
+
 export default function Scene1() {
   const [isAllVisible, setIsAllVisible] = useState(true);
   const [isText1, setIsText1] = useState(false);
@@ -137,10 +149,12 @@ export default function Scene1() {
   }, [isLoaded]);
 
   useEffect(() => {
-    if (isIntroEnded) {
-      document.body.style.position = "";
-    } else {
-      document.body.style.position = "fixed";
+    if (visibleDebug) {
+      if (isIntroEnded) {
+        document.body.style.position = "";
+      } else {
+        document.body.style.position = "fixed";
+      }
     }
   }, [isIntroEnded]);
 
@@ -176,7 +190,7 @@ export default function Scene1() {
       {/* ---------------------
           Scene HTML Layder
         ---------------------- */}
-      {isIntroEnded && (
+      {visibleDebug && isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
             <AnimateIn rootMarginBottom={0}>
@@ -197,7 +211,7 @@ export default function Scene1() {
       {/* -------
           Intro
         -------- */}
-      {!isIntroEnded && (
+      {visibleDebug && !isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div
@@ -241,7 +255,7 @@ export default function Scene1() {
       {/* ---------
           Loading
         --------- */}
-      {isLoadingLayer && (
+      {visibleDebug && isLoadingLayer && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div className="flex flex-row justify-center items-center h-[20vh] w-72">
