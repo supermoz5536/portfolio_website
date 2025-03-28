@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { useSystemStore } from "~/store/scene3/system_store";
 
 type PositionProps = {
   position: THREE.Vector3;
@@ -1050,6 +1051,19 @@ export function ShowCaseContent6() {
   const diagonalStaticDotsAbove = [];
   const verticallStaticDots = [];
 
+  const isFirstTry = useRef<any>(true);
+
+  const scrollProgress = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
+
+  const [enteredScene3, setEnteredScene3] = useState(false);
+
+  useEffect(() => {
+    if (isFirstTry.current && scrollProgress > 0.0) {
+      isFirstTry.current = false;
+      setEnteredScene3(true);
+    }
+  }, [scrollProgress]);
+
   for (let i = 0; i < 9; i++) {
     diagonalStaticDotsAbove.push(StaticDot);
   }
@@ -1260,7 +1274,7 @@ export function ShowCaseContent6() {
             <Dot key={`verticallStaticDots${index}`} position={dotPosition} />
           );
         })}
-        {/* <DynamicDotAxisTransition /> */}
+        {enteredScene3 && <DynamicDotAxisTransition />}
       </group>
     </>
   );
