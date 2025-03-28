@@ -117,7 +117,7 @@ export default function Experience({
       <Earth />
       <Tower />
       <mesh
-        renderOrder={-1}
+        renderOrder={-5}
         geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
         material={
           new THREE.ShaderMaterial({
@@ -133,6 +133,7 @@ export default function Experience({
                   gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
               }
             `,
+            // transparent: true,
             depthTest: false,
           })
         }

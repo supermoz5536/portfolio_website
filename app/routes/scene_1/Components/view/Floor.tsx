@@ -74,17 +74,23 @@ export function Floors() {
     /**
      * Load Model
      */
-    assets.gltf.floor.scene.traverse((child: any) => {
+
+    const floorScene = assets.gltf.floor.scene.clone();
+
+    floorScene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
+        child.material.transparent = false; // 不透明扱い（opaque pass）
+        child.renderOrder = -10;
+        // child.material.depthWrite = true; // 通常の不透明挙動
       }
     });
 
     const boundingBox = 
-      new THREE.Box3().setFromObject(assets.gltf.floor.scene); // prettier-ignore
+      new THREE.Box3().setFromObject(floorScene); // prettier-ignore
 
-    setScene(assets.gltf.floor.scene);
+    setScene(floorScene);
     setBoundingBoxFloor(boundingBox);
 
     /* Listem Player Current Floor */
@@ -134,7 +140,7 @@ export function Floors() {
       {scene != null && boundingBoxFloor != null && (
         <>
           {floorPositions.map((floorPosition: any, index: any) => {
-            const hiddenFloorArray = [1, 2, 4, 5, 8];
+            const hiddenFloorArray = [1, 2, 4, 5, 8, 10, 11];
             const hiddenBridgeForward = [0, 7, 11];
             const hiddenBridgeRight = [0, 3, 6, 9];
 
@@ -146,16 +152,16 @@ export function Floors() {
                 <Floor position={floorPosition} scene={scene.clone()} />
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
-                {!hiddenBridgeForward.includes(index) && (
+                {/* {!hiddenBridgeForward.includes(index) && (
                   <Bridge
                     position={floorPosition}
                     boundingBox={boundingBoxFloor}
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
-                )}
+                )} */}
 
                 {/* 非表示リストにindexが含まれる場合、Brigdeの表示を無効化 */}
-                {!hiddenBridgeRight.includes(index) && (
+                {/* {!hiddenBridgeRight.includes(index) && (
                   // Bridgeを回転させて再利用
 
                   <BridgeRight
@@ -163,9 +169,9 @@ export function Floors() {
                     boundingBox={boundingBoxFloor}
                     heightDifference={floorAxesInterval * controlRatePositionY}
                   />
-                )}
+                )} */}
 
-                <FloorContents index={index} position={floorPosition} />
+                {/* <FloorContents index={index} position={floorPosition} /> */}
 
                 {/* Particle Codes */}
                 {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}

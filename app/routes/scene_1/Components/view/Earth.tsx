@@ -162,7 +162,6 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
       },
       vertexShader: backGroundVertex,
       fragmentShader: backGroundFragment,
-      depthWrite: false, // 深度情報を保存しない（比較対象にならない）
       depthTest: false, // 他の obj との深度値の比較を行わない
     }),
   );
@@ -244,7 +243,7 @@ export function Background({ textureSky, textureGround }: BackGroundProps) {
           // 奥行きという基準がなくなり、完全に配置順によってのみ前後関係が決定され
           // 配置された瞬間に1番手前に描画されるので
           // 背景ば一番最初に配置されるよう順序指定する必要がある
-          renderOrder={-1}
+          renderOrder={-15}
         />
       )}
     </>

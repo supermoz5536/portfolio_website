@@ -218,12 +218,16 @@ export function MidPlane() {
      * Load Model
      */
 
-    assets.gltf.midPlane.scene.traverse((child: any) => {
+    const midPlaneScene = assets.gltf.midPlane.scene.clone();
+
+    midPlaneScene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.recieveShadow = true;
+        child.transparent = true;
+        child.renderOrder = 10;
       }
-      sceneRef.current = assets.gltf.midPlane.scene.clone();
+      sceneRef.current = midPlaneScene;
       setScene(sceneRef.current);
     });
 
@@ -255,6 +259,7 @@ export function MidPlane() {
     <>
       {/* Wave Plane */}
       <mesh
+        renderOrder={5}
         geometry={midPlaneGeometry}
         material={waveMaterial}
         // position={[61, -3.25 - 0.325, -62]}
@@ -262,6 +267,7 @@ export function MidPlane() {
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
         scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
+
       {/* Base Plane */}
       <mesh
         geometry={boxGeometry}
@@ -278,6 +284,7 @@ export function MidPlane() {
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
         scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
+
       {/* Main Model */}
       {scene && (
         <primitive
@@ -297,6 +304,7 @@ export function BottomCone() {
   return (
     <>
       <mesh
+        renderOrder={10}
         geometry={bottomConeGeometry}
         material={glassMaterial}
         position={bottomConePosition}
@@ -568,7 +576,8 @@ export function Tower() {
     <group
       onPointerDown={handlePointerDown}
       onPointerUp={handleZoomIn}
-      position={[15, 7, 10]}
+      position={[-40, 70, -10]}
+      scale={[2, 2, 2]}
     >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
