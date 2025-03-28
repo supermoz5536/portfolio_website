@@ -167,33 +167,33 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
     setTargetIntengityWithoutShadow(100 - shadowLevel);
   }, []);
 
-  useFrame((state, delta) => {
-    if (withShadowRef.current) {
-      const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithShadow, // start
-        targetIntengityWithShadow, // end
-        delta, // alpha
-      );
+  // useFrame((state, delta) => {
+  //   if (withShadowRef.current) {
+  //     const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithShadow, // start
+  //       targetIntengityWithShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withShadowRef.current.intensity = newLerpIntensityWithShadow;
+  //     withShadowRef.current.intensity = newLerpIntensityWithShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithShadow(newLerpIntensityWithShadow);
-    }
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithShadow(newLerpIntensityWithShadow);
+  //   }
 
-    if (withoutShadowRef.current) {
-      const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithoutShadow, // start
-        targetIntengityWithoutShadow, // end
-        delta, // alpha
-      );
+  //   if (withoutShadowRef.current) {
+  //     const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithoutShadow, // start
+  //       targetIntengityWithoutShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
+  //     withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
-    }
-  });
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
+  //   }
+  // });
 
   return (
     <>
@@ -213,9 +213,10 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
 
       {/* Without Shadow */}
       <pointLight
-        ref={withoutShadowRef}
+        // ref={withoutShadowRef}
         color="#fff"
-        intensity={lerpIntengityWithoutShadow}
+        intensity={0.3}
+        // intensity={lerpIntengityWithoutShadow}
         distance={15}
         position={[-0.25, 5.3, 1.1]}
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定

@@ -1260,7 +1260,7 @@ export function ShowCaseContent6() {
             <Dot key={`verticallStaticDots${index}`} position={dotPosition} />
           );
         })}
-        <DynamicDotAxisTransition />
+        {/* <DynamicDotAxisTransition /> */}
       </group>
     </>
   );

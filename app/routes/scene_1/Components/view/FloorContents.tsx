@@ -100,7 +100,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>{isMobile || <Fireflies index={index} />}</>
             )}
 
-            {isMobile && (
+            {/* {isMobile && (
               <>
                 {displayedShowcaseLightMobile.includes(index) && (
                   <ShowCaseLight shadowLevel={0} index={index} />
@@ -114,7 +114,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                   <ShowCaseLight shadowLevel={0} index={index} />
                 )}
               </>
-            )}
+            )} */}
 
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (

@@ -639,7 +639,7 @@ export default function Scene3() {
     <>
       <div
         id="scene3"
-        className="relative justify-center items-center h-[800vh] w-full"
+        className="relative justify-center items-center h-[800vh] w-full bg-white"
       >
         {/*
          * Sticky Components
