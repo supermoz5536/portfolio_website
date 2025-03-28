@@ -60,7 +60,7 @@ export function TopCircle({ normWidth, normHeight }: CommonProps) {
             transparent: true,
             opacity: 0.35,
             side: THREE.DoubleSide,
-            blending: THREE.AdditiveBlending,
+            // blending: THREE.AdditiveBlending,
           })
         }
         position={[61, normHeight, -62]}
@@ -136,7 +136,7 @@ export function MidPlane() {
     const waveMaterial = new THREE.MeshStandardMaterial({
       color: "blue",
       transparent: true,
-      opacity: 0.7,
+      opacity: 1.0,
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending,
     });

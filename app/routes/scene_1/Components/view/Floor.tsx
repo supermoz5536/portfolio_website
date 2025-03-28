@@ -51,7 +51,7 @@ export function Floor({ position, scene }: floorProps) {
             position={adjustedPosition}
             userData={{ key: "floor" }}
           >
-            <primitive object={scene} />
+            <primitive render object={scene} />
           </group>
         </>
       )}

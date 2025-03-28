@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
+import * as THREE from "three";
 
 type ExperienceProps = {
   setDprMobile: React.Dispatch<React.SetStateAction<number>>;
@@ -114,7 +115,28 @@ export default function Experience({
       <EnvironmentLights />
       <Floors />
       <Earth />
-      {isMobile || <Tower />}
+      <Tower />
+      <mesh
+        renderOrder={-1}
+        geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
+        material={
+          new THREE.ShaderMaterial({
+            vertexShader: `
+              void main()
+              {
+                  gl_Position = vec4(position, 1.0);
+              }
+            `,
+            fragmentShader: `
+              void main()
+              {
+                  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+              }
+            `,
+            depthTest: false,
+          })
+        }
+      />
     </>
   );
 }
