@@ -110,20 +110,11 @@ export default function Experience({
   return (
     <>
       <color args={["#201919"]} attach="background" />
-
-      {isPreLoaded && (
-        <>
-          <Camera />
-          <EnvironmentLights />
-          <Floors />
-          <Earth />
-          {isMobile || (
-            <>
-              <Tower />
-            </>
-          )}
-        </>
-      )}
+      <Camera />
+      <EnvironmentLights />
+      <Floors />
+      <Earth />
+      {isMobile || <Tower />}
     </>
   );
 }
