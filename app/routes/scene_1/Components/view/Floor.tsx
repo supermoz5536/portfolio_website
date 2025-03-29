@@ -140,7 +140,7 @@ export function Floors() {
       {scene != null && boundingBoxFloor != null && (
         <>
           {floorPositions.map((floorPosition: any, index: any) => {
-            const hiddenFloorArray = [1, 2, 4, 5, 8, 10, 11];
+            const hiddenFloorArray = [0, 1, 2, 4, 5, 8, 10, 11];
             const hiddenBridgeForward = [0, 7, 11];
             const hiddenBridgeRight = [0, 3, 6, 9];
 

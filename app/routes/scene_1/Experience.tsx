@@ -116,7 +116,7 @@ export default function Experience({
       <Floors />
       <Earth />
       <Tower />
-      <mesh
+      {/* <mesh
         renderOrder={-5}
         geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
         material={
@@ -137,7 +137,7 @@ export default function Experience({
             depthTest: false,
           })
         }
-      />
+      /> */}
     </>
   );
 }

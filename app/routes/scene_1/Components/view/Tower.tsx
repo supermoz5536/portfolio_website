@@ -49,6 +49,9 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
   depthWrite: false,
 });
 
+const towerPositionX = 0;
+const towerPositionZ = 0;
+
 export function TopCircle({ normWidth, normHeight }: CommonProps) {
   return (
     <>
@@ -63,7 +66,7 @@ export function TopCircle({ normWidth, normHeight }: CommonProps) {
             // blending: THREE.AdditiveBlending,
           })
         }
-        position={[61, normHeight, -62]}
+        position={[towerPositionX, normHeight, towerPositionZ]}
         rotation={[-Math.PI / 2, 0, 0]}
         scale={[normWidth, normWidth, 1]}
       />
@@ -84,7 +87,7 @@ export function TopCirclePulse({ normWidth, normHeight }: CommonProps) {
       <mesh
         geometry={circleGeometry}
         material={material}
-        position={[61, normHeight + 0.01, -62]}
+        position={[towerPositionX, normHeight + 0.01, towerPositionZ]}
         rotation={[-Math.PI / 2, 0, 0]}
         scale={[normWidth, normWidth, 1]}
       />
@@ -118,7 +121,7 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
         ref={arrowPlaneRef}
         geometry={planeGeometry}
         material={material}
-        position={[61, normHeight / 2, -62]}
+        position={[towerPositionX, normHeight / 2, towerPositionZ]}
         scale={[normWidth, normHeight, 1]}
       />
     </>
@@ -263,7 +266,7 @@ export function MidPlane() {
         geometry={midPlaneGeometry}
         material={waveMaterial}
         // position={[61, -3.25 - 0.325, -62]}
-        position={[61, -3.5, -62]}
+        position={[towerPositionX, -3.5, towerPositionZ]}
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
         scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
@@ -280,7 +283,7 @@ export function MidPlane() {
             blending: THREE.AdditiveBlending,
           })
         }
-        position={[61, -3.25 - 0.325, -62]}
+        position={[towerPositionX, -3.25 - 0.325, towerPositionZ]}
         rotation={[Math.PI / 2, 0, -Math.PI * 0.2 - Math.PI / 4]}
         scale={[35.1, 35.1, 0.75]} // 0.1: Z-Fighting 防止
       />
@@ -289,7 +292,7 @@ export function MidPlane() {
       {scene && (
         <primitive
           object={scene}
-          position={[61, -3.25, -62]}
+          position={[towerPositionX, -3.25, towerPositionZ]}
           rotation={[0, Math.PI * 0.2 - Math.PI / 4, 0]}
         />
       )}
@@ -299,7 +302,11 @@ export function MidPlane() {
 
 export function BottomCone() {
   const bottomHeight = 40;
-  const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+  const bottomConePosition = new THREE.Vector3(
+    towerPositionX,
+    -bottomHeight / 3 - 10,
+    towerPositionZ,
+  );
 
   return (
     <>
@@ -316,7 +323,11 @@ export function BottomCone() {
 
 export function InsideCone() {
   const bottomHeight = 40;
-  const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+  const bottomConePosition = new THREE.Vector3(
+    towerPositionX,
+    -bottomHeight / 3 - 10,
+    towerPositionZ,
+  );
   const material = InsideConeMaterial();
 
   useFrame((state) => {
@@ -340,7 +351,11 @@ export function InsideCone() {
 
 export function FresnelCone() {
   const bottomHeight = 40;
-  const bottomConePosition = new THREE.Vector3(61, -bottomHeight / 3 - 10, -62);
+  const bottomConePosition = new THREE.Vector3(
+    towerPositionX,
+    -bottomHeight / 3 - 10,
+    towerPositionZ,
+  );
   const material = FresnelConeMaterial();
 
   useFrame((state) => {
@@ -576,8 +591,9 @@ export function Tower() {
     <group
       onPointerDown={handlePointerDown}
       onPointerUp={handleZoomIn}
-      position={[-40, 70, -10]}
-      scale={[2, 2, 2]}
+      position={[0, 0, 0]}
+      rotation={[0, Math.PI * 0.05, 0]}
+      scale={[1, 1, 1]}
     >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
