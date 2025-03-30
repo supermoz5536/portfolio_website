@@ -400,7 +400,7 @@ export function Tower() {
         duration: 8,
         scale: 1,
         ease: "power3.inOut",
-        delay: 0,
+        delay: 1,
         onUpdate: () => {
           setAnimationRatio({
             scale: animationRatioRef.current.scale,
