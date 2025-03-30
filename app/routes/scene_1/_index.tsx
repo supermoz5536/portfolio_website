@@ -149,13 +149,13 @@ export default function Scene1() {
   }, [isLoaded]);
 
   useEffect(() => {
-    if (visibleDebug) {
-      if (isIntroEnded) {
-        document.body.style.position = "";
-      } else {
-        document.body.style.position = "fixed";
-      }
+    // if (visibleDebug) {
+    if (isIntroEnded) {
+      document.body.style.position = "";
+    } else {
+      document.body.style.position = "fixed";
     }
+    // }
   }, [isIntroEnded]);
 
   function onSkip() {
@@ -190,7 +190,8 @@ export default function Scene1() {
       {/* ---------------------
           Scene HTML Layder
         ---------------------- */}
-      {visibleDebug && isIntroEnded && (
+      {isIntroEnded && (
+        // {visibleDebug && isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
             <AnimateIn rootMarginBottom={0}>
@@ -211,7 +212,8 @@ export default function Scene1() {
       {/* -------
           Intro
         -------- */}
-      {visibleDebug && !isIntroEnded && (
+      {!isIntroEnded && (
+        // {visibleDebug && !isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div
@@ -255,7 +257,8 @@ export default function Scene1() {
       {/* ---------
           Loading
         --------- */}
-      {visibleDebug && isLoadingLayer && (
+      {isLoadingLayer && (
+        // {visibleDebug && isLoadingLayer && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div className="flex flex-row justify-center items-center h-[20vh] w-72">

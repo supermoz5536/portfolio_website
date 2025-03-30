@@ -18,7 +18,6 @@ type ExperienceProps = {
   setDprDeskTop: React.Dispatch<React.SetStateAction<number>>;
 };
 
-// let isIntroEnd = false;
 export default function Experience({
   setDprMobile,
   setDprDeskTop,
@@ -28,14 +27,13 @@ export default function Experience({
   const animationFrameIdRef = useRef<any>();
 
   const [isRender, setIsRender] = useState(true);
+  const [isEarth, setIsEarth] = useState(false);
 
   const { advance } = useThree();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
-  const isSkiped = useSystemStore((state) => state.isSkiped); // prettier-ignore
   const isIntroEnd = useSystemStore((state) => state.isIntroEnd); // prettier-ignore
 
   useEffect(() => {
@@ -108,15 +106,21 @@ export default function Experience({
     }
   }
 
+  useEffect(() => {
+    if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
+      setIsEarth(true);
+    }
+  }, [scrollProgressTopAndBottom]);
+
   return (
     <>
       <color args={["#201919"]} attach="background" />
       <Camera />
       <EnvironmentLights />
       <Floors />
-      <Earth />
+      {isEarth && <Earth />}
       <Tower />
-      {/* <mesh
+      <mesh
         renderOrder={-5}
         geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
         material={
@@ -124,7 +128,7 @@ export default function Experience({
             vertexShader: `
               void main()
               {
-                  gl_Position = vec4(position, 1.0);
+                  gl_Position = vec4(position.xy, 0.0, 1.0);
               }
             `,
             fragmentShader: `
@@ -137,7 +141,7 @@ export default function Experience({
             depthTest: false,
           })
         }
-      /> */}
+      />
     </>
   );
 }

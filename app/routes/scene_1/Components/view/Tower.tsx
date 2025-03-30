@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSystemStore } from "~/store/scene2/system_store";
+import { useSystemStore } from "~/store/scene1/system_store";
 import ThreePlayerStore from "../../../../store/scene2/three_player_store";
 import ThreeContentsStore from "../../../../store/scene2/three_contents_store";
 import { useFrame } from "@react-three/fiber";
@@ -12,6 +12,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { FresnelConeMaterial } from "./Materials/FresnelConeMaterial";
 import { useGlobalStore } from "~/store/global/global_store";
+import { gsap } from "gsap/dist/gsap";
 
 type CommonProps = {
   normWidth: number;
@@ -377,223 +378,42 @@ export function FresnelCone() {
   );
 }
 
+let isFirstTry = true;
 export function Tower() {
-  const state = useThree();
-  const cameraBasePosition = new THREE.Vector3(61, -23, -62);
+  const animationRatioRef = useRef({ scale: 0 });
+  const isFirstTryRef = useRef(true);
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
-  const currentPosition = ThreePlayerStore((state: any) => state.currentPosition); // prettier-ignore
-  const setIsPlayerFocus = useSystemStore((state: any) => state.setIsPlayerFocus); // prettier-ignore
-  const setIsContentSelectedMouseDown = ThreeContentsStore((state: any) => state.setIsContentSelectedMouseDown); // prettier-ignore
-
-  const [isDown, setIsDown] = useState(false);
-  const [isZoomIn, setIsZoomIn] = useState(false);
-  const [isTouchMoveOn, setIsTouchMoveOn] = useState(false);
-  const [normWidth, setNormWidth] = useState(40);
+  const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
-
-  const [lerpCamera, setLeapCamera] = useState(
-    new THREE.Vector3(
-      cameraBasePosition.x, // prettier-ignore
-      cameraBasePosition.y + 10,
-      cameraBasePosition.z + 27,
-    ),
-  );
-
-  const [lerpCameraTarget, setLeapCameraTarget] = useState(
-    new THREE.Vector3(
-      cameraBasePosition.x, // prettier-ignore
-      cameraBasePosition.y,
-      cameraBasePosition.z - 4.25,
-    ),
-  );
-
-  useEffect(() => {
-    /**
-     * Add Listener
-     */
-
-    const unsubscribeIsPlayerFocused = useSystemStore.subscribe(
-      (state: any) => state.isPlayerFocused,
-      (value) => {
-        if (value == true) handleZoomOut();
-      },
-    );
-
-    const unsubscribeCurrentFloorNum = ThreePlayerStore.subscribe(
-      (state: any) => state.currentFloorNum,
-      (value) => {
-        if (floorsRow0.includes(value)) {
-          setNormHeight(10);
-          setNormWidth(40);
-        } else if (floorsRow1.includes(value)) {
-          setNormHeight(20);
-          setNormWidth(30);
-        } else if (floorsRow2.includes(value)) {
-          setNormHeight(30);
-          setNormWidth(20);
-        } else if (floorsRow3.includes(value)) {
-          setNormHeight(40);
-          setNormWidth(10);
-        }
-      },
-    );
-
-    //該当コンテンツ外でマウス/タップがキャンセルされた際の初期化
-    const handleMouseUp = () => setIsDown(false);
-    const handleTouchEnd = () => setIsDown(false);
-    const handleTouchCancel = () => setIsDown(false);
-
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("touchend", handleTouchEnd);
-    document.addEventListener("touchcancel", handleTouchCancel);
-
-    return () => {
-      unsubscribeIsPlayerFocused();
-      unsubscribeCurrentFloorNum();
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchend", handleTouchEnd);
-      document.removeEventListener("touchcancel", handleTouchCancel);
-    };
-  }, []);
-
-  useFrame((state, delta) => {
-    /**
-     * Desktop
-     */
-
-    if (isZoomIn && !isMobile) {
-      /**
-       * Position Camera
-       */
-      const endPositionCamera = new THREE.Vector3(
-        cameraBasePosition.x - 40, // prettier-ignore
-        cameraBasePosition.y + 40,
-        cameraBasePosition.z + 85,
-      );
-
-      lerpCamera.lerp(endPositionCamera, 5 * delta);
-
-      state.camera.position.set(
-        lerpCamera.x, // prettier-ignore
-        lerpCamera.y,
-        lerpCamera.z,
-      );
-
-      /**
-       * Position Camera Target
-       */
-
-      const endCameratarget = new THREE.Vector3(
-        cameraBasePosition.x, // prettier-ignore
-        cameraBasePosition.y + 20,
-        cameraBasePosition.z,
-      );
-
-      lerpCameraTarget.lerp(endCameratarget, 5 * delta);
-
-      state.camera.lookAt(
-        lerpCameraTarget.x, // prettier-ignore
-        lerpCameraTarget.y,
-        lerpCameraTarget.z,
-      );
-    }
-
-    /**
-     * Mobile
-     */
-
-    if (isZoomIn && isMobile) {
-      /**
-       * Position Camera
-       */
-      const endPositionCamera = new THREE.Vector3(
-        cameraBasePosition.x - 45, // prettier-ignore
-        cameraBasePosition.y + 45,
-        cameraBasePosition.z + 120,
-      );
-
-      lerpCamera.lerp(endPositionCamera, 5 * delta);
-
-      state.camera.position.set(
-        lerpCamera.x, // prettier-ignore
-        lerpCamera.y,
-        lerpCamera.z,
-      );
-
-      /**
-       * Position Camera Target
-       */
-
-      const endCameratarget = new THREE.Vector3(
-        cameraBasePosition.x, // prettier-ignore
-        cameraBasePosition.y + 15,
-        cameraBasePosition.z,
-      );
-
-      lerpCameraTarget.lerp(endCameratarget, 5 * delta);
-
-      state.camera.lookAt(
-        lerpCameraTarget.x, // prettier-ignore
-        lerpCameraTarget.y,
-        lerpCameraTarget.z,
-      );
-    }
+  const [animationRatio, setAnimationRatio] = useState({
+    scale: 1,
   });
 
-  const handlePointerDown = () => {
-    setIsDown(true);
-    setIsContentSelectedMouseDown(true);
-  };
+  const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
-  const handleZoomIn = () => {
-    if (isDown && !isZoomIn && !isTouchMoveOn) {
-      setIsDown(false);
-      setIsContentSelectedMouseDown(false);
-      setIsPlayerFocus(false);
-      setIsZoomIn(true);
+  useEffect(() => {
+    if (isFirstTry && isIntroEnded) {
+      isFirstTry = false;
 
-      /**
-       * Update to Current Camera Position
-       */
-
-      setLeapCamera(state.camera.position.clone());
-
-      /**
-       * Update to Current Camera Target Position
-       */
-
-      const cameraTargetPosition = state.camera.position.clone();
-
-      // Direction
-      const forwardDir: any = new THREE.Vector3();
-      forwardDir.subVectors(currentPosition, state.camera.position);
-      forwardDir.y = 0;
-      forwardDir.normalize();
-
-      // Player に照準
-      cameraTargetPosition.y -= 5;
-      cameraTargetPosition.add(forwardDir.multiplyScalar(15));
-
-      // cameraTarget に照準
-      cameraTargetPosition.add(forwardDir.multiplyScalar(10));
-
-      setLeapCameraTarget(cameraTargetPosition);
+      gsap.to(animationRatioRef.current, {
+        duration: 8,
+        scale: 1,
+        ease: "power3.inOut",
+        delay: 0,
+        onUpdate: () => {
+          setAnimationRatio({
+            scale: animationRatioRef.current.scale,
+          });
+        },
+      });
     }
-  };
-
-  const handleZoomOut = () => {
-    setIsZoomIn(false);
-    setIsPlayerFocus(true);
-  };
+  }, [isIntroEnded]);
 
   return (
     <group
-      onPointerDown={handlePointerDown}
-      onPointerUp={handleZoomIn}
       position={[0, 0, 0]}
-      rotation={[0, Math.PI * 0.05, 0]}
-      scale={[1, 1, 1]}
+      rotation={[0, Math.PI * 0.35, 0]}
+      scale={animationRatio.scale}
     >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />

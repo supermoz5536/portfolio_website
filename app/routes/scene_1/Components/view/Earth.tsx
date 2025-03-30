@@ -8,6 +8,7 @@ import { getGui } from "../../util/lil-gui";
 import { StarsMaterial } from "./Materials/StarsMaterial";
 import { SunMaterial } from "./Materials/SunMaterial";
 import { useGlobalStore } from "~/store/global/global_store";
+import { useSystemStore } from "~/store/scene1/system_store";
 
 type CommonProps = {
   sunPosition: THREE.Vector3;
@@ -474,8 +475,6 @@ export function Earth() {
   const [bgTextureSky, setBgTextureSky] = useState();
   const [bgTextureGround, setBgTextureGround] = useState();
 
-  const isMobile = useGlobalStore((state) => state.isMobile);
-
   /**
    * Setup Custom Render
    */
@@ -494,22 +493,6 @@ export function Earth() {
 
     setBgTextureSky(customRenderSky.texture);
     setBgTextureGround(customRenderGround.texture);
-
-    /*
-     * Player Position
-     */
-
-    // const unsubscibePlayer = ThreePlayer.subscribe(
-    //   (state: any) => state.currentPosition,
-    //   (currentPosition) => {
-    //     const playerMoveRatio =
-    //       (currentPosition.x / endPosition.x -
-    //         currentPosition.z / endPosition.z) / 2; // prettier-ignore
-
-    //     setPlayerPosition(currentPosition);
-    //     setPlayerMoveRatio(playerMoveRatio);
-    //   },
-    // );
 
     return () => {
       // unsubscibePlayer();
@@ -545,6 +528,7 @@ export function Earth() {
   return (
     <>
       <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
+
       {/* {isMobile || <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />} */}
       <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />
       {/* <Sun sunPosition={sunPosition} playerPosition={playerPosition} /> */}

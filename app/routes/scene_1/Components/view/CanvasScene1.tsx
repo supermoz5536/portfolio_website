@@ -65,7 +65,7 @@ export function CanvasScene1() {
           fov: 45,
           near: 0.1,
           far: 4000,
-          position: [0, 0, 100],
+          position: [0, 0, 0],
         }}
         dpr={isMobile ? dprMobile : dprDeskTop}
       >
@@ -79,12 +79,13 @@ export function CanvasScene1() {
           </>
         )}
 
-        {/* <EffectComposer>
-          <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-          <WhiteCustom />
-          {isIntroEnded || <HueSlideCustom />}
-          {isIntroEnded || <WhiteSlideCustom />}
-        </EffectComposer> */}
+        {isIntroEnded || (
+          <EffectComposer>
+            <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+            <HueSlideCustom />
+            <WhiteSlideCustom />
+          </EffectComposer>
+        )}
       </Canvas>
     </>
   );

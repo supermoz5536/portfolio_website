@@ -126,7 +126,8 @@ export function Floors() {
         const floorPosition = new THREE.Vector3(
           firstLeftColumnFloorPosition[0],
           firstLeftColumnFloorPosition[1] +
-            columnIndex * floorAxesInterval * controlRatePositionY,
+            columnIndex * floorAxesInterval * controlRatePositionY -
+            25,
           rowIndex * -floorAxesInterval,
         );
         floorPositions.push(floorPosition);
