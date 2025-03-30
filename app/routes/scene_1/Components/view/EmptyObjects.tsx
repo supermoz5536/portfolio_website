@@ -4,7 +4,7 @@ const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const boxMaterial = new THREE.MeshLambertMaterial({
   color: "ffffff",
   emissive: new THREE.Color(0xffffff),
-  emissiveIntensity: 1,
+  emissiveIntensity: 3,
 });
 
 export function EmptyObject9() {
@@ -13,7 +13,9 @@ export function EmptyObject9() {
       <mesh
         geometry={boxGeometry}
         material={boxMaterial}
-        position={[0, 3, 0]}
+        position={[0, 15, 0]}
+        scale={5}
+        renderOrder={-10}
       />
     </>
   );

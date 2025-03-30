@@ -1,6 +1,10 @@
 import { Canvas, useThree } from "@react-three/fiber";
 import Experience from "../../Experience";
-import { EffectComposer, ToneMapping } from "@react-three/postprocessing";
+import {
+  Bloom,
+  EffectComposer,
+  ToneMapping,
+} from "@react-three/postprocessing";
 import { useEffect, useRef, useState } from "react";
 import { ToneMappingMode } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
@@ -8,6 +12,7 @@ import { WhiteCustom } from "./PostProcessing/White/WhiteCustom";
 import { HueSlideCustom } from "./PostProcessing/HueSlide/HueSlideCustom";
 import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
+import { KernelSize } from "postprocessing";
 
 export function PreCompile() {
   const resultRef = useRef<any>(null);
@@ -78,6 +83,15 @@ export function CanvasScene1() {
             <PreCompile />
           </>
         )}
+
+        <EffectComposer>
+          <ToneMapping mode={ToneMappingMode.NEUTRAL} />
+          <Bloom
+            luminanceThreshold={3}
+            intensity={0.3}
+            kernelSize={KernelSize.VERY_LARGE}
+          />
+        </EffectComposer>
 
         {/* {isIntroEnded || (
           <EffectComposer>

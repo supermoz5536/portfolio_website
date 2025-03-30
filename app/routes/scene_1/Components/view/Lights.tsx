@@ -67,7 +67,7 @@ export function EnvironmentLights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={isMobile ? 2 : 1.5}
+        intensity={isMobile ? 2 : 2}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -79,7 +79,7 @@ export function EnvironmentLights() {
         shadow-normalBias={0.1}
       />
 
-      <ambientLight ref={ambLightRef} intensity={isMobile ? 1 : 0.4} />
+      <ambientLight ref={ambLightRef} intensity={isMobile ? 1 : 0.7} />
     </>
   );
 }

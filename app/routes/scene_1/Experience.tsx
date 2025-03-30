@@ -125,7 +125,7 @@ export default function Experience({
       {/* {isEarth && <Earth />} */}
       <Earth />
       <Tower />
-      {/* <mesh
+      <mesh
         renderOrder={-5}
         frustumCulled={false}
         geometry={new THREE.PlaneGeometry(whiteSizeRatio, whiteSizeRatio, 1, 1)}
@@ -148,7 +148,7 @@ export default function Experience({
             depthTest: false,
           })
         }
-      /> */}
+      />
     </>
   );
 }

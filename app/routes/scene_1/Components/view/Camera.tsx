@@ -9,10 +9,29 @@ let isFirstTry = true;
 let isAnimation = true;
 
 export function Camera() {
+  const tempVec3 = new THREE.Vector3(0, -11, 0);
+  const cameraPpoints = [
+    new THREE.Vector3(19.3, 12.5, 60),
+    new THREE.Vector3(5, 2, -5),
+    new THREE.Vector3(45, 15.5, -40),
+    new THREE.Vector3(55, 20.5, -80),
+  ];
+  const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
+
+  /**
+   * Local State
+   */
+
   const cameraRef = useRef<any>();
   const three = useThree();
   const animationRatioRef = useRef({ progress: 0 });
   const isAnimationRef = useRef(true);
+
+  const [lerpCamTarg, setLerpCamTarg] = useState(new THREE.Vector3(0, -10, 0));
+
+  /**
+   * Store State
+   */
 
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
@@ -20,22 +39,19 @@ export function Camera() {
     (state) => state.scrollProgressTopAndBottom,
   );
 
+  /**
+   * Three
+   */
+
   // size: 現在のcanvas描画領域(width, height)が格納
   const size = useThree((store) => store.size);
   const set = useThree((store) => store.set);
 
-  const tempVec3 = new THREE.Vector3(0, -11, 0);
+  /* ------------------
+     Initialize Camera 
+    ------------------ */
 
-  const cameraPpoints = [
-    new THREE.Vector3(19.3, 12.5, 60),
-    new THREE.Vector3(5, 2, -5),
-    new THREE.Vector3(45, 15.5, -40),
-    new THREE.Vector3(55, 20.5, -80),
-  ];
-
-  const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
-
-  // デフォルトカメラとして登録
+  // Set Camera as Default
   useLayoutEffect(() => {
     set({ camera: cameraRef.current });
     cameraRef.current.layers.enable(0);
@@ -45,7 +61,7 @@ export function Camera() {
     }
   }, []);
 
-  // 初回マウント前にアスペクト比率を事前適用する必要がある
+  // Set Aspect Ratio before First Mount
   useLayoutEffect(() => {
     if (cameraRef.current) {
       // canvas サイズ(width, height)の変更は
@@ -58,6 +74,9 @@ export function Camera() {
     }
   }, [size]);
 
+  /* ----------------------------
+     Control Camera in Animation
+    ---------------------------- */
   useEffect(() => {
     if (isFirstTry) {
       // if (isFirstTry && isIntroEnded) {
@@ -102,6 +121,9 @@ export function Camera() {
     }
   }, [isIntroEnded]);
 
+  /* ----------------------------
+     Control Camera in Scroll
+    ---------------------------- */
   useEffect(() => {
     if (!isAnimation && cameraRef.current) {
       const newCameraPos = curve.getPoint(scrollProgress);

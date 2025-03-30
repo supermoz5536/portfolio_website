@@ -86,7 +86,9 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             <ShowCase position={adjustedPosition} index={0} />
 
             {/* Content */}
-            {displayedQuestion.includes(index) && <Question />}
+            {index == 3 && <EmptyObject9 />}
+
+            {/* {displayedQuestion.includes(index) && <Question />} */}
 
             {/* StoneTablet */}
             {/* <StoneTablet position={adjustedPosition} index={index} /> */}
