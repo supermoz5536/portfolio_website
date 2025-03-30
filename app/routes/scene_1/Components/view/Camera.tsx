@@ -107,7 +107,7 @@ export function Camera() {
         newCameraPos.y, // prettier-ignore
         newCameraPos.z, // prettier-ignore
       );
-      cameraRef.current.lookAt(0, -11, 20);
+      cameraRef.current.lookAt(0, 0, -100);
     }
   }, [scrollProgress, size]);
 

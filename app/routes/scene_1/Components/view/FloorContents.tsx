@@ -83,7 +83,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
         <>
           {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
-            <ShowCase position={adjustedPosition} index={index} />
+            {/* <ShowCase position={adjustedPosition} index={index} /> */}
 
             {/* Content */}
             {isMobile && index == 0 && <EmptyObject9 />}
@@ -93,11 +93,11 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {isMobile || (displayedQuestion.includes(index) && <Question />)}
 
             {/* StoneTablet */}
-            <StoneTablet position={adjustedPosition} index={index} />
+            {/* <StoneTablet position={adjustedPosition} index={index} /> */}
 
-            {displayedFirefly.includes(index) && (
+            {displayedFirefly.includes(0) && (
               // <Fireflies index={index} />
-              <>{isMobile || <Fireflies index={index} />}</>
+              <>{isMobile || <Fireflies index={0} />}</>
             )}
 
             {/* {isMobile && (

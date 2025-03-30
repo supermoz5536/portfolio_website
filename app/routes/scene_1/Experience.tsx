@@ -122,6 +122,7 @@ export default function Experience({
       <Tower />
       <mesh
         renderOrder={-5}
+        frustumCulled={false}
         geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
         material={
           new THREE.ShaderMaterial({

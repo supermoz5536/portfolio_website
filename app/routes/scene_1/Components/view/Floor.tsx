@@ -49,6 +49,7 @@ export function Floor({ position, scene }: floorProps) {
           <group
             ref={rigidBodyRef}
             position={adjustedPosition}
+            scale={5}
             userData={{ key: "floor" }}
           >
             <primitive render object={scene} />
@@ -128,7 +129,7 @@ export function Floors() {
           firstLeftColumnFloorPosition[1] +
             columnIndex * floorAxesInterval * controlRatePositionY -
             25,
-          rowIndex * -floorAxesInterval,
+          rowIndex * -floorAxesInterval - 25,
         );
         floorPositions.push(floorPosition);
       }
@@ -141,7 +142,7 @@ export function Floors() {
       {scene != null && boundingBoxFloor != null && (
         <>
           {floorPositions.map((floorPosition: any, index: any) => {
-            const hiddenFloorArray = [0, 1, 2, 4, 5, 8, 10, 11];
+            const hiddenFloorArray = [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11];
             const hiddenBridgeForward = [0, 7, 11];
             const hiddenBridgeRight = [0, 3, 6, 9];
 
@@ -172,7 +173,7 @@ export function Floors() {
                   />
                 )} */}
 
-                {/* <FloorContents index={index} position={floorPosition} /> */}
+                <FloorContents index={index} position={floorPosition} />
 
                 {/* Particle Codes */}
                 {/* パーティクルもShowCaseのイージングのコードを利用してフロアの上下リフトに追従 */}

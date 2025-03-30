@@ -190,7 +190,7 @@ export default function Scene1() {
       {/* ---------------------
           Scene HTML Layder
         ---------------------- */}
-      {isIntroEnded && (
+      {visibleDebug && isIntroEnded && (
         // {visibleDebug && isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
