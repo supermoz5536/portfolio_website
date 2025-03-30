@@ -10,11 +10,12 @@ let isFirstLerp = false;
 let isAnimation = true;
 
 export function Camera() {
-  const targForTitle = new THREE.Vector3(17.5, -10, 0);
+  const targForTitle1 = new THREE.Vector3(17.5, -10, 0);
+  const targForTitle2 = new THREE.Vector3(17.5, -50, -100);
   const targForScroll = new THREE.Vector3(0, 15, -100);
 
   const cameraPpoints = [
-    new THREE.Vector3(19.3, 12.5, 60),
+    new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
     new THREE.Vector3(5, 2, -5),
     new THREE.Vector3(45, 15.5, -40),
     new THREE.Vector3(55, 20.5, -80),
@@ -29,8 +30,8 @@ export function Camera() {
   const animationRatioRef = useRef({ progress: 0 });
   const isAnimationRef = useRef(true);
 
-  // const [lerpCamTarg] = useState(new THREE.Vector3(0, -10, 0));
   const lerpCamTargRef = useRef(new THREE.Vector3(0, -10, 0));
+  const lerpCamRef = useRef(new THREE.Vector3());
 
   /**
    * Store State
@@ -116,6 +117,7 @@ export function Camera() {
 
             if (t == 1.0) {
               isAnimation = false;
+              lerpCamRef.current.copy(cameraRef.current.position);
               console.log("isAnimationRef.current", isAnimationRef.current);
             }
           }
@@ -154,17 +156,31 @@ export function Camera() {
     ---------------------- */
 
   useFrame((state, delta) => {
+    /*
+     * Control in Animation
+     */
+
     if (isFirstLerp && scrollProgress == 0) {
-      lerpCamTargRef.current.lerp(targForTitle, 0.5 * delta);
+      lerpCamTargRef.current.lerp(targForTitle1, 0.5 * delta);
       cameraRef.current.lookAt(lerpCamTargRef.current);
     }
 
-    if (isAnimation == false && scrollProgress > 0) {
+    /*
+     * Control in Scroll
+     */
+
+    if (isAnimation == false) {
       isFirstLerp = false;
 
-      // lerpCamTarg.lerp(targ2, 0.5 * delta);
-      // cameraRef.current.lookAt(lerpCamTarg);
-      // setLerpCamTarg(lerpCamTarg);
+      if (scrollProgress < 0.15) {
+        lerpCamTargRef.current.lerp(targForTitle2, 0.01 * delta);
+        cameraRef.current.lookAt(lerpCamTargRef.current);
+
+        //
+      } else if (scrollProgress > 0.15) {
+        lerpCamTargRef.current.lerp(targForScroll, 0.01 * delta);
+        cameraRef.current.lookAt(lerpCamTargRef.current);
+      }
     }
   });
 
