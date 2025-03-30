@@ -79,13 +79,13 @@ export function CanvasScene1() {
           </>
         )}
 
-        {isIntroEnded || (
+        {/* {isIntroEnded || (
           <EffectComposer>
             <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
             <HueSlideCustom />
             <WhiteSlideCustom />
           </EffectComposer>
-        )}
+        )} */}
       </Canvas>
     </>
   );

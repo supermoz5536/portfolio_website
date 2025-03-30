@@ -108,7 +108,8 @@ export default function Experience({
   }
 
   useEffect(() => {
-    if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
+    if (!isEarth && scrollProgressTopAndBottom > 0) {
+      // if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
       setIsEarth(true);
     }
 
@@ -121,7 +122,8 @@ export default function Experience({
       <Camera />
       <EnvironmentLights />
       <Floors />
-      {isEarth && <Earth />}
+      {/* {isEarth && <Earth />} */}
+      <Earth />
       <Tower />
       <mesh
         renderOrder={-5}
