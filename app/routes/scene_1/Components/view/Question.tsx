@@ -12,6 +12,7 @@ export function Question() {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
+        child.renderOrder = -10;
       }
     });
     setScene(assets.gltf.question.scene.clone());
@@ -19,7 +20,7 @@ export function Question() {
 
   return (
     <>
-      {scene && <primitive object={scene} position={[0, 3, 0]} scale={0.7} />}
+      {scene && <primitive object={scene} position={[0, 15, 0]} scale={3.5} />}
     </>
   );
 }

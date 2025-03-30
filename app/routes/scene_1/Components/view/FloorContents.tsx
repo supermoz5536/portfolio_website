@@ -16,11 +16,11 @@ type FloorContentsProps = {
   position: THREE.Vector3;
 };
 
-const displayedQuestion = [7, 9, 10, 11];
+const displayedQuestion = [3];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [0, 9];
 const displayedShowcaseLightMobile: any = [];
-const displayedShowcaseLightTablet = [0, 3, 6, 9];
+const displayedShowcaseLightTablet = [3];
 const displayedFirefly: any = [0, 3, 6, 9, 11];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
@@ -83,11 +83,10 @@ export function FloorContents({ index, position }: FloorContentsProps) {
         <>
           {/* 衝突判定のないFloor上のコンテンツグループ */}
           <group ref={groupRef} position={adjustedPosition}>
-            {/* <ShowCase position={adjustedPosition} index={index} /> */}
+            <ShowCase position={adjustedPosition} index={0} />
 
             {/* Content */}
-            {!isMobile && index == 0 && <EmptyObject9 />}
-            {isMobile || (displayedQuestion.includes(index) && <Question />)}
+            {displayedQuestion.includes(index) && <Question />}
 
             {/* StoneTablet */}
             {/* <StoneTablet position={adjustedPosition} index={index} /> */}
@@ -103,9 +102,9 @@ export function FloorContents({ index, position }: FloorContentsProps) {
                   <ShowCaseLight shadowLevel={0} index={index} />
                 )}
               </>
-            )}
+            )} */}
 
-            {isMobile || (
+            {/* {isMobile || (
               <>
                 {displayedShowcaseLightTablet.includes(index) && (
                   <ShowCaseLight shadowLevel={0} index={index} />

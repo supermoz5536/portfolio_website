@@ -125,11 +125,11 @@ export default function Experience({
       {/* {isEarth && <Earth />} */}
       <Earth />
       <Tower />
-      <mesh
+      {/* <mesh
         renderOrder={-5}
         frustumCulled={false}
-        // geometry={new THREE.PlaneGeometry(whiteSizeRatio, whiteSizeRatio, 1, 1)}
-        geometry={new THREE.PlaneGeometry(0.3, 0.3, 1, 1)}
+        geometry={new THREE.PlaneGeometry(whiteSizeRatio, whiteSizeRatio, 1, 1)}
+        // geometry={new THREE.PlaneGeometry(2, 2, 1, 1)}
         material={
           new THREE.ShaderMaterial({
             vertexShader: `
@@ -148,7 +148,7 @@ export default function Experience({
             depthTest: false,
           })
         }
-      />
+      /> */}
     </>
   );
 }

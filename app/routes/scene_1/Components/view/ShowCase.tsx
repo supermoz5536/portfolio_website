@@ -86,13 +86,14 @@ export function ShowCase({ position, index }: ShowCaseProps) {
     <>
       <>
         {/* ShowCase */}
-        <group scale={1.1}>
+        <group scale={5.5}>
           {/* Bottom */}
           <mesh
             geometry={boxGeometry}
             material={showcaseBodyMaterial}
             position={[0, 0.5, 0]}
             scale={[4, 1, 4]}
+            renderOrder={-10}
           />
 
           {/* Bottom Layer */}
@@ -101,43 +102,36 @@ export function ShowCase({ position, index }: ShowCaseProps) {
             material={showcaseSheetMaterial}
             position={[0, 1.005, 0]}
             scale={[3.8, 0.01, 3.8]}
-          />
-
-          {/* Top Layer */}
-          <mesh
-            geometry={boxGeometry}
-            material={showcaseSheetMaterial}
-            position={[0, 5, 0]}
-            scale={[3.8, 0.01, 3.8]}
+            renderOrder={-10}
           />
 
           {/* Body Left */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={index == 10 ? glassMaterialFloor10 : glassMaterial}
             position={[-1.95, 3, 0]}
             scale={[0.1, 4, 4]}
-          />
+          /> */}
 
           {/* Body Right */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={index == 0 ? glassMaterialFloor10 : glassMaterial}
             position={[1.95, 3, 0]}
             scale={[0.1, 4, 4]}
-          />
+          /> */}
 
           {/* Body Forward */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={index == 0 ? glassMaterialFloor10 : glassMaterial}
             position={[0, 3, -1.95]}
             rotation={[0, Math.PI / 2, 0]}
             scale={[0.1, 4, 4]}
-          />
+          /> */}
 
           {/* Body Backward */}
-          {index == 0 && (
+          {/* {index == 0 && (
             <>
               <mesh
                 geometry={boxGeometry}
@@ -147,18 +141,28 @@ export function ShowCase({ position, index }: ShowCaseProps) {
                 scale={[0.1, 4, 4]}
               />
             </>
-          )}
+          )} */}
 
           {/* Top */}
-          <mesh
+          {/* <mesh
             geometry={boxGeometry}
             material={showcaseBodyMaterial}
             position={[0, 5.125, 0]}
             scale={[4, 0.25, 4]}
-          />
+            renderOrder={-10}
+          /> */}
+
+          {/* Top Layer */}
+          {/* <mesh
+            geometry={boxGeometry}
+            material={showcaseSheetMaterial}
+            position={[0, 5, 0]}
+            scale={[3.8, 0.01, 3.8]}
+            renderOrder={-10}
+          /> */}
 
           {/* Main Content */}
-          {isMobile || ([0, 3, 6].includes(index) && <ShowcaseComponent />)}
+          {/* {isMobile || ([0, 3, 6].includes(index) && <ShowcaseComponent />)} */}
         </group>
       </>
     </>

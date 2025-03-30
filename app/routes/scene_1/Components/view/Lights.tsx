@@ -67,7 +67,7 @@ export function EnvironmentLights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={isMobile ? 2 : 1}
+        intensity={isMobile ? 2 : 1.5}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -217,7 +217,7 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
         color="#fff"
         intensity={lerpIntengityWithoutShadow}
         distance={15}
-        position={[-0.25, 5.3, 1.1]}
+        position={[0, 15, -100]}
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
