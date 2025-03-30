@@ -17,8 +17,8 @@ export function Fireflies({ index }: FirefliesProps) {
   /**
    * FireLies Value
    */
-  const spaceSize = 24;
-  const firefriesCount = 20;
+  const spaceSize = 24 * 5;
+  const firefriesCount = 40;
   const positionArray = new Float32Array(firefriesCount * 3); // * 3: xyzで1組
   const aScaleArray = new Float32Array(firefriesCount);
   const aRandomArray = new Float32Array(firefriesCount);
@@ -132,7 +132,7 @@ export function Fireflies({ index }: FirefliesProps) {
           new THREE.ShaderMaterial({
             uniforms: {
               uTime: { value: 0 },
-              uPointSize: { value: 500.0 },
+              uPointSize: { value: 2000.0 },
               uPixelRatio: {
                 value:
                   typeof window != "undefined"

@@ -27,8 +27,10 @@ export function Camera() {
   const tempVec3 = new THREE.Vector3(0, -11, 0);
 
   const cameraPpoints = [
-    new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
-    new THREE.Vector3(40.31356214843414, 12.5, -50.441032268447124),
+    new THREE.Vector3(19.3, 12.5, 60),
+    new THREE.Vector3(5, 2, -5),
+    new THREE.Vector3(45, 15.5, -40),
+    new THREE.Vector3(55, 20.5, -80),
   ];
 
   const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
@@ -107,7 +109,8 @@ export function Camera() {
         newCameraPos.y, // prettier-ignore
         newCameraPos.z, // prettier-ignore
       );
-      cameraRef.current.lookAt(0, 0, -100);
+
+      cameraRef.current.lookAt(0, 15, -100);
     }
   }, [scrollProgress, size]);
 

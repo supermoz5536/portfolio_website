@@ -28,6 +28,7 @@ export default function Experience({
 
   const [isRender, setIsRender] = useState(true);
   const [isEarth, setIsEarth] = useState(false);
+  const [whiteSizeRatio, setWiteSizeRatio] = useState(0);
 
   const { advance } = useThree();
 
@@ -110,6 +111,8 @@ export default function Experience({
     if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
       setIsEarth(true);
     }
+
+    setWiteSizeRatio(Math.max(0, 2 - scrollProgressTopAndBottom * 2.5));
   }, [scrollProgressTopAndBottom]);
 
   return (
@@ -123,7 +126,8 @@ export default function Experience({
       <mesh
         renderOrder={-5}
         frustumCulled={false}
-        geometry={new THREE.PlaneGeometry(1, 1, 1, 1)}
+        // geometry={new THREE.PlaneGeometry(whiteSizeRatio, whiteSizeRatio, 1, 1)}
+        geometry={new THREE.PlaneGeometry(0.3, 0.3, 1, 1)}
         material={
           new THREE.ShaderMaterial({
             vertexShader: `

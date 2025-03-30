@@ -125,11 +125,11 @@ export function Floors() {
           rowIndex * -floorAxesInterval,
         ];
         const floorPosition = new THREE.Vector3(
-          firstLeftColumnFloorPosition[0],
+          firstLeftColumnFloorPosition[0] - 20,
           firstLeftColumnFloorPosition[1] +
             columnIndex * floorAxesInterval * controlRatePositionY -
             25,
-          rowIndex * -floorAxesInterval - 25,
+          rowIndex * -floorAxesInterval - 45,
         );
         floorPositions.push(floorPosition);
       }
