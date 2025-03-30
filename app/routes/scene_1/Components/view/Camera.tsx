@@ -1,4 +1,4 @@
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useGlobalStore } from "~/store/global/global_store";
@@ -6,10 +6,13 @@ import { useSystemStore } from "~/store/scene1/system_store";
 import { gsap } from "gsap/dist/gsap";
 
 let isFirstTry = true;
+let isFirstLerp = false;
 let isAnimation = true;
 
 export function Camera() {
-  const tempVec3 = new THREE.Vector3(0, -11, 0);
+  const targForTitle = new THREE.Vector3(17.5, -10, 0);
+  const targForScroll = new THREE.Vector3(0, 15, -100);
+
   const cameraPpoints = [
     new THREE.Vector3(19.3, 12.5, 60),
     new THREE.Vector3(5, 2, -5),
@@ -23,11 +26,11 @@ export function Camera() {
    */
 
   const cameraRef = useRef<any>();
-  const three = useThree();
   const animationRatioRef = useRef({ progress: 0 });
   const isAnimationRef = useRef(true);
 
-  const [lerpCamTarg, setLerpCamTarg] = useState(new THREE.Vector3(0, -10, 0));
+  // const [lerpCamTarg] = useState(new THREE.Vector3(0, -10, 0));
+  const lerpCamTargRef = useRef(new THREE.Vector3(0, -10, 0));
 
   /**
    * Store State
@@ -57,7 +60,7 @@ export function Camera() {
     cameraRef.current.layers.enable(0);
 
     if (cameraRef.current) {
-      cameraRef.current.lookAt(tempVec3);
+      cameraRef.current.lookAt(lerpCamTargRef.current);
     }
   }, []);
 
@@ -109,7 +112,7 @@ export function Camera() {
             const z = radius * Math.sin(phi);
 
             cameraRef.current.position.set(x, y, z);
-            cameraRef.current.lookAt(tempVec3);
+            cameraRef.current.lookAt(lerpCamTargRef.current);
 
             if (t == 1.0) {
               isAnimation = false;
@@ -118,6 +121,15 @@ export function Camera() {
           }
         },
       });
+
+      // Trigger Lerp in Title
+      const timeout = setTimeout(() => {
+        isFirstLerp = true;
+      }, 6250);
+
+      return () => {
+        timeout;
+      };
     }
   }, [isIntroEnded]);
 
@@ -133,9 +145,28 @@ export function Camera() {
         newCameraPos.z, // prettier-ignore
       );
 
-      cameraRef.current.lookAt(0, 15, -100);
+      // cameraRef.current.lookAt(0, 15, -100);
     }
   }, [scrollProgress, size]);
+
+  /* ----------------------
+     Control Camera Target 
+    ---------------------- */
+
+  useFrame((state, delta) => {
+    if (isFirstLerp && scrollProgress == 0) {
+      lerpCamTargRef.current.lerp(targForTitle, 0.5 * delta);
+      cameraRef.current.lookAt(lerpCamTargRef.current);
+    }
+
+    if (isAnimation == false && scrollProgress > 0) {
+      isFirstLerp = false;
+
+      // lerpCamTarg.lerp(targ2, 0.5 * delta);
+      // cameraRef.current.lookAt(lerpCamTarg);
+      // setLerpCamTarg(lerpCamTarg);
+    }
+  });
 
   return (
     <perspectiveCamera
