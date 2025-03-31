@@ -9,7 +9,7 @@ attribute float aRandom;
 void main () {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
-    modelPosition.y += sin(uTime * aRandom * 0.9) * aScale + 2.0;
+    modelPosition.y += sin(uTime * aRandom * 0.9) * aScale * 3.0 + 2.0;
 
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;

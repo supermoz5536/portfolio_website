@@ -84,14 +84,14 @@ export function CanvasScene1() {
           </>
         )}
 
-        <EffectComposer>
+        {/* <EffectComposer>
           <ToneMapping mode={ToneMappingMode.NEUTRAL} />
           <Bloom
             luminanceThreshold={3}
             intensity={0.3}
             kernelSize={KernelSize.VERY_LARGE}
           />
-        </EffectComposer>
+        </EffectComposer> */}
 
         {/* {isIntroEnded || (
           <EffectComposer>

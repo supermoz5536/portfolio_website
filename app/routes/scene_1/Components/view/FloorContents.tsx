@@ -18,7 +18,7 @@ type FloorContentsProps = {
 
 const displayedQuestion = [3];
 const displayedGreenWave = [0, 3, 6, 9];
-const displayedBlueWave = [0, 9];
+const displayedBlueWave = [0, 3, 9];
 const displayedShowcaseLightMobile: any = [];
 const displayedShowcaseLightTablet = [3];
 const displayedFirefly: any = [0, 3, 6, 9, 11];
@@ -86,12 +86,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             <ShowCase position={adjustedPosition} index={0} />
 
             {/* Content */}
-            {index == 3 && <EmptyObject9 />}
+            {/* {index == 3 && <EmptyObject9 />} */}
 
-            {/* {displayedQuestion.includes(index) && <Question />} */}
+            {displayedQuestion.includes(3) && <Question />}
 
             {/* StoneTablet */}
-            {/* <StoneTablet position={adjustedPosition} index={index} /> */}
+            <StoneTablet position={adjustedPosition} index={3} />
 
             {displayedFirefly.includes(0) && (
               // <Fireflies index={index} />
@@ -115,15 +115,12 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             )} */}
 
             {/* Playerがいるフロアのみ生成 */}
-            {currentFloor == index && (
-              <>
-                {/* <PlayerShadow index={index} /> */}
 
-                {/* Waves */}
-                {displayedGreenWave.includes(index) && <Waves flag={0} />}
-                {displayedBlueWave.includes(index) && <Waves flag={1} />}
-              </>
-            )}
+            <>
+              {/* Waves */}
+              {/* {displayedGreenWave.includes(index) && <Waves flag={0} />}
+              {displayedBlueWave.includes(index) && <Waves flag={1} />} */}
+            </>
           </group>
         </>
       )}

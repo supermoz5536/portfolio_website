@@ -128,13 +128,14 @@ export function Waves({ flag }: waveProps) {
   return (
     <>
       <mesh
+        renderOrder={-10}
         ref={wavesRef}
         geometry={wavesGeometry}
         material={flag == 0 ? wavesGreenMaterial : wavesBlueMaterial}
-        position={[0, flag == 0 ? 1.5 : 4.975, 0]}
+        position={[0, flag == 0 ? 1.5 + 15 : 4.975 + 15, 0]}
         // position={[0, flag == 0 ? 1.25 : 4.975, 0]}
         rotation={[flag == 0 ? -Math.PI / 2 : Math.PI / 2, 0, 0]}
-        scale={[3.8, 3.8, 1]}
+        scale={[3.8 + 5, 3.8 * 5, 1 * 5]}
       />
     </>
   );

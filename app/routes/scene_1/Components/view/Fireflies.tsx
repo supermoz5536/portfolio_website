@@ -28,13 +28,13 @@ export function Fireflies({ index }: FirefliesProps) {
    */
   const debugObj: any = {};
 
-  if (index == 9) debugObj.uColor = "#ffa6a6";
+  if (index == 3) debugObj.uColor = "#ffa6a6";
   if (index == 3) debugObj.uColor = "#ffb8fd";
   if (index == 6) debugObj.uColor = "#2c8dff";
   if (index == 7) debugObj.uColor = "#b0b1ff";
   if (index == 10) debugObj.uColor = "#87f3ff";
-  if (index == 0) debugObj.uColor = "#a1ffad";
-  if (index == 11) debugObj.uColor = "#fffee4";
+  if (index == 3) debugObj.uColor = "#a1ffad";
+  if (index == 0) debugObj.uColor = "#fffee4";
 
   useEffect(() => {
     if (firefliesRef.current) {
@@ -59,7 +59,7 @@ export function Fireflies({ index }: FirefliesProps) {
       for (let i = 0, j = 0, k = 0; i < firefriesCount * 3; i += 3, j++, k++) {
         do {
           positionArray[i] = (Math.random() - 0.5) * spaceSize;
-          positionArray[i + 1] = (Math.random() - 0.5) * spaceSize * 0.3;
+          positionArray[i + 1] = (Math.random() - 0.5) * spaceSize * 0.6;
           positionArray[i + 2] = (Math.random() - 0.5) * spaceSize;
 
           aScaleArray[j] = Math.min(Math.random() + 0.5, 1.0);
@@ -126,6 +126,7 @@ export function Fireflies({ index }: FirefliesProps) {
   return (
     <>
       <points
+        renderOrder={-10}
         ref={firefliesRef}
         geometry={firefliesGeometry}
         material={

@@ -23,6 +23,7 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
+        child.renderOrder = -10;
       }
     });
     setScene(assets.gltf.stoneTablet.scene.clone());
@@ -33,8 +34,8 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
       {scene && (
         <primitive
           object={scene}
-          scale={1.75}
-          position={[8.75, 1.75, -8.75]}
+          scale={8.75}
+          position={[44.75, 1.75 + 7.5, -26.75]}
           rotation={[0, -Math.PI / 1.5, 0]}
         />
       )}
