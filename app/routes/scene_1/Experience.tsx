@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
-import * as THREE from "three";
+import { FullScreen } from "./Components/view/FullScreen.js";
 
 type ExperienceProps = {
   setDprMobile: React.Dispatch<React.SetStateAction<number>>;
@@ -125,30 +125,7 @@ export default function Experience({
       {/* {isEarth && <Earth />} */}
       <Earth />
       <Tower />
-      <mesh
-        renderOrder={-5}
-        frustumCulled={false}
-        geometry={new THREE.PlaneGeometry(whiteSizeRatio, whiteSizeRatio, 1, 1)}
-        // geometry={new THREE.PlaneGeometry(2, 2, 1, 1)}
-        material={
-          new THREE.ShaderMaterial({
-            vertexShader: `
-              void main()
-              {
-                  gl_Position = vec4(position.xy, 0.0, 1.0);
-              }
-            `,
-            fragmentShader: `
-              void main()
-              {
-                  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-              }
-            `,
-            // transparent: true,
-            depthTest: false,
-          })
-        }
-      />
+      <FullScreen />
     </>
   );
 }
