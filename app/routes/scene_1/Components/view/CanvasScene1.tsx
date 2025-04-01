@@ -53,7 +53,7 @@ export function CanvasScene1() {
   return (
     <>
       <Canvas
-        // key={isMobile ? dprMobile : dprDeskTop}
+        key={isMobile ? dprMobile : dprDeskTop}
         frameloop="never"
         style={{
           minHeight: "100vh",

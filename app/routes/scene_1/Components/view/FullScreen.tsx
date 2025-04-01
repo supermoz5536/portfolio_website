@@ -12,6 +12,8 @@ export function FullScreen() {
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
+  const fullScreenGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+
   useEffect(() => {
     fullScreenMaterialRef.current.uniforms.uAspectRatio.value =
       window.innerWidth / window.innerHeight;
@@ -54,7 +56,7 @@ export function FullScreen() {
       <mesh
         renderOrder={-5}
         frustumCulled={false}
-        geometry={new THREE.PlaneGeometry(2, 2, 1, 1)}
+        geometry={fullScreenGeometry}
         material={fullScreenMaterialRef.current}
       />
     </>
