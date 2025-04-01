@@ -46,7 +46,7 @@ export function FullScreen() {
       lerpScrollRatioRef.current;
 
     fullScreenMaterialRef.current.uniforms.uAngle.value =
-      lerpScrollRatioRef.current * Math.PI * 4;
+      lerpScrollRatioRef.current * Math.PI * 2;
   });
 
   return (
