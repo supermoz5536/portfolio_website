@@ -84,22 +84,13 @@ export function CanvasScene1() {
           </>
         )}
 
-        {/* <EffectComposer>
-          <ToneMapping mode={ToneMappingMode.NEUTRAL} />
-          <Bloom
-            luminanceThreshold={3}
-            intensity={0.3}
-            kernelSize={KernelSize.VERY_LARGE}
-          />
-        </EffectComposer> */}
-
-        {/* {isIntroEnded || (
+        {isIntroEnded || (
           <EffectComposer>
             <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
             <HueSlideCustom />
             <WhiteSlideCustom />
           </EffectComposer>
-        )} */}
+        )}
       </Canvas>
     </>
   );

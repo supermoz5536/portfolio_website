@@ -82,8 +82,8 @@ export function Camera() {
      Control Camera in Animation
     ---------------------------- */
   useEffect(() => {
-    if (isFirstTry) {
-      // if (isFirstTry && isIntroEnded) {
+    // if (isFirstTry) {
+    if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
         duration: 5,

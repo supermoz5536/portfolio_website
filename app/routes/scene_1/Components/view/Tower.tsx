@@ -386,14 +386,14 @@ export function Tower() {
   const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
   const [animationRatio, setAnimationRatio] = useState({
-    scale: 1,
+    scale: 0,
   });
 
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
-    if (isFirstTry) {
-      // if (isFirstTry && isIntroEnded) {
+    // if (isFirstTry) {
+    if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
 
       gsap.to(animationRatioRef.current, {
