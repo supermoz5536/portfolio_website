@@ -127,7 +127,7 @@ export function Camera() {
       // Trigger Lerp in Title
       const timeout = setTimeout(() => {
         isFirstLerp = true;
-      }, 6250);
+      }, 4750);
 
       return () => {
         timeout;

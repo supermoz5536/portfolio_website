@@ -381,12 +381,11 @@ export function FresnelCone() {
 let isFirstTry = true;
 export function Tower() {
   const animationRatioRef = useRef({ scale: 0 });
-  const isFirstTryRef = useRef(true);
 
   const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
   const [animationRatio, setAnimationRatio] = useState({
-    scale: 0,
+    scale: isFirstTry ? 0 : 1,
   });
 
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
