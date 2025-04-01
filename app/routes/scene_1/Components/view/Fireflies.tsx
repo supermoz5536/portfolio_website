@@ -144,7 +144,6 @@ export function Fireflies({ index }: FirefliesProps) {
             },
             vertexShader: firefliesVertex,
             fragmentShader: firefliesFragment,
-            transparent: true,
             depthWrite: false,
             blending: THREE.AdditiveBlending,
           })
