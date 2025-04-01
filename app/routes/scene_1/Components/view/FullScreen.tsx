@@ -23,10 +23,10 @@ export function FullScreen() {
     };
 
     // Listener
-    window.addEventListener("resize", () => resizeCallback);
+    window.addEventListener("resize", resizeCallback);
 
     return () => {
-      window.removeEventListener("resize", () => resizeCallback);
+      window.removeEventListener("resize", resizeCallback);
     };
   }, []);
 
