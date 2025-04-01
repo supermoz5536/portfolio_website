@@ -19,14 +19,16 @@ export function StoneTablet({ position, index }: StoneTabletProps) {
      * Importing Model
      */
 
-    assets.gltf.stoneTablet.scene.traverse((child: any) => {
+    const stoneTabletScene = assets.gltf.stoneTablet.scene.clone();
+
+    stoneTabletScene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
         child.renderOrder = -10;
       }
     });
-    setScene(assets.gltf.stoneTablet.scene.clone());
+    setScene(stoneTabletScene);
   }, []);
 
   return (

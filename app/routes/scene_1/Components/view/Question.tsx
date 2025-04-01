@@ -8,14 +8,20 @@ export function Question() {
   const assets = useGlobalStore((state: any) => state.assets);
 
   useEffect(() => {
-    assets.gltf.question.scene.traverse((child: any) => {
+    /**
+     * Import Model
+     */
+
+    const questionScene = assets.gltf.question.scene.clone();
+
+    questionScene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
         child.renderOrder = -10;
       }
     });
-    setScene(assets.gltf.question.scene.clone());
+    setScene(questionScene);
   }, [assets.gltf.question.scene]);
 
   return (
