@@ -5,7 +5,7 @@ uniform float uAngle;
 varying vec2 vUv;
 
 vec2 rotatedPosition (vec2 value) {
-    vec2 center = vec2(0.5, 0.5);
+    vec2 center = vec2(0.75, 0.75);
 
     value -= center;
 
@@ -22,16 +22,16 @@ vec2 rotatedPosition (vec2 value) {
 
 void main() {
 
-    vec2 center = vec2(0.5, 0.5);
-    
-    // Uv rotated
-    vec2 rUv = rotatedPosition(vUv);
+    vec2 center = vec2(0.75, 0.75);
 
-    vec2 heightLimited = vec2(0.5, 0.5 + (0.5 * max(0.0, uScrollRatio - 0.1) * 7.0));
+    // Uv rotated
+    vec2 rUv = rotatedPosition(uUv);
+
+    vec2 heightLimited = vec2(0.75, 0.75 + (0.75 * max(0.0, uScrollRatio - 0.1) * 5.0));
     vec2 rHeightLimited = rotatedPosition(heightLimited);
     float rHeightRange = distance(rHeightLimited, center);
 
-    vec2 leftLimited = vec2(0.5 - (0.5 * max(0.0, uScrollRatio - 0.1) * 7.0) / uAspectRatio, 0.5);
+    vec2 leftLimited = vec2(0.75 - (0.75 * max(0.0, uScrollRatio - 0.1) * 5.0) / uAspectRatio, 0.75);
     vec2 rLeftLimited = rotatedPosition(leftLimited);
     float rWidthRange = distance(rLeftLimited, center);
     

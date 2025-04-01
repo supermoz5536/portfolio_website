@@ -35,7 +35,7 @@ export function FullScreen() {
     lerpScrollRatioRef.current = THREE.MathUtils.lerp(
       prevScrollRatioRef.current,
       scrollProgressTopAndBottom,
-      0.01 * delta,
+      0.015 * delta,
     );
 
     // Save result for next lerp
