@@ -64,7 +64,7 @@ export default function Panel1() {
               <span className="block">Creative</span>
               <span
                 id="line"
-                className="block h-[0.5rem] my-sm:w-[13.75rem] xl-2:w-[17rem] mt-3 bg-black"
+                className="block h-[0.5rem] my-sm:w-[14.75rem] xl-2:w-[18rem] mt-3 bg-black"
               />
             </div>
           </AnimateInBlock>
@@ -81,7 +81,7 @@ export default function Panel1() {
                   <span className="block">Creative</span>
                   <span
                     id="line"
-                    className="block  h-[0.5rem] w-[10.25rem] my-sm:w-[13.7rem] mt-3 bg-black"
+                    className="block  h-[0.5rem] w-[11.25rem] my-sm:w-[14.7rem] mt-3 bg-black"
                   />
                 </div>
               </AnimateInBlock>

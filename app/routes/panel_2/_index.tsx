@@ -124,7 +124,7 @@ export default function Panel2() {
           <div className="hidden space-y-2 xl:block text-4xl my-sm:text-5xl xl-2:text-6xl mt-[7vh] ml-16 mr-6 font-archivo">
             <span className="block">Be</span>
             <span className="block">Hyper</span>
-            <span className="block">Detailed</span>
+            <span className="block">Curious</span>
             <span
               id="line"
               className="block h-[0.5rem] w-[13.75rem] mt-3 bg-black"
@@ -140,7 +140,7 @@ export default function Panel2() {
               <div className="text-4xl space-y-2 xl:text-white my-sm:text-5xl mt-[7vh] mb-24 ml-8 my-lg:ml-10 xl:hidden font-archivo">
                 <span className="block">Be</span>
                 <span className="block">Hyper</span>
-                <span className="block">Detailed</span>
+                <span className="block">Curious</span>
                 <span
                   id="line"
                   className="block  h-[0.5rem] w-[10.25rem] my-sm:w-[13.7rem] mt-3 bg-black"
