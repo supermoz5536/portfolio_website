@@ -177,7 +177,7 @@ export function Camera() {
         cameraRef.current.lookAt(lerpCamTargRef.current);
 
         //
-      } else if (scrollProgress > 0.15) {
+      } else if (scrollProgress >= 0.15) {
         lerpCamTargRef.current.lerp(targForScroll, 0.01 * delta);
         cameraRef.current.lookAt(lerpCamTargRef.current);
       }
