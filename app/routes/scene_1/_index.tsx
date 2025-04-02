@@ -40,6 +40,7 @@ export default function Scene1() {
   const isLoaded = useGlobalStore((state: any) => state.isLoaded);
   const loadingProgressRatio = useGlobalStore((state: any) => state.loadingProgressRatio); // prettier-ignore
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
+  const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);
 
   /**
    * Store Setter
@@ -150,13 +151,13 @@ export default function Scene1() {
 
   useEffect(() => {
     // if (visibleDebug) {
-    if (isIntroEnded) {
+    if (isAnimationEnd) {
       document.body.style.position = "";
     } else {
       document.body.style.position = "fixed";
     }
     // }
-  }, [isIntroEnded]);
+  }, [isAnimationEnd]);
 
   function onSkip() {
     setIsAllVisible(false);
@@ -176,8 +177,9 @@ export default function Scene1() {
         -------- */}
       <div
         className={
-          "relative h-full " + 
-          (isIntroEnded ? "w-full" : "w-[100vw]") // prettier-ignore
+          "relative h-full " +
+          // Fix width until animation is end
+          (isAnimationEnd ? "w-full" : "w-[100vw]")
         }
       >
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
@@ -191,7 +193,7 @@ export default function Scene1() {
           Scene HTML Layder
         ---------------------- */}
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isIntroEnded && (
+      {isAnimationEnd && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
             <AnimateIn rootMarginBottom={0}>

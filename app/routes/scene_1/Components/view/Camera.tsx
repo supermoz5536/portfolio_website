@@ -7,11 +7,11 @@ import { gsap } from "gsap/dist/gsap";
 
 let isFirstTry = true;
 let isFirstLerp = false;
-let isAnimation = true;
 
 export function Camera() {
   const targForTitle1 = new THREE.Vector3(17.5, -10, 0);
-  const targForTitle2 = new THREE.Vector3(17.5, -50, -100);
+  const targForTitle2ForDesktop = new THREE.Vector3(17.5, -50, -100);
+  const targForTitle2ForMobile = new THREE.Vector3(0, -50, -100);
   const targForScroll = new THREE.Vector3(0, 15, -100);
 
   const cameraPpoints = [
@@ -38,10 +38,17 @@ export function Camera() {
    */
 
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
+  const isIntroEnded = useSystemStore((state) => state.isIntroEnd);
+  const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);
   const scrollProgress = useSystemStore(
     (state) => state.scrollProgressTopAndBottom,
   );
+
+  /**
+   * Store Setter
+   */
+
+  const setIsAnimationEnd = useSystemStore((state: any) => state.setIsAnimationEnd); // prettier-ignore
 
   /**
    * Three
@@ -91,7 +98,7 @@ export function Camera() {
         ease: "power1.inOut",
         delay: 2.5,
         onUpdate: () => {
-          if (isAnimation && cameraRef.current) {
+          if (!isAnimationEnd && cameraRef.current) {
             const t = animationRatioRef.current.progress;
             let radiusRatio = 0;
 
@@ -116,7 +123,7 @@ export function Camera() {
             cameraRef.current.lookAt(lerpCamTargRef.current);
 
             if (t == 1.0) {
-              isAnimation = false;
+              setIsAnimationEnd(true);
               lerpCamRef.current.copy(cameraRef.current.position);
               console.log("isAnimationRef.current", isAnimationRef.current);
             }
@@ -139,7 +146,7 @@ export function Camera() {
      Control Camera in Scroll
     ---------------------------- */
   useEffect(() => {
-    if (!isAnimation && cameraRef.current) {
+    if (isAnimationEnd && cameraRef.current) {
       const newCameraPos = curve.getPoint(scrollProgress);
       cameraRef.current.position.set(
         newCameraPos.x, // prettier-ignore
@@ -169,15 +176,18 @@ export function Camera() {
      * Control in Scroll
      */
 
-    if (isAnimation == false) {
+    if (isAnimationEnd) {
       isFirstLerp = false;
 
-      if (scrollProgress < 0.15) {
-        lerpCamTargRef.current.lerp(targForTitle2, 0.01 * delta);
+      if (scrollProgress < 0.1) {
+        isMobile
+          ? lerpCamTargRef.current.lerp(targForTitle2ForMobile, 0.01 * delta)
+          : lerpCamTargRef.current.lerp(targForTitle2ForDesktop, 0.01 * delta);
+
         cameraRef.current.lookAt(lerpCamTargRef.current);
 
         //
-      } else if (scrollProgress >= 0.15) {
+      } else if (scrollProgress >= 0.1) {
         lerpCamTargRef.current.lerp(targForScroll, 0.01 * delta);
         cameraRef.current.lookAt(lerpCamTargRef.current);
       }

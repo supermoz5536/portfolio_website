@@ -4,6 +4,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 type SystemStore = {
   isSkiped: boolean;
   isIntroEnd: boolean;
+  isAnimationEnd: boolean;
   scrollProgressTopAndTop: number; // For TextGroup1-5
   scrollProgressTopAndBottom: number; // For Control Rendering, Resolution and Camera
 };
@@ -13,6 +14,7 @@ export const useSystemStore = create<SystemStore>()(
     return {
       isSkiped: false,
       isIntroEnd: false,
+      isAnimationEnd: false,
       scrollProgressTopAndTop: 0,
       scrollProgressTopAndBottom: 0,
 
@@ -25,6 +27,12 @@ export const useSystemStore = create<SystemStore>()(
       setIsIntroEnd: (newState: boolean) => {
         set((state: any) => {
           return { isIntroEnd: newState };
+        });
+      },
+
+      setIsAnimationEnd: (newState: boolean) => {
+        set((state: any) => {
+          return { isAnimationEnd: newState };
         });
       },
 
