@@ -226,7 +226,7 @@ export default function Scene1() {
                 </div>
               </div>
             </div>
-            <div className="h-[20%] w-full bg-green-200"> </div>
+            <div className="h-[20%] w-full bg-green-0"> </div>
 
             <AnimateIn rootMarginBottom={0}>
               <button

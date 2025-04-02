@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { useSystemStore } from "~/store/scene1/system_store";
 import * as THREE from "three";
-import { FullScreenMaterial } from "./Materials/FullScreenMaterial";
+import { FullScreenClipMaterial } from "./Materials/FullScreenClipMaterial";
 import { useFrame } from "@react-three/fiber";
 
-export function FullScreen() {
-  const fullScreenMaterialRef = useRef(FullScreenMaterial());
+const fullScreenGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+
+export function FullScreenClip() {
+  const fullScreenMaterialRef = useRef(FullScreenClipMaterial());
 
   const lerpScrollRatioRef = useRef(0);
   const prevScrollRatioRef = useRef(0);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
-
-  const fullScreenGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
 
   useEffect(() => {
     fullScreenMaterialRef.current.uniforms.uAspectRatio.value =

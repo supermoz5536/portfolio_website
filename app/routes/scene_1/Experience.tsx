@@ -11,7 +11,8 @@ import { useEffect, useRef, useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
-import { FullScreen } from "./Components/view/FullScreen.js";
+import { FullScreenClip } from "./Components/view/FullScreenClip.js";
+import { FullScreenWAB } from "./Components/view/FullScreenWAB.js";
 
 export default function Experience() {
   const endRenderRate = 1.0;
@@ -117,7 +118,8 @@ export default function Experience() {
       {/* {isEarth && <Earth />} */}
       <Earth />
       <Tower />
-      <FullScreen />
+      <FullScreenClip />
+      {isMobile && <FullScreenWAB />}
     </>
   );
 }

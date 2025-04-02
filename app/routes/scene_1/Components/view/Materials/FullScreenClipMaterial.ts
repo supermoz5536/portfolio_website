@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import fullScreenVertex from "./shaders/fullScreen/vertex.glsl";
-import fullScreenFragment from "./shaders/fullScreen/fragment.glsl";
+import fullScreenVertex from "./shaders/fullScreenClip/vertex.glsl";
+import fullScreenFragment from "./shaders/fullScreenClip/fragment.glsl";
 
-export function FullScreenMaterial() {
+export function FullScreenClipMaterial() {
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uScrollRatio: { value: 0.0 },
