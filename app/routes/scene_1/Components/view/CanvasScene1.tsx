@@ -39,7 +39,7 @@ export function PreCompile() {
 }
 
 export function CanvasScene1() {
-  const [dprMobile, setDprMobile] = useState(0.05);
+  const [dprMobile] = useState(0.05);
   const [dprDeskTop, setDprDeskTop] = useState<number>(2.0);
 
   const isMobile = useGlobalStore((state) => state.isMobile);
@@ -53,7 +53,6 @@ export function CanvasScene1() {
   return (
     <>
       <Canvas
-        key={isMobile ? dprMobile : dprDeskTop}
         frameloop="never"
         style={{
           minHeight: "100vh",
@@ -76,10 +75,7 @@ export function CanvasScene1() {
       >
         {isPreLoaded && (
           <>
-            <Experience
-              setDprMobile={setDprMobile}
-              setDprDeskTop={setDprDeskTop}
-            />
+            <Experience />
             <PreCompile />
           </>
         )}

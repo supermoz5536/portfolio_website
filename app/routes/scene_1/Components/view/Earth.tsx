@@ -427,6 +427,7 @@ export function Stars({ sunPosition }: StartsProps) {
   return (
     <>
       <points
+        renderOrder={-10}
         ref={starsRef} // prettier-ignore
         geometry={startsGeometry}
         material={starsMaterial}

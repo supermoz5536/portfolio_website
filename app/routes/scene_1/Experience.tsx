@@ -13,15 +13,7 @@ import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 import { FullScreen } from "./Components/view/FullScreen.js";
 
-type ExperienceProps = {
-  setDprMobile: React.Dispatch<React.SetStateAction<number>>;
-  setDprDeskTop: React.Dispatch<React.SetStateAction<number>>;
-};
-
-export default function Experience({
-  setDprMobile,
-  setDprDeskTop,
-}: ExperienceProps) {
+export default function Experience() {
   const endRenderRate = 1.0;
 
   const animationFrameIdRef = useRef<any>();
@@ -30,7 +22,7 @@ export default function Experience({
   const [isEarth, setIsEarth] = useState(false);
   const [whiteSizeRatio, setWiteSizeRatio] = useState(0);
 
-  const { advance } = useThree();
+  const { gl, advance } = useThree();
 
   const isMobile = useGlobalStore((state) => state.isMobile);
 
@@ -70,18 +62,18 @@ export default function Experience({
      */
 
     if (!isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      if (isMobile) setDprMobile(0.05);
-      if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 1.5));
+      if (isMobile) gl.setPixelRatio(0.05);
+      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      if (isMobile) setDprMobile(0.65);
-      if (!isMobile) setDprDeskTop(Math.min(window.devicePixelRatio, 2.0));
+      if (isMobile) gl.setPixelRatio(0.65);
+      if (!isMobile) gl.setPixelRatio(2.0);
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom >= endRenderRate) {
-      if (isMobile) setDprMobile(0.001);
-      if (!isMobile) setDprDeskTop(0.001);
+      if (isMobile) gl.setPixelRatio(0.001);
+      if (!isMobile) gl.setPixelRatio(0.001);
     }
   }, [scrollProgressTopAndBottom, isIntroEnd]);
 
