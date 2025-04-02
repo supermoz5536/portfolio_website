@@ -33,22 +33,39 @@ export function FullScreen() {
   }, []);
 
   useFrame((state, delta) => {
-    // Culculate lerp
-    lerpScrollRatioRef.current = THREE.MathUtils.lerp(
-      prevScrollRatioRef.current,
-      scrollProgressTopAndBottom,
-      0.015 * delta,
-    );
+    if (scrollProgressTopAndBottom == 1.0) {
+      /**
+       * Off Screen
+       */
+      lerpScrollRatioRef.current = 1.0;
+      prevScrollRatioRef.current = 1.0;
 
-    // Save result for next lerp
-    prevScrollRatioRef.current = lerpScrollRatioRef.current;
+      fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
+        lerpScrollRatioRef.current;
 
-    // Send uniform
-    fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
-      lerpScrollRatioRef.current;
+      fullScreenMaterialRef.current.uniforms.uAngle.value =
+        lerpScrollRatioRef.current * Math.PI * 2;
+    } else {
+      /**
+       * On Screen
+       */
+      // Culculate lerp
+      lerpScrollRatioRef.current = THREE.MathUtils.lerp(
+        prevScrollRatioRef.current,
+        scrollProgressTopAndBottom,
+        0.015 * delta,
+      );
 
-    fullScreenMaterialRef.current.uniforms.uAngle.value =
-      lerpScrollRatioRef.current * Math.PI * 2;
+      // Save result for next lerp
+      prevScrollRatioRef.current = lerpScrollRatioRef.current;
+
+      // Send uniform
+      fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
+        lerpScrollRatioRef.current;
+
+      fullScreenMaterialRef.current.uniforms.uAngle.value =
+        lerpScrollRatioRef.current * Math.PI * 2;
+    }
   });
 
   return (
