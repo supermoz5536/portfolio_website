@@ -391,15 +391,17 @@ export function Tower() {
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
-    // if (isFirstTry) {
-    if (isFirstTry && isIntroEnded) {
+    if (isFirstTry) {
+      // if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
 
       gsap.to(animationRatioRef.current, {
-        duration: 8,
+        // duration: 8,
+        duration: 0,
         scale: 1,
         ease: "power3.inOut",
-        delay: 1,
+        // delay: 1,
+        delay: 0,
         onUpdate: () => {
           setAnimationRatio({
             scale: animationRatioRef.current.scale,

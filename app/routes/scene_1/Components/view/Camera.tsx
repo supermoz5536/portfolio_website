@@ -89,14 +89,16 @@ export function Camera() {
      Control Camera in Animation
     ---------------------------- */
   useEffect(() => {
-    // if (isFirstTry) {
-    if (isFirstTry && isIntroEnded) {
+    if (isFirstTry) {
+      // if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
-        duration: 5,
+        // duration: 5,
+        duration: 0,
         progress: 1,
         ease: "power1.inOut",
-        delay: 2.5,
+        // delay: 2.5,
+        delay: 0,
         onUpdate: () => {
           if (!isAnimationEnd && cameraRef.current) {
             const t = animationRatioRef.current.progress;
