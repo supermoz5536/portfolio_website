@@ -193,9 +193,92 @@ export default function Scene1() {
           Scene HTML Layder
         ---------------------- */}
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isAnimationEnd && (
+      {isAnimationEnd && !isMobile && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
-          <div className="relative flex flex-col justify-center items-center h-[100vh] w-full z-10 ">
+          <div className="relative flex flex-col justify-center items-end h-[100vh] w-full z-10">
+            <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-purple-0">
+              {/* Block 1 */}
+              <div className="flex flex-col justify-top items-end h-auto w-full pt-12 pr-6 ">
+                <span className="text-black text-sm font-light">
+                  A Portfolio website for fun.
+                </span>
+              </div>
+
+              {/* Block 1 */}
+              <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 ">
+                <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
+                <h2 className="text-black text-3xl font-light mt-4 ml-32">
+                  Mature mind, primitive spirit.
+                </h2>
+              </div>
+
+              {/* Block 2 */}
+              <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 bg-green-0">
+                <div className="flex flex-col justify-center items-center ml-28">
+                  <h3 className="text-black text-3xl">
+                    What's the factor of mature mind?
+                  </h3>
+                  <div className="text-black text-base font-light mt-6 space-y-2">
+                    <p>Self-Other Distinction (Basis of Social Order)?</p>
+                    <p>Duality (Balanced Cognition)?</p>
+                    <p>Other-Oriented Consciousness?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="h-[20%] w-full bg-green-200"> </div>
+
+            <AnimateIn rootMarginBottom={0}>
+              <button
+                id="tablet"
+                className={
+                  "absolute -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
+                  (isMobile ? "top-[75%] left-[50%] " : "top-[90%] left-[50%]")
+                }
+              >
+                ↓
+              </button>
+            </AnimateIn>
+          </div>
+        </div>
+      )}
+
+      {/* {visibleDebug && isIntroEnded && ( */}
+      {isAnimationEnd && isMobile && (
+        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
+          <div className="relative flex flex-col justify-center items-end h-[100vh] w-full z-10">
+            <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-purple-0">
+              {/* Block 1 */}
+              <div className="flex flex-col justify-top items-end h-auto w-full pt-12 pr-6 ">
+                <span className="text-black text-sm font-light">
+                  A Portfolio website for fun.
+                </span>
+              </div>
+
+              {/* Block 1 */}
+              <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 ">
+                <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
+                <h2 className="text-black text-3xl font-light mt-4 ml-32">
+                  Mature mind, primitive spirit.
+                </h2>
+              </div>
+
+              {/* Block 2 */}
+              <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 bg-green-0">
+                <div className="flex flex-col justify-center items-center ml-28">
+                  <h3 className="text-black text-3xl">
+                    What's the factor of mature mind?
+                  </h3>
+                  <div className="text-black text-base font-light mt-6 space-y-2">
+                    <p>Self-Other Distinction (Basis of Social Order)?</p>
+                    <p>Duality (Balanced Cognition)?</p>
+                    <p>Other-Oriented Consciousness?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="h-[20%] w-full bg-green-200"> </div>
+
             <AnimateIn rootMarginBottom={0}>
               <button
                 id="tablet"
