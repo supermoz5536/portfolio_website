@@ -22,7 +22,8 @@ import { AnimateIn } from "~/components/animate_in";
 const visibleDebug = false;
 
 export default function Scene1() {
-  const [isAllVisible, setIsAllVisible] = useState(true);
+  const [isIntroVisibleAll, setIsIntroVisibleAll] = useState(true);
+  const [isSceneLayerVisible, setIsSceneLayerVisible] = useState(true);
   const [isText1, setIsText1] = useState(false);
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
@@ -84,7 +85,13 @@ export default function Scene1() {
             onUpdate: (value) => {
               const progressRate = value.progress;
               setScrollProgressTopAndBottom(progressRate);
-              console.log(progressRate);
+              // console.log(progressRate);
+
+              if (progressRate == 0) {
+                setIsSceneLayerVisible(true);
+              } else {
+                setIsSceneLayerVisible(false);
+              }
             },
           },
         },
@@ -160,7 +167,7 @@ export default function Scene1() {
   }, [isAnimationEnd]);
 
   function onSkip() {
-    setIsAllVisible(false);
+    setIsIntroVisibleAll(false);
     setIsSkiped(true);
     setTimeout(() => {
       setIsIntroEnd(true);
@@ -194,13 +201,18 @@ export default function Scene1() {
         ---------------------- */}
       {/* {visibleDebug && isIntroEnded && ( */}
       {isAnimationEnd && !isMobile && (
-        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
+        <div
+          className={
+            "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
+            (isSceneLayerVisible ? "opacity-100" : "opacity-0")
+          }
+        >
           <div className="relative flex flex-col justify-center items-end h-[100vh] w-full z-10">
             <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-purple-0">
               {/* Block 1 */}
               <div className="flex flex-col justify-top items-end h-auto w-full pt-12 pr-6 ">
                 <span className="text-black text-sm font-light">
-                  A Portfolio website for fun.
+                  A portfolio website for fun.
                 </span>
               </div>
 
@@ -254,12 +266,17 @@ export default function Scene1() {
 
       {/* {visibleDebug && isIntroEnded && ( */}
       {isAnimationEnd && isMobile && (
-        <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
+        <div
+          className={
+            "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
+            (isSceneLayerVisible ? "opacity-100" : "opacity-0")
+          }
+        >
           <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-pink-0">
             {/* Block 1 */}
             <div className="flex flex-col justify-top items-end h-auto w-full pt-2 pr-2 ">
               <span className="text-black text-sm font-light">
-                A Portfolio website for fun.
+                A portfolio website for fun.
               </span>
             </div>
 
@@ -327,7 +344,7 @@ export default function Scene1() {
                 <Subtitle
                   inputText={text1}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isAllVisible}
+                  parentVisiblity={isIntroVisibleAll}
                 />
               )}
 
@@ -335,7 +352,7 @@ export default function Scene1() {
                 <Subtitle
                   inputText={text2}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isAllVisible}
+                  parentVisiblity={isIntroVisibleAll}
                 />
               )}
 
@@ -343,13 +360,13 @@ export default function Scene1() {
                 <Subtitle
                   inputText={text3}
                   startTime={new Date().getTime()}
-                  parentVisiblity={isAllVisible}
+                  parentVisiblity={isIntroVisibleAll}
                 />
               )}
             </div>
 
             {isLoaded && (
-              <SkipButton parentVisiblity={isAllVisible} onSkip={onSkip} />
+              <SkipButton parentVisiblity={isIntroVisibleAll} onSkip={onSkip} />
             )}
           </div>
         </div>
