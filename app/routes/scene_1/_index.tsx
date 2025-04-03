@@ -227,7 +227,7 @@ export default function Scene1() {
               {/* Block 2 */}
               <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 bg-green-0">
                 <div className="flex flex-col justify-center items-center ml-28">
-                  <h3 className="text-black text-3xl">
+                  <h3 className="text-black text-3xl flowing-underline">
                     What's the factor of mature mind?
                   </h3>
                   <div className="text-black text-base font-light mt-6 space-y-2">
@@ -241,24 +241,24 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-end items-center h-full w-full bg-red-0">
-              <span className="text-black text-lg font-light whitespace-nowrap flowing-underline">
+              <span className="text-black text-lg font-light whitespace-nowrap">
                 ...Then, what about the primitive spirit?
               </span>
 
               {/* Scroll Icon */}
-              <AnimateIn rootMarginBottom={0}>
-                <button
-                  id="tablet"
-                  className={
-                    "h-10 w-14 ml-8 mr-10 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
-                    (isMobile
-                      ? "top-[75%] left-[50%] "
-                      : "top-[90%] left-[50%]")
-                  }
-                >
-                  ↓
-                </button>
-              </AnimateIn>
+              {/* <AnimateIn rootMarginBottom={0}> */}
+              <button
+                id="tablet"
+                className={
+                  "h-10 w-14 ml-8 mr-10 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
+                  (isMobile ? "top-[75%] left-[50%] " : "top-[90%] left-[50%]")
+                }
+              >
+                <div className="scroll">
+                  <span className="text-white">sHolder</span>
+                </div>
+              </button>
+              {/* </AnimateIn> */}
             </div>
           </div>
         </div>
@@ -291,7 +291,7 @@ export default function Scene1() {
             {/* Block 2 */}
             <div className="flex flex-col justify-top items-start h-auto w-full pt-12 pr-3 space-y-4 bg-green-0">
               <div className="flex flex-col justify-center items-start px-5">
-                <h3 className="text-black text-[1.6rem] whitespace-nowrap">
+                <h3 className="text-black text-[1.6rem] whitespace-nowrap flowing-underline">
                   The factor of mature mind?
                 </h3>
                 <div className="text-black text-base font-light mt-4 ml-4 space-y-2 whitespace-nowrap">
@@ -304,7 +304,7 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-center items-center h-full w-full bg-green-0">
-              <span className="text-black text-base font-light whitespace-nowrap flowing-underline">
+              <span className="text-black text-base font-light whitespace-nowrap">
                 ...Then, what about the primitive spirit?
               </span>
 
