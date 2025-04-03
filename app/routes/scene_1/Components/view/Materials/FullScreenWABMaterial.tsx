@@ -6,6 +6,7 @@ export function FullScreenWABMaterial() {
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uScrollRatio: { value: 0.0 },
+      uTexture: { value: null },
     },
     vertexShader: fullScreenWABVertex,
     fragmentShader: fullScreenWABFragment,
