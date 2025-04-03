@@ -119,7 +119,7 @@ export default function Experience() {
       <Earth />
       <Tower />
       <FullScreenClip />
-      <FullScreenWAB />
+      {isMobile && <FullScreenWAB />}
     </>
   );
 }

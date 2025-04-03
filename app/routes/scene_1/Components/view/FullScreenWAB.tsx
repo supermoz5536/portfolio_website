@@ -23,19 +23,25 @@ export function FullScreenWAB() {
     );
   }, []);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     gl.setRenderTarget(renderTarget.current);
     gl.render(scene, camera);
     gl.setRenderTarget(null);
 
-    materialRef.current.uniforms.uTexture.value = renderTarget.current.texture;
+    materialRef.current.uniforms.uTexture.value = 
+     renderTarget.current.texture; // prettier-ignore
+
     materialRef.current.uniforms.uScrollRatio.value =
       scrollProgressTopAndBottom;
   });
 
   return (
     <>
-      <mesh geometry={fullScreenGeometry} material={materialRef.current} />
+      <mesh
+        geometry={fullScreenGeometry}
+        material={materialRef.current}
+        frustumCulled={false}
+      />
     </>
   );
 }

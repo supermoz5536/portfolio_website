@@ -67,6 +67,7 @@ export function TopCircle({ normWidth, normHeight }: CommonProps) {
             // blending: THREE.AdditiveBlending,
           })
         }
+        renderOrder={-20}
         position={[towerPositionX, normHeight, towerPositionZ]}
         rotation={[-Math.PI / 2, 0, 0]}
         scale={[normWidth, normWidth, 1]}

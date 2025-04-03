@@ -3,21 +3,34 @@ uniform sampler2D uTexture;
 varying vec2 vUv;
 
 void main () {
-
-    
-
     vec4 p = texture2D(uTexture, vUv);
 
+   /**
+    * Brightness
+    */
+
     float brightness = dot(p.rgb, vec3(0.299, 0.587, 0.114));
-    float intensity = 1.0;
+    float brighterIntensity = 0.64;
+    float weight = 1.0 - brightness;
 
-    vec4 filterColor = vec4(vec3(brightness * intensity), 1.0);
+    brightness += weight * brighterIntensity;
 
-    float speed = 1.0;
-    float blend = uScrollRatio * speed;
+   /**
+    * Filter
+    */
 
-    vec4 finalColor = mix(filterColor, p, blend);
+    vec4 filterColor = vec4(vec3(brightness), 1.0);
 
+   /**
+    * Alpha
+    */
 
-    gl_FragColor = vec4(finalColor.rgb, 1.0);
+    float speed = 10.0;
+    float alpha = (1.0 - uScrollRatio * speed);
+
+   /**
+    * Output
+    */
+
+    gl_FragColor = vec4(filterColor.rgb, alpha);
 }

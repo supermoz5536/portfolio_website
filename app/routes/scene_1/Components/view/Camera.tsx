@@ -7,12 +7,13 @@ import { gsap } from "gsap/dist/gsap";
 
 let isFirstTry = true;
 let isFirstLerp = false;
+let isFirstTarg = true;
 
 export function Camera() {
   const targForTitle1 = new THREE.Vector3(17.5, -10, 0);
   const targForTitle2ForDesktop = new THREE.Vector3(17.5, -50, -100);
   const targForTitle2ForMobile = new THREE.Vector3(0, -50, -100);
-  const targForScroll = new THREE.Vector3(0, 15, -100);
+  const targForScroll = new THREE.Vector3(0, 5, -100);
 
   const cameraPpoints = [
     new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
@@ -181,18 +182,23 @@ export function Camera() {
     if (isAnimationEnd) {
       isFirstLerp = false;
 
-      if (scrollProgress < 0.1) {
-        isMobile
-          ? lerpCamTargRef.current.lerp(targForTitle2ForMobile, 0.01 * delta)
-          : lerpCamTargRef.current.lerp(targForTitle2ForDesktop, 0.01 * delta);
+      const transitionStart = 0.1;
+      const transitionEnd = 0.7;
+      const t = THREE.MathUtils.clamp(
+        (scrollProgress - transitionStart) / (transitionEnd - transitionStart), // scrollProgress [0.1 <=> 0.2] => [0.0 <=> 1.0]
+        0,
+        1,
+      );
 
-        cameraRef.current.lookAt(lerpCamTargRef.current);
+      const baseTarget = isMobile
+        ? targForTitle2ForMobile
+        : targForTitle2ForDesktop;
 
-        //
-      } else if (scrollProgress >= 0.1) {
-        lerpCamTargRef.current.lerp(targForScroll, 0.01 * delta);
-        cameraRef.current.lookAt(lerpCamTargRef.current);
-      }
+      const smoothTarget = new THREE.Vector3()
+        .copy(baseTarget)
+        .lerp(targForScroll, t);
+
+      cameraRef.current.lookAt(smoothTarget);
     }
   });
 
