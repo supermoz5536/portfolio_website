@@ -231,9 +231,9 @@ export default function Scene1() {
                     What's the factor of mature mind?
                   </h3>
                   <div className="text-black text-base font-light mt-6 space-y-2">
-                    <p>Self-Other Distinction (Basis of Social Order)?</p>
-                    <p>Duality (Balanced Cognition)?</p>
-                    <p>Other-Oriented Consciousness?</p>
+                    <p>- Self-Other Distinction (Social Order Basis)?</p>
+                    <p>- Duality (Balanced Cognition)?</p>
+                    <p>- Other-Oriented Consciousness?</p>
                   </div>
                 </div>
               </div>
