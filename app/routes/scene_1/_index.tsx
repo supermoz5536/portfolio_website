@@ -205,7 +205,7 @@ export default function Scene1() {
               </div>
 
               {/* Block 1 */}
-              <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 ">
+              <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 bg-yellow-0">
                 <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
                 <h2 className="text-black text-3xl font-light mt-4 ml-32">
                   Mature mind, primitive spirit.
@@ -226,19 +226,28 @@ export default function Scene1() {
                 </div>
               </div>
             </div>
-            <div className="h-[20%] w-full bg-green-0"> </div>
 
-            <AnimateIn rootMarginBottom={0}>
-              <button
-                id="tablet"
-                className={
-                  "absolute -translate-x-1/2 -translate-y-1/2 h-10 w-14 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
-                  (isMobile ? "top-[75%] left-[50%] " : "top-[90%] left-[50%]")
-                }
-              >
-                ↓
-              </button>
-            </AnimateIn>
+            {/* Block 3 */}
+            <div className="flex flex-row justify-end items-center h-full w-full bg-red-0">
+              <span className="text-black text-lg font-light whitespace-nowrap">
+                ...Then, what about the primitive spirit?
+              </span>
+
+              {/* Scroll Icon */}
+              <AnimateIn rootMarginBottom={0}>
+                <button
+                  id="tablet"
+                  className={
+                    "h-10 w-14 ml-8 mr-10 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
+                    (isMobile
+                      ? "top-[75%] left-[50%] "
+                      : "top-[90%] left-[50%]")
+                  }
+                >
+                  ↓
+                </button>
+              </AnimateIn>
+            </div>
           </div>
         </div>
       )}
