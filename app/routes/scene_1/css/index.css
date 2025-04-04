@@ -1,7 +1,7 @@
 .header-1-animation {
   display: inline-block;
   opacity: 0;
-  animation: header-1-animation 3s ease-in-out 1s both;
+  animation: header-1-animation 3s ease-in-out 1.25s both;
 }
 
 @keyframes header-1-animation {
@@ -31,7 +31,7 @@
 .sub-header-1-animation {
   display: inline-block;
   opacity: 0;
-  animation: sub-header-1-animation 4s ease-in-out 2s both;
+  animation: sub-header-1-animation 4s ease-in-out 1.75s both;
 }
 
 @keyframes sub-header-1-animation {
@@ -61,7 +61,7 @@
 .sub-header-2-animation {
   display: inline-block;
   opacity: 0;
-  animation: sub-header-2-animation 4s ease-in-out 2s both;
+  animation: sub-header-2-animation 4s ease-in-out 1.75s both;
 }
 
 @keyframes sub-header-2-animation {
@@ -91,7 +91,7 @@
 .header-2-animation {
   display: inline-block;
   opacity: 0;
-  animation: sub-header-2 4s ease-in-out 2s both;
+  animation: sub-header-2 4s ease-in-out 1.85s both;
 }
 
 @keyframes sub-header-2 {
@@ -300,10 +300,27 @@
 .show-up-2 {
   display: inline-block;
   opacity: 0;
-  animation: show-up-2 2.5s ease-in-out 3s both;
+  animation: show-up-2 2.5s ease-in-out 2.5s both;
 }
 
 @keyframes show-up-2 {
+  0% {
+    filter: blur(6px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.show-up-3 {
+  display: inline-block;
+  opacity: 0;
+  animation: show-up-3 2.5s ease-in-out 5s both;
+}
+
+@keyframes show-up-3 {
   0% {
     filter: blur(6px);
     opacity: 0;
@@ -319,7 +336,7 @@
 .list-item-1 {
   display: inline-block;
   opacity: 0;
-  animation: list-item-1 2.5s ease-in-out 2.5s both;
+  animation: list-item-1 2.5s ease-in-out 2.25s both;
 }
 
 @keyframes list-item-1 {
@@ -338,7 +355,7 @@
 .list-item-2 {
   display: inline-block;
   opacity: 0;
-  animation: list-item-2 2.5s ease-in-out 3s both;
+  animation: list-item-2 2.5s ease-in-out 2.5s both;
 }
 
 @keyframes list-item-2 {
@@ -357,7 +374,7 @@
 .list-item-3 {
   display: inline-block;
   opacity: 0;
-  animation: list-item-3 2.5s ease-in-out 3.5s both;
+  animation: list-item-3 2.5s ease-in-out 2.75s both;
 }
 
 @keyframes list-item-3 {

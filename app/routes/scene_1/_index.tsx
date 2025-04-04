@@ -260,7 +260,7 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-end items-center h-full w-full bg-red-0">
-              <span className="text-black text-lg font-light whitespace-nowrap show-up-2">
+              <span className="text-black text-lg font-light whitespace-nowrap show-up-3">
                 ...Then, what about the primitive spirit?
               </span>
 
@@ -335,7 +335,7 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-center items-center h-full w-full bg-green-0">
-              <span className="text-black text-base font-light whitespace-nowrap show-up-2">
+              <span className="text-black text-base font-light whitespace-nowrap show-up-3">
                 ...Then, what about the primitive spirit?
               </span>
 
