@@ -1,11 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Object3D } from "three";
 import { useGlobalStore } from "~/store/global/global_store";
+import { useSystemStore } from "~/store/scene1/system_store";
+import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 
 export function Question() {
+  const modelRef = useRef<any>();
+  const lerpScrollRatioRef = useRef(0);
+  const prevScrollRatioRef = useRef(0);
+
   const [scene, setScene] = useState<Object3D>();
+  const [modelSize, setModelSize] = useState(3.5);
+  // const [modelPos, setModelPos] = useState(new THREE.Vector3(0, 15, 0));
 
   const assets = useGlobalStore((state: any) => state.assets);
+  const scrollProgress = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -24,9 +34,43 @@ export function Question() {
     setScene(questionScene);
   }, [assets.gltf.question.scene]);
 
+  useFrame((state, delta) => {
+    if (modelRef.current) {
+      /**
+       * Get Lerped Scroll
+       */
+
+      // Calc lerp
+      lerpScrollRatioRef.current = THREE.MathUtils.lerp(
+        prevScrollRatioRef.current,
+        scrollProgress,
+        0.015 * delta,
+      );
+
+      // Save result for next lerp
+      prevScrollRatioRef.current = lerpScrollRatioRef.current;
+
+      /**
+       * Position
+       */
+
+      // scroll [0.0 <=> 1.0] => Position.y [35.0 <=> 17.5]
+      const posMultiplier = 1.5;
+      modelRef.current.position.y =
+        35 - 17.5 * lerpScrollRatioRef.current * posMultiplier;
+
+      /**
+       * Rotation
+       */
+
+      modelRef.current.rotation.x += Math.PI * 0.3 * delta;
+      modelRef.current.rotation.y += Math.PI * 0.2 * delta;
+    }
+  });
+
   return (
     <>
-      {scene && <primitive object={scene} position={[0, 15, 0]} scale={3.5} />}
+      {scene && <primitive ref={modelRef} object={scene} scale={modelSize} />}
     </>
   );
 }

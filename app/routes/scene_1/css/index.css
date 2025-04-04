@@ -155,7 +155,7 @@
 }
 
 .arrow::before {
-  animation: scroll 5s 6s infinite;
+  animation: scroll 5s 5s infinite;
   border: solid #000;
   border-width: 0 0 1px 1px; /* 上、右、下、左の順 (時計回り) に適用 */
   content: "";
@@ -233,11 +233,11 @@
 
 .stroke.is-animated .border.top,
 .stroke.is-animated .border.bottom {
-  animation: stroke-width 5s cubic-bezier(0.22, 1, 0.36, 1) 6s infinite;
+  animation: stroke-width 5s cubic-bezier(0.22, 1, 0.36, 1) 5s infinite;
 }
 .stroke.is-animated .border.right,
 .stroke.is-animated .border.left {
-  animation: stroke-height 5s cubic-bezier(0.22, 1, 0.36, 1) 6s infinite;
+  animation: stroke-height 5s cubic-bezier(0.22, 1, 0.36, 1) 5s infinite;
 }
 
 @keyframes stroke-width {
@@ -317,7 +317,7 @@
 .show-up-3 {
   display: inline-block;
   opacity: 0;
-  animation: show-up-3 2.5s ease-in-out 5s both;
+  animation: show-up-3 2.5s ease-in-out 3.5s both;
 }
 
 @keyframes show-up-3 {
