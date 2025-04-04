@@ -90,19 +90,18 @@ export function Camera() {
      Control Camera in Animation
     ---------------------------- */
   useEffect(() => {
-    if (isFirstTry) {
-      // if (isFirstTry && isIntroEnded) {
+    // if (isFirstTry) {
+    if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
-        // duration: 5,
-        duration: 0,
+        duration: 6,
         progress: 1,
         ease: "power1.inOut",
-        // delay: 2.5,
-        delay: 0,
+        delay: 2.5,
         onUpdate: () => {
+          let t = animationRatioRef.current.progress;
+
           if (!isAnimationEnd && cameraRef.current) {
-            const t = animationRatioRef.current.progress;
             let radiusRatio = 0;
 
             if (t < 0.5) {
@@ -129,18 +128,21 @@ export function Camera() {
               setIsAnimationEnd(true);
               lerpCamRef.current.copy(cameraRef.current.position);
               console.log("isAnimationRef.current", isAnimationRef.current);
+
+              // Trigger Lerp to targForTitle2
+            } else if (t > 0.5) {
+              isFirstLerp = true;
             }
           }
         },
       });
 
-      // Trigger Lerp in Title
-      const timeout = setTimeout(() => {
-        isFirstLerp = true;
-      }, 4750);
+      // const timeout = setTimeout(() => {
+      //   isFirstLerp = true;
+      // }, 4500);
 
       return () => {
-        timeout;
+        // clearTimeout(timeout);
       };
     }
   }, [isIntroEnded]);
