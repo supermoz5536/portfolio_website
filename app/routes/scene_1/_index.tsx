@@ -225,8 +225,8 @@ export default function Scene1() {
                 <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
                 {/* Sub-Header */}
                 <div className="mt-4 ml-5 space-x-4 text-black text-3xl font-light whitespace-nowrap">
-                  <span className="sub-header-animation-1">Mature mind,</span>
-                  <span className="sub-header-animation-2">
+                  <span className="sub-header-1-animation">Mature mind,</span>
+                  <span className="sub-header-2-animation">
                     primitive spirit.
                   </span>
                 </div>
@@ -284,7 +284,7 @@ export default function Scene1() {
           <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-pink-0">
             {/* Block 1 */}
             <div className="flex flex-col justify-top items-end h-auto w-full pt-2 pr-2 ">
-              <span className="text-black text-sm font-light">
+              <span className="text-black text-sm font-light show-up-2">
                 A portfolio website for fun.
               </span>
             </div>
@@ -292,20 +292,20 @@ export default function Scene1() {
             {/* Block 1 */}
             <div className="flex flex-col justify-top items-start h-auto w-full px-5 pt-16 bg-purple-0">
               <h1 className="text-5xl text-black">
-                <span className="">Paradoxical</span>
+                <span className="show-up-1">Paradoxical</span>
                 <span className="header-1-animation">Harmony</span>
               </h1>
 
               <div className="mt-4 ml-1 space-x-4 text-black text-2xl font-light whitespace-nowrap">
-                <span className="sub-header-animation-1">Mature mind,</span>
-                <span className="sub-header-animation-2">
+                <span className="sub-header-1-animation">Mature mind,</span>
+                <span className="sub-header-2-animation">
                   primitive spirit.
                 </span>
               </div>
             </div>
 
             {/* Block 2 */}
-            <div className="flex flex-col justify-top items-start h-auto w-full pt-12 pr-3 space-y-4 bg-green-0">
+            <div className="flex flex-col justify-top items-start h-auto w-full pt-12 pr-3 space-y-4 show-up-2 bg-green-0">
               <div className="flex flex-col justify-center items-start px-5">
                 <h3 className="text-black text-[1.6rem] whitespace-nowrap flowing-underline">
                   The factor of mature mind?
@@ -320,7 +320,7 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-center items-center h-full w-full bg-green-0">
-              <span className="text-black text-base font-light whitespace-nowrap">
+              <span className="text-black text-base font-light whitespace-nowrap show-up-2">
                 ...Then, what about the primitive spirit?
               </span>
 

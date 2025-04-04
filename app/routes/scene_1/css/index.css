@@ -1,18 +1,118 @@
-.outline-animation {
-  background-color: rgba(255, 255, 255, 0);
-  outline-offset: 2px;
-  outline-color: rgba(255, 255, 255, 0.7);
-  animation: outline 1.5s ease-in-out;
+.header-1-animation {
+  display: inline-block;
+  opacity: 0;
+  animation: header-1-animation 3s ease-in-out 1s both;
 }
 
-@keyframes outline {
+@keyframes header-1-animation {
   0%,
+  25% {
+    transform: translateY(75%);
+    color: rgba(100, 255, 100, 1);
+    filter: blur(6px);
+  }
   100% {
-    transform: translateY(-3px);
+    transform: translateY(0%);
+    color: rgba(0, 0, 0, 1);
+    filter: blur(0px);
   }
 
-  50% {
-    transform: translateY(3px);
+  0% {
+    opacity: 0;
+  }
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------------------*/
+
+.sub-header-1-animation {
+  display: inline-block;
+  opacity: 0;
+  animation: sub-header-1-animation 4s ease-in-out 2s both;
+}
+
+@keyframes sub-header-1-animation {
+  0%,
+  25% {
+    transform: translateX(50%);
+    color: rgba(255, 100, 100, 1);
+    filter: blur(6px);
+  }
+  100% {
+    transform: translateX(0%);
+    color: rgba(0, 0, 0, 1);
+    filter: blur(0px);
+  }
+
+  0% {
+    opacity: 0;
+  }
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------------------*/
+
+.sub-header-2-animation {
+  display: inline-block;
+  opacity: 0;
+  animation: sub-header-2-animation 4s ease-in-out 2s both;
+}
+
+@keyframes sub-header-2-animation {
+  0%,
+  25% {
+    transform: translateX(-50%);
+    color: rgba(100, 100, 255, 1);
+    filter: blur(6px);
+  }
+  100% {
+    transform: translateX(0%);
+    color: rgba(0, 0, 0, 1);
+    filter: blur(0px);
+  }
+
+  0% {
+    opacity: 0;
+  }
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------------------*/
+
+.header-2-animation {
+  display: inline-block;
+  opacity: 0;
+  animation: sub-header-2 4s ease-in-out 2s both;
+}
+
+@keyframes sub-header-2 {
+  0%,
+  25% {
+    transform: translateX(-50%);
+    color: rgba(0, 0, 255, 1);
+    filter: blur(6px);
+  }
+  100% {
+    transform: translateX(0%);
+    color: rgba(0, 0, 0, 1);
+    filter: blur(0px);
+  }
+
+  0% {
+    opacity: 0;
+  }
+  40%,
+  100% {
+    opacity: 1;
   }
 }
 
@@ -86,6 +186,7 @@
     opacity: 1;
   }
 }
+
 /* ----------------------------------------------------------*/
 
 .stroke {
@@ -176,122 +277,39 @@
     opacity: 1;
   }
 }
+
 /* ----------------------------------------------------------*/
 
-.header-1-animation {
+.show-up-1 {
   display: inline-block;
   opacity: 0;
-  animation: header-1-animation 3s ease-in-out 1s both;
+  animation: show-up-1 4s ease-in-out 0s both;
 }
 
-@keyframes header-1-animation {
-  0%,
-  25% {
-    transform: translateY(75%);
-    color: rgba(0, 255, 0, 1);
-    filter: blur(6px);
-  }
-  100% {
-    transform: translateY(0%);
-    color: rgba(0, 0, 0, 1);
-    filter: blur(0px);
-  }
-
+@keyframes show-up-1 {
   0% {
+    filter: blur(6px);
     opacity: 0;
   }
-  40%,
   100% {
+    filter: blur(0px);
     opacity: 1;
   }
 }
 
-/* ----------------------------------------------------------*/
-
-.sub-header-animation-1 {
+.show-up-2 {
   display: inline-block;
   opacity: 0;
-  animation: sub-header-1 4s ease-in-out 2s both;
+  animation: show-up-2 2.5s ease-in-out 3s both;
 }
 
-@keyframes sub-header-1 {
-  0%,
-  25% {
-    transform: translateX(50%);
-    color: rgba(255, 0, 0, 1);
-    filter: blur(6px);
-  }
-  100% {
-    transform: translateX(0%);
-    color: rgba(0, 0, 0, 1);
-    filter: blur(0px);
-  }
-
+@keyframes show-up-2 {
   0% {
+    filter: blur(6px);
     opacity: 0;
   }
-  40%,
   100% {
-    opacity: 1;
-  }
-}
-
-/* ----------------------------------------------------------*/
-
-.sub-header-animation-2 {
-  display: inline-block;
-  opacity: 0;
-  animation: sub-header-2 4s ease-in-out 2s both;
-}
-
-@keyframes sub-header-2 {
-  0%,
-  25% {
-    transform: translateX(-50%);
-    color: rgba(0, 0, 255, 1);
-    filter: blur(6px);
-  }
-  100% {
-    transform: translateX(0%);
-    color: rgba(0, 0, 0, 1);
     filter: blur(0px);
-  }
-
-  0% {
-    opacity: 0;
-  }
-  40%,
-  100% {
-    opacity: 1;
-  }
-}
-
-/* ----------------------------------------------------------*/
-
-.header-2-animation {
-  display: inline-block;
-  opacity: 0;
-  animation: sub-header-2 4s ease-in-out 2s both;
-}
-
-@keyframes sub-header-2 {
-  0%,
-  25% {
-    transform: translateX(-50%);
-    color: rgba(0, 0, 255, 1);
-    filter: blur(6px);
-  }
-  100% {
-    transform: translateX(0%);
-    color: rgba(0, 0, 0, 1);
-    filter: blur(0px);
-  }
-
-  0% {
-    opacity: 0;
-  }
-  40%,
-  100% {
     opacity: 1;
   }
 }
