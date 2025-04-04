@@ -221,10 +221,15 @@ export default function Scene1() {
 
               {/* Block 1 */}
               <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 bg-yellow-0">
+                {/* Header */}
                 <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
-                <h2 className="text-black text-3xl font-light mt-4 ml-32">
-                  Mature mind, primitive spirit.
-                </h2>
+                {/* Sub-Header */}
+                <div className="mt-4 ml-5 space-x-4 text-black text-3xl font-light whitespace-nowrap">
+                  <span className="sub-header-animation-1">Mature mind,</span>
+                  <span className="sub-header-animation-2">
+                    primitive spirit.
+                  </span>
+                </div>
               </div>
 
               {/* Block 2 */}
@@ -286,10 +291,17 @@ export default function Scene1() {
 
             {/* Block 1 */}
             <div className="flex flex-col justify-top items-start h-auto w-full px-5 pt-16 bg-purple-0">
-              <h1 className="text-black text-5xl">Paradoxical Harmony</h1>
-              <h2 className="text-black text-2xl font-light mt-4 ml-1 whitespace-nowrap">
-                Mature mind, primitive spirit.
-              </h2>
+              <h1 className="text-5xl text-black">
+                <span className="">Paradoxical</span>
+                <span className="header-1-animation">Harmony</span>
+              </h1>
+
+              <div className="mt-4 ml-1 space-x-4 text-black text-2xl font-light whitespace-nowrap">
+                <span className="sub-header-animation-1">Mature mind,</span>
+                <span className="sub-header-animation-2">
+                  primitive spirit.
+                </span>
+              </div>
             </div>
 
             {/* Block 2 */}
