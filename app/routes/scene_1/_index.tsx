@@ -20,6 +20,7 @@ import { AnimateIn } from "~/components/animate_in";
  */
 
 const visibleDebug = false;
+let isFirstScrolled = false;
 
 export default function Scene1() {
   const [isIntroVisibleAll, setIsIntroVisibleAll] = useState(true);
@@ -85,13 +86,15 @@ export default function Scene1() {
             onUpdate: (value) => {
               const progressRate = value.progress;
               setScrollProgressTopAndBottom(progressRate);
-              // console.log(progressRate);
+              console.log(progressRate);
 
               if (progressRate == 0) {
                 setIsSceneLayerVisible(true);
               } else {
                 setIsSceneLayerVisible(false);
               }
+
+              if (progressRate > 0.1) isFirstScrolled = true;
             },
           },
         },
@@ -246,19 +249,20 @@ export default function Scene1() {
               </span>
 
               {/* Scroll Icon */}
-              {/* <AnimateIn rootMarginBottom={0}> */}
-              <button
-                id="tablet"
-                className={
-                  "h-10 w-14 ml-8 mr-10 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
-                  (isMobile ? "top-[75%] left-[50%] " : "top-[90%] left-[50%]")
-                }
-              >
-                <div className="scroll">
-                  <span className="text-white">sHolder</span>
+              <div className="h-10 w-14 ml-8 mr-10">
+                {/* Border Animation */}
+                <div className="stroke is-animated h-full w-full">
+                  <div className="border top"></div>
+                  <div className="border right"></div>
+                  <div className="border bottom"></div>
+                  <div className="border left"></div>
+
+                  {/* Aroow Animation */}
+                  <div className="arrow">
+                    <span className="invisible">sHolder</span>
+                  </div>
                 </div>
-              </button>
-              {/* </AnimateIn> */}
+              </div>
             </div>
           </div>
         </div>
@@ -309,19 +313,20 @@ export default function Scene1() {
               </span>
 
               {/* Scroll Icon */}
-              <AnimateIn rootMarginBottom={0}>
-                <button
-                  id="tablet"
-                  className={
-                    "h-10 w-14 ml-4 text-gray-600 outline outline-gray-600 transition-opacity duration-1000 " +
-                    (isMobile
-                      ? "top-[75%] left-[50%] "
-                      : "top-[90%] left-[50%]")
-                  }
-                >
-                  ↓
-                </button>
-              </AnimateIn>
+              <div className="h-10 w-14 ml-4">
+                {/* Border Animation */}
+                <div className="stroke is-animated h-full w-full">
+                  <div className="border top"></div>
+                  <div className="border right"></div>
+                  <div className="border bottom"></div>
+                  <div className="border left"></div>
+
+                  {/* Aroow Animation */}
+                  <div className="arrow">
+                    <span className="invisible">sHolder</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
