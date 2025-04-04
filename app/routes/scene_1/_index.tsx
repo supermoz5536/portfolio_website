@@ -213,8 +213,8 @@ export default function Scene1() {
           <div className="relative flex flex-col justify-center items-end h-[100vh] w-full z-10">
             <div className="flex flex-col justify-start items-center h-[80%] w-auto bg-purple-0">
               {/* Block 1 */}
-              <div className="flex flex-col justify-top items-end h-auto w-full pt-12 pr-6 ">
-                <span className="text-black text-sm font-light">
+              <div className="flex flex-col justify-top items-end h-auto w-full pt-2 pr-2 ">
+                <span className="text-black text-sm font-light show-up-2">
                   A portfolio website for fun.
                 </span>
               </div>
@@ -222,7 +222,10 @@ export default function Scene1() {
               {/* Block 1 */}
               <div className="flex flex-col justify-top items-center h-full w-full px-5 pt-20 bg-yellow-0">
                 {/* Header */}
-                <h1 className="text-black text-6xl">Paradoxical Harmony</h1>
+                <h1 className="text-black text-6xl space-x-4">
+                  <span className="show-up-1">Paradoxical</span>
+                  <span className="header-1-animation">Harmony</span>
+                </h1>
                 {/* Sub-Header */}
                 <div className="mt-4 ml-5 space-x-4 text-black text-3xl font-light whitespace-nowrap">
                   <span className="sub-header-1-animation">Mature mind,</span>
@@ -233,15 +236,23 @@ export default function Scene1() {
               </div>
 
               {/* Block 2 */}
-              <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 bg-green-0">
+              <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 show-up-2 bg-green-0">
                 <div className="flex flex-col justify-center items-center ml-28">
                   <h3 className="text-black text-3xl flowing-underline">
                     What's the factor of mature mind?
                   </h3>
                   <div className="text-black text-base font-light mt-6 space-y-2">
-                    <p>- Self-Other Distinction (Social Order Basis)?</p>
-                    <p>- Duality (Balanced Cognition)?</p>
-                    <p>- Other-Oriented Consciousness?</p>
+                    <p className="list-item-1">
+                      - Self-Other Distinction (Social Order Basis)?
+                    </p>
+                    <br />
+                    <p className="list-item-2">
+                      - Duality (Balanced Cognition)?
+                    </p>
+                    <br />
+                    <p className="list-item-3">
+                      - Other-Oriented Consciousness?
+                    </p>
                   </div>
                 </div>
               </div>
@@ -249,7 +260,7 @@ export default function Scene1() {
 
             {/* Block 3 */}
             <div className="flex flex-row justify-end items-center h-full w-full bg-red-0">
-              <span className="text-black text-lg font-light whitespace-nowrap">
+              <span className="text-black text-lg font-light whitespace-nowrap show-up-2">
                 ...Then, what about the primitive spirit?
               </span>
 
