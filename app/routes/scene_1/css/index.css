@@ -155,7 +155,7 @@
 }
 
 .arrow::before {
-  animation: scroll 5s 5s infinite;
+  animation: scroll 5s 6s infinite;
   border: solid #000;
   border-width: 0 0 1px 1px; /* 上、右、下、左の順 (時計回り) に適用 */
   content: "";
@@ -233,11 +233,11 @@
 
 .stroke.is-animated .border.top,
 .stroke.is-animated .border.bottom {
-  animation: stroke-width 5s cubic-bezier(0.22, 1, 0.36, 1) 5.5s infinite;
+  animation: stroke-width 5s cubic-bezier(0.22, 1, 0.36, 1) 6s infinite;
 }
 .stroke.is-animated .border.right,
 .stroke.is-animated .border.left {
-  animation: stroke-height 5s cubic-bezier(0.22, 1, 0.36, 1) 5.5s infinite;
+  animation: stroke-height 5s cubic-bezier(0.22, 1, 0.36, 1) 6s infinite;
 }
 
 @keyframes stroke-width {
@@ -309,6 +309,65 @@
     opacity: 0;
   }
   100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------------------*/
+
+.list-item-1 {
+  display: inline-block;
+  opacity: 0;
+  animation: list-item-1 2.5s ease-in-out 2.5s both;
+}
+
+@keyframes list-item-1 {
+  0% {
+    transform: translateX(-30%);
+    filter: blur(6px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.list-item-2 {
+  display: inline-block;
+  opacity: 0;
+  animation: list-item-2 2.5s ease-in-out 3s both;
+}
+
+@keyframes list-item-2 {
+  0% {
+    transform: translateX(-30%);
+    filter: blur(6px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.list-item-3 {
+  display: inline-block;
+  opacity: 0;
+  animation: list-item-3 2.5s ease-in-out 3.5s both;
+}
+
+@keyframes list-item-3 {
+  0% {
+    transform: translateX(-30%);
+    filter: blur(6px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
     filter: blur(0px);
     opacity: 1;
   }
