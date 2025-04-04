@@ -33,7 +33,7 @@ export function FullScreenClip() {
   }, []);
 
   useFrame((state, delta) => {
-    if (scrollProgressTopAndBottom == 1.0) {
+    if (scrollProgressTopAndBottom > 0.99) {
       /**
        * Off Screen
        */
