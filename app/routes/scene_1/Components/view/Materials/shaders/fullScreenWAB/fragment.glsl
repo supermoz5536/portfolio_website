@@ -10,7 +10,7 @@ void main () {
     */
 
     float brightness = dot(p.rgb, vec3(0.299, 0.587, 0.114));
-    float brighterIntensity = 0.64;
+    float brighterIntensity = 0.7;
     float weight = 1.0 - brightness;
 
     brightness += weight * brighterIntensity;
