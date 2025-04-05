@@ -11,7 +11,7 @@ let isFirstLerp = false;
 export function Camera() {
   const targForTitleForDesktop = new THREE.Vector3(22, -13.5, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
-  const targForScroll = new THREE.Vector3(-10, 5, -100);
+  const targForScroll = new THREE.Vector3(-10, 15, -102);
 
   const cameraPpoints = [
     new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
