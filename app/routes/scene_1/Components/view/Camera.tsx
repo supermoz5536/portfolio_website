@@ -9,9 +9,9 @@ let isFirstTry = true;
 let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitle1 = new THREE.Vector3(17.5, -10, 0);
-  const targForTitle2ForDesktop = new THREE.Vector3(17.5, -50, -100);
-  const targForTitle2ForMobile = new THREE.Vector3(0, -50, -100);
+  const targForTitleForDesktop = new THREE.Vector3(22, -13, 0);
+  const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
+
   const targForScroll = new THREE.Vector3(0, 5, -100);
 
   const cameraPpoints = [
@@ -124,12 +124,14 @@ export function Camera() {
             cameraRef.current.lookAt(lerpCamTargRef.current);
 
             if (t == 1.0) {
-              setIsAnimationEnd(true);
-              lerpCamRef.current.copy(cameraRef.current.position);
-              console.log("isAnimationRef.current", isAnimationRef.current);
+              setTimeout(() => {
+                setIsAnimationEnd(true);
+                lerpCamRef.current.copy(cameraRef.current.position);
+                console.log("isAnimationRef.current", isAnimationRef.current);
+              }, 1000);
 
               // Trigger Lerp to targForTitle2
-            } else if (t > 0.5) {
+            } else if (t > 0.2) {
               isFirstLerp = true;
             }
           }
@@ -164,7 +166,8 @@ export function Camera() {
      */
 
     if (isFirstLerp && scrollProgress == 0) {
-      lerpCamTargRef.current.lerp(targForTitle1, 0.5 * delta);
+      const target = isMobile ? targForTitleForMobile : targForTitleForDesktop;
+      lerpCamTargRef.current.lerp(target, 0.5 * delta);
       cameraRef.current.lookAt(lerpCamTargRef.current);
     }
 
@@ -183,9 +186,7 @@ export function Camera() {
         1,
       );
 
-      const baseTarget = isMobile
-        ? targForTitle2ForMobile
-        : targForTitle2ForDesktop;
+      const baseTarget = lerpCamTargRef.current;
 
       const smoothTarget = new THREE.Vector3()
         .copy(baseTarget)
