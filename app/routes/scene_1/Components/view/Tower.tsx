@@ -53,6 +53,8 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
 const towerPositionX = 0;
 const towerPositionZ = 0;
 
+let isFirstTry = true;
+
 export function TopCircle({ normWidth, normHeight }: CommonProps) {
   return (
     <>
@@ -379,44 +381,12 @@ export function FresnelCone() {
   );
 }
 
-let isFirstTry = true;
 export function Tower() {
-  const animationRatioRef = useRef({ scale: 0 });
-
   const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
-  const [animationRatio, setAnimationRatio] = useState({
-    scale: isFirstTry ? 1 : 1,
-  });
-
-  const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
-
-  useEffect(() => {
-    if (isFirstTry) {
-      // if (isFirstTry && isIntroEnded) {
-      isFirstTry = false;
-
-      // gsap.to(animationRatioRef.current, {
-      //   // duration: 0.1,
-      //   duration: 8,
-      //   scale: 1,
-      //   ease: "power3.inOut",
-      //   delay: 0,
-      //   onUpdate: () => {
-      //     // setAnimationRatio({
-      //     //   scale: animationRatioRef.current.scale,
-      //     // });
-      //   },
-      // });
-    }
-  }, [isIntroEnded]);
 
   return (
-    <group
-      position={[0, 0, 0]}
-      rotation={[0, Math.PI * 0.35, 0]}
-      scale={animationRatio.scale}
-    >
+    <group position={[0, 0, 0]} rotation={[0, Math.PI * 0.35, 0]}>
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
         <TopCirclePulse normWidth={normWidth} normHeight={normHeight} />

@@ -13,6 +13,7 @@ import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 import { FullScreenClip } from "./Components/view/FullScreenClip.js";
 import { FullScreenWAB } from "./Components/view/FullScreenWAB.js";
+import { FullScreenMask } from "./Components/view/FullScreenMask.js";
 
 export default function Experience() {
   const endRenderRate = 1.0;
@@ -29,6 +30,7 @@ export default function Experience() {
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
   const isIntroEnd = useSystemStore((state) => state.isIntroEnd); // prettier-ignore
+  const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd); // prettier-ignore
 
   useEffect(() => {
     /**
@@ -120,6 +122,7 @@ export default function Experience() {
       <Tower />
       <FullScreenClip />
       {isMobile && <FullScreenWAB />}
+      {isAnimationEnd || <FullScreenMask />}
     </>
   );
 }

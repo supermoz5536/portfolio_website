@@ -160,24 +160,25 @@ export default function Scene1() {
   }, [isLoaded]);
 
   useEffect(() => {
-    if (visibleDebug) {
-      // 操作防止 : Tower旋回アニメーション中
-      if (isIntroEnded && !isAnimationEnd) {
-        document.body.style.pointerEvents = "none";
-      } else {
-        document.body.style.pointerEvents = "auto";
-      }
-
-      // スクロール防止 : HueEffectアニメーション中
-      // Skipボタンは押せる必要がある）
-      if (isAnimationEnd) {
-        document.body.style.position = "";
-        document.body.style.overflow = "";
-      } else {
-        document.body.style.position = "fixed";
-        document.body.style.overflow = "hidden";
-      }
+    // if (visibleDebug) {
+    // 入力操作の停止 : Tower旋回中のバグ防止
+    if (isIntroEnded && !isAnimationEnd) {
+      document.body.style.pointerEvents = "none";
+    } else {
+      document.body.style.pointerEvents = "auto";
     }
+
+    // スクロールの停止 : HueEffect 中のバグ防止
+    if (isAnimationEnd) {
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.documentElement.style.overflow = "";
+    } else {
+      document.body.style.position = "fixed";
+      document.body.style.width = "100vw"; // fixed で body サイズが縮小するのでサイズ指定で対応
+      document.documentElement.style.overflow = "hidden";
+    }
+    // }
   }, [isIntroEnded, isAnimationEnd]);
 
   function onSkip() {
@@ -196,13 +197,7 @@ export default function Scene1() {
       {/* --------
           Scene1
         -------- */}
-      <div
-        className={
-          "relative h-full " +
-          // Fix width until animation is end
-          (isAnimationEnd ? "w-full" : "w-[100vw]")
-        }
-      >
+      <div className="relative h-full w-full">
         <div className="sticky top-0 left-0 h-[100vh] w-full z-0">
           <div className="absolute top-0 left-0 h-full w-full z-0">
             <CanvasScene1 />
@@ -373,8 +368,8 @@ export default function Scene1() {
       {/* -------
           Intro
         -------- */}
-      {/* {!isIntroEnded && ( */}
-      {visibleDebug && !isIntroEnded && (
+      {!isIntroEnded && (
+        // {visibleDebug && !isIntroEnded && (
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div
@@ -418,8 +413,8 @@ export default function Scene1() {
       {/* ---------
           Loading
         --------- */}
-      {/* {isLoadingLayer && ( */}
-      {visibleDebug && isLoadingLayer && (
+      {isLoadingLayer && (
+        // {/* {visibleDebug && isLoadingLayer && ( */}
         <div className="absolute top-0 left-0 h-[100vh] w-full z-10">
           <div className="relative flex flex-col justify-center items-center h-full w-full z-10">
             <div className="flex flex-row justify-center items-center h-[20vh] w-72">

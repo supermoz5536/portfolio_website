@@ -36,6 +36,6 @@ body {
 }
 
 body {
-  overflow-y: scroll; /* Scene2のisActivated == true の状態でも scroll bar の表示を維持 */
+  overflow-y: scroll; /* Scene1,2 において、scroll bar の表示を維持 */
   user-select: none;
 }
