@@ -7,7 +7,6 @@ import { gsap } from "gsap/dist/gsap";
 
 let isFirstTry = true;
 let isFirstLerp = false;
-let isFirstTarg = true;
 
 export function Camera() {
   const targForTitle1 = new THREE.Vector3(17.5, -10, 0);
@@ -136,14 +135,6 @@ export function Camera() {
           }
         },
       });
-
-      // const timeout = setTimeout(() => {
-      //   isFirstLerp = true;
-      // }, 4500);
-
-      return () => {
-        // clearTimeout(timeout);
-      };
     }
   }, [isIntroEnded]);
 
