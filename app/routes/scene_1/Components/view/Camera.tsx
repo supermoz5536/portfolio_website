@@ -9,10 +9,9 @@ let isFirstTry = true;
 let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitleForDesktop = new THREE.Vector3(22, -13, 0);
+  const targForTitleForDesktop = new THREE.Vector3(22, -13.5, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
-
-  const targForScroll = new THREE.Vector3(0, 5, -100);
+  const targForScroll = new THREE.Vector3(-10, 5, -100);
 
   const cameraPpoints = [
     new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
@@ -111,8 +110,8 @@ export function Camera() {
               radiusRatio = 1.0 - (t - 0.5);
             }
 
-            const revolutions = 2; // 螺旋の回転数
-            const phi = Math.PI * 2.2 * revolutions * t; // 総回転角
+            const revolutions = 1.2; // 螺旋の回転数
+            const phi = Math.PI * 2 * revolutions * t; // 総回転角
             const radius = 125 * radiusRatio; // 半径
             const startY = 100;
             const endY = 12.5;
@@ -128,6 +127,10 @@ export function Camera() {
                 setIsAnimationEnd(true);
                 lerpCamRef.current.copy(cameraRef.current.position);
                 console.log("isAnimationRef.current", isAnimationRef.current);
+                console.log(
+                  "isAnimationRef.current",
+                  cameraRef.current.position,
+                );
               }, 1000);
 
               // Trigger Lerp to targForTitle2
@@ -178,7 +181,7 @@ export function Camera() {
     if (isAnimationEnd) {
       isFirstLerp = false;
 
-      const transitionStart = 0.1;
+      const transitionStart = 0.01;
       const transitionEnd = 0.7;
       const t = THREE.MathUtils.clamp(
         (scrollProgress - transitionStart) / (transitionEnd - transitionStart), // scrollProgress [0.1 <=> 0.2] => [0.0 <=> 1.0]

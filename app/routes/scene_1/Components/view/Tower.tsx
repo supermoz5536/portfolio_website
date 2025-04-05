@@ -386,7 +386,7 @@ export function Tower() {
   const [normHeight, setNormHeight] = useState(10);
 
   return (
-    <group position={[0, 0, 0]} rotation={[0, Math.PI * 0.35, 0]}>
+    <group position={[0, -2, 0]} rotation={[0, Math.PI * 0.35, 0]}>
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
         <TopCirclePulse normWidth={normWidth} normHeight={normHeight} />
