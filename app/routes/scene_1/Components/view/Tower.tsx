@@ -386,28 +386,28 @@ export function Tower() {
   const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
   const [animationRatio, setAnimationRatio] = useState({
-    scale: isFirstTry ? 0 : 1,
+    scale: isFirstTry ? 1 : 1,
   });
 
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
 
   useEffect(() => {
-    // if (isFirstTry) {
-    if (isFirstTry && isIntroEnded) {
+    if (isFirstTry) {
+      // if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
 
-      gsap.to(animationRatioRef.current, {
-        duration: 0.1,
-        // duration: 8,
-        scale: 1,
-        ease: "power3.inOut",
-        delay: 1,
-        onUpdate: () => {
-          setAnimationRatio({
-            scale: animationRatioRef.current.scale,
-          });
-        },
-      });
+      // gsap.to(animationRatioRef.current, {
+      //   // duration: 0.1,
+      //   duration: 8,
+      //   scale: 1,
+      //   ease: "power3.inOut",
+      //   delay: 0,
+      //   onUpdate: () => {
+      //     // setAnimationRatio({
+      //     //   scale: animationRatioRef.current.scale,
+      //     // });
+      //   },
+      // });
     }
   }, [isIntroEnded]);
 

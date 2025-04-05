@@ -90,8 +90,8 @@ export function Camera() {
      Control Camera in Animation
     ---------------------------- */
   useEffect(() => {
-    // if (isFirstTry) {
-    if (isFirstTry && isIntroEnded) {
+    if (isFirstTry) {
+      // if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
         duration: 6,
@@ -210,7 +210,7 @@ export function Camera() {
       fov={45}
       near={0.1}
       far={4000}
-      position={[0, 250, 0]}
+      position={[0, 100, 0]}
     />
   );
 }
