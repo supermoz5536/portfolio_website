@@ -382,11 +382,27 @@ export function FresnelCone() {
 }
 
 export function Tower() {
+  const groupRef = useRef<any>();
+
   const [normWidth, setNormWidth] = useState(35);
   const [normHeight, setNormHeight] = useState(10);
 
+  const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);
+
+  useFrame((state, delta) => {
+    const elapsedTime = state.clock.elapsedTime;
+
+    if (isAnimationEnd && groupRef.current) {
+      groupRef.current.position.y = -2 + Math.sin(elapsedTime) / 2;
+    }
+  });
+
   return (
-    <group position={[0, -2, 0]} rotation={[0, Math.PI * 0.35, 0]}>
+    <group
+      ref={groupRef}
+      position={[0, -2, 0]}
+      rotation={[0, Math.PI * 0.35, 0]}
+    >
       <group position={[0, -2.5, 0]}>
         <TopCircle normWidth={normWidth} normHeight={normHeight} />
         <TopCirclePulse normWidth={normWidth} normHeight={normHeight} />
