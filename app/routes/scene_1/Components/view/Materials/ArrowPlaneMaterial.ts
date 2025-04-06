@@ -12,6 +12,7 @@ export function ArrowPlaneMaterial() {
     transparent: true,
     opacity: 0.4,
     depthWrite: false,
+    side: THREE.DoubleSide,
     blending: THREE.AdditiveBlending,
   });
 

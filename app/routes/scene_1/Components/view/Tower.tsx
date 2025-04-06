@@ -116,6 +116,8 @@ export function ArrowPlane({ normWidth, normHeight }: CommonProps) {
 
       // Apply target
       arrowPlaneRef.current.lookAt(lookAtTagetRef.current);
+
+      arrowPlaneRef.current.rotation.set(0, Math.PI, 0);
     }
   });
 
@@ -384,7 +386,7 @@ export function FresnelCone() {
 export function Tower() {
   const groupRef = useRef<any>();
 
-  const [normWidth, setNormWidth] = useState(35);
+  const [normWidth, setNormWidth] = useState(32.5);
   const [normHeight, setNormHeight] = useState(10);
 
   const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);

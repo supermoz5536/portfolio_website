@@ -140,7 +140,7 @@ export function Fireflies({ index }: FirefliesProps) {
           new THREE.ShaderMaterial({
             uniforms: {
               uTime: { value: 0 },
-              uPointSize: { value: isMobile ? 500.0 : 2000.0 },
+              uPointSize: { value: isMobile ? 500.0 : 2500.0 },
               uPixelRatio: {
                 value:
                   typeof window != "undefined"
