@@ -21,8 +21,8 @@ export function FullScreenMask() {
       gsap.to(animationRatioRef.current, {
         duration: 2,
         opacity: 0,
-        ease: "none",
-        delay: 1,
+        ease: "sine.out",
+        delay: 1.5,
         onUpdate: () => {
           materialRef.current.uniforms.uOpacity.value =
             animationRatioRef.current.opacity;

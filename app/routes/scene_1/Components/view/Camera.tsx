@@ -9,7 +9,7 @@ let isFirstTry = true;
 let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitleForDesktop = new THREE.Vector3(26, -14.5, 0);
+  const targForTitleForDesktop = new THREE.Vector3(26, -20.5, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
   const targForScroll = new THREE.Vector3(-10, 15, -102);
 
@@ -28,7 +28,7 @@ export function Camera() {
   const cameraRef = useRef<any>();
   const animationRatioRef = useRef({ progress: 0 });
 
-  const lerpCamTargRef = useRef(new THREE.Vector3(0, -10, 0));
+  const lerpCamTargRef = useRef(new THREE.Vector3(0, 0, 0));
   const startTargetRef = useRef(new THREE.Vector3());
 
   /**
@@ -93,23 +93,16 @@ export function Camera() {
     if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
-        duration: 6,
+        duration: 7,
         progress: 1,
         ease: "power1.inOut",
-        delay: 2.5,
+        delay: 0,
         onUpdate: () => {
-          let t = animationRatioRef.current.progress;
+          isFirstLerp = true; // Trigger Lerp to targForTitle2
 
           if (!isAnimationEnd && cameraRef.current) {
-            let radiusRatio = 0;
-
-            if (t < 0.5) {
-              // scroll [0.0 - 0.5] => ratio [0.0 - 1.0]
-              radiusRatio = t * 2.0;
-            } else {
-              // scroll [0.5 - 1.0] => ratio [1.0 - 0.5]
-              radiusRatio = 1.0 - (t - 0.5);
-            }
+            let radiusRatio = 0.5;
+            let t = animationRatioRef.current.progress;
 
             const revolutions = 1.2; // 螺旋の回転数
             const phi = Math.PI * 2 * revolutions * t; // 総回転角
@@ -127,10 +120,6 @@ export function Camera() {
               setTimeout(() => {
                 setIsAnimationEnd(true);
               }, 0);
-
-              // Trigger Lerp to targForTitle2
-            } else if (t > 0.01) {
-              isFirstLerp = true;
             }
           }
         },
