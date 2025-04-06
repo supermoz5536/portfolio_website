@@ -16,8 +16,8 @@ export function Camera() {
   const cameraPpoints = [
     new THREE.Vector3(19.31356214843414, 12.5, 59.441032268447124),
     new THREE.Vector3(5, 2, -5),
-    new THREE.Vector3(45, 15.5, -40),
-    new THREE.Vector3(55, 20.5, -80),
+    new THREE.Vector3(-45, 15.5, -40),
+    new THREE.Vector3(-55, 20.5, -80),
   ];
   const curve = new THREE.CatmullRomCurve3(cameraPpoints, false);
 
@@ -27,10 +27,9 @@ export function Camera() {
 
   const cameraRef = useRef<any>();
   const animationRatioRef = useRef({ progress: 0 });
-  const isAnimationRef = useRef(true);
 
   const lerpCamTargRef = useRef(new THREE.Vector3(0, -10, 0));
-  const lerpCamRef = useRef(new THREE.Vector3());
+  const startTargetRef = useRef(new THREE.Vector3());
 
   /**
    * Store State
@@ -125,13 +124,7 @@ export function Camera() {
             if (t == 1.0) {
               setTimeout(() => {
                 setIsAnimationEnd(true);
-                lerpCamRef.current.copy(cameraRef.current.position);
-                console.log("isAnimationRef.current", isAnimationRef.current);
-                console.log(
-                  "isAnimationRef.current",
-                  cameraRef.current.position,
-                );
-              }, 1000);
+              }, 0);
 
               // Trigger Lerp to targForTitle2
             } else if (t > 0.2) {
@@ -147,16 +140,15 @@ export function Camera() {
      Control Camera in Scroll
     ---------------------------- */
   useEffect(() => {
-    if (isAnimationEnd && cameraRef.current) {
-      const newCameraPos = curve.getPoint(scrollProgress);
-      cameraRef.current.position.set(
-        newCameraPos.x, // prettier-ignore
-        newCameraPos.y, // prettier-ignore
-        newCameraPos.z, // prettier-ignore
-      );
-
-      // cameraRef.current.lookAt(0, 15, -100);
-    }
+    // if (isAnimationEnd && cameraRef.current) {
+    //   const newCameraPos = curve.getPoint(scrollProgress);
+    //   cameraRef.current.position.lerp(newCameraPos, 0.3);
+    //   cameraRef.current.position.set(
+    //     newCameraPos.x, // prettier-ignore
+    //     newCameraPos.y, // prettier-ignore
+    //     newCameraPos.z, // prettier-ignore
+    //   );
+    // }
   }, [scrollProgress, size]);
 
   /* ----------------------
@@ -165,37 +157,51 @@ export function Camera() {
 
   useFrame((state, delta) => {
     /*
-     * Control in Animation
+     * Control Position in Scroll
+     */
+
+    if (isAnimationEnd && cameraRef.current) {
+      const newCameraPos = curve.getPoint(scrollProgress);
+      cameraRef.current.position.lerp(newCameraPos, 3 * delta);
+    }
+
+    /*
+     * Control Target in Animation
      */
 
     if (isFirstLerp && scrollProgress == 0) {
       const target = isMobile ? targForTitleForMobile : targForTitleForDesktop;
       lerpCamTargRef.current.lerp(target, 0.5 * delta);
       cameraRef.current.lookAt(lerpCamTargRef.current);
+
+      // Save coordinate for next process
+      startTargetRef.current.copy(lerpCamTargRef.current);
     }
 
     /*
-     * Control in Scroll
+     * Control Target in Scroll
      */
 
     if (isAnimationEnd) {
       isFirstLerp = false;
 
-      const transitionStart = 0.01;
-      const transitionEnd = 0.7;
+      const transitionStart = 0.0;
+      const transitionEnd = 0.4;
       const t = THREE.MathUtils.clamp(
         (scrollProgress - transitionStart) / (transitionEnd - transitionStart), // scrollProgress [0.1 <=> 0.2] => [0.0 <=> 1.0]
         0,
         1,
       );
 
-      const baseTarget = lerpCamTargRef.current;
-
-      const smoothTarget = new THREE.Vector3()
-        .copy(baseTarget)
+      // Get the target
+      const lerpTarget = new THREE.Vector3()
+        .copy(startTargetRef.current)
         .lerp(targForScroll, t);
 
-      cameraRef.current.lookAt(smoothTarget);
+      // Get the target of the target you already got
+      lerpCamTargRef.current.lerp(lerpTarget, delta * 1.5);
+
+      cameraRef.current.lookAt(lerpCamTargRef.current);
     }
   });
 
