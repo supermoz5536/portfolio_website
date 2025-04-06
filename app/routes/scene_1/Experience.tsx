@@ -80,28 +80,6 @@ export default function Experience() {
     }
   }, [scrollProgressTopAndBottom, isIntroEnd]);
 
-  function renderStart() {
-    const timeSec = performance.now();
-    const timeMs = timeSec / 1000;
-
-    if (animationFrameIdRef.current) {
-      cancelAnimationFrame(animationFrameIdRef.current);
-    }
-
-    loop(timeMs);
-
-    function loop(t: number) {
-      advance(t / 1000);
-      animationFrameIdRef.current = requestAnimationFrame(loop);
-    }
-  }
-
-  function renderFinish() {
-    if (animationFrameIdRef.current) {
-      cancelAnimationFrame(animationFrameIdRef.current);
-    }
-  }
-
   useEffect(() => {
     if (!isEarth && scrollProgressTopAndBottom > 0) {
       // if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
@@ -110,6 +88,25 @@ export default function Experience() {
 
     setWiteSizeRatio(Math.max(0, 2 - scrollProgressTopAndBottom * 2.5));
   }, [scrollProgressTopAndBottom]);
+
+  function renderStart() {
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+
+    const loop = (t: number) => {
+      advance(t / 1000);
+      animationFrameIdRef.current = requestAnimationFrame(loop);
+    };
+
+    animationFrameIdRef.current = requestAnimationFrame(loop); // 初回も rAF に任せる
+  }
+
+  function renderFinish() {
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+  }
 
   return (
     <>

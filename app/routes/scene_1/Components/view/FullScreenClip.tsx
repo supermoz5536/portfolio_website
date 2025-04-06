@@ -10,7 +10,6 @@ export function FullScreenClip() {
   const fullScreenMaterialRef = useRef(FullScreenClipMaterial());
 
   const lerpScrollRatioRef = useRef(0);
-  const prevScrollRatioRef = useRef(0);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
@@ -33,39 +32,20 @@ export function FullScreenClip() {
   }, []);
 
   useFrame((state, delta) => {
-    if (scrollProgressTopAndBottom > 0.99) {
-      /**
-       * Off Screen
-       */
-      lerpScrollRatioRef.current = 1.0;
-      prevScrollRatioRef.current = 1.0;
+    // Culculate lerp
+    lerpScrollRatioRef.current = THREE.MathUtils.damp(
+      lerpScrollRatioRef.current,
+      scrollProgressTopAndBottom,
+      1.25,
+      delta,
+    );
 
-      fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
-        lerpScrollRatioRef.current;
+    // Send uniform
+    fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
+      lerpScrollRatioRef.current;
 
-      fullScreenMaterialRef.current.uniforms.uAngle.value =
-        lerpScrollRatioRef.current * Math.PI * 2;
-    } else {
-      /**
-       * On Screen
-       */
-      // Culculate lerp
-      lerpScrollRatioRef.current = THREE.MathUtils.lerp(
-        prevScrollRatioRef.current,
-        scrollProgressTopAndBottom,
-        0.015 * delta,
-      );
-
-      // Save result for next lerp
-      prevScrollRatioRef.current = lerpScrollRatioRef.current;
-
-      // Send uniform
-      fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
-        lerpScrollRatioRef.current;
-
-      fullScreenMaterialRef.current.uniforms.uAngle.value =
-        lerpScrollRatioRef.current * Math.PI * 2;
-    }
+    fullScreenMaterialRef.current.uniforms.uAngle.value =
+      lerpScrollRatioRef.current * Math.PI * 2;
   });
 
   return (

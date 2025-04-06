@@ -40,11 +40,18 @@ export function Question() {
        * Get Lerped Scroll
        */
 
-      // Calc lerp
-      lerpScrollRatioRef.current = THREE.MathUtils.lerp(
-        prevScrollRatioRef.current,
+      // // Calc lerp
+      // lerpScrollRatioRef.current = THREE.MathUtils.lerp(
+      //   prevScrollRatioRef.current,
+      //   scrollProgress,
+      //   delta * 1.5,
+      // );
+
+      lerpScrollRatioRef.current = THREE.MathUtils.damp(
+        lerpScrollRatioRef.current,
         scrollProgress,
-        0.015 * delta,
+        1.25,
+        delta,
       );
 
       // Save result for next lerp
@@ -63,8 +70,8 @@ export function Question() {
        * Rotation
        */
 
-      modelRef.current.rotation.x += Math.PI * 0.3 * delta;
-      modelRef.current.rotation.y += Math.PI * 0.2 * delta;
+      modelRef.current.rotation.x += Math.PI * 0.21 * delta;
+      modelRef.current.rotation.y += Math.PI * 0.14 * delta;
     }
   });
 
