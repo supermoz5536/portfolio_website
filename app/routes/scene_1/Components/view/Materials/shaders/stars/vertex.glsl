@@ -2,6 +2,7 @@ uniform vec3 uSunPosition;
 uniform float uPointSize;
 uniform float uPixelRatio;
 uniform float uBrightStrength;
+uniform bool uIsMobile;
 
 attribute float aSize;
 attribute vec3 aColor;
@@ -30,7 +31,7 @@ void main () {
     gl_PointSize = pointSize;
 
 
-    if (pointSize < 0.5) {
+    if (pointSize < 0.5 || (uIsMobile && pointSize > 2.0)) {
         vec4 clippedPosition = vec4(2.0, 2.0, 2.0, 1.0);
         gl_Position = clippedPosition;
     }

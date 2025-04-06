@@ -21,8 +21,6 @@ export default function Experience() {
   const animationFrameIdRef = useRef<any>();
 
   const [isRender, setIsRender] = useState(true);
-  const [isEarth, setIsEarth] = useState(false);
-  const [whiteSizeRatio, setWiteSizeRatio] = useState(0);
 
   const { gl, advance } = useThree();
 
@@ -80,15 +78,6 @@ export default function Experience() {
     }
   }, [scrollProgressTopAndBottom, isIntroEnd]);
 
-  useEffect(() => {
-    if (!isEarth && scrollProgressTopAndBottom > 0) {
-      // if (isIntroEnd && !isEarth && scrollProgressTopAndBottom > 0) {
-      setIsEarth(true);
-    }
-
-    setWiteSizeRatio(Math.max(0, 2 - scrollProgressTopAndBottom * 2.5));
-  }, [scrollProgressTopAndBottom]);
-
   function renderStart() {
     if (animationFrameIdRef.current) {
       cancelAnimationFrame(animationFrameIdRef.current);
@@ -114,7 +103,6 @@ export default function Experience() {
       <Camera />
       <EnvironmentLights />
       <Floors />
-      {/* {isEarth && <Earth />} */}
       <Earth />
       <Tower />
       <FullScreenClip />

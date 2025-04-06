@@ -4,6 +4,7 @@ import firefliesFragment from "./Materials/shaders/firelies/fragment.glsl";
 import { useEffect, useRef } from "react";
 import { getFirefliesFolder, getGui } from "../../util/lil-gui";
 import { useFrame } from "@react-three/fiber";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type FirefliesProps = {
   index: number;
@@ -22,6 +23,12 @@ export function Fireflies({ index }: FirefliesProps) {
   const positionArray = new Float32Array(firefriesCount * 3); // * 3: xyzで1組
   const aScaleArray = new Float32Array(firefriesCount);
   const aRandomArray = new Float32Array(firefriesCount);
+
+  /**
+   * Global State
+   */
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   /**
    * Debug
@@ -133,7 +140,7 @@ export function Fireflies({ index }: FirefliesProps) {
           new THREE.ShaderMaterial({
             uniforms: {
               uTime: { value: 0 },
-              uPointSize: { value: 2000.0 },
+              uPointSize: { value: isMobile ? 500.0 : 2000.0 },
               uPixelRatio: {
                 value:
                   typeof window != "undefined"

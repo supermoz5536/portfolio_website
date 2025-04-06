@@ -93,10 +93,7 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={3} />
 
-            {displayedFirefly.includes(0) && (
-              // <Fireflies index={index} />
-              <>{isMobile || <Fireflies index={0} />}</>
-            )}
+            {displayedFirefly.includes(0) && <Fireflies index={0} />}
 
             {/* {isMobile && (
               <>

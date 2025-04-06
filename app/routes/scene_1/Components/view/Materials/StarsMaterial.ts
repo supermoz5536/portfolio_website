@@ -5,7 +5,7 @@ import starsFragment from "./shaders/stars/fragment.glsl";
 export function StarsMaterial() {
   const material = new THREE.ShaderMaterial({
     uniforms: {
-      uSunPosition: { value: new THREE.Vector3() },
+      uSunPosition: { value: new THREE.Vector3(-100, -100, 100) },
       uPointSize: { value: 10.0 },
       uPixelRatio: {
         value:
@@ -13,7 +13,8 @@ export function StarsMaterial() {
             ? Math.min(window.devicePixelRatio, 2.0)
             : null,
       },
-      uBrightStrength: { value: 0.2 }, // [0-1]
+      uBrightStrength: { value: 0.5 }, // [0-1]
+      uIsMobile: { value: true },
     },
     vertexShader: starsVertex,
     fragmentShader: starsFragment,

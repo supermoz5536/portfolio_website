@@ -359,13 +359,16 @@ export function Ground() {
 export function Stars({ sunPosition }: StartsProps) {
   const starsRef = useRef<any>();
   const starsMaterial = StarsMaterial();
-  starsMaterial.uniforms.uSunPosition.value.copy(sunPosition);
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   const distanceFromOriginToStars = 1000;
-  const counts = 600;
+  const counts = isMobile ? 600 : 1500;
   const positionArray: any = new Float32Array(counts * 3);
   const colorArray: any = new Float32Array(counts * 3);
   const sizeArray: any = new Float32Array(counts);
+
+  starsMaterial.uniforms.uIsMobile.value = isMobile;
 
   useEffect(() => {
     if (starsRef.current) {
@@ -528,7 +531,7 @@ export function Earth() {
 
   return (
     <>
-      <Background textureSky={bgTextureSky} textureGround={bgTextureGround} />
+      {/* <Background textureSky={bgTextureSky} textureGround={bgTextureGround} /> */}
 
       {/* {isMobile || <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />} */}
       <Stars sunPosition={new THREE.Vector3(1, 1, 1)} />
