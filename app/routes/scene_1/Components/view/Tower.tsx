@@ -393,7 +393,7 @@ export function Tower() {
     const elapsedTime = state.clock.elapsedTime;
 
     if (isAnimationEnd && groupRef.current) {
-      groupRef.current.position.y = -2 + Math.sin(elapsedTime) / 2;
+      groupRef.current.position.y += Math.sin(elapsedTime * 0.8) * 0.01;
     }
   });
 

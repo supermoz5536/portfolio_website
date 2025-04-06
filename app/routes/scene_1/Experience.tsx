@@ -115,7 +115,7 @@ export default function Experience() {
       <EnvironmentLights />
       <Floors />
       {/* {isEarth && <Earth />} */}
-      {/* <Earth /> */}
+      <Earth />
       <Tower />
       <FullScreenClip />
       {isMobile && <FullScreenWAB />}
