@@ -66,7 +66,9 @@ export function Camera() {
     cameraRef.current.layers.enable(0);
 
     if (cameraRef.current) {
-      cameraRef.current.lookAt(lerpCamTargRef.current);
+      // gsap の初期値の角度と一致させ、描画の不連続を避ける
+      // Euler はジンバルロックが生じる角度なので用いない
+      cameraRef.current.quaternion.set(-0.5, 0.5, 0.5, 0.5);
     }
   }, []);
 
