@@ -9,7 +9,7 @@ let isFirstTry = true;
 let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitleForDesktop = new THREE.Vector3(22, -13.5, 0);
+  const targForTitleForDesktop = new THREE.Vector3(26, -14.5, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
   const targForScroll = new THREE.Vector3(-10, 15, -102);
 
@@ -129,7 +129,7 @@ export function Camera() {
               }, 0);
 
               // Trigger Lerp to targForTitle2
-            } else if (t > 0.2) {
+            } else if (t > 0.01) {
               isFirstLerp = true;
             }
           }
@@ -173,7 +173,7 @@ export function Camera() {
 
     if (isFirstLerp && scrollProgress == 0) {
       const target = isMobile ? targForTitleForMobile : targForTitleForDesktop;
-      lerpCamTargRef.current.lerp(target, 0.5 * delta);
+      lerpCamTargRef.current.lerp(target, 0.175 * delta);
       cameraRef.current.lookAt(lerpCamTargRef.current);
 
       // Save coordinate for next process
