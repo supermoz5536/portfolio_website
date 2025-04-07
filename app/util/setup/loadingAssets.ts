@@ -65,7 +65,7 @@ export async function loadAllAssets() {
           console.log("Loaded", loadedCount.current);
           clearTimeout(timeout);
           unsubscribe();
-        }, 2000);
+        }, 3500);
       }
     },
   );
@@ -100,7 +100,7 @@ export async function loadAllAssets() {
       setIsPreLoaded(true);
 
       clearTimeout(timeout);
-    }, 2000);
+    }, 500);
   }
 
   /**

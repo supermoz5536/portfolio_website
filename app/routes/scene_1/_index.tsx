@@ -29,6 +29,7 @@ export default function Scene1() {
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
   const [isLoadingLayer, setIsLoadingLayer] = useState(true);
+  const [isOnScreen, setIsOnScreen] = useState(true);
 
   const isMobileRef = useRef<any>();
   const currentWindowWidthRef = useRef<any>();
@@ -92,6 +93,12 @@ export default function Scene1() {
                 setIsSceneLayerVisible(true);
               } else {
                 setIsSceneLayerVisible(false);
+              }
+
+              if (progressRate == 1.0) {
+                setIsOnScreen(false);
+              } else {
+                setIsOnScreen(true);
               }
 
               if (progressRate > 0.1) isFirstScrolled = true;
@@ -209,7 +216,7 @@ export default function Scene1() {
           Scene HTML Layder
         ---------------------- */}
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isAnimationEnd && !isMobile && (
+      {isAnimationEnd && isOnScreen && !isMobile && (
         <div
           className={
             "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
@@ -291,7 +298,7 @@ export default function Scene1() {
       )}
 
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isAnimationEnd && isMobile && (
+      {isAnimationEnd && isOnScreen && isMobile && (
         <div
           className={
             "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
