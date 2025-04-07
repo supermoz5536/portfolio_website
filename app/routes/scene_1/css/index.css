@@ -1,3 +1,9 @@
+.off-screen *:not(.exclude-off-screen) {
+  animation: none !important;
+}
+
+/* ----------------------------------------------------------*/
+
 .header-1-animation {
   display: inline-block;
   opacity: 0;

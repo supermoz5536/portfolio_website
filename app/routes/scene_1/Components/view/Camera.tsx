@@ -9,7 +9,7 @@ let isFirstTry = true;
 let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitleForDesktop = new THREE.Vector3(26, -20.5, 0);
+  const targForTitleForDesktop = new THREE.Vector3(26, -10, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
   const targForScroll = new THREE.Vector3(-10, 15, -102);
 
@@ -28,7 +28,7 @@ export function Camera() {
   const cameraRef = useRef<any>();
   const animationRatioRef = useRef({ progress: 0 });
 
-  const lerpCamTargRef = useRef(new THREE.Vector3(0, 0, 0));
+  const lerpCamTargRef = useRef(new THREE.Vector3(0, -10, 0));
   const startTargetRef = useRef(new THREE.Vector3());
 
   /**
