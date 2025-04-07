@@ -402,7 +402,7 @@ export function Tower() {
   return (
     <group
       ref={groupRef}
-      position={[0, -2, 0]}
+      position={[0, -1, 0]}
       rotation={[0, Math.PI * 0.35, 0]}
     >
       <group position={[0, -2.5, 0]}>

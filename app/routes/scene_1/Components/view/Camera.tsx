@@ -6,10 +6,9 @@ import { useSystemStore } from "~/store/scene1/system_store";
 import { gsap } from "gsap/dist/gsap";
 
 let isFirstTry = true;
-let isFirstLerp = false;
 
 export function Camera() {
-  const targForTitleForDesktop = new THREE.Vector3(26, -12.5, 0);
+  const targForTitleForDesktop = new THREE.Vector3(22, -12.5, 0);
   const targForTitleForMobile = new THREE.Vector3(14.5, -9, 0);
   const targForScroll = new THREE.Vector3(-10, 15, -102);
 
@@ -98,8 +97,6 @@ export function Camera() {
         ease: "power1.inOut",
         delay: 0,
         onUpdate: () => {
-          isFirstLerp = true; // Trigger Lerp to targForTitle2
-
           if (!isAnimationEnd && cameraRef.current) {
             let radiusRatio = 0.5;
             let t = animationRatioRef.current.progress;
@@ -107,14 +104,14 @@ export function Camera() {
             const revolutions = 1.2; // 螺旋の回転数
             const phi = Math.PI * 2 * revolutions * t; // 総回転角
             const radius = 125 * radiusRatio; // 半径
-            const startY = 100;
+            const startY = 120;
             const endY = 12.5;
             const y = startY - t * (startY - endY);
             const x = radius * Math.cos(phi);
             const z = radius * Math.sin(phi);
 
             cameraRef.current.position.set(x, y, z);
-            cameraRef.current.lookAt(lerpCamTargRef.current);
+            // cameraRef.current.lookAt(lerpCamTargRef.current);
 
             if (t == 1.0) {
               setTimeout(() => {
@@ -127,28 +124,13 @@ export function Camera() {
     }
   }, [isIntroEnded]);
 
-  /* ----------------------------
-     Control Camera in Scroll
-    ---------------------------- */
-  useEffect(() => {
-    // if (isAnimationEnd && cameraRef.current) {
-    //   const newCameraPos = curve.getPoint(scrollProgress);
-    //   cameraRef.current.position.lerp(newCameraPos, 0.3);
-    //   cameraRef.current.position.set(
-    //     newCameraPos.x, // prettier-ignore
-    //     newCameraPos.y, // prettier-ignore
-    //     newCameraPos.z, // prettier-ignore
-    //   );
-    // }
-  }, [scrollProgress, size]);
-
-  /* ----------------------
-     Control Camera Target 
-    ---------------------- */
-
   useFrame((state, delta) => {
+    /* ---------------
+      Camera Position 
+      --------------- */
+
     /*
-     * Control Position in Scroll
+     *  in Scroll
      */
 
     if (isAnimationEnd && cameraRef.current) {
@@ -156,11 +138,14 @@ export function Camera() {
       cameraRef.current.position.lerp(newCameraPos, 3 * delta);
     }
 
+    /* ---------------
+       Camera Target
+      --------------- */
     /*
-     * Control Target in Animation
+     * in Animation
      */
 
-    if (isFirstLerp && scrollProgress == 0) {
+    if (scrollProgress == 0) {
       const target = isMobile ? targForTitleForMobile : targForTitleForDesktop;
       lerpCamTargRef.current.lerp(target, 0.175 * delta);
       cameraRef.current.lookAt(lerpCamTargRef.current);
@@ -170,12 +155,10 @@ export function Camera() {
     }
 
     /*
-     * Control Target in Scroll
+     * in Scroll
      */
 
     if (isAnimationEnd) {
-      isFirstLerp = false;
-
       const transitionStart = 0.0;
       const transitionEnd = 0.4;
       const t = THREE.MathUtils.clamp(
