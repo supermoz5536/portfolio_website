@@ -467,10 +467,12 @@ export function Earth() {
   const endPosition = new THREE.Vector3(128, 0, 192);
   const gui = getGui();
 
-  const [playerPosition, setPlayerPosition] = useState(new THREE.Vector3());
-  const [playerMoveRatio, setPlayerMoveRatio] = useState(0.5);
+  const [playerPosition, setPlayerPosition] = useState(
+    new THREE.Vector3(0, 0, 0),
+  );
+  const [playerMoveRatio, setPlayerMoveRatio] = useState(0.2);
 
-  const [sunPosition, setSunPosition] = useState(new THREE.Vector3());
+  const [sunPosition, setSunPosition] = useState(new THREE.Vector3(0, -1, 0));
 
   const [bgTextureSky, setBgTextureSky] = useState();
   const [bgTextureGround, setBgTextureGround] = useState();
@@ -524,24 +526,24 @@ export function Earth() {
     setSunPosition(getSunPosition({ playerMoveRatio: playerMoveRatio }));
   }, [playerMoveRatio]);
 
-  /**
-   * Debug
-   */
-  useEffect(() => {
-    if (gui) {
-      const controller = gui
-        .add({ playerMoveRatio }, "playerMoveRatio", 0, 1, 0.001)
-        .name("Player Move Ratio")
-        .onChange((value: number) => {
-          setPlayerMoveRatio(value);
-        });
+  // /**
+  //  * Debug
+  //  */
+  // useEffect(() => {
+  //   if (gui) {
+  //     const controller = gui
+  //       .add({ playerMoveRatio }, "playerMoveRatio", 0, 1, 0.001)
+  //       .name("Player Move Ratio")
+  //       .onChange((value: number) => {
+  //         setPlayerMoveRatio(value);
+  //       });
 
-      // クリーンアップ時にコントローラーを削除
-      return () => {
-        controller.destroy();
-      };
-    }
-  }, []);
+  //     // クリーンアップ時にコントローラーを削除
+  //     return () => {
+  //       controller.destroy();
+  //     };
+  //   }
+  // }, []);
 
   return (
     <>

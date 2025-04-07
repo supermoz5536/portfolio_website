@@ -1,15 +1,15 @@
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 import { useGlobalStore } from "~/store/global/global_store";
 import { useSystemStore } from "~/store/scene3/system_store";
 
 export function Camera() {
-  const cameraRef = useRef<any>();
   const three = useThree();
-  const scrollProgress = useSystemStore(
-    (state) => state.scrollProgressTopAndTop,
-  );
+
+  const cameraRef = useRef<any>();
+
+  const scrollProgress = useSystemStore((state) => state.scrollProgressTopAndTop); // prettier-ignore
 
   // size: 現在のcanvas描画領域(width, height)が格納
   const size = useThree((store) => store.size);
@@ -18,8 +18,8 @@ export function Camera() {
   const cameraPpoints = [
     new THREE.Vector3(165, 100, -240),
     new THREE.Vector3(95, 87, -240),
-    new THREE.Vector3(25, 69, -240),
-    new THREE.Vector3(-5, 55.5, -185),
+    new THREE.Vector3(25, 68, -240),
+    new THREE.Vector3(-13, 55.5, -185),
     new THREE.Vector3(17.5, 21, -60),
     new THREE.Vector3(40, 1, 25),
     new THREE.Vector3(-7, 4, 20),
@@ -33,6 +33,7 @@ export function Camera() {
   useLayoutEffect(() => {
     set({ camera: cameraRef.current });
     cameraRef.current.layers.enable(0);
+    cameraRef.current.position.set(165, 100, -240);
   }, []);
 
   // 初回マウント前にアスペクト比率を事前適用する必要がある
@@ -48,14 +49,16 @@ export function Camera() {
     }
   }, [size]);
 
-  useEffect(() => {
+  useFrame((state, delta) => {
     if (cameraRef.current) {
       const newCameraPos = curve.getPoint(scrollProgress);
-      cameraRef.current.position.set(
-        newCameraPos.x, // prettier-ignore
-        newCameraPos.y, // prettier-ignore
-        newCameraPos.z, // prettier-ignore
-      );
+
+      const lerpTarget = new THREE.Vector3()
+        .copy(cameraRef.current.position)
+        .lerp(newCameraPos, 0.5);
+
+      cameraRef.current.position.lerp(lerpTarget, delta * 2.5);
+
       three.camera.lookAt(new THREE.Vector3());
       if (scrollProgress > 0.92) {
         isMobile
@@ -63,7 +66,7 @@ export function Camera() {
           : three.camera.lookAt(new THREE.Vector3(180, 30, -240));
       }
     }
-  }, [scrollProgress, size]);
+  });
 
   return (
     <perspectiveCamera
