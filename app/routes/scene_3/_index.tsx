@@ -24,6 +24,10 @@ export default function Scene3() {
   const currentWindowWidthRef = useRef<any>();
   const isMobileRef = useRef<any>();
 
+  /**
+   * Store State
+   */
+
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isLandscape = useGlobalStore((state) => state.isLandscape);
 
@@ -31,6 +35,9 @@ export default function Scene3() {
     (state) => state.scrollProgressTopAndTop,
   );
 
+  /**
+   * Store Setter
+   */
   const setScrollProgressTopAndTop = 
     useSystemStore((state: any)=>state.setScrollProgressTopAndTop) // prettier-ignore
 
@@ -57,7 +64,7 @@ export default function Scene3() {
             trigger: "#scene3",
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.5,
+            scrub: 3.5,
             pin: false,
             onUpdate: (value) => {
               const progressRate = value.progress;
@@ -80,7 +87,7 @@ export default function Scene3() {
             trigger: "#scene3",
             start: "top bottom",
             end: "bottom bottom",
-            scrub: 0.5,
+            scrub: 3.5,
             pin: false,
             onUpdate: (value) => {
               const progressRate = value.progress;

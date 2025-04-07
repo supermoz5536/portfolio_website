@@ -27,11 +27,9 @@ const displayedFirefly: any = [0, 3, 6, 9, 11];
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
   const groupRef = useRef<any>();
-  const isFirstTry = useRef<any>(true);
 
   const [isPositionReady, setIsPositionReady] = useState<boolean>(false);
   const [currentFloor, setCurrentFloor] = useState(0);
-  const [enteredScene3, setEnteredScene3] = useState(false);
 
   const [adjustedPosition] = useState<THREE.Vector3>(
     new THREE.Vector3(position.x, position.y, position.z),
@@ -60,13 +58,6 @@ export function FloorContents({ index, position }: FloorContentsProps) {
       unsubscribePlayer();
     };
   }, []);
-
-  useEffect(() => {
-    if (isFirstTry.current && scrollProgress > 0.0) {
-      isFirstTry.current = false;
-      setEnteredScene3(true);
-    }
-  }, [scrollProgress]);
 
   useFrame((state, delta) => {
     adjustedPosition.lerp(position, 0.5 * delta);
@@ -111,21 +102,17 @@ export function FloorContents({ index, position }: FloorContentsProps) {
               <>{isMobile || <Fireflies index={index} />}</>
             )}
 
-            {isMobile && enteredScene3 && (
-              <>
-                {displayedShowcaseLightMobile.includes(index) && (
-                  <ShowCaseLight shadowLevel={0} index={index} />
-                )}
-              </>
-            )}
+            <>
+              {displayedShowcaseLightMobile.includes(index) && (
+                <ShowCaseLight shadowLevel={0} index={index} />
+              )}
+            </>
 
-            {!isMobile && enteredScene3 && (
-              <>
-                {displayedShowcaseLightTablet.includes(index) && (
-                  <ShowCaseLight shadowLevel={0} index={index} />
-                )}
-              </>
-            )}
+            <>
+              {displayedShowcaseLightTablet.includes(index) && (
+                <ShowCaseLight shadowLevel={0} index={index} />
+              )}
+            </>
 
             {/* Playerがいるフロアのみ生成 */}
             {currentFloor == index && (

@@ -104,7 +104,7 @@ export function Camera() {
             const revolutions = 1.2; // 螺旋の回転数
             const phi = Math.PI * 2 * revolutions * t; // 総回転角
             const radius = 125 * radiusRatio; // 半径
-            const startY = 120;
+            const startY = 100;
             const endY = 12.5;
             const y = startY - t * (startY - endY);
             const x = radius * Math.cos(phi);
