@@ -158,7 +158,8 @@ export function ShowCase({ position, index }: ShowCaseProps) {
           />
 
           {/* Main Content */}
-          {isMobile || ([0, 3, 6].includes(index) && <ShowcaseComponent />)}
+          {[0, 3, 6].includes(index) && <ShowcaseComponent />}
+          {/* {isMobile || ([0, 3, 6].includes(index) && <ShowcaseComponent />)} */}
         </group>
       </>
     </>

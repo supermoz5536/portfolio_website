@@ -7,80 +7,81 @@ import {
   getGui,
   getShowcaseLightsFolder,
 } from "../../util/lil-gui";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type ShowCaseLightProps = {
   shadowLevel: number;
   index: number;
 };
 
-export function EnvironmentLights() {
-  const dirLightRef: any = useRef();
-  const ambLightRef: any = useRef();
-  const environmentLightsFolder = getEnvironmentLightsFolder();
+// export function EnvironmentLights() {
+//   const dirLightRef: any = useRef();
+//   const ambLightRef: any = useRef();
+//   const environmentLightsFolder = getEnvironmentLightsFolder();
 
-  // useHelper(dirLightRef, THREE.DirectionalLightHelper, 4, "red");
+//   // useHelper(dirLightRef, THREE.DirectionalLightHelper, 4, "red");
 
-  useEffect(() => {
-    /**
-     * Debug
-     */
-    if (environmentLightsFolder) {
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "x", -40, 40)
-        .name("Directional Light X");
+//   useEffect(() => {
+//     /**
+//      * Debug
+//      */
+//     if (environmentLightsFolder) {
+//       environmentLightsFolder
+//         .add(dirLightRef.current.position, "x", -40, 40)
+//         .name("Directional Light X");
 
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "y", -40, 40)
-        .name("Directional Light Y");
+//       environmentLightsFolder
+//         .add(dirLightRef.current.position, "y", -40, 40)
+//         .name("Directional Light Y");
 
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "z", -40, 40)
-        .name("Directional Light Z");
+//       environmentLightsFolder
+//         .add(dirLightRef.current.position, "z", -40, 40)
+//         .name("Directional Light Z");
 
-      environmentLightsFolder
-        .add(dirLightRef.current, "intensity", 0, 2, 0.001)
-        .name("Directional Light intensity");
+//       environmentLightsFolder
+//         .add(dirLightRef.current, "intensity", 0, 2, 0.001)
+//         .name("Directional Light intensity");
 
-      environmentLightsFolder
-        .add(ambLightRef.current, "intensity", 0, 2, 0.001)
-        .name("Ambient Intensity");
-    }
-  }, []);
+//       environmentLightsFolder
+//         .add(ambLightRef.current, "intensity", 0, 2, 0.001)
+//         .name("Ambient Intensity");
+//     }
+//   }, []);
 
-  useFrame((state) => {
-    if (dirLightRef.current) {
-      dirLightRef.current.position.x = state.camera.position.x + 6;
-      dirLightRef.current.position.y = state.camera.position.y + 6;
-      dirLightRef.current.position.z = state.camera.position.z + 3;
-      dirLightRef.current.target.position.x = state.camera.position.x;
-      dirLightRef.current.target.position.y = state.camera.position.y;
-      dirLightRef.current.target.position.z = state.camera.position.z - 5;
-      dirLightRef.current.target.updateMatrixWorld();
-    }
-  });
+//   useFrame((state) => {
+//     if (dirLightRef.current) {
+//       dirLightRef.current.position.x = state.camera.position.x + 6;
+//       dirLightRef.current.position.y = state.camera.position.y + 6;
+//       dirLightRef.current.position.z = state.camera.position.z + 3;
+//       dirLightRef.current.target.position.x = state.camera.position.x;
+//       dirLightRef.current.target.position.y = state.camera.position.y;
+//       dirLightRef.current.target.position.z = state.camera.position.z - 5;
+//       dirLightRef.current.target.updateMatrixWorld();
+//     }
+//   });
 
-  return (
-    <>
-      <directionalLight
-        ref={dirLightRef}
-        color={"#ffffff"}
-        // position={[4, 4, 4]}
-        position={[15, 15, 15]}
-        intensity={1}
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-near={1}
-        shadow-camera-far={20}
-        shadow-camera-top={5}
-        shadow-camera-right={5}
-        shadow-camera-bottom={-5}
-        shadow-camera-left={-5}
-        shadow-normalBias={0.005} // normalBias を追加
-      />
+//   return (
+//     <>
+//       <directionalLight
+//         ref={dirLightRef}
+//         color={"#ffffff"}
+//         // position={[4, 4, 4]}
+//         position={[15, 15, 15]}
+//         intensity={1}
+//         shadow-mapSize={[1024, 1024]}
+//         shadow-camera-near={1}
+//         shadow-camera-far={20}
+//         shadow-camera-top={5}
+//         shadow-camera-right={5}
+//         shadow-camera-bottom={-5}
+//         shadow-camera-left={-5}
+//         shadow-normalBias={0.005} // normalBias を追加
+//       />
 
-      <ambientLight ref={ambLightRef} intensity={0.4} />
-    </>
-  );
-}
+//       <ambientLight ref={ambLightRef} intensity={0.4} />
+//     </>
+//   );
+// }
 
 /**
  * @param shadowLevel - 0から100の間で影の濃さを調整
@@ -100,98 +101,98 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
   // useHelper(withShadowRef, THREE.PointLightHelper, 1, "red");
   // useHelper(withoutShadowRef, THREE.PointLightHelper, 1, "red");
 
-  useEffect(() => {
-    /**
-     * Debug
-     * useFrame内のintensityのイージング処理と競合するので
-     * 必ず、useFrameをコメントアウトしてから実行する
-     */
+  // useEffect(() => {
+  //   /**
+  //    * Debug
+  //    * useFrame内のintensityのイージング処理と競合するので
+  //    * 必ず、useFrameをコメントアウトしてから実行する
+  //    */
 
-    // const showcaseLightsFolder = getShowcaseLightsFolder();
+  //   // const showcaseLightsFolder = getShowcaseLightsFolder();
 
-    // if (
-    //   withShadowRef.current &&
-    //   withoutShadowRef.current &&
-    //   showcaseLightsFolder
-    // ) {
-    //   // with Shadow
-    //   const withShadowX = showcaseLightsFolder
-    //     .add(withShadowRef.current.position, "x", -10, 10, 0.0001)
-    //     .name(`with ShadowX${index}`);
+  //   // if (
+  //   //   withShadowRef.current &&
+  //   //   withoutShadowRef.current &&
+  //   //   showcaseLightsFolder
+  //   // ) {
+  //   //   // with Shadow
+  //   //   const withShadowX = showcaseLightsFolder
+  //   //     .add(withShadowRef.current.position, "x", -10, 10, 0.0001)
+  //   //     .name(`with ShadowX${index}`);
 
-    //   const withShadowY = showcaseLightsFolder
-    //     .add(withShadowRef.current.position, "y", 0, 15, 0.0001)
-    //     .name(`with ShadowY${index}`);
+  //   //   const withShadowY = showcaseLightsFolder
+  //   //     .add(withShadowRef.current.position, "y", 0, 15, 0.0001)
+  //   //     .name(`with ShadowY${index}`);
 
-    //   const withShadowZ = showcaseLightsFolder
-    //     .add(withShadowRef.current.position, "z", -10, 10, 0.0001)
-    //     .name(`with ShadowZ${index}`);
+  //   //   const withShadowZ = showcaseLightsFolder
+  //   //     .add(withShadowRef.current.position, "z", -10, 10, 0.0001)
+  //   //     .name(`with ShadowZ${index}`);
 
-    //   const withShadowIntensity = showcaseLightsFolder
-    //     .add(withShadowRef.current, "intensity", 0, 200, 0.0001)
-    //     .name(`with ShadowStr${index}`);
+  //   //   const withShadowIntensity = showcaseLightsFolder
+  //   //     .add(withShadowRef.current, "intensity", 0, 200, 0.0001)
+  //   //     .name(`with ShadowStr${index}`);
 
-    //   // without Shadow
-    //   const withoutShadowX = showcaseLightsFolder
-    //     .add(withoutShadowRef.current.position, "x", -10, 10, 0.0001)
-    //     .name(`without ShadowX${index}`);
+  //   //   // without Shadow
+  //   //   const withoutShadowX = showcaseLightsFolder
+  //   //     .add(withoutShadowRef.current.position, "x", -10, 10, 0.0001)
+  //   //     .name(`without ShadowX${index}`);
 
-    //   const withoutShadowY = showcaseLightsFolder
-    //     .add(withoutShadowRef.current.position, "y", 0, 15, 0.0001)
-    //     .name(`without ShadowY${index}`);
+  //   //   const withoutShadowY = showcaseLightsFolder
+  //   //     .add(withoutShadowRef.current.position, "y", 0, 15, 0.0001)
+  //   //     .name(`without ShadowY${index}`);
 
-    //   const withoutShadowZ = showcaseLightsFolder
-    //     .add(withoutShadowRef.current.position, "z", -10, 10, 0.0001)
-    //     .name(`without ShadowZ${index}`);
+  //   //   const withoutShadowZ = showcaseLightsFolder
+  //   //     .add(withoutShadowRef.current.position, "z", -10, 10, 0.0001)
+  //   //     .name(`without ShadowZ${index}`);
 
-    //   const withoutShadowIntensity = showcaseLightsFolder
-    //     .add(withoutShadowRef.current, "intensity", 0, 200, 0.0001)
-    //     .name(`without ShadowStr${index}`);
+  //   //   const withoutShadowIntensity = showcaseLightsFolder
+  //   //     .add(withoutShadowRef.current, "intensity", 0, 200, 0.0001)
+  //   //     .name(`without ShadowStr${index}`);
 
-    //   return () => {
-    //     withShadowX.destroy();
-    //     withShadowY.destroy();
-    //     withShadowZ.destroy();
-    //     withShadowIntensity.destroy();
+  //   //   return () => {
+  //   //     withShadowX.destroy();
+  //   //     withShadowY.destroy();
+  //   //     withShadowZ.destroy();
+  //   //     withShadowIntensity.destroy();
 
-    //     withoutShadowX.destroy();
-    //     withoutShadowY.destroy();
-    //     withoutShadowZ.destroy();
-    //     withoutShadowIntensity.destroy();
-    //   };
-    // }
+  //   //     withoutShadowX.destroy();
+  //   //     withoutShadowY.destroy();
+  //   //     withoutShadowZ.destroy();
+  //   //     withoutShadowIntensity.destroy();
+  //   //   };
+  //   // }
 
-    setTargetIntengityWithShadow(shadowLevel);
-    setTargetIntengityWithoutShadow(100 - shadowLevel);
-  }, []);
+  //   setTargetIntengityWithShadow(shadowLevel);
+  //   setTargetIntengityWithoutShadow(100 - shadowLevel);
+  // }, []);
 
-  useFrame((state, delta) => {
-    if (withShadowRef.current) {
-      const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithShadow, // start
-        targetIntengityWithShadow, // end
-        delta, // alpha
-      );
+  // useFrame((state, delta) => {
+  //   if (withShadowRef.current) {
+  //     const newLerpIntensityWithShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithShadow, // start
+  //       targetIntengityWithShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withShadowRef.current.intensity = newLerpIntensityWithShadow;
+  //     withShadowRef.current.intensity = newLerpIntensityWithShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithShadow(newLerpIntensityWithShadow);
-    }
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithShadow(newLerpIntensityWithShadow);
+  //   }
 
-    if (withoutShadowRef.current) {
-      const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
-        lerpIntengityWithoutShadow, // start
-        targetIntengityWithoutShadow, // end
-        delta, // alpha
-      );
+  //   if (withoutShadowRef.current) {
+  //     const newLerpIntensityWithoutShadow = THREE.MathUtils.lerp(
+  //       lerpIntengityWithoutShadow, // start
+  //       targetIntengityWithoutShadow, // end
+  //       delta, // alpha
+  //     );
 
-      withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
+  //     withoutShadowRef.current.intensity = newLerpIntensityWithoutShadow;
 
-      /* 次の計算に使うための状態を保存 */
-      setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
-    }
-  });
+  //     /* 次の計算に使うための状態を保存 */
+  //     setLerpIntengityWithoutShadow(newLerpIntensityWithoutShadow);
+  //   }
+  // });
 
   return (
     <>
@@ -211,9 +212,10 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
 
       {/* Without Shadow */}
       <pointLight
-        ref={withoutShadowRef}
+        // ref={withoutShadowRef}
         color="#fff"
-        intensity={lerpIntengityWithoutShadow}
+        intensity={100}
+        // intensity={lerpIntengityWithoutShadow}
         distance={15}
         position={[index == 0 ? -1.8 : 0, 5, 0]}
         shadow-mapSize-width={1024} // 解像度を2048x2048に設定

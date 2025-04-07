@@ -88,25 +88,24 @@ export function FloorContents({ index, position }: FloorContentsProps) {
             <ShowCase position={adjustedPosition} index={index} />
 
             {/* Content */}
-            {isMobile && index == 0 && <EmptyObject9 />}
+            {/* {isMobile && index == 0 && <EmptyObject9 />}
             {isMobile && index == 3 && <EmptyObject9 />}
             {isMobile && index == 6 && <EmptyObject9 />}
-            {isMobile && index == 9 && <EmptyObject9 />}
-            {isMobile || (displayedQuestion.includes(index) && <Question />)}
+            {isMobile && index == 9 && <EmptyObject9 />} */}
+            {/* {isMobile || (displayedQuestion.includes(index) && <Question />)} */}
+            {displayedQuestion.includes(index) && <Question />}
 
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={index} />
 
             {displayedFirefly.includes(index) && (
-              // <Fireflies index={index} />
-              <>{isMobile || <Fireflies index={index} />}</>
+              <Fireflies index={index} />
+              // <>{isMobile || <Fireflies index={index} />}</>
             )}
 
-            <>
-              {displayedShowcaseLightMobile.includes(index) && (
+            {/* {displayedShowcaseLightMobile.includes(index) && (
                 <ShowCaseLight shadowLevel={0} index={index} />
-              )}
-            </>
+              )} */}
 
             <>
               {displayedShowcaseLightTablet.includes(index) && (

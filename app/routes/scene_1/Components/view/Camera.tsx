@@ -111,7 +111,6 @@ export function Camera() {
             const z = radius * Math.sin(phi);
 
             cameraRef.current.position.set(x, y, z);
-            // cameraRef.current.lookAt(lerpCamTargRef.current);
 
             if (t == 1.0) {
               setTimeout(() => {

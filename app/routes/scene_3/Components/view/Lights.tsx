@@ -21,32 +21,32 @@ export function EnvironmentLights() {
 
   const isMobile = useGlobalStore((state) => state.isMobile);
 
-  useEffect(() => {
-    /**
-     * Debug
-     */
-    if (environmentLightsFolder) {
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "x", -40, 40)
-        .name("Directional Light X");
+  // useEffect(() => {
+  //   /**
+  //    * Debug
+  //    */
+  //   if (environmentLightsFolder) {
+  //     environmentLightsFolder
+  //       .add(dirLightRef.current.position, "x", -40, 40)
+  //       .name("Directional Light X");
 
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "y", -40, 40)
-        .name("Directional Light Y");
+  //     environmentLightsFolder
+  //       .add(dirLightRef.current.position, "y", -40, 40)
+  //       .name("Directional Light Y");
 
-      environmentLightsFolder
-        .add(dirLightRef.current.position, "z", -40, 40)
-        .name("Directional Light Z");
+  //     environmentLightsFolder
+  //       .add(dirLightRef.current.position, "z", -40, 40)
+  //       .name("Directional Light Z");
 
-      environmentLightsFolder
-        .add(dirLightRef.current, "intensity", 0, 2, 0.001)
-        .name("Directional Light intensity");
+  //     environmentLightsFolder
+  //       .add(dirLightRef.current, "intensity", 0, 2, 0.001)
+  //       .name("Directional Light intensity");
 
-      environmentLightsFolder
-        .add(ambLightRef.current, "intensity", 0, 2, 0.001)
-        .name("Ambient Intensity");
-    }
-  }, []);
+  //     environmentLightsFolder
+  //       .add(ambLightRef.current, "intensity", 0, 2, 0.001)
+  //       .name("Ambient Intensity");
+  //   }
+  // }, []);
 
   useFrame((state) => {
     if (dirLightRef.current) {
@@ -67,7 +67,7 @@ export function EnvironmentLights() {
         color={"#ffffff"}
         // position={[4, 4, 4]}
         position={[15, 15, 15]}
-        intensity={isMobile ? 2 : 1}
+        intensity={isMobile ? 1 : 1}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
@@ -79,7 +79,7 @@ export function EnvironmentLights() {
         shadow-normalBias={0.1}
       />
 
-      <ambientLight ref={ambLightRef} intensity={isMobile ? 1 : 0.4} />
+      <ambientLight ref={ambLightRef} intensity={isMobile ? 0.4 : 0.4} />
     </>
   );
 }
@@ -215,7 +215,7 @@ export function ShowCaseLight({ shadowLevel, index }: ShowCaseLightProps) {
       <pointLight
         // ref={withoutShadowRef}
         color="#fff"
-        intensity={0.3}
+        intensity={30}
         // intensity={lerpIntengityWithoutShadow}
         distance={15}
         position={[-0.25, 5.3, 1.1]}

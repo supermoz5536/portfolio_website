@@ -95,7 +95,7 @@ export default function Scene1() {
                 setIsSceneLayerVisible(false);
               }
 
-              if (progressRate == 1.0) {
+              if (progressRate > 0.99) {
                 setIsOnScreen(false);
               } else {
                 setIsOnScreen(true);

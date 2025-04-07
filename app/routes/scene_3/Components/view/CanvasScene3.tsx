@@ -88,10 +88,17 @@ export function CanvasScene3() {
 
           {isMobile ? (
             <>
-              <Bloom
+              {/* <Bloom
                 luminanceThreshold={1.0}
                 intensity={2.1} // Setting For NormalCustom
                 // intensity={1} // Setting For No NormalCustom
+                kernelSize={KernelSize.VERY_LARGE}
+              /> */}
+
+              {/* Bloom for the same as Desktop setting */}
+              <Bloom
+                luminanceThreshold={1.0}
+                intensity={0.1}
                 kernelSize={KernelSize.VERY_LARGE}
               />
               <DepthOfField
