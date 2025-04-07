@@ -166,19 +166,16 @@ export default function Experience() {
   }, [scrollProgressTopAndBottom]);
 
   function renderStart() {
-    const timeSec = performance.now();
-    const timeMs = timeSec / 1000;
-
     if (animationFrameIdRef.current) {
       cancelAnimationFrame(animationFrameIdRef.current);
     }
 
-    loop(timeMs);
-
-    function loop(t: number) {
+    const loop = (t: number) => {
       advance(t / 1000);
       animationFrameIdRef.current = requestAnimationFrame(loop);
-    }
+    };
+
+    animationFrameIdRef.current = requestAnimationFrame(loop); // 初回も rAF に任せる
   }
 
   function renderFinish() {

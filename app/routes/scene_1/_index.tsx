@@ -2,12 +2,12 @@ import "./css/index.css";
 import "./css/loading.scss";
 import { gsap } from "gsap/dist/gsap";
 import { useSystemStore } from "../../store/scene1/system_store";
+import { useSystemStore as useSystemStore2 } from "../../store/scene2/system_store";
 import { useGlobalStore } from "../../store/global/global_store";
 import { useEffect, useRef, useState } from "react";
 import { CanvasScene1 } from "./Components/view/CanvasScene1";
 import { Subtitle } from "./intro/Subtitle";
 import { SkipButton } from "./intro/SkipButton";
-import { AnimateIn } from "~/components/animate_in";
 
 /**
  * Debug
@@ -20,8 +20,6 @@ import { AnimateIn } from "~/components/animate_in";
  */
 
 const visibleDebug = false;
-let isFirstScrolled = false;
-let isOnScreen = true;
 
 export default function Scene1() {
   const [isIntroVisibleAll, setIsIntroVisibleAll] = useState(true);
@@ -30,6 +28,7 @@ export default function Scene1() {
   const [isText2, setIsText2] = useState(false);
   const [isText3, setIsText3] = useState(false);
   const [isLoadingLayer, setIsLoadingLayer] = useState(true);
+  const [isOnScreen, setIsOnScreen] = useState(true);
 
   const isMobileRef = useRef<any>();
   const currentWindowWidthRef = useRef<any>();
@@ -44,6 +43,7 @@ export default function Scene1() {
   const loadingProgressRatio = useGlobalStore((state: any) => state.loadingProgressRatio); // prettier-ignore
   const isIntroEnded = useSystemStore((state: any) => state.isIntroEnd);
   const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);
+  const isActivated = useSystemStore2((state) => state.isActivated);
 
   /**
    * Store Setter
@@ -96,12 +96,10 @@ export default function Scene1() {
               }
 
               if (progressRate == 1.0) {
-                isOnScreen = false;
+                setIsOnScreen(false);
               } else {
-                isOnScreen = true;
+                setIsOnScreen(true);
               }
-
-              if (progressRate > 0.1) isFirstScrolled = true;
             },
           },
         },
@@ -219,7 +217,7 @@ export default function Scene1() {
           Scene HTML Layder
         ---------------------- */}
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isAnimationEnd && isOnScreen && !isMobile && (
+      {isAnimationEnd && isOnScreen && !isActivated && !isMobile && (
         <div
           className={
             "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
@@ -301,7 +299,7 @@ export default function Scene1() {
       )}
 
       {/* {visibleDebug && isIntroEnded && ( */}
-      {isAnimationEnd && isOnScreen && isMobile && (
+      {isAnimationEnd && isOnScreen && !isActivated && isMobile && (
         <div
           className={
             "fixed top-0 left-0 h-[100vh] w-full z-10 duration-1000 " +
