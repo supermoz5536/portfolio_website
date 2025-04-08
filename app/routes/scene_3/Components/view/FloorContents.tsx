@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
-import { ShowCaseLight } from "./ShowCaseLight";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
 import { Fireflies } from "./Fireflies";
@@ -11,6 +10,7 @@ import { StoneTablet } from "./StoneTablet";
 import { EmptyObject9 } from "./EmptyObjects";
 import { useGlobalStore } from "~/store/global/global_store";
 import { useSystemStore } from "~/store/scene3/system_store";
+import { ShowCaseLight } from "./Lights";
 
 type FloorContentsProps = {
   index: number;

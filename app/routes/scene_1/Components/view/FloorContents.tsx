@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ShowCase } from "./ShowCase";
 import ThreePlayer from "../../../../store/scene2/three_player_store";
-import { ShowCaseLight } from "./ShowCaseLight";
 import { Waves } from "./Waves";
 import { Question } from "./Question";
 import { Fireflies } from "./Fireflies";
@@ -17,11 +16,9 @@ type FloorContentsProps = {
 };
 
 const displayedQuestion = [3];
+const displayedFirefly: any = [0, 3, 6, 9, 11];
 const displayedGreenWave = [0, 3, 6, 9];
 const displayedBlueWave = [0, 3, 9];
-const displayedShowcaseLightMobile: any = [];
-const displayedShowcaseLightTablet = [3];
-const displayedFirefly: any = [0, 3, 6, 9, 11];
 
 export function FloorContents({ index, position }: FloorContentsProps) {
   const rigidBodyRef = useRef<any>();
@@ -85,33 +82,14 @@ export function FloorContents({ index, position }: FloorContentsProps) {
           <group ref={groupRef} position={adjustedPosition}>
             <ShowCase position={adjustedPosition} index={0} />
 
-            {/* Content */}
-            {/* {index == 3 && <EmptyObject9 />} */}
-
+            {/* Question */}
             {displayedQuestion.includes(3) && <Question />}
 
             {/* StoneTablet */}
             <StoneTablet position={adjustedPosition} index={3} />
 
+            {/* Fireflies */}
             {displayedFirefly.includes(0) && <Fireflies index={0} />}
-
-            {/* {isMobile && (
-              <>
-                {displayedShowcaseLightMobile.includes(index) && (
-                  <ShowCaseLight shadowLevel={0} index={index} />
-                )}
-              </>
-            )} */}
-
-            {/* {isMobile || (
-              <>
-                {displayedShowcaseLightTablet.includes(index) && (
-                  <ShowCaseLight shadowLevel={0} index={index} />
-                )}
-              </>
-            )} */}
-
-            {/* Playerがいるフロアのみ生成 */}
 
             <>
               {/* Waves */}
