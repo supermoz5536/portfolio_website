@@ -197,10 +197,7 @@ export default function Scene1() {
   return (
     <div
       id="scene1"
-      className={
-        "relative flex justify-center items-center h-[400vh] w-full bg-white " +
-        (isOnScreen ? "" : "off-screen")
-      }
+      className="relative flex justify-center items-center h-[400vh] w-full bg-white"
     >
       {/* --------
           Scene1
@@ -252,7 +249,7 @@ export default function Scene1() {
               {/* Block 2 */}
               <div className="flex flex-col justify-top items-center h-full w-full pt-36 pr-3 space-y-4 show-up-2 bg-green-0">
                 <div className="flex flex-col justify-center items-center ml-28">
-                  <h3 className="text-black text-3xl flowing-underline exclude-off-screen">
+                  <h3 className="text-black text-3xl flowing-underline">
                     What's the factor of mature mind?
                   </h3>
                   <div className="text-black text-base font-light mt-6 space-y-2">
@@ -281,14 +278,14 @@ export default function Scene1() {
               {/* Scroll Icon */}
               <div className="h-10 w-14 ml-8 mr-10">
                 {/* Border Animation */}
-                <div className="stroke is-animated exclude-off-screen h-full w-full">
+                <div className="stroke is-animated h-full w-full">
                   <div className="border top"></div>
                   <div className="border right"></div>
                   <div className="border bottom"></div>
                   <div className="border left"></div>
 
                   {/* Aroow Animation */}
-                  <div className="arrow exclude-off-screen">
+                  <div className="arrow ">
                     <span className="invisible">sHolder</span>
                   </div>
                 </div>
@@ -332,7 +329,7 @@ export default function Scene1() {
             {/* Block 2 */}
             <div className="flex flex-col justify-top items-start h-auto w-full pt-12 pr-3 space-y-4 show-up-2 bg-green-0">
               <div className="flex flex-col justify-center items-start px-5">
-                <h3 className="text-black text-[1.6rem] whitespace-nowrap flowing-underline exclude-off-screen">
+                <h3 className="text-black text-[1.6rem] whitespace-nowrap flowing-underline">
                   The factor of mature mind?
                 </h3>
                 <div className="text-black text-base font-light mt-4 ml-4 space-y-2 whitespace-nowrap">
@@ -356,14 +353,14 @@ export default function Scene1() {
               {/* Scroll Icon */}
               <div className="h-10 w-14 ml-4">
                 {/* Border Animation */}
-                <div className="stroke is-animated exclude-off-screen h-full w-full">
+                <div className="stroke is-animated h-full w-full">
                   <div className="border top"></div>
                   <div className="border right"></div>
                   <div className="border bottom"></div>
                   <div className="border left"></div>
 
                   {/* Aroow Animation */}
-                  <div className="arrow exclude-off-screen">
+                  <div className="arrow">
                     <span className="invisible">sHolder</span>
                   </div>
                 </div>

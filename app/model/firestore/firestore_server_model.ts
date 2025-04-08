@@ -2,8 +2,6 @@ import { initializedAdmin } from "../../firebase/setup_server";
 
 const adminDb = initializedAdmin.firestore();
 
-// Barチャートの更新用関数
-// デプロイする場合は必ずオフにする
 export const fetchBarChartDocData = async () => {
   const barChatRef = adminDb.collection("chart").doc("bar");
   const docSnapshot = await barChatRef.get();
@@ -11,6 +9,8 @@ export const fetchBarChartDocData = async () => {
   return data;
 };
 
+// Barチャートの更新用関数
+// デプロイする場合は必ずオフにする
 export const setBarChartDocDataForDev = async () => {
   const barChatRef = adminDb.collection("chart").doc("bar");
   await barChatRef.set({
