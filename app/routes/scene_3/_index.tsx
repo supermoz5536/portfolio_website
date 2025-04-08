@@ -670,7 +670,7 @@ export default function Scene3() {
               {textGroup1DoneRef.current ? (
                 textGroup1Content
               ) : (
-                <AnimateInBlock rootMarginBottom={5}>
+                <AnimateInBlock rootMarginBottom={-10}>
                   {textGroup1Content}
                 </AnimateInBlock>
               )}
@@ -686,7 +686,7 @@ export default function Scene3() {
               {textGroup2DoneRef.current ? (
                 textGroup2Content
               ) : (
-                <AnimateInBlock rootMarginBottom={5}>
+                <AnimateInBlock rootMarginBottom={-20}>
                   {textGroup2Content}
                 </AnimateInBlock>
               )}
@@ -704,7 +704,7 @@ export default function Scene3() {
                   {textGroup3DoneRef.current ? (
                     textGroup3Content
                   ) : (
-                    <AnimateInBlock rootMarginBottom={5}>
+                    <AnimateInBlock rootMarginBottom={-20}>
                       {textGroup3Content}
                     </AnimateInBlock>
                   )}
@@ -722,7 +722,7 @@ export default function Scene3() {
               {textGroup4DoneRef.current ? (
                 textGroup4Content
               ) : (
-                <AnimateInBlock rootMarginBottom={5}>
+                <AnimateInBlock rootMarginBottom={-10}>
                   {textGroup4Content}
                 </AnimateInBlock>
               )}
@@ -738,7 +738,7 @@ export default function Scene3() {
               {textGroup5DoneRef.current ? (
                 textGroup5Content
               ) : (
-                <AnimateInBlock rootMarginBottom={5}>
+                <AnimateInBlock rootMarginBottom={-20}>
                   {textGroup5Content}
                 </AnimateInBlock>
               )}
