@@ -9,9 +9,9 @@ import type { ActionFunction, LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
 import { useEffect } from "react";
 import { useGlobalStore } from "./store/global/global_store";
-import { setupDevice } from "./util/setup/device";
+import { setupDevice } from "./service/setup/device";
 // import { setupLoadingManager } from "./util/setup/loadingManager";
-import { loadAllAssets } from "./util/setup/loadingAssets";
+import { loadAllAssets } from "./service/setup/loadingAssets";
 
 // 全てのページで共通して読み込むべき外部リソース（CSSやフォントなど）を宣言してます。
 // ============================================

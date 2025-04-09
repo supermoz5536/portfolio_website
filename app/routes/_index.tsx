@@ -15,7 +15,7 @@ import Scene3 from "./scene_3/_index";
 import Scene2 from "./scene_2/_index";
 import Scene1 from "./scene_1/_index";
 
-import { sendContactForm } from "~/util/sendEmail.server";
+import { sendContactForm } from "~/service/sendEmail.server";
 
 export const meta: MetaFunction = () => {
   return [
