@@ -608,13 +608,10 @@ export default function Scene3() {
         id="fade-in-bottom"
         className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
       >
-        Where?
+        Anytime
       </span>
-      <p
-        id="fade-in-bottom"
-        className="text-center text-2xl text-white my-lg:text-3xl"
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+      <p id="fade-in-bottom" className="mt-3 text-center text-2xl text-white">
+        You are able to find your way back to... when the time is right.
       </p>
     </div>
   );
@@ -631,13 +628,10 @@ export default function Scene3() {
         id="fade-in-bottom"
         className="mb-3 text-5xl text-white whitespace-nowrap my-lg:text-6xl"
       >
-        When?
+        Anywhere
       </span>
-      <p
-        id="fade-in-bottom"
-        className="text-center text-2xl text-white my-lg:text-3xl"
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, odio.
+      <p id="fade-in-bottom" className="mt-3 text-center text-2xl text-white">
+        There are clues all around you to reconnect with it.
       </p>
     </div>
   );

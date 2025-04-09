@@ -84,48 +84,48 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Molestias facere earum sapiente, nulla vero tenetur?
+                        The project uses the metaphor of ascending floors to
+                        represent the evolution of the spiritual world,
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Aliquid, molestiae quisquam maxime error quae
-                        adipisci.
+                        with each floor exhibiting objects that depict the state
+                        of the spirit at that stage.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Exercitationem deserunt distinctio nostrum, maiores
-                        perspiciatis dignissimos.
+                        It has been integrated into this portfolio site and
+                        optimized for performance to work well even on low-spec
+                        mobile devices.
                       </p>
                       <br />
                       <p
                         id="fade-in-bottom"
                         className="text-gray-50 text-xl font-normal"
                       >
-                        Lorem ipsum dolor sit amet consectetur adipisicing.
+                        At any rate, you can just play it for fun. Why not give
+                        it a try?
                         <br />
                         <br />
-                        TraceSpeaker: <br />
+                        Who?: <br />
                         <a
                           className="cursor-pointer hover:text-gray-300 transform duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://trace-speaker-app-ja.apple-pepper.net"
+                          href="https://portfolio.apple-pepper.net"
                         >
-                          https://trace-speaker-app-ja.apple-pepper.net
+                          https://portfolio.apple-pepper.net
                         </a>
                         <br />
                         <br />
                         Tech Stack: <br />
-                        Flutter Web, Firebase, Python
+                        Remix, WebGL, GLSL, Three.js
                         <br />
                         <br />
                       </p>
