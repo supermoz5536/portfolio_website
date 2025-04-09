@@ -110,8 +110,14 @@ export default function ContactForm() {
               >
                 <span id="fade-in-bottom">Submit</span>
               </button>
+
+              {/* Feedback */}
               {isSubmitted && (
-                <div className={"text-lg " + (isMobile ? "mt-16" : "mt-8")}>
+                <div
+                  className={
+                    "text-lg text-white " + (isMobile ? "mt-16" : "mt-8")
+                  }
+                >
                   Submission complete!
                 </div>
               )}
