@@ -484,10 +484,10 @@ export default function Scene1() {
 }
 
 const text1 =
-  "1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, praesentium.";
+  "There is a fish named Kon, too vast to know how big it is. Thousands of leagues, beyond measure.";
 
 const text2 =
-  "2 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, praesentium.";
+  "It suddenly becomes a bird named Hou, its wings spread endlessly, like clouds covering the entire sky.";
 
 const text3 =
-  "3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, praesentium.";
+  "Riding the mighty wind, it rises toward the lake in the heavens as the sea rages below.";
