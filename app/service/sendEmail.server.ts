@@ -22,8 +22,9 @@ export async function sendContactForm(request: Request) {
   const transporter = nodemailer.createTransport(transportOptions);
 
   const info = await transporter.sendMail({
-    from: email,
+    from: Config.SMTP_AUTH_USER,
     to: Config.SEND_MAIL_ADDRESS,
+    replyTo: email,
     subject: title,
     text: content,
   });

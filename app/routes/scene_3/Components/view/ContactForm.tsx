@@ -15,11 +15,19 @@
  */
 
 import { Form } from "@remix-run/react";
+import { useRef, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export default function ContactForm() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const isMobile = useGlobalStore((state) => state.isMobile);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+    form.reset();
+    setIsSubmitted(true);
+  };
 
   return (
     <>
@@ -31,17 +39,13 @@ export default function ContactForm() {
             Inquiry Form
           </h2>
 
-          {/**
-           *method="post" を指定することで、同じルート(または指定があれば指定先)の action() に
-           *フォームデータが送信されます。
-           */}
           <Form
-            // action="https://formspree.io/f/xnnpbnwd"
+            onSubmit={handleSubmit}
             action="."
             method="post"
             className={isMobile ? "space-y-5" : "space-y-10"}
           >
-            {/* 名前入力フィールド */}
+            {/* Title */}
             <div>
               <label
                 id="tablet"
@@ -59,7 +63,7 @@ export default function ContactForm() {
               />
             </div>
 
-            {/* メールアドレス入力フィールド */}
+            {/* Email */}
             <div>
               <label
                 id="tablet"
@@ -78,7 +82,7 @@ export default function ContactForm() {
               />
             </div>
 
-            {/* お問い合わせ内容入力フィールド */}
+            {/* Content */}
             <div>
               <label
                 id="tablet"
@@ -96,8 +100,8 @@ export default function ContactForm() {
               />
             </div>
 
-            {/* 送信ボタン */}
-            <div className="relative flex flex-row justify-end">
+            {/* Send Button */}
+            <div className="relative flex flex-row justify-center">
               <button
                 id="button"
                 type="submit"
@@ -108,6 +112,11 @@ export default function ContactForm() {
               >
                 <span id="fade-in-bottom">Submit</span>
               </button>
+              {isSubmitted && (
+                <div className={"text-lg " + (isMobile ? "mt-16" : "mt-8")}>
+                  Submission complete!
+                </div>
+              )}
             </div>
           </Form>
         </div>

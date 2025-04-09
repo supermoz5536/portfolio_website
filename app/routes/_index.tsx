@@ -18,10 +18,7 @@ import Scene1 from "./scene_1/_index";
 import { sendContactForm } from "~/service/sendEmail.server";
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+  return [{ title: "A Portfolio Website" }];
 };
 
 export const loader: LoaderFunction = async () => {
@@ -53,10 +50,10 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   return (
     <>
-      {/* <Scene1 />
+      <Scene1 />
       <Panel1 />
       <Scene2 />
-      <Panel2 /> */}
+      <Panel2 />
       <Scene3 />
     </>
   );
