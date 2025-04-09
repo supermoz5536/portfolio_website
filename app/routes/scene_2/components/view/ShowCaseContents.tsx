@@ -362,11 +362,8 @@ export function DynamicDotAxisTransition() {
       if (preventerRefs[key].current) {
         // スケール拡大を適用
         if (isIncreased && selectedPrevScaleValue < 1) {
-          preventerRefs[key].current.scale.set(
-            selectedPrevScaleValue + deltaFrequency * delta,
-            selectedPrevScaleValue + deltaFrequency * delta,
-            selectedPrevScaleValue + deltaFrequency * delta,
-          );
+          newValue = Math.min(1.0, selectedPrevScaleValue + deltaFrequency * delta); // prettier-ignore
+          preventerRefs[key].current.scale.set(newValue, newValue, newValue);
 
           newValue = selectedPrevScaleValue + deltaFrequency * delta;
 
