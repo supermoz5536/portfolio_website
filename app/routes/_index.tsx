@@ -1,4 +1,4 @@
-import { json, type MetaFunction } from "@remix-run/node";
+import { ActionFunction, json, type MetaFunction } from "@remix-run/node";
 import Panel1 from "./panel_1/_index";
 import Panel2 from "./panel_2/_index";
 import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
@@ -6,10 +6,12 @@ import {
   fetchGanttDocDatas,
   fetchBarChartDocData,
 } from "~/model/firestore/firestore_server_model";
-import Scene1Test from "./scene_1_test/_index";
 import Scene3 from "./scene_3/_index";
 import Scene2 from "./scene_2/_index";
 import Scene1 from "./scene_1/_index";
+import { Config } from "~/config";
+import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export const meta: MetaFunction = () => {
   return [
@@ -46,12 +48,41 @@ export const loader = async () => {
 
 export default function Index() {
   return (
-    <div className="relative flex flex-col items-center justify-start">
+    <>
       {/* <Scene1 />
       <Panel1 />
       <Scene2 />
       <Panel2 /> */}
       <Scene3 />
-    </div>
+    </>
   );
 }
+
+export const action: ActionFunction = async ({ request }: any) => {
+  let formData = await request.formData();
+  let to_mail = formData.get("email")?.toString(); // フォームフィールド名に合わせる
+
+  const transportOptions = {
+    host: Config.SMTP_HOST,
+    port: Config.SMTP_PORT,
+    secure: Config.SMTP_SECURE,
+    auth: {
+      user: Config.SMTP_AUTH_USER,
+      pass: Config.SMTP_AUTH_PASS,
+    },
+  } as unknown as import("nodemailer/lib/smtp-transport").Options; // .defaultを削除  //                                         ↑ この部分はダブルキャスト
+
+  let transporter = nodemailer.createTransport(transportOptions);
+
+  let info = await transporter.sendMail({
+    from: to_mail,
+    to: Config.SEND_MAIL_ADDRESS,
+    subject: "title_1",
+    text: "text_sample",
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+  return json({ result: "OK" });
+};

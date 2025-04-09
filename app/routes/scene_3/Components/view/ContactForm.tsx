@@ -35,8 +35,9 @@ export default function ContactForm() {
            *method="post" を指定することで、同じルート(または指定があれば指定先)の action() に
            *フォームデータが送信されます。
            */}
-          <form
-            action="https://formspree.io/f/xnnpbnwd"
+          <Form
+            // action="https://formspree.io/f/xnnpbnwd"
+            action="."
             method="post"
             className={isMobile ? "space-y-5" : "space-y-10"}
           >
@@ -108,7 +109,7 @@ export default function ContactForm() {
                 <span id="fade-in-bottom">Submit</span>
               </button>
             </div>
-          </form>
+          </Form>
         </div>
       </AnimateInBlock>
     </>

@@ -5,7 +5,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { ActionFunction, LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
 import { useEffect } from "react";
 import { useGlobalStore } from "./store/global/global_store";
