@@ -1,33 +1,26 @@
-// ContactForm.tsx
-
-/**
- * このコンポーネントは、Remix で使用するコンタクトフォームのサンプルです。
- * - 名前
- * - メールアドレス
- * - お問い合わせ内容
- * という3つの項目を用意し、Formコンポーネントのmethod="post"で送信します。
- *
- * 実際にデータを受け取って処理する部分(サーバー側アクション)は、
- * ページやルートのaction関数などで行ってください。
- *
- * Remix の場合は、Formタグを@remix-run/reactからインポートし、methodに"post"を指定すると
- * `action()` にPOSTリクエストでデータが飛ぶ仕組みになっています。
- */
-
-import { Form } from "@remix-run/react";
-import { useRef, useState } from "react";
+import { Form, useActionData, useFetcher } from "@remix-run/react";
+import { useEffect, useRef, useState } from "react";
 import { AnimateInBlock } from "~/components/animate_in_block";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export default function ContactForm() {
+  const actionData = useActionData<{ result: string }>();
+
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [title, setTitle] = useState("");
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+
   const isMobile = useGlobalStore((state) => state.isMobile);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    form.reset();
-    setIsSubmitted(true);
-  };
+  useEffect(() => {
+    if (actionData?.result == "OK") {
+      setTitle("");
+      setEmail("");
+      setContent("");
+      setIsSubmitted(true);
+    }
+  }, [actionData]);
 
   return (
     <>
@@ -40,7 +33,6 @@ export default function ContactForm() {
           </h2>
 
           <Form
-            onSubmit={handleSubmit}
             action="."
             method="post"
             className={isMobile ? "space-y-5" : "space-y-10"}
@@ -58,6 +50,8 @@ export default function ContactForm() {
                 id="tablet"
                 name="title"
                 type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="w-full border border-gray-300 rounded p-2"
                 required
               />
@@ -76,6 +70,8 @@ export default function ContactForm() {
                 id="tablet"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full border border-gray-300 rounded p-2"
                 placeholder="sample@example.com"
                 required
@@ -94,6 +90,8 @@ export default function ContactForm() {
               <textarea
                 id="tablet"
                 name="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 rows={5}
                 className="w-full border border-gray-300 rounded p-2"
                 required
