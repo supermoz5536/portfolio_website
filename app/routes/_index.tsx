@@ -1,4 +1,9 @@
-import { ActionFunction, json, type MetaFunction } from "@remix-run/node";
+import {
+  LoaderFunction,
+  ActionFunction,
+  json,
+  type MetaFunction,
+} from "@remix-run/node";
 import Panel1 from "./panel_1/_index";
 import Panel2 from "./panel_2/_index";
 import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_model";
@@ -9,9 +14,8 @@ import {
 import Scene3 from "./scene_3/_index";
 import Scene2 from "./scene_2/_index";
 import Scene1 from "./scene_1/_index";
-import { Config } from "~/config";
-import nodemailer from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+
+import { sendContactForm } from "~/util/sendEmail.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,7 +24,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
+export const loader: LoaderFunction = async () => {
   // Gantt Chart
   // await setGanttForDev();
   const ganttDocDatas = await fetchGanttDocDatas();
@@ -59,30 +63,11 @@ export default function Index() {
 }
 
 export const action: ActionFunction = async ({ request }: any) => {
-  let formData = await request.formData();
-  let to_mail = formData.get("email")?.toString(); // フォームフィールド名に合わせる
+  await sendContactForm(request);
 
-  const transportOptions = {
-    host: Config.SMTP_HOST,
-    port: Config.SMTP_PORT,
-    secure: Config.SMTP_SECURE,
-    auth: {
-      user: Config.SMTP_AUTH_USER,
-      pass: Config.SMTP_AUTH_PASS,
+  return new Response(JSON.stringify({ result: "OK" }), {
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
     },
-  } as unknown as import("nodemailer/lib/smtp-transport").Options; // .defaultを削除  //                                         ↑ この部分はダブルキャスト
-
-  let transporter = nodemailer.createTransport(transportOptions);
-
-  let info = await transporter.sendMail({
-    from: to_mail,
-    to: Config.SEND_MAIL_ADDRESS,
-    subject: "title_1",
-    text: "text_sample",
   });
-
-  console.log("Message sent: %s", info.messageId);
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-  return json({ result: "OK" });
 };

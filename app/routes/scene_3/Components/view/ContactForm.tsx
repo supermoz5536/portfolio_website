@@ -45,14 +45,14 @@ export default function ContactForm() {
             <div>
               <label
                 id="tablet"
-                htmlFor="name"
+                htmlFor="title"
                 className={"block mb-1 font-semibold text-white"}
               >
-                Name
+                Title
               </label>
               <input
                 id="tablet"
-                name="name"
+                name="title"
                 type="text"
                 className="w-full border border-gray-300 rounded p-2"
                 required
@@ -82,14 +82,14 @@ export default function ContactForm() {
             <div>
               <label
                 id="tablet"
-                htmlFor="message"
+                htmlFor="content"
                 className={"block mb-1 font-semibold text-white"}
               >
                 Content
               </label>
               <textarea
                 id="tablet"
-                name="message"
+                name="content"
                 rows={5}
                 className="w-full border border-gray-300 rounded p-2"
                 required
