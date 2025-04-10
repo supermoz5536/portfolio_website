@@ -3,6 +3,7 @@ import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { useGlobalStore } from "~/store/global/global_store";
+import { useSystemStore } from "~/store/scene2/system_store";
 
 type bridgeProps = {
   position: THREE.Vector3;
@@ -63,7 +64,7 @@ export function Bridge({
     ),
   );
   const [smoothPositionChild] = useState(
-    new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
+    new THREE.Vector3(0, 0, smoothBridgeGeometry.parameters.depth / 2),
   );
 
   const assets = useGlobalStore((state: any) => state.assets);
@@ -168,7 +169,7 @@ export function Bridge({
       childRef.current.position.set(
         0,
         0,
-        (+smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
+        (smoothBridgeGeometry.parameters.depth * targetScaleZ) / 2,
       );
     }
   });
@@ -232,17 +233,13 @@ export function BridgeRight({
     ),
   );
   const [smoothPositionChild] = useState(
-    new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
+    new THREE.Vector3(-smoothBridgeGeometry.parameters.width / 2, 0, 0),
   );
 
-  /**
-   * 初回マウントの、meshのポジションが確定されるまでRigidBodyを待機
-   */
   useEffect(() => {
     setIsPositionReady(true);
   }, []);
 
-  /* 初回マウント後の Bridge のポジションと角度の変更 */
   useFrame((state, delta) => {
     if (parentRef.current && childRef.current) {
       /**

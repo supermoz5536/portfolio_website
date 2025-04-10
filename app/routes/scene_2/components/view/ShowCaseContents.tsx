@@ -1,6 +1,7 @@
 import { Vector3, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { useSystemStore } from "~/store/scene2/system_store";
 
 type PositionProps = {
   position: THREE.Vector3;
@@ -1047,6 +1048,18 @@ export function ShowCaseContent6() {
   const diagonalStaticDotsAbove = [];
   const verticallStaticDots = [];
 
+  const [isDynamicDotAxisTransition, setIsDynamicDotAxisTransition] = useState(false) // prettier-ignore
+
+  const isActivated = useSystemStore((state)=> state.isActivated) // prettier-ignore
+
+  useEffect(() => {
+    if (isActivated) {
+      setIsDynamicDotAxisTransition(true);
+    } else {
+      setIsDynamicDotAxisTransition(false);
+    }
+  }, [isActivated]);
+
   for (let i = 0; i < 9; i++) {
     diagonalStaticDotsAbove.push(StaticDot);
   }
@@ -1257,7 +1270,7 @@ export function ShowCaseContent6() {
             <Dot key={`verticallStaticDots${index}`} position={dotPosition} />
           );
         })}
-        <DynamicDotAxisTransition />
+        {isDynamicDotAxisTransition && <DynamicDotAxisTransition />}
       </group>
     </>
   );

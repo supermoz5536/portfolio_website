@@ -229,7 +229,7 @@ export function BridgeRight({
     ),
   );
   const [smoothPositionChild] = useState(
-    new THREE.Vector3(0, 0, +smoothBridgeGeometry.parameters.depth / 2),
+    new THREE.Vector3(0, 0, smoothBridgeGeometry.parameters.depth / 2),
   );
 
   /**

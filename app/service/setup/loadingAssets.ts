@@ -100,7 +100,7 @@ export async function loadAllAssets() {
       setIsPreLoaded(true);
 
       clearTimeout(timeout);
-    }, 500);
+    }, 1500);
   }
 
   /**
