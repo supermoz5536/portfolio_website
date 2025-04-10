@@ -127,7 +127,7 @@ export default function Panel2() {
             <span className="block">Curious</span>
             <span
               id="line"
-              className="block h-[0.5rem] w-[13.75rem] mt-3 bg-black"
+              className="block h-[0.5rem] w-[10.25rem] my-sm:w-[13.5rem] xl-2:w-[16.75rem] mt-3 bg-black"
             />
           </div>
         </AnimateInBlock>

@@ -11,28 +11,28 @@ import {
 
 const data = [
   {
-    subject: "Self Learning",
-    A: 95,
-  },
-  {
-    subject: "Curiocity",
-    A: 90,
-  },
-  {
-    subject: "UI / UX",
-    A: 80,
-  },
-  {
-    subject: "Integration (Logic & Creative)",
-    A: 80,
-  },
-  {
-    subject: "English",
+    subject: "App Dev",
     A: 60,
   },
   {
     subject: "Web Dev",
-    A: 70,
+    A: 80,
+  },
+  {
+    subject: "UI / UX",
+    A: 95,
+  },
+  {
+    subject: "Front-end",
+    A: 85,
+  },
+  {
+    subject: "Back-end",
+    A: 50,
+  },
+  {
+    subject: "English",
+    A: 65,
   },
 ];
 

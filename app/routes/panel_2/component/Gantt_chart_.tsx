@@ -169,12 +169,12 @@ export default function GanttChart() {
     } else {
       colStartCell =
         10 +
-        (projectData.startYear - 2024) * 5 +
+        (projectData.startYear - 2024) * 60 +
         (projectData.startMonth - 1) * 5 +
         projectData.startMonthPeriod;
       colEndCell =
         10 +
-        (projectData.endYear - 2024) * 5 +
+        (projectData.endYear - 2024) * 60 +
         (projectData.endMonth - 1) * 5 +
         projectData.endMonthPeriod;
     }

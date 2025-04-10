@@ -14,16 +14,16 @@ export const fetchBarChartDocData = async () => {
 export const setBarChartDocDataForDev = async () => {
   const barChatRef = adminDb.collection("chart").doc("bar");
   await barChatRef.set({
-    React: 8,
-    Remix: 3,
-    Firebase: 15,
+    React: 10,
+    Remix: 4,
+    Firebase: 16,
     Electron: 4,
     Flutter: 8,
-    TypeScript: 7,
-    HTML_CSS: 7,
+    TypeScript: 10,
+    HTML_CSS: 9,
     Git_GitHub: 14,
     Creative_2D: 3,
-    Creative_3D: 3,
+    Creative_3D: 6,
     maxYear: 2,
     maxValue: 24,
   });
@@ -63,8 +63,8 @@ export const setGanttForDev = async () => {
     title: "ChatBus",
     subtitle: "Exchange Learning with Random Chat",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "ChatBus is for exchanging languages with people all over the world, easily and anonymously.",
+    tech_stacks: ["Firebase", "Flutter Web", "Stripe API", "DeepL API"],
   });
 
   await projRef.doc("project_2").set({
@@ -79,8 +79,8 @@ export const setGanttForDev = async () => {
     title: "TraceSpeaker",
     subtitle: "YouTube Simultaneous Interpretation",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "TraceSpeaker is an English listening app that utilizes YouTube videos. It's perfect for those who are tired of traditional English learning",
+    tech_stacks: ["Firebase", "Flutter Web"],
   });
 
   await projRef.doc("project_3").set({
@@ -91,12 +91,12 @@ export const setGanttForDev = async () => {
     end_year: 2024,
     end_month: 5,
     end_monthPeriod: 4,
-    target_start_row: 6,
+    target_start_row: 7,
     title: "Scraping Tool",
     subtitle: "For TraceSpeaker",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "A support tool for TraceSpeaker to retrieve YouTube video URLs.",
+    tech_stacks: ["Python"],
   });
 
   await projRef.doc("project_4").set({
@@ -111,8 +111,8 @@ export const setGanttForDev = async () => {
     title: "Inventory Z",
     subtitle: "Scraping Amazon to Collect Inventory Data",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "A desktop application specialized in inventory research for Amazon import businesses.",
+    tech_stacks: ["Firebase", "Electron", "React", "Stripe API"],
   });
 
   await projRef.doc("project_5").set({
@@ -125,10 +125,10 @@ export const setGanttForDev = async () => {
     end_monthPeriod: 1,
     target_start_row: 7,
     title: "Outlier in Remote Work",
-    subtitle: "Training AI Systems and LLMs in English writing",
+    subtitle: "Training LLMs in English writing",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "A job including the training of LLMs in Japanese by providing English writing input.",
+    tech_stacks: ["English"],
   });
 
   await projRef.doc("project_6").set({
@@ -138,13 +138,13 @@ export const setGanttForDev = async () => {
     start_monthPeriod: 1,
     end_year: 2024,
     end_month: 11,
-    end_monthPeriod: 1,
+    end_monthPeriod: 2,
     target_start_row: 5,
     title: "Outsourced Business",
     subtitle: "For Mobile Development",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "Contracted development of an iOS app using a location-sharing service, like Zenly.",
+    tech_stacks: ["Firebase", "Flutter"],
   });
 
   await projRef.doc("project_7").set({
@@ -152,14 +152,30 @@ export const setGanttForDev = async () => {
     start_year: 2024,
     start_month: 11,
     start_monthPeriod: 1,
-    end_year: 2024,
-    end_month: 12,
-    end_monthPeriod: 3,
+    end_year: 2025,
+    end_month: 2,
+    end_monthPeriod: 2,
     target_start_row: 3,
-    title: "Developing This Website",
-    subtitle: "Designed to Showcase Portfolios",
+    title: "Who?",
+    subtitle: "WebGL 3D Content Developed by Three.js",
     description:
       "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
     tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+  });
+
+  await projRef.doc("project_8").set({
+    id: 8,
+    start_year: 2025,
+    start_month: 2,
+    start_monthPeriod: 1,
+    end_year: 2025,
+    end_month: 4,
+    end_monthPeriod: 4,
+    target_start_row: 5,
+    title: "This Website",
+    subtitle: "WebGL 3D Content Developed by Three.js",
+    description:
+      "A project useing the metaphor of ascending floors to represent the evolution of the spiritual world.",
+    tech_stacks: ["Remix", "WebGL", "GLSL", "Three.js"],
   });
 };

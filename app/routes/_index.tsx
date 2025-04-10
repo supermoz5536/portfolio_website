@@ -10,6 +10,8 @@ import { fetchVideoDownloadURL } from "~/model/firestorage/firestorage_server_mo
 import {
   fetchGanttDocDatas,
   fetchBarChartDocData,
+  setGanttForDev,
+  setBarChartDocDataForDev,
 } from "~/model/firestore/firestore_server_model";
 import Scene3 from "./scene_3/_index";
 import Scene2 from "./scene_2/_index";
@@ -51,10 +53,10 @@ export default function Index() {
   return (
     <>
       {/* <Scene1 />
-      <Panel1 /> */}
-      <Scene2 />
-      {/* <Panel2 />
-      <Scene3 /> */}
+      <Panel1 />
+      <Scene2 /> */}
+      <Panel2 />
+      {/* <Scene3 /> */}
     </>
   );
 }
