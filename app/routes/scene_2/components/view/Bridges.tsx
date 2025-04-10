@@ -131,7 +131,7 @@ export function Bridge({
       const smoothedAngleX = THREE.MathUtils.lerp(
         smoothAngle.x, // start
         triangleAngle, // end
-        0.5 * delta, // alpha
+        3.5 * delta, // alpha
       );
 
       /* 次の計算に使うための状態を保存 */
@@ -271,7 +271,7 @@ export function BridgeRight({
       const smoothedAngleZ = THREE.MathUtils.lerp(
         smoothAngle.z, // start
         triangleAngle, // end
-        0.5 * delta, // alpha
+        3.5 * delta, // alpha
       );
 
       /* 次の計算に使うための状態を保存 */
