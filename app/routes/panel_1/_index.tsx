@@ -52,7 +52,7 @@ export default function Panel1() {
     <>
       <div
         ref={container}
-        className="text-black bg-white min-h-[100vh] h-auto w-full"
+        className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden"
       >
         {/* Responsible Width-Max-Break */}
         <div className="xl:flex flex-row justify-between xl-3:justify-center">

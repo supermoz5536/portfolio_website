@@ -78,29 +78,15 @@ export function CanvasScene3() {
         )}
 
         <EffectComposer>
-          {/**
-           * Mobile のShowcaseContentsの内容が簡易的になっているので
-           * Section1を実装後のパフォーマンスを踏まえて
-           * コンテンツ内容を最終調整する。
-           * パフォーマンスに余裕があればPCと同じコンテンツ内容も検討する
-           */}
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+          <Bloom
+            luminanceThreshold={1.0}
+            intensity={0.1}
+            kernelSize={KernelSize.VERY_LARGE}
+          />
 
           {isMobile ? (
             <>
-              {/* <Bloom
-                luminanceThreshold={1.0}
-                intensity={2.1} // Setting For NormalCustom
-                // intensity={1} // Setting For No NormalCustom
-                kernelSize={KernelSize.VERY_LARGE}
-              /> */}
-
-              {/* Bloom for the same as Desktop setting */}
-              <Bloom
-                luminanceThreshold={1.0}
-                intensity={0.1}
-                kernelSize={KernelSize.VERY_LARGE}
-              />
               <DepthOfField
                 blendFunction={BlendFunction.NORMAL}
                 focusDistance={0.001}
@@ -111,11 +97,6 @@ export function CanvasScene3() {
             </>
           ) : (
             <>
-              <Bloom
-                luminanceThreshold={1.0}
-                intensity={0.1}
-                kernelSize={KernelSize.VERY_LARGE}
-              />
               <DepthOfField
                 focusDistance={0.005}
                 focalLength={0.025}
