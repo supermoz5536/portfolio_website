@@ -1,4 +1,4 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, advance, useThree } from "@react-three/fiber";
 import Experience from "../../Experience";
 import {
   EffectComposer,
@@ -12,37 +12,13 @@ import { KernelSize } from "postprocessing";
 import { OutLineCustom } from "./PostProcessing/Outline/OutlineCustom";
 import { useGlobalStore } from "~/store/global/global_store";
 import { NormalCustom } from "./PostProcessing/Normal/Normal";
-
-export function PreCompile() {
-  const resultRef = useRef<any>(null);
-
-  const setIsCompiledScene3 = useGlobalStore(
-    (state: any) => state.setIsCompiledScene3,
-  );
-
-  const { gl, scene, camera } = useThree();
-
-  useEffect(() => {
-    resultRef.current = runCompile();
-
-    if (resultRef.current) {
-      setIsCompiledScene3(true);
-    }
-  }, [gl, scene, camera]);
-
-  async function runCompile() {
-    await gl.compileAsync(scene, camera);
-  }
-
-  return null;
-}
+import { PreCompile } from "~/service/setup/preCompile";
 
 export function CanvasScene3() {
   const isMobile = useGlobalStore((state) => state.isMobile);
   const [dpr, setDpr] = useState(2.0);
 
   const isPreLoaded = useGlobalStore((state) => state.isPreLoaded);
-  const isLoaded = useGlobalStore((state) => state.isLoaded);
 
   useEffect(() => {
     setDpr(Math.min(window.devicePixelRatio, 2.0));
@@ -73,7 +49,7 @@ export function CanvasScene3() {
         {isPreLoaded && (
           <>
             <Experience />
-            <PreCompile />
+            <PreCompile sceneNumber={3} />
           </>
         )}
 

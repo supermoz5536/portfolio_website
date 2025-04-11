@@ -13,30 +13,7 @@ import { HueSlideCustom } from "./PostProcessing/HueSlide/HueSlideCustom";
 import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 import { KernelSize } from "postprocessing";
-
-export function PreCompile() {
-  const resultRef = useRef<any>(null);
-
-  const setIsCompiledScene1 = useGlobalStore(
-    (state: any) => state.setIsCompiledScene1,
-  );
-
-  const { gl, scene, camera } = useThree();
-
-  useEffect(() => {
-    resultRef.current = runCompile();
-
-    if (resultRef.current) {
-      setIsCompiledScene1(true);
-    }
-  }, [gl, scene, camera]);
-
-  async function runCompile() {
-    await gl.compileAsync(scene, camera);
-  }
-
-  return null;
-}
+import { PreCompile } from "~/service/setup/preCompile";
 
 export function CanvasScene1() {
   const [dprMobile] = useState(0.05);
@@ -76,7 +53,7 @@ export function CanvasScene1() {
         {isPreLoaded && (
           <>
             <Experience />
-            <PreCompile />
+            <PreCompile sceneNumber={1} />
           </>
         )}
 

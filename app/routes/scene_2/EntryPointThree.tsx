@@ -5,30 +5,7 @@ import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { MovementPad } from "./Components/view/Interface";
 import { useEffect, useRef, useState } from "react";
 import { useGlobalStore } from "~/store/global/global_store";
-
-export function PreCompile() {
-  const resultRef = useRef<any>(null);
-
-  const setIsCompiledScene2 = useGlobalStore(
-    (state: any) => state.setIsCompiledScene2,
-  );
-
-  const { gl, scene, camera } = useThree();
-
-  useEffect(() => {
-    resultRef.current = runCompile();
-
-    if (resultRef.current) {
-      setIsCompiledScene2(true);
-    }
-  }, [gl, scene, camera]);
-
-  async function runCompile() {
-    await gl.compileAsync(scene, camera);
-  }
-
-  return null;
-}
+import { PreCompile } from "~/service/setup/preCompile";
 
 const EntryPointThree = () => {
   const initPlayerCoord = { x: 0, y: 4, z: 8 };
@@ -54,7 +31,7 @@ const EntryPointThree = () => {
         ]}
       >
         <Canvas
-          frameloop="always"
+          frameloop="never"
           style={{
             minHeight: "100vh",
             height: "100%",
@@ -81,7 +58,7 @@ const EntryPointThree = () => {
           {isPreLoaded && (
             <>
               <Experience />
-              <PreCompile />
+              <PreCompile sceneNumber={2} />
             </>
           )}
         </Canvas>
