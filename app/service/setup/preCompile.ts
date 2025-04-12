@@ -64,11 +64,12 @@ export function PreCompile({ sceneNumber }: PreCompileProps) {
       }
 
       const loop = (t: number) => {
-        if (countRef.current < 60) {
+        const waitFrame = sceneNumber == 2 ? 200 : 60;
+        if (countRef.current < waitFrame) {
           countRef.current++;
           advance(t / 1000);
           animationFrameIdRef.current = requestAnimationFrame(loop);
-          console.log('"runManualRender triggered');
+          if (sceneNumber == 2) console.log('"runManualRender triggered');
         } else {
           resolve();
         }
@@ -77,7 +78,7 @@ export function PreCompile({ sceneNumber }: PreCompileProps) {
       animationFrameIdRef.current = requestAnimationFrame(loop);
     });
 
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)); // Experience のマウント直後の安定化を待機
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 15000)); // Experience のマウント直後の安定化を待機
     return Promise.race([maxWaiting, manualRender]);
   }
 

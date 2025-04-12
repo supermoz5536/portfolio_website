@@ -26,7 +26,7 @@ export default function Experience() {
   /**
    * Local State
    */
-  const [isRender, setIsRender] = useState(false);
+  const [isRender, setIsRender] = useState(true);
 
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
@@ -39,7 +39,7 @@ export default function Experience() {
    * Store State
    */
   const isMobile = useGlobalStore((state) => state.isMobile);
-  const isAvtivated = useSystemStore((state: any) => state.isActivated);
+  const isActivated = useSystemStore((state: any) => state.isActivated);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   /**
@@ -135,14 +135,20 @@ export default function Experience() {
      * Control Render for CPU Performance
      */
 
-    if (scrollProgressTopAndBottom <= startRenderRate) {
-      setIsRender(false);
-      renderFinish();
-    } else if (scrollProgressTopAndBottom >= endRenderRate) {
-      setIsRender(false);
-      renderFinish();
-    } else {
-      if (!isRender) {
+    // Immersive Mode
+    if (isActivated) {
+      setIsRender(true);
+      renderStart();
+
+      // Normal Mode
+    } else if (!isActivated) {
+      if (scrollProgressTopAndBottom <= startRenderRate) {
+        setIsRender(false);
+        renderFinish();
+      } else if (scrollProgressTopAndBottom >= endRenderRate) {
+        setIsRender(false);
+        renderFinish();
+      } else {
         setIsRender(true);
         renderStart();
       }
@@ -193,7 +199,7 @@ export default function Experience() {
         minPolarAngle={Math.PI * 0.4}
       />
 
-      <Physics paused={isAvtivated ? false : true}>
+      <Physics paused={isActivated ? false : true}>
         <EnvironmentLights />
         <Player />
         <Floors />
