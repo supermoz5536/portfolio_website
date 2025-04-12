@@ -20,7 +20,7 @@ export default function Experience() {
 
   const animationFrameIdRef = useRef<any>();
 
-  const [isRender, setIsRender] = useState(true);
+  const [isRender, setIsRender] = useState(false);
 
   const { gl, advance } = useThree();
 

@@ -1,7 +1,6 @@
 import { advance, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { useGlobalStore } from "~/store/global/global_store";
-import * as THREE from "three";
 
 type PreCompileProps = {
   sceneNumber: 1 | 2 | 3;
@@ -64,8 +63,7 @@ export function PreCompile({ sceneNumber }: PreCompileProps) {
       }
 
       const loop = (t: number) => {
-        const waitFrame = sceneNumber == 2 ? 200 : 60;
-        if (countRef.current < waitFrame) {
+        if (countRef.current < 80) {
           countRef.current++;
           advance(t / 1000);
           animationFrameIdRef.current = requestAnimationFrame(loop);
@@ -78,7 +76,7 @@ export function PreCompile({ sceneNumber }: PreCompileProps) {
       animationFrameIdRef.current = requestAnimationFrame(loop);
     });
 
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 15000)); // Experience のマウント直後の安定化を待機
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 10000)); // Experience のマウント直後の安定化を待機
     return Promise.race([maxWaiting, manualRender]);
   }
 

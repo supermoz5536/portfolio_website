@@ -8,12 +8,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export async function loadAllAssets() {
-  const totalCount = 11;
+  const totalCount = 12;
 
   const isFirstTryRef1 = useRef(true);
   const isFirstTryRef2 = useRef(true);
   const isFirstTryRef3 = useRef(true);
   const isFirstTryRef4 = useRef(true);
+  const isFirstTryRef5 = useRef(true);
   const assetsObj = useRef<any>({ gltf: {}, texture: {} });
   const loadedCount = useRef<any>(0);
 
@@ -45,32 +46,49 @@ export async function loadAllAssets() {
       isCompiledScene1: state.isCompiledScene1,
       isCompiledScene2: state.isCompiledScene2,
       isCompiledScene3: state.isCompiledScene3,
+      isWarmedUpPlayer: state.isWarmedUpPlayer,
     }),
 
     (newState, prevState) => {
-      const { isCompiledScene1, isCompiledScene2, isCompiledScene3 } = newState;
+      const {
+        isCompiledScene1,
+        isCompiledScene2,
+        isCompiledScene3,
+        isWarmedUpPlayer,
+      } = newState;
+
       if (isCompiledScene1 && isFirstTryRef1.current) {
         isFirstTryRef1.current = false;
         loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
       }
 
       if (isCompiledScene2 && isFirstTryRef2.current) {
         isFirstTryRef2.current = false;
         loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
       }
 
       if (isCompiledScene3 && isFirstTryRef3.current) {
         isFirstTryRef3.current = false;
         loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
+      }
+
+      if (isWarmedUpPlayer && isFirstTryRef4.current) {
+        isFirstTryRef4.current = false;
+        loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
       }
 
       if (
-        isFirstTryRef4.current &&
+        isFirstTryRef5.current &&
         isCompiledScene1 &&
         isCompiledScene2 &&
-        isCompiledScene3
+        isCompiledScene3 &&
+        isWarmedUpPlayer
       ) {
-        isFirstTryRef4.current = false;
+        isFirstTryRef5.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
 
@@ -81,7 +99,7 @@ export async function loadAllAssets() {
 
           clearTimeout(timeout);
           unsubscribe();
-        }, 3500);
+        }, 500);
       }
     },
   );

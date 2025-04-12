@@ -1,5 +1,5 @@
 import { useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { advance, useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -7,15 +7,25 @@ import ThreePlayerStore from "../../../../store/scene2/three_player_store";
 import ThreeInterfaceStore from "../../../../store/scene2/three_interface_store";
 import { useSystemStore } from "../../../../store/scene2/system_store";
 import { useThree } from "@react-three/fiber";
+import { useGlobalStore } from "~/store/global/global_store";
+import { RigidBodyType } from "@dimforge/rapier3d-compat/dynamics/rigid_body";
 
 let isFirstTry = true;
 
 export function Player() {
   const initPlayerCoord = new THREE.Vector3(0, 4, 8);
+  const warmUpImpulse = new THREE.Vector3(2.05, 2.125, -2.195);
+
+  /**
+   * Local State
+   */
 
   const state = useThree();
   const rigidRef: any = useRef();
   const meshRef: any = useRef();
+  const animationFrameIdRef = useRef<any>();
+  const countWarmRef = useRef<any>(0);
+  const countWarmEndRef = useRef<any>(0);
 
   const [subscribeKeys, getState] = useKeyboardControls();
   const [targetOpacity, setTargetOpacity] = useState(1);
@@ -47,6 +57,19 @@ export function Player() {
     new THREE.Vector3(),
   );
 
+  /**
+   * Store State
+   */
+
+  const isCompiledScene2 = useGlobalStore((state) => state.isCompiledScene2);
+
+  /**
+   * Store Setter
+   */
+
+  const setIsWarmedUpPlayer = 
+    useGlobalStore((state: any) => state.setIsWarmedUpPlayer); // prettier-ignore
+
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
 
@@ -54,11 +77,6 @@ export function Player() {
     ThreePlayerStore((state: any) => state.setIsPlayerFirstMoved); // prettier-ignore
 
   useEffect(() => {
-    /**
-     * Setup Camera Position
-     */
-    // setSmoothCameraPosition(new THREE.Vector3(0, 0, 5));
-
     /* Listem Player Current Floor */
     const unsubscribePlayerPosition = ThreePlayerStore.subscribe(
       (state: any) => state.currentFloorNum,
@@ -90,15 +108,9 @@ export function Player() {
           ),
         );
 
-        if (isFirstTry) {
-          isFirstTry = false;
-          for (let i = 0; i < 3; i++) {
-            const timeout = 1250 + (i * 750); // prettier-ignore
-            setTimeout(() => {
-              setGravity(1.0);
-            }, timeout);
-          }
-        }
+        setTimeout(() => {
+          setGravity(1.0);
+        }, 1500);
       },
     );
 
@@ -141,6 +153,13 @@ export function Player() {
       unsubscribeMoveDelta();
     };
   }, []);
+
+  useEffect(() => {
+    if (isFirstTry && isCompiledScene2 && rigidRef.current) {
+      isFirstTry = false;
+      warmUpRender();
+    }
+  }, [isCompiledScene2]);
 
   useFrame((state, delta) => {
     /**
@@ -286,6 +305,71 @@ export function Player() {
       state.camera.lookAt(smoothCameraTarget);
     }
   });
+
+  /// WarmUp 用のレンダリング関数
+  /// isLoaded == false の間のみ実行
+  function warmUpRender() {
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+
+    const loop = (t: number) => {
+      if (countWarmRef.current < 40) {
+        console.log("loop");
+        countWarmRef.current++;
+
+        rigidRef.current.applyImpulse(warmUpImpulse);
+
+        advance(t / 1000);
+        animationFrameIdRef.current = requestAnimationFrame(loop);
+      } else {
+        console.log("loopEnd");
+        countWarmRef.current++;
+
+        rigidRef.current.setLinvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setAngvel({ x: 0, y: 0, z: 0 });
+        rigidRef.current.setTranslation({ x: 0, y: 4, z: 8 });
+
+        setSmoothCameraPosition(
+          new THREE.Vector3(
+            initPlayerCoord.x,
+            initPlayerCoord.y + 5,
+            initPlayerCoord.z + 15,
+          ),
+        );
+
+        setSmoothCameraTarget(
+          new THREE.Vector3(
+            initPlayerCoord.x,
+            initPlayerCoord.y + 5,
+            initPlayerCoord.z - 10,
+          ),
+        );
+
+        state.camera.position.set(
+          initPlayerCoord.x,
+          initPlayerCoord.y + 5,
+          initPlayerCoord.z + 15,
+        );
+
+        state.camera.lookAt(
+          initPlayerCoord.x,
+          initPlayerCoord.y + 5,
+          initPlayerCoord.z - 10,
+        );
+
+        if (countWarmEndRef.current < 30) {
+          countWarmEndRef.current++;
+          advance(t / 1000);
+          animationFrameIdRef.current = requestAnimationFrame(loop);
+        } else {
+          setIsWarmedUpPlayer(true);
+        }
+      }
+    };
+
+    animationFrameIdRef.current = requestAnimationFrame(loop);
+  }
 
   return (
     <>

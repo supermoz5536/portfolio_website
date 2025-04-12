@@ -17,7 +17,7 @@ export default function Experience() {
 
   const animationFrameIdRef = useRef<any>();
 
-  const [isRender, setIsRender] = useState(true);
+  const [isRender, setIsRender] = useState(false);
 
   const { gl, advance } = useThree();
 
@@ -61,7 +61,7 @@ export default function Experience() {
       animationFrameIdRef.current = requestAnimationFrame(loop);
     };
 
-    animationFrameIdRef.current = requestAnimationFrame(loop); // 初回も rAF に任せる
+    animationFrameIdRef.current = requestAnimationFrame(loop);
   }
 
   function renderFinish() {

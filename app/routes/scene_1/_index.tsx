@@ -87,7 +87,7 @@ export default function Scene1() {
             onUpdate: (value) => {
               const progressRate = value.progress;
               setScrollProgressTopAndBottom(progressRate);
-              console.log(progressRate);
+              // console.log(progressRate);
 
               if (progressRate == 0) {
                 setIsSceneLayerVisible(true);

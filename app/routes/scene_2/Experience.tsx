@@ -3,7 +3,7 @@
 /// 背景が暗くなる不具合が発生する
 
 import { OrbitControls, PointerLockControls } from "@react-three/drei";
-import { Physics } from "@react-three/rapier";
+import { Physics, useRapier } from "@react-three/rapier";
 import { Player } from "./Components/view/Player";
 import { Floors } from "./Components/view/Floor.js";
 import { EnvironmentLights } from "./Components/view/Lights.js";
@@ -16,6 +16,26 @@ import ThreePlayerStore from "../../store/scene2/three_player_store";
 import { Tower } from "./Components/view/Tower";
 import { useGlobalStore } from "~/store/global/global_store";
 
+/// Warm up Rapier
+export function WarmUpPhysics() {
+  const isFirstActivatedRef = useRef(true);
+  const { world } = useRapier();
+
+  useEffect(() => {
+    if (isFirstActivatedRef.current) {
+      isFirstActivatedRef.current = false;
+
+      if (world)
+        for (let i = 0; i < 500; i++) {
+          world.step();
+          console.log("WarmUpPhysics");
+        }
+    }
+  }, [world]);
+
+  return null;
+}
+
 export default function Experience() {
   const threeState = useThree();
   const { gl, advance } = useThree();
@@ -26,7 +46,7 @@ export default function Experience() {
   /**
    * Local State
    */
-  const [isRender, setIsRender] = useState(true);
+  const [isRender, setIsRender] = useState(false);
 
   const playerPositionRef = useRef(new THREE.Vector3());
   const orbitControlRef: any = useRef();
@@ -40,6 +60,7 @@ export default function Experience() {
    */
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isActivated = useSystemStore((state: any) => state.isActivated);
+  const isLoaded = useGlobalStore((state) => state.isLoaded);
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
   /**
@@ -199,10 +220,11 @@ export default function Experience() {
         minPolarAngle={Math.PI * 0.4}
       />
 
-      <Physics paused={isActivated ? false : true}>
+      <Physics paused={isLoaded ? (isActivated ? false : true) : false}>
         <EnvironmentLights />
         <Player />
         <Floors />
+        <WarmUpPhysics />
       </Physics>
       <Tower />
       <Earth />

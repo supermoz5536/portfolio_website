@@ -4,6 +4,7 @@ import firefliesFragment from "./Materials/shaders/firelies/fragment.glsl";
 import { useEffect, useRef, useState } from "react";
 import { getFirefliesFolder, getGui } from "../../util/lil-gui";
 import { useFrame } from "@react-three/fiber";
+import { useGlobalStore } from "~/store/global/global_store";
 
 type FirefliesProps = {
   index: number;
@@ -13,6 +14,8 @@ const firefliesGeometry = new THREE.BufferGeometry();
 
 export function Fireflies({ index }: FirefliesProps) {
   const firefliesRef = useRef<any>();
+
+  const isMobile = useGlobalStore((state) => state.isMobile);
 
   /**
    * FireLies Value
@@ -132,7 +135,7 @@ export function Fireflies({ index }: FirefliesProps) {
           new THREE.ShaderMaterial({
             uniforms: {
               uTime: { value: 0 },
-              uPointSize: { value: 500.0 },
+              uPointSize: { value: isMobile ? 150.0 : 500.0 },
               uPixelRatio: {
                 value:
                   typeof window != "undefined"
