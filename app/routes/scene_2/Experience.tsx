@@ -83,8 +83,10 @@ export default function Experience() {
         orbitControlRef.current.enabled = false;
       }
       if (window.innerWidth >= 500) {
-        isMobileRef.current = false;
-        orbitControlRef.current.enabled = true;
+        isMobileRef.current = true;
+        orbitControlRef.current.enabled = false;
+        // isMobileRef.current = false;
+        // orbitControlRef.current.enabled = true;
       }
     }
 

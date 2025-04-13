@@ -225,10 +225,10 @@ export function MovementPad() {
 
     const handleMouseDown = (event: MouseEvent) => {
       if (isActicatedRef.current && !isContentSelectedMouseDownRef.current) {
-        isPlayerFocusedRef.current = false;
-        isNoneSelectedMouseDownRef.current = true;
-        setIsPlayerFocus(false);
-        setIsNoneSelectedMouseDown(true);
+        // isPlayerFocusedRef.current = false;
+        // isNoneSelectedMouseDownRef.current = true;
+        // setIsPlayerFocus(false);
+        // setIsNoneSelectedMouseDown(true);
       }
     };
 
@@ -258,10 +258,10 @@ export function MovementPad() {
         !isContentSelectedMouseDownRef.current &&
         isPlayerFocusedRef.current == false
       ) {
-        isPlayerFocusedRef.current = true;
-        isNoneSelectedMouseDownRef.current = false;
-        setIsPlayerFocus(true);
-        setIsNoneSelectedMouseDown(false);
+        // isPlayerFocusedRef.current = true;
+        // isNoneSelectedMouseDownRef.current = false;
+        // setIsPlayerFocus(true);
+        // setIsNoneSelectedMouseDown(false);
       }
 
       setIsContentSelectedMouseDown(false);

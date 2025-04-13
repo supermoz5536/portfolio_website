@@ -345,11 +345,11 @@ export default function Scene2() {
                 )}
 
                 {/* OrbitControl Button */}
-                {isMobile && !isOrbitControlMobile && (
+                {!isOrbitControlMobile && (
                   <AnimateIn>
                     <Button
                       id="svg"
-                      className="absolute mt-5 mr-5 top-[4.5%] left-[10%]"
+                      className="absolute mt-5 ml-5 top-[4.5%] left-[5%]"
                       onClick={() => toggleOrbitControl()}
                     >
                       <MdOutlineCameraswitch className="absolute top-[50%] left-[50%] h-12 w-12 z-20 text-white translate transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer hover:text-gray-400 duration-200 rounded-full" />
