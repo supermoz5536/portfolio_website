@@ -49,7 +49,7 @@ const EntryPointThree = () => {
             far: 3200,
             position: [
               initPlayerCoord.x,
-              initPlayerCoord.y + 4,
+              initPlayerCoord.y + 5,
               initPlayerCoord.z + 15,
             ],
           }}

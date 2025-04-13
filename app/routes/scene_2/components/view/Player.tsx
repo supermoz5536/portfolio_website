@@ -48,7 +48,7 @@ export function Player() {
   const [smoothCameraTarget, setSmoothCameraTarget] = useState(
     new THREE.Vector3(
       initPlayerCoord.x,
-      initPlayerCoord.y + 5,
+      initPlayerCoord.y,
       initPlayerCoord.z - 10,
     ),
   );
@@ -341,7 +341,7 @@ export function Player() {
         setSmoothCameraTarget(
           new THREE.Vector3(
             initPlayerCoord.x,
-            initPlayerCoord.y + 5,
+            initPlayerCoord.y,
             initPlayerCoord.z - 10,
           ),
         );
@@ -354,7 +354,7 @@ export function Player() {
 
         state.camera.lookAt(
           initPlayerCoord.x,
-          initPlayerCoord.y + 5,
+          initPlayerCoord.y,
           initPlayerCoord.z - 10,
         );
 

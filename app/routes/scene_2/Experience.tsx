@@ -35,7 +35,7 @@ export function WarmUpPhysics() {
 
   return null;
 }
-
+const initPlayerCoord = new THREE.Vector3(0, 4, 8);
 export default function Experience() {
   const threeState = useThree();
   const { gl, advance } = useThree();
@@ -218,6 +218,7 @@ export default function Experience() {
       <color args={["#201919"]} attach="background" />
       <OrbitControls
         ref={orbitControlRef}
+        target={(initPlayerCoord.x, initPlayerCoord.y, initPlayerCoord.z - 10)}
         maxPolarAngle={Math.PI * 0.7}
         minPolarAngle={Math.PI * 0.4}
       />
