@@ -159,8 +159,8 @@ export const setGanttForDev = async () => {
     title: "Who?",
     subtitle: "WebGL 3D Content Developed by Three.js",
     description:
-      "強力なプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントなプロジェクトの説明はとなくビジョ助けるために専門家のヒントとサンプル プロジェクトの説明をまとめました。",
-    tech_stacks: ["Firebase", "Flutter", "React", "Remix", "Three.js"],
+      "A project useing the metaphor of ascending floors to represent the evolution of the spiritual world.",
+    tech_stacks: ["Remix", "WebGL", "GLSL", "Three.js"],
   });
 
   await projRef.doc("project_8").set({
@@ -172,10 +172,10 @@ export const setGanttForDev = async () => {
     end_month: 4,
     end_monthPeriod: 4,
     target_start_row: 5,
-    title: "This Website",
-    subtitle: "WebGL 3D Content Developed by Three.js",
+    title: "A Portfolio Website",
+    subtitle: "A playful showcase of creative works.",
     description:
-      "A project useing the metaphor of ascending floors to represent the evolution of the spiritual world.",
+      "This website was developed with a focus on integrating WebGL with readable UI/UX. I worked on this project while heavily referencing the website 'Sougen' by Utsubo.",
     tech_stacks: ["Remix", "WebGL", "GLSL", "Three.js"],
   });
 };
