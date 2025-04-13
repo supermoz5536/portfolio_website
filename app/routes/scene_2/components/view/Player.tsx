@@ -14,7 +14,9 @@ let isFirstTry = true;
 
 export function Player() {
   const initPlayerCoord = new THREE.Vector3(0, 4, 8);
-  const warmUpImpulse = new THREE.Vector3(2.05, 2.125, -2.195);
+  const warmUpImpulseDirR = new THREE.Vector3(3.05, 3.125, -3.195);
+  const warmUpImpulseDirL = new THREE.Vector3(-3.05, -3.125, 3.195);
+  const warmUpImpulseDirC = new THREE.Vector3(6.05, -3.125, -6.195);
 
   /**
    * Local State
@@ -314,11 +316,27 @@ export function Player() {
     }
 
     const loop = (t: number) => {
-      if (countWarmRef.current < 40) {
-        console.log("loop");
+      if (countWarmRef.current < 25) {
+        console.log("loopDirR");
         countWarmRef.current++;
 
-        rigidRef.current.applyImpulse(warmUpImpulse);
+        rigidRef.current.applyImpulse(warmUpImpulseDirR);
+
+        advance(t / 1000);
+        animationFrameIdRef.current = requestAnimationFrame(loop);
+      } else if (countWarmRef.current < 50) {
+        console.log("loopDirL");
+        countWarmRef.current++;
+
+        rigidRef.current.applyImpulse(warmUpImpulseDirL);
+
+        advance(t / 1000);
+        animationFrameIdRef.current = requestAnimationFrame(loop);
+      } else if (countWarmRef.current < 75) {
+        console.log("loopDirC");
+        countWarmRef.current++;
+
+        rigidRef.current.applyImpulse(warmUpImpulseDirC);
 
         advance(t / 1000);
         animationFrameIdRef.current = requestAnimationFrame(loop);
@@ -358,7 +376,7 @@ export function Player() {
           initPlayerCoord.z - 10,
         );
 
-        if (countWarmEndRef.current < 30) {
+        if (countWarmEndRef.current < 20) {
           countWarmEndRef.current++;
           advance(t / 1000);
           animationFrameIdRef.current = requestAnimationFrame(loop);

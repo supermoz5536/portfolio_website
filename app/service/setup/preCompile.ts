@@ -63,7 +63,9 @@ export function PreCompile({ sceneNumber }: PreCompileProps) {
       }
 
       const loop = (t: number) => {
-        if (countRef.current < 80) {
+        const waitFrame = 60;
+        // const waitFrame = sceneNumber == 2 ? 60 : 60
+        if (countRef.current < waitFrame) {
           countRef.current++;
           advance(t / 1000);
           animationFrameIdRef.current = requestAnimationFrame(loop);
