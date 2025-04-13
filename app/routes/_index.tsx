@@ -52,11 +52,11 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   return (
     <>
-      <Scene1 />
+      {/* <Scene1 /> */}
       <Panel1 />
-      <Scene2 />
+      {/* <Scene2 />
       <Panel2 />
-      <Scene3 />
+      <Scene3 /> */}
     </>
   );
 }

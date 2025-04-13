@@ -5,6 +5,7 @@ import { PopupLayer3 } from "../popup_layer/popup_layer_3";
 import { PopupLayer4 } from "../popup_layer/popup_layer_4";
 import { PopupLayer2 } from "../popup_layer/popup_layer_2";
 import MatterJs1 from "../matter_js/Matter_js_1";
+import MatterJs2 from "../matter_js/Matter_js_2";
 
 type PopUpComponentProps = {
   viewFlag: boolean;
@@ -141,13 +142,28 @@ export const PopUpComponent = memo((props: PopUpComponentProps) => {
               ? window.innerWidth > 500 && (
                   <div className="absolute z-20">
                     {/* 下層の Matter.js */}
-                    <MatterJs1
-                      viewFlag={viewFlag}
-                      height={
-                        typeof window != "undefined" ? aspects.height : 100
-                      }
-                      width={typeof window != "undefined" ? aspects.width : 100}
-                    />
+                    {(number == 1 || number == 4) && (
+                      <MatterJs1
+                        viewFlag={viewFlag}
+                        height={
+                          typeof window != "undefined" ? aspects.height : 100
+                        }
+                        width={
+                          typeof window != "undefined" ? aspects.width : 100
+                        }
+                      />
+                    )}
+                    {(number == 2 || number == 3) && (
+                      <MatterJs2
+                        viewFlag={viewFlag}
+                        height={
+                          typeof window != "undefined" ? aspects.height : 100
+                        }
+                        width={
+                          typeof window != "undefined" ? aspects.width : 100
+                        }
+                      />
+                    )}
                   </div>
                 )
               : null}
