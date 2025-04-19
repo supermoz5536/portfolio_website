@@ -146,7 +146,13 @@ export function Camera() {
 
     if (scrollProgress == 0) {
       const target = isMobile ? targForTitleForMobile : targForTitleForDesktop;
-      lerpCamTargRef.current.lerp(target, 0.175 * delta);
+
+      const midTarget = new THREE.Vector3()
+        .copy(lerpCamTargRef.current)
+        .lerp(target, 0.5);
+
+      lerpCamTargRef.current.lerp(midTarget, delta * 2.5);
+
       cameraRef.current.lookAt(lerpCamTargRef.current);
 
       // Save coordinate for next process
@@ -167,12 +173,12 @@ export function Camera() {
       );
 
       // Get the target
-      const lerpTarget = new THREE.Vector3()
+      const midTarget = new THREE.Vector3()
         .copy(startTargetRef.current)
         .lerp(targForScroll, t);
 
       // Get the target of the target you already got
-      lerpCamTargRef.current.lerp(lerpTarget, delta * 1.5);
+      lerpCamTargRef.current.lerp(midTarget, delta * 1.5);
 
       cameraRef.current.lookAt(lerpCamTargRef.current);
     }

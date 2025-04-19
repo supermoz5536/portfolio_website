@@ -40,18 +40,24 @@ export default function Experience() {
      */
 
     if (!isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      setIsRender(true);
-      renderStart();
+      if (!isRender) {
+        setIsRender(true);
+        renderStart();
+      }
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      setIsRender(true);
-      renderStart();
+      if (!isRender) {
+        setIsRender(true);
+        renderStart();
+      }
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom >= endRenderRate) {
-      setIsRender(false);
-      renderFinish();
+      if (isRender) {
+        setIsRender(false);
+        renderFinish();
+      }
     }
 
     /**
@@ -76,11 +82,12 @@ export default function Experience() {
       if (isMobile) gl.setPixelRatio(0.001);
       if (!isMobile) gl.setPixelRatio(0.001);
     }
-  }, [scrollProgressTopAndBottom, isIntroEnd]);
+  }, [scrollProgressTopAndBottom, isIntroEnd, isRender]);
 
   function renderStart() {
     if (animationFrameIdRef.current) {
       cancelAnimationFrame(animationFrameIdRef.current);
+      animationFrameIdRef.current = null;
     }
 
     const loop = (t: number) => {
@@ -94,6 +101,7 @@ export default function Experience() {
   function renderFinish() {
     if (animationFrameIdRef.current) {
       cancelAnimationFrame(animationFrameIdRef.current);
+      animationFrameIdRef.current = null;
     }
   }
 
