@@ -8,7 +8,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export async function loadAllAssets() {
-  const totalCount = 12;
+  const totalCount = 19;
 
   const isFirstTryRef1 = useRef(true);
   const isFirstTryRef2 = useRef(true);
@@ -131,6 +131,15 @@ export async function loadAllAssets() {
 
     const timeout = setTimeout(() => {
       setIsPreLoaded(true);
+
+      // Dummy counts for the stack period in Loading progress.
+      for (let i = 0; i < 7; i++) {
+        const time = i * 2000 + 500;
+        setTimeout(() => {
+          loadedCount.current++;
+          setLoadingProgressRatio(getProgressRatio());
+        }, time);
+      }
 
       clearTimeout(timeout);
     }, 1500);
