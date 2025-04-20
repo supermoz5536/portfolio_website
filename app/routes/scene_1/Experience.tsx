@@ -68,21 +68,27 @@ export default function Experience() {
      * スキップ後で画面外　＝＞　低解像度
      */
 
+    let targetDpr = null;
+
     if (!isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      if (isMobile) gl.setPixelRatio(0.05);
-      if (!isMobile) gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      if (isMobile) targetDpr = 0.65;
+      if (!isMobile) targetDpr = 1.5;
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom < endRenderRate) {
-      if (isMobile) gl.setPixelRatio(0.65);
-      if (!isMobile) gl.setPixelRatio(2.0);
+      if (isMobile) targetDpr = 0.65;
+      if (!isMobile) targetDpr = 1.5;
 
       //
     } else if (isIntroEnd && scrollProgressTopAndBottom >= endRenderRate) {
-      if (isMobile) gl.setPixelRatio(0.001);
-      if (!isMobile) gl.setPixelRatio(0.001);
+      if (isMobile) targetDpr = 0.001;
+      if (!isMobile) targetDpr = 0.001;
     }
-  }, [scrollProgressTopAndBottom, isIntroEnd, isRender]);
+
+    if (targetDpr && gl.getPixelRatio() != targetDpr) {
+      gl.setPixelRatio(targetDpr);
+    }
+  }, [scrollProgressTopAndBottom, isIntroEnd]);
 
   function renderStart() {
     if (animationFrameIdRef.current) {
