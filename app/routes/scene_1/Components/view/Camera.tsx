@@ -48,6 +48,7 @@ export function Camera() {
    * Store Setter
    */
 
+  const setIsWarmedUpScene1 = useGlobalStore((state: any) => state.setIsWarmedUpScene1); // prettier-ignore
   const setIsAnimationEnd = useSystemStore((state: any) => state.setIsAnimationEnd); // prettier-ignore
 
   /**
@@ -96,7 +97,7 @@ export function Camera() {
       isFirstWarmup = false;
 
       gsap.to(warmupRatioRef.current, {
-        duration: 4,
+        duration: 7,
         progress: 1,
         ease: "power1.inOut",
         delay: 0,
@@ -119,6 +120,8 @@ export function Camera() {
             if (t == 1.0) {
               cameraRef.current.position.set(0, 100, 0);
               cameraRef.current.quaternion.set(-0.5, 0.5, 0.5, 0.5);
+              setIsWarmedUpScene1(true);
+              console.log("Scene1 Warmed Up");
             }
           }
         },

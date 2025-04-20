@@ -8,13 +8,16 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useGlobalStore } from "~/store/global/global_store";
 
 export async function loadAllAssets() {
-  const totalCount = 19;
+  const totalCount = 20;
 
-  const isFirstTryRef1 = useRef(true);
-  const isFirstTryRef2 = useRef(true);
-  const isFirstTryRef3 = useRef(true);
-  const isFirstTryRef4 = useRef(true);
-  const isFirstTryRef5 = useRef(true);
+  const isCompiledScene1FirstRef = useRef(true);
+  const isCompiledScene2FirstRef = useRef(true);
+  const isCompiledScene3FirstRef = useRef(true);
+  const isWarmedUpScene1FirstRef = useRef(true);
+  const isWarmedUpScene2FirstRef = useRef(true);
+
+  const isAllCompiledAndWarmedUp = useRef(true);
+
   const assetsObj = useRef<any>({ gltf: {}, texture: {} });
   const loadedCount = useRef<any>(0);
 
@@ -46,6 +49,7 @@ export async function loadAllAssets() {
       isCompiledScene1: state.isCompiledScene1,
       isCompiledScene2: state.isCompiledScene2,
       isCompiledScene3: state.isCompiledScene3,
+      isWarmedUpScene1: state.isWarmedUpScene1,
       isWarmedUpScene2: state.isWarmedUpScene2,
     }),
 
@@ -54,41 +58,49 @@ export async function loadAllAssets() {
         isCompiledScene1,
         isCompiledScene2,
         isCompiledScene3,
+        isWarmedUpScene1,
         isWarmedUpScene2,
       } = newState;
 
-      if (isCompiledScene1 && isFirstTryRef1.current) {
-        isFirstTryRef1.current = false;
+      if (isCompiledScene1 && isCompiledScene1FirstRef.current) {
+        isCompiledScene1FirstRef.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
       }
 
-      if (isCompiledScene2 && isFirstTryRef2.current) {
-        isFirstTryRef2.current = false;
+      if (isCompiledScene2 && isCompiledScene2FirstRef.current) {
+        isCompiledScene2FirstRef.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
       }
 
-      if (isCompiledScene3 && isFirstTryRef3.current) {
-        isFirstTryRef3.current = false;
+      if (isCompiledScene3 && isCompiledScene3FirstRef.current) {
+        isCompiledScene3FirstRef.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
       }
 
-      if (isWarmedUpScene2 && isFirstTryRef4.current) {
-        isFirstTryRef4.current = false;
+      if (isWarmedUpScene1 && isWarmedUpScene1FirstRef.current) {
+        isWarmedUpScene1FirstRef.current = false;
+        loadedCount.current++;
+        setLoadingProgressRatio(getProgressRatio());
+      }
+
+      if (isWarmedUpScene2 && isWarmedUpScene2FirstRef.current) {
+        isWarmedUpScene2FirstRef.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
       }
 
       if (
-        isFirstTryRef5.current &&
+        isAllCompiledAndWarmedUp.current &&
         isCompiledScene1 &&
         isCompiledScene2 &&
         isCompiledScene3 &&
+        isWarmedUpScene1 &&
         isWarmedUpScene2
       ) {
-        isFirstTryRef5.current = false;
+        isAllCompiledAndWarmedUp.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
 
