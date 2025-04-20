@@ -5,6 +5,7 @@ import { useGlobalStore } from "~/store/global/global_store";
 import { useSystemStore } from "~/store/scene1/system_store";
 import { gsap } from "gsap/dist/gsap";
 
+let isFirstWarmup = true;
 let isFirstTry = true;
 
 export function Camera() {
@@ -25,6 +26,7 @@ export function Camera() {
    */
 
   const cameraRef = useRef<any>();
+  const warmupRatioRef = useRef({ progress: 0 });
   const animationRatioRef = useRef({ progress: 0 });
 
   const lerpCamTargRef = useRef(new THREE.Vector3(0, -12.5, 0));
@@ -34,6 +36,7 @@ export function Camera() {
    * Store State
    */
 
+  const isCompiledScene1 = useGlobalStore((state) => state.isCompiledScene1);
   const isMobile = useGlobalStore((state) => state.isMobile);
   const isIntroEnded = useSystemStore((state) => state.isIntroEnd);
   const isAnimationEnd = useSystemStore((state) => state.isAnimationEnd);
@@ -84,6 +87,46 @@ export function Camera() {
     }
   }, [size]);
 
+  /* ---------
+     Warm up
+    --------- */
+
+  useEffect(() => {
+    if (isFirstWarmup && isCompiledScene1) {
+      isFirstWarmup = false;
+
+      gsap.to(warmupRatioRef.current, {
+        duration: 4,
+        progress: 1,
+        ease: "power1.inOut",
+        delay: 0,
+        onUpdate: () => {
+          console.log("AAAAAAnime debug");
+          if (!isAnimationEnd && cameraRef.current) {
+            let radiusRatio = 0.5;
+            let t = warmupRatioRef.current.progress;
+
+            const revolutions = 1.2; // 螺旋の回転数
+            const phi = Math.PI * 2 * revolutions * t; // 総回転角
+            const radius = 125 * radiusRatio; // 半径
+            const startY = 100;
+            const endY = 12.5;
+            const y = startY - t * (startY - endY);
+            const x = radius * Math.cos(phi);
+            const z = radius * Math.sin(phi);
+
+            cameraRef.current.position.set(x, y, z);
+
+            if (t == 1.0) {
+              cameraRef.current.position.set(0, 100, 0);
+              cameraRef.current.quaternion.set(-0.5, 0.5, 0.5, 0.5);
+            }
+          }
+        },
+      });
+    }
+  }, [isCompiledScene1]);
+
   /* ----------------------------
      Control Camera in Animation
     ---------------------------- */
@@ -112,11 +155,7 @@ export function Camera() {
 
             cameraRef.current.position.set(x, y, z);
 
-            if (t == 1.0) {
-              setTimeout(() => {
-                setIsAnimationEnd(true);
-              }, 0);
-            }
+            if (t == 1.0) setIsAnimationEnd(true);
           }
         },
       });
