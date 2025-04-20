@@ -27,11 +27,11 @@ void main() {
     // Uv rotated
     vec2 rUv = rotatedPosition(vUv);
 
-    vec2 heightLimited = vec2(0.8, 0.8 + (0.8 * max(0.0, uScrollRatio - 0.1) * 5.0));
+    vec2 heightLimited = vec2(0.8, 0.8 + (0.8 * max(0.0, uScrollRatio - 0.025) * 5.0));
     vec2 rHeightLimited = rotatedPosition(heightLimited);
     float rHeightRange = distance(rHeightLimited, center);
 
-    vec2 leftLimited = vec2(0.8 - (0.8 * max(0.0, uScrollRatio - 0.1) * 5.0), 0.8);
+    vec2 leftLimited = vec2(0.8 - (0.8 * max(0.0, uScrollRatio - 0.025) * 5.0), 0.8);
     vec2 rLeftLimited = rotatedPosition(leftLimited);
     float rWidthRange = distance(rLeftLimited, center);
     

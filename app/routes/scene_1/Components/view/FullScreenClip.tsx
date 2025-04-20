@@ -9,7 +9,8 @@ const fullScreenGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
 export function FullScreenClip() {
   const fullScreenMaterialRef = useRef(FullScreenClipMaterial());
 
-  const lerpScrollRatioRef = useRef(0);
+  const lerpScrollRatio1Ref = useRef(0);
+  const lerpScrollRatio2Ref = useRef(0);
 
   const scrollProgressTopAndBottom = useSystemStore((state) => state.scrollProgressTopAndBottom); // prettier-ignore
 
@@ -33,19 +34,26 @@ export function FullScreenClip() {
 
   useFrame((state, delta) => {
     // Culculate lerp
-    lerpScrollRatioRef.current = THREE.MathUtils.damp(
-      lerpScrollRatioRef.current,
+    lerpScrollRatio1Ref.current = THREE.MathUtils.damp(
+      lerpScrollRatio1Ref.current,
       scrollProgressTopAndBottom,
-      1.25,
+      1.0,
+      delta,
+    );
+
+    lerpScrollRatio2Ref.current = THREE.MathUtils.damp(
+      lerpScrollRatio2Ref.current,
+      lerpScrollRatio1Ref.current,
+      1.0,
       delta,
     );
 
     // Send uniform
     fullScreenMaterialRef.current.uniforms.uScrollRatio.value =
-      lerpScrollRatioRef.current;
+      lerpScrollRatio2Ref.current;
 
     fullScreenMaterialRef.current.uniforms.uAngle.value =
-      lerpScrollRatioRef.current * Math.PI * 2;
+      lerpScrollRatio2Ref.current * Math.PI * 2;
   });
 
   return (

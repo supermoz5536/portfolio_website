@@ -19,10 +19,10 @@ export function FullScreenMask() {
     if (isFirstTry && isIntroEnded) {
       isFirstTry = false;
       gsap.to(animationRatioRef.current, {
-        duration: 2,
+        duration: 1,
         opacity: 0,
         ease: "sine.out",
-        delay: 1.5,
+        delay: 2.5,
         onUpdate: () => {
           materialRef.current.uniforms.uOpacity.value =
             animationRatioRef.current.opacity;
