@@ -12,7 +12,6 @@ import { useThree } from "@react-three/fiber";
 import { useSystemStore } from "~/store/scene1/system_store.js";
 import { useGlobalStore } from "~/store/global/global_store.js";
 import { FullScreenClip } from "./Components/view/FullScreenClip.js";
-import { FullScreenWAB } from "./Components/view/FullScreenWAB.js";
 import { FullScreenMask } from "./Components/view/FullScreenMask.js";
 
 export default function Experience() {
@@ -120,7 +119,6 @@ export default function Experience() {
       <Earth />
       <Tower />
       <FullScreenClip />
-      {isMobile && <FullScreenWAB />}
       {isAnimationEnd || <FullScreenMask />}
     </>
   );

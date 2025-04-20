@@ -22,7 +22,7 @@ export function FullScreenMask() {
         duration: 1,
         opacity: 0,
         ease: "sine.out",
-        delay: 2,
+        delay: 2.5,
         onUpdate: () => {
           materialRef.current.uniforms.uOpacity.value =
             animationRatioRef.current.opacity;

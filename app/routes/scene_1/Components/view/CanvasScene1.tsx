@@ -2,18 +2,20 @@ import { Canvas, useThree } from "@react-three/fiber";
 import Experience from "../../Experience";
 import {
   Bloom,
+  BrightnessContrast,
   EffectComposer,
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useEffect, useRef, useState } from "react";
 import { ToneMappingMode } from "postprocessing";
 import { useGlobalStore } from "~/store/global/global_store";
-import { WhiteCustom } from "./PostProcessing/White/WhiteCustom";
 import { HueSlideCustom } from "./PostProcessing/HueSlide/HueSlideCustom";
 import { useSystemStore } from "~/store/scene1/system_store";
 import { WhiteSlideCustom } from "./PostProcessing/WhiteSlide/WhiteSlideCustom";
 import { KernelSize } from "postprocessing";
 import { PreCompile } from "~/service/setup/preCompile";
+import { WABEffect } from "./PostProcessing/WAB/WABEffect";
+import { WABCustom } from "./PostProcessing/WAB/WABCustom";
 
 export function CanvasScene1() {
   const [dprMobile] = useState(0.05);
@@ -57,13 +59,20 @@ export function CanvasScene1() {
           </>
         )}
 
-        {isIntroEnded || (
-          <EffectComposer>
-            <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-            <HueSlideCustom />
-            <WhiteSlideCustom />
-          </EffectComposer>
-        )}
+        <EffectComposer>
+          {isIntroEnded && isMobile && (
+            <>
+              <ToneMapping mode={ToneMappingMode.LINEAR} />
+              <WABCustom />
+            </>
+          )}
+          {isIntroEnded || (
+            <>
+              <HueSlideCustom />
+              <WhiteSlideCustom />
+            </>
+          )}
+        </EffectComposer>
       </Canvas>
     </>
   );

@@ -37,14 +37,14 @@ export function FullScreenClip() {
     lerpScrollRatio1Ref.current = THREE.MathUtils.damp(
       lerpScrollRatio1Ref.current,
       scrollProgressTopAndBottom,
-      1.0,
+      0.9,
       delta,
     );
 
     lerpScrollRatio2Ref.current = THREE.MathUtils.damp(
       lerpScrollRatio2Ref.current,
       lerpScrollRatio1Ref.current,
-      1.0,
+      0.9,
       delta,
     );
 
