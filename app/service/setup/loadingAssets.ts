@@ -46,7 +46,7 @@ export async function loadAllAssets() {
       isCompiledScene1: state.isCompiledScene1,
       isCompiledScene2: state.isCompiledScene2,
       isCompiledScene3: state.isCompiledScene3,
-      isWarmedUpPlayer: state.isWarmedUpPlayer,
+      isWarmedUpScene2: state.isWarmedUpScene2,
     }),
 
     (newState, prevState) => {
@@ -54,7 +54,7 @@ export async function loadAllAssets() {
         isCompiledScene1,
         isCompiledScene2,
         isCompiledScene3,
-        isWarmedUpPlayer,
+        isWarmedUpScene2,
       } = newState;
 
       if (isCompiledScene1 && isFirstTryRef1.current) {
@@ -75,7 +75,7 @@ export async function loadAllAssets() {
         setLoadingProgressRatio(getProgressRatio());
       }
 
-      if (isWarmedUpPlayer && isFirstTryRef4.current) {
+      if (isWarmedUpScene2 && isFirstTryRef4.current) {
         isFirstTryRef4.current = false;
         loadedCount.current++;
         setLoadingProgressRatio(getProgressRatio());
@@ -86,7 +86,7 @@ export async function loadAllAssets() {
         isCompiledScene1 &&
         isCompiledScene2 &&
         isCompiledScene3 &&
-        isWarmedUpPlayer
+        isWarmedUpScene2
       ) {
         isFirstTryRef5.current = false;
         loadedCount.current++;

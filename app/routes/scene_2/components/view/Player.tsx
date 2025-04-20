@@ -69,8 +69,8 @@ export function Player() {
    * Store Setter
    */
 
-  const setIsWarmedUpPlayer = 
-    useGlobalStore((state: any) => state.setIsWarmedUpPlayer); // prettier-ignore
+  const setIsWarmedUpScene2 = 
+    useGlobalStore((state: any) => state.setIsWarmedUpScene2); // prettier-ignore
 
   const setPlayerPosition = 
     ThreePlayerStore((state: any) => state.setPosition); // prettier-ignore
@@ -381,7 +381,7 @@ export function Player() {
           advance(t / 1000);
           animationFrameIdRef.current = requestAnimationFrame(loop);
         } else {
-          setIsWarmedUpPlayer(true);
+          setIsWarmedUpScene2(true);
         }
       }
     };

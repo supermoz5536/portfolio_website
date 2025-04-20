@@ -13,7 +13,7 @@ type GlobalStore = {
   isCompiledScene1: boolean;
   isCompiledScene2: boolean;
   isCompiledScene3: boolean;
-  isWarmedUpPlayer: boolean;
+  isWarmedUpScene2: boolean;
 };
 
 export const useGlobalStore = create<GlobalStore>()(
@@ -29,7 +29,7 @@ export const useGlobalStore = create<GlobalStore>()(
       isCompiledScene1: false,
       isCompiledScene2: false,
       isCompiledScene3: false,
-      isWarmedUpPlayer: false,
+      isWarmedUpScene2: false,
 
       setIsMobile: (newState: boolean) => {
         set((state: any) => {
@@ -91,9 +91,9 @@ export const useGlobalStore = create<GlobalStore>()(
         });
       },
 
-      setIsWarmedUpPlayer: (newState: boolean) => {
+      setIsWarmedUpScene2: (newState: boolean) => {
         set((state: any) => {
-          return { isWarmedUpPlayer: newState };
+          return { isWarmedUpScene2: newState };
         });
       },
     };

@@ -101,7 +101,6 @@ export function Camera() {
         ease: "power1.inOut",
         delay: 0,
         onUpdate: () => {
-          console.log("AAAAAAnime debug");
           if (!isAnimationEnd && cameraRef.current) {
             let radiusRatio = 0.5;
             let t = warmupRatioRef.current.progress;
