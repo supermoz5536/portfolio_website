@@ -50,10 +50,7 @@ export default function Panel1() {
 
   return (
     <>
-      <div
-        ref={container}
-        className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden"
-      >
+      <div ref={container} className="text-black bg-white min-h-[100vh] h-auto w-full overflow-hidden">
         {/* Responsible Width-Max-Break */}
         <div className="xl:flex flex-row justify-between xl-3:justify-center">
           {/* Header */}
@@ -62,10 +59,7 @@ export default function Panel1() {
               <span className="block">Be</span>
               <span className="block">Super</span>
               <span className="block">Creative</span>
-              <span
-                id="line"
-                className="block h-[0.5rem] my-sm:w-[14.75rem] xl-2:w-[18rem] mt-3 bg-black"
-              />
+              <span id="line" className="block h-[0.5rem] my-sm:w-[14.75rem] xl-2:w-[18rem] mt-3 bg-black" />
             </div>
           </AnimateInBlock>
 
@@ -126,8 +120,8 @@ export default function Panel1() {
 
                   {/* Content 4 */}
                   <ContentBlock
-                    title="Who?"
-                    subtitle="Steps to an Inner Universe."
+                    title="The Gallery"
+                    subtitle="Showcase of Artwork"
                     medium="Web App"
                     number={4}
                   />

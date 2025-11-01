@@ -80,52 +80,37 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                   {/* 説明 */}
                   <AnimateIn rootMarginBottom={-70}>
                     <div>
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        The project uses the metaphor of ascending floors to
-                        represent the evolution of the spiritual world,
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        An online gallery to showcase artworks and sketches mainly based on Eastern
+                        philosophy.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        with each floor exhibiting objects that depict the state
-                        of the spirit at that stage.
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        Each of them is my current understanding of the inner world of the mind as of today.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        It has been integrated into this portfolio site and
-                        optimized for performance to work well even on low-spec
-                        mobile devices.
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        If you were able to feel relaxed, drifting in the stillness there, you could realize
+                        something important only to you.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        At any rate, you can just play it for fun. Why not give
-                        it a try?
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        There are still empty spaces. I’ll fill them with upcoming works.
                         <br />
                         <br />
-                        Who?: <br />
+                        The Gallery: <br />
                         <a
                           className="cursor-pointer hover:text-gray-300 transform duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://portfolio.apple-pepper.net"
+                          href="https://gallery.apple-pepper.net"
                         >
-                          https://portfolio.apple-pepper.net
+                          https://gallery.apple-pepper.net
                         </a>
                         <br />
                         <br />
                         Tech Stack: <br />
-                        Remix, WebGL, GLSL, Three.js
+                        WebGPU, Three.js(TSL), HTML/CSS, Typescript
                         <br />
                         <br />
                       </p>
@@ -198,52 +183,37 @@ export const PopupLayer4 = (props: PopupLayerProps) => {
                       <br />
                     </p>
                     <div>
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Molestias facere earum sapiente, nulla vero tenetur?
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        An online gallery to showcase artworks and sketches mainly based on Eastern
+                        philosophy.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Aliquid, molestiae quisquam maxime error quae
-                        adipisci.
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        Each of them is my current understanding of the inner world of the mind as of today.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Exercitationem deserunt distinctio nostrum, maiores
-                        perspiciatis dignissimos.
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        If you were able to feel relaxed, drifting in the stillness there, you could realize
+                        something important only to you.
                       </p>
                       <br />
-                      <p
-                        id="fade-in-bottom"
-                        className="text-gray-50 text-xl font-normal"
-                      >
-                        Lorem ipsum dolor sit amet consectetur adipisicing.
+                      <p id="fade-in-bottom" className="text-gray-50 text-xl font-normal">
+                        There are still empty spaces. I’ll fill them with upcoming works.
                         <br />
                         <br />
-                        TraceSpeaker: <br />
+                        The Gallery: <br />
                         <a
                           className="cursor-pointer hover:text-gray-300 transform duration-200"
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://trace-speaker-app-ja.apple-pepper.net"
+                          href="https://gallery.apple-pepper.net"
                         >
-                          https://trace-speaker-app-ja.apple-pepper.net
+                          https://gallery.apple-pepper.net
                         </a>
                         <br />
                         <br />
                         Tech Stack: <br />
-                        Flutter Web, Firebase, Python
+                        WebGPU, Three.js(TSL), HTML/CSS, Typescript,
                         <br />
                         <br />
                       </p>
